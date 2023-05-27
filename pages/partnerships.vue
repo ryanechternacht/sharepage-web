@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="flex flex-row"><!-- this should be grid -->
-      <div class="w-[300px]">
-        <div class="flex flex-row justify-between">
+    <div class="page-grid">
+      <div class="">
+        <div class="">
           <span class="text-3xl">🤝</span>
           <input type="text" placeholder="search" v-model="partnerFilter"
             class="border border-gray-400 rounded">
@@ -11,7 +11,7 @@
         <div class="flex flex-col gap-y-2">
           <div v-for="p in partnerList" :key="p.name">
             <div class="w-full bg-slate-200 flex flex-row items-center p-2">
-              <div class="text-3xl">🏢</div> 
+              <img :src="p.logo" class="h-8 w-8">
               <div class="text-md font-bold ml-4">{{ p.name  }}</div>
               <div v-if="p.new" class="italic ml-2 text-xs">New</div>
 
@@ -32,42 +32,26 @@
           </div>
         </div>
       </div>
-      <div class="flex-grow bg-red-500">
-        Partner Content
-      </div>
+      <!-- fix this--> 
+      <PartnershipDetails
+        :partner="partners[0]" 
+        class="flex-grow" />
     </div>
   </div>
 </template>
 
 <script setup>
-  const partners = [{
-    name: 'Zendesk',
-    type: 'Technology',
-    state: 'Active'
-  }, {
-    name: 'Seismic',
-    type: 'Strategic',
-    state: 'Active'
-  }, {
-    name: 'Gong',
-    state: 'Pending',
-    new: true
-  }, {
-    name: 'Klayvio',
-    state: 'In Progress'
-  }, {
-    name: 'Atlassian',
-    state: 'Pending',
-    new: true
-  }]
+  import { usePartnersStore } from '@/stores/partners'
+  import { storeToRefs } from 'pinia'
+
+  const { partners } = storeToRefs(usePartnersStore())
 
   const partnerFilter = ref('');
 
   const partnerList = computed(() => {
-    console.log(partnerFilter)
     return partnerFilter.value
-      ? partners.filter(p => p.name.toLowerCase().includes(partnerFilter.value.toLowerCase()))
-      : partners
+      ? partners.value.filter(p => p.name.toLowerCase().includes(partnerFilter.value.toLowerCase()))
+      : partners.value
   })
 </script>
 
@@ -78,6 +62,7 @@ export default {
 
 <style lang="postcss" scoped>
 .page-grid {
-  @apply grid;
+  @apply grid gap-x-4;
+  grid-template-columns: 400px minmax(0, 1fr);
 }
 </style>
