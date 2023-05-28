@@ -1,11 +1,20 @@
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-row gap-2">
-      <img :src="partner.logo" class="h-8 w-8">
+  <div class="flex flex-col gap-2">
+    <div class="flex flex-row items-center gap-2">
+      <img :src="partner.logo" class="h-8 max-w-16">
       <div class="text-3xl">{{ partner.name }}</div>
       <div class="flex-grow" />
-
-      <span>Lead Accepted</span>
+      
+      <a :href="partner.website" target="_blank">Partnership Website</a>
+      <span v-if="partner.state === 'Active'" class="partnership-active">
+        Partnership Accepted
+      </span>
+      <span v-else-if="partner.state === 'In Progress'" class="partnership-in-progress">
+        Partnership Accepted
+      </span>
+      <span v-else-if="partner.state === 'Pending'" class="partnership-pending">
+        Partnership Pending
+      </span>
     </div>
     <div class="flex flex-row gap-2">
       <PButton 
@@ -23,11 +32,24 @@
         :class="{selected: currentTab === 'resources'}">
         📓 Resources
       </PButton>
+      <PButton 
+        @click="currentTab = 'leads'"
+        :class="{selected: currentTab === 'leads'}">
+        💎 Leads
+      </PButton>      
+      <PButton 
+        @click="currentTab = 'operations'"
+        :class="{selected: currentTab === 'operations'}">
+        🧰 Operations
+      </PButton>
+      
     </div>
     
-    <PartnershipJointValue v-if="currentTab === 'joint-value'" :joint-value="partner.jointValue"/>
-    <PartnershipPartnerValue v-else-if="currentTab === 'partner-value'" />
-    <PartnershipResources v-else-if="currentTab === 'resources'" />
+    <PartnershipJointValue v-if="currentTab === 'joint-value'" :partner="partner"/>
+    <PartnershipPartnerValue v-else-if="currentTab === 'partner-value'" :partner="partner"/>
+    <PartnershipResources v-else-if="currentTab === 'resources'" :partner="partner"/>
+    <PartnershipLeads v-else-if="currentTab === 'leads'" :partner="partner"/>
+    <PartnershipOperations v-else-if="currentTab === 'operations'" :partner="partner"/>
   </div>
 </template>
 
@@ -45,7 +67,15 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-h3 {
-  @apply font-bold;
+a {
+  @apply text-gray-500 underline;
+}
+
+.partnership-active, partnership-in-progress {
+  @apply text-blue-400;
+}
+
+.partnership-pending {
+  @apply text-orange-400;
 }
 </style>

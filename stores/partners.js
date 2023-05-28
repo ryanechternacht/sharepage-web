@@ -1,10 +1,62 @@
 import { defineStore } from 'pinia'
 
 const partners = [{
-    name: 'Seismic',
+    name: '6sense',
     type: 'Strategic',
     state: 'Active',
-    logo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIsAAACLCAMAAABmx5rNAAAAz1BMVEX////+TwAAAAD+SwD19PUdACcaACUgACoeACjPzNEWACFNQVMYACIcACYiCCsUAB/w7vBKRFBbV2CYk5sGABciFCz+0MAAAA7+w7EAABQQAB1SS1hpZ21/foL+RABqZW41JjzFwcb/4tni4OLX1di3sbmkn6dCPUj/7eZ9doGHgIr/9PH+por+hWz9aUIrITRVVFf9Yi7+c0X9XjX9UBk/L0hpXm5BNUj9ViUoEjH+nYT9eFFeVGQuGjb9fV/+u6cyLDgmIS3+XBj9glf+lnVbvkCeAAAD+ElEQVR4nO2Wa3PiNhRAQdiSX8guNiiWs2DjR2JnG9q0CSELJWn3//+mXhnMI7BAdnamO9N7vhjJsnws3XtFq4UgCIIgCIIgCIIgCIIgCIIgCIIgCIIgyM/J3fhu20hNM0u1Y8PM7ML5UtP7Lo3bwedf7zuDpp30JpzyyW9VejC0cvv+RXMmsex9VGYMGr8Ph8NOZ+PiC4sxw2BdEb8fnQmmy4teMQ8MUXxI5OGPP5VFW9G4mIRxazaZScd4fP9Ayg0aH92795QhD/KPuAyGK409l1Jy+WRmSTEl8cETORGXvSF9JOVF0luX9oGLF1EuVrezy0Ljx3DUxQaX/aD1cr8wm4/U6nDRksIv8nWqQZcHTfVQWvj5Op40bX03g3vJ2TU65qKNJDdei62NVhISChKrvdGKnozhmjwSAX3EhmFFj04rGEKIn/Wgm8gERpjXMTHV4/mkHto/zMl9xs/tznAdupt4SYjBdcltf/W0F4XMpZZOCbzCu5GWDS9yHcOilqQWvK4XMMO1XMYZndXXbggr45NuX7lUossdKbuTs3Xpdrx8+dJepfQmp6vQgokdweucLAWXZV7EXWrDVvxiULsOb1blRfUolIvDjSAazQzIMTkf6YwLiDM/YMolDxkL7apcBOYJjbvb7fIsX/56bg83tc68prWOeIL41ZmsoC+dMJGAi65cnhy2qOdOPOXC4kStFTemmco07n7auDg669eJl5/ao6vnh5fl4K4p/Hfj5Xh7MyvmfYtz2PFCGvTJ9/1qYoRV4wLrovftchVUPYdGEJlarDvX0NR2XTJoVOc2B1w6neGw/fzlZbl7EO3ozB0OK+JLziUhRFiOKJs9SvtCZzQQ9XmwcekeusAiXVKPruqQVULDzsPX28MB6ptK5aJHoxVFsy4tz79xCeQb8c+6hBecBFfbkgtCO/uTr49EmAfWJXe53Ja8xgV+ZUlpcMc+7ZISTnvny++OC9jsuBTEGBVJUsQGJ3nLW+hMV5/mJeUmj/JS1S4vZs70tEvLhk+Zm16ajE5t1bddBLNcKBQ6d2K1PIIx99Wevskbr1mXXLivU/tV5+GZPWqZfSgvztubDL/PhQRUZ0yngtd56xPZ7TrUCZTLjSuVC7EodWmXTFVOS1m7LFy5ctED5SIcx6x3OqCGAZOdCpvGpaPC9+8dl5ZZzaezWRw1YZKV9gKaJRQPr4yiEi7FaLrg6xGfoEu5jKK6rd3M1TWPol5darUqqoee+tejXFS1fb7/Zzl4l0Zamu39xfTSpqmtTzwthS5vv2v/2hyN9WzH/69uXaC63H890PhPGH8e/wwaCIIgCIIgCIIgCIIgCIIgCIIgCIIgCIL8r/kXzvVgQbczGO0AAAAASUVORK5CYII='
+    logo: 'data:image/png;base64,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',
+    website: 'https://6sense.com/integrations/clari/',
+    jointValue: {
+      whyWePartner: `Combining Clari and 6sense creates a powerful revenue operations solution that can transform how sales teams operate. 
+
+      By integrating Clari's forecasting and pipeline management with 6sense's account-based orchestration, sales teams can gain deeper insights into their customer base and focus their efforts on high-value accounts.
+      
+      The combined solution helps sales teams optimize their workflows and prioritize the right opportunities, ultimately resulting in increased revenue and productivity. With the ability to automate tedious administrative tasks and provide valuable data-driven insights, the Clari and 6sense partnership is an ideal choice for sales teams looking to streamline their processes and drive more revenue.`,
+      keyFeatures: [
+        'Combining Clari and 6sense provides a more comprehensive revenue operations solution for sales teams, covering a broader range of needs in the sales and marketing process.',
+        'The partnership enables sales teams to gain deeper insights into their customer base and focus their efforts on high-value accounts, resulting in increased revenue and productivity.',
+        'The integrated solution can help sales teams optimize their workflows and prioritize the right opportunities, allowing them to work more efficiently and effectively.        ',
+        'The ability to automate tedious administrative tasks and provide data-driven insights helps sales teams make more informed decisions and improve their forecasting accuracy.',
+        'The Clari and 6sense partnership can ultimately help a company drive revenue growth, improve their sales process, and achieve a higher ROI on their marketing efforts'
+      ],
+      howWeWorkTogether: [
+        'The integration between 6sense and Clari enables a seamless flow of data between the two platforms, allowing sales teams to access the insights they need to make informed decisions.        ',
+        'The 6sense platform provides account-based orchestration for sales and marketing, allowing sales teams to identify high-value accounts and engage them in a personalized manner.        ',
+        'Clari\'s revenue operations and forecasting software helps sales teams manage their pipeline and forecast revenue with greater accuracy.        ',
+        'By combining the two solutions, sales teams can prioritize their efforts on the accounts that are most likely to drive revenue, allowing them to work more efficiently and effectively.        ',
+        'The integration enables sales teams to track the progress of their opportunities through the sales funnel and adjust their approach as needed to close deals more effectively.        '
+      ]
+    },
+    partnerValue: {
+      whatTheyDo: `6sense is a software company that provides an account-based orchestration platform for sales and marketing teams.
+
+      The platform enables businesses to identify high-value accounts and engage with them in a personalized and targeted manner. 6sense uses artificial intelligence and machine learning to analyze customer data and provide insights into buying intent, allowing sales teams to prioritize their efforts on the accounts that are most likely to drive revenue.
+      
+      The platform also includes tools for sales and marketing alignment, enabling both teams to work together more effectively to achieve their goals. Overall, 6sense's platform is designed to help businesses improve their sales and marketing efforts by providing a more complete and data-driven approach to customer engagement.`,
+      whyTheyAreLoved: [
+        'Personalization: 6sense\'s platform enables businesses to engage with their customers in a personalized and targeted manner, resulting in a more relevant and effective customer experience.        ',
+        'Data-driven insights: 6sense\'s use of artificial intelligence and machine learning provides valuable insights into buying intent, allowing businesses to make more informed decisions and prioritize their sales and marketing efforts.        ',
+        'Sales and marketing alignment: 6sense\'s platform includes tools for sales and marketing alignment, enabling both teams to work together more effectively and achieve their goals.',
+        'Revenue growth: Ultimately, 6sense\'s platform helps businesses drive revenue growth by providing a more comprehensive and data-driven approach to customer engagement, resulting in more closed deals and increased revenue.        '
+      ],
+      coreSolutions: [
+        'Account-Based Orchestration: 6sense\'s account-based orchestration platform enables businesses to identify high-value accounts and engage with them in a personalized and targeted manner, resulting in more closed deals and increased revenue.        ',
+        'Intent Data Analysis: 6sense\'s use of artificial intelligence and machine learning provides valuable insights into buying intent, allowing businesses to make more informed decisions and prioritize their sales and marketing efforts.',
+        'Sales and Marketing Alignment: 6sense\'s platform includes tools for sales and marketing alignment, enabling both teams to work together more effectively and achieve their goals.        ',
+        `Predictive Analytics: 6sense's platform uses predictive analytics to forecast revenue and identify potential revenue opportunities, allowing businesses to make more informed decisions and optimize their sales process.
+        `,
+      ],
+      personas: [
+        `Sales Leaders: These are typically VPs of Sales or Sales Operations Managers who are looking for a more comprehensive and data-driven approach to managing their sales process. They're interested in 6sense's platform because it provides valuable insights into buying intent and enables sales teams to prioritize their efforts on high-value accounts.
+        `,
+        `Marketing Leaders: These are typically CMOs or Marketing Operations Managers who are looking to improve their marketing efforts and align more closely with their sales team. They're interested in 6sense's platform because it enables them to better understand their customers and engage with them in a more personalized and targeted manner.
+        `,
+        `Revenue Operations Leaders: These are typically CFOs or Revenue Operations Managers who are responsible for managing the overall revenue process. They're interested in 6sense's platform because it provides a more complete view of the revenue process and enables businesses to optimize their sales process.
+        `,
+        `Demand Generation Leaders: These are typically Marketing Managers or Demand Generation Managers who are responsible for generating new leads and driving revenue growth. They're interested in 6sense's platform because it enables them to identify potential revenue opportunities and engage with their customers in a more targeted and personalized manner.
+        `,
+      ]
+    }
   }, {
   name: 'Zendesk',
   type: 'Technology',

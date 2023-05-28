@@ -11,7 +11,7 @@
         <div class="flex flex-col gap-y-2">
           <div v-for="p in partnerList" :key="p.name">
             <div class="w-full bg-slate-200 flex flex-row items-center p-2">
-              <img :src="p.logo" class="h-8 w-8">
+              <img :src="p.logo" class="h-8 max-w-16">
               <div class="text-md font-bold ml-4">{{ p.name  }}</div>
               <div v-if="p.new" class="italic ml-2 text-xs">New</div>
 
