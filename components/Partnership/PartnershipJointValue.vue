@@ -3,14 +3,14 @@
     <section>
       <h3>Why We Partner</h3>
       <span class="partner-content">
-        {{ partner.jointValue.whyWePartner }}
+        {{ partner?.jointValue?.whyWePartner }}
       </span>
     </section>
 
     <section>
       <h3>Key Features</h3>
       <ul class="list-disc list-inside">
-        <li v-for="i in partner.jointValue.keyFeatures"
+        <li v-for="i in partner?.jointValue?.keyFeatures"
         class="partner-content">{{ i }}</li>
       </ul>
     </section>
@@ -18,7 +18,7 @@
     <section>
       <h3>How we work together</h3>
       <ul class="list-disc list-inside">
-        <li v-for="i in partner.jointValue.howWeWorkTogether"
+        <li v-for="i in partner?.jointValue?.howWeWorkTogether"
         class="partner-content">{{ i }}</li>
       </ul>
     </section>

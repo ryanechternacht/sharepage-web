@@ -3,14 +3,14 @@
     <section>
       <h3>What {{ partner.name }} Does</h3>
       <span class="partner-content">
-        {{ partner.partnerValue.whatTheyDo }}
+        {{ partner?.partnerValue?.whatTheyDo }}
       </span>
     </section>
       
     <section>
       <h3>Why Customers Love {{ partner.name }}</h3>
       <ul class="list-disc list-inside">
-        <li v-for="i in partner.partnerValue.whyTheyAreLoved"
+        <li v-for="i in partner?.partnerValue?.whyTheyAreLoved"
           class="partner-content">{{ i }}</li>
       </ul>
     </section>
@@ -18,7 +18,7 @@
     <section>
       <h3>Core Solutions</h3>
       <ul class="list-disc list-inside">
-        <li v-for="i in partner.partnerValue.coreSolutions"
+        <li v-for="i in partner?.partnerValue?.coreSolutions"
           class="partner-content">{{ i }}</li>
       </ul>
     </section>
@@ -26,7 +26,7 @@
     <section>
       <h3>Personas</h3>
       <ul class="list-disc list-inside">
-        <li v-for="i in partner.partnerValue.personas"
+        <li v-for="i in partner?.partnerValue?.personas"
           class="partner-content">{{ i }}</li>
       </ul>
     </section>

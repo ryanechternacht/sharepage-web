@@ -5,7 +5,13 @@
       <div class="text-3xl">{{ partner.name }}</div>
       <div class="flex-grow" />
       
-      <a :href="partner.website" target="_blank">Partnership Website</a>
+      <a 
+        v-if="partner.website"
+        :href="partner.website"
+        target="_blank"
+      >
+        Partnership Website
+      </a>
       <span v-if="partner.state === 'Active'" class="partnership-active">
         Partnership Accepted
       </span>

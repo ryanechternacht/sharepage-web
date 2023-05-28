@@ -8,16 +8,23 @@
             class="border border-gray-400 rounded">
         </div>
 
-        <div class="flex flex-col gap-y-2">
-          <div v-for="p in partnerList" :key="p.name">
-            <div class="w-full bg-slate-200 flex flex-row items-center p-2">
+        <div class="flex flex-col gap-y-2 mt-4">
+          <div 
+            v-for="p in partnerList" 
+            :key="p.name"
+            @click="selectedPartner = p"
+          >
+            <div 
+              class="partner-item"
+              :class="{selected: selectedPartner === p}"
+            >
               <img :src="p.logo" class="h-8 max-w-16">
               <div class="text-md font-bold ml-4">{{ p.name  }}</div>
               <div v-if="p.new" class="italic ml-2 text-xs">New</div>
 
               <div class="flex-grow" />
 
-              <div v-if="p.type" class="border-[#0500db] border-2 rounded text-xs text-[#0500db] p-[2px]">{{ p.type }}</div>
+              <div v-if="p.type" class="tag">{{ p.type }}</div>
               <div class="ml-2">
                 <span class="text-xs">
                   <span v-if="p.state === 'Active'">🟢</span>
@@ -34,7 +41,8 @@
       </div>
       <!-- fix this--> 
       <PartnershipDetails
-        :partner="partners[0]" 
+        v-if="selectedPartner"
+        :partner="selectedPartner" 
         class="flex-grow" />
     </div>
   </div>
@@ -47,6 +55,7 @@
   const { partners } = storeToRefs(usePartnersStore())
 
   const partnerFilter = ref('');
+  const selectedPartner = ref(null);
 
   const partnerList = computed(() => {
     return partnerFilter.value
@@ -64,5 +73,21 @@ export default {
 .page-grid {
   @apply grid gap-x-4;
   grid-template-columns: 400px minmax(0, 1fr);
+}
+
+.partner-item {
+  @apply w-full bg-slate-200 flex flex-row items-center p-2 rounded-lg;
+}
+
+.partner-item.selected {
+  @apply bg-[#0500db] text-white;
+}
+
+.tag {
+  @apply border-[#0500db] border-2 rounded text-xs text-[#0500db] p-[2px];
+}
+
+.selected .tag {
+  @apply border-white text-white;
 }
 </style>
