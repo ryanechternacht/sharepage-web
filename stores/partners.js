@@ -56,6 +56,18 @@ const partners = [{
         `Demand Generation Leaders: These are typically Marketing Managers or Demand Generation Managers who are responsible for generating new leads and driving revenue growth. They're interested in 6sense's platform because it enables them to identify potential revenue opportunities and engage with their customers in a more targeted and personalized manner.
         `,
       ]
+    },
+    resources: {
+      items: [{
+        description: '1 pager',
+        url: 'somefile.pdf'
+      }, {
+        description: 'Youtube Video',
+        url: 'https://www.google.com'
+      }, {
+        description: 'Partner Website',
+        url: 'https://www.google.com'
+      }]
     }
   }, {
   name: 'Zendesk',

@@ -2,10 +2,12 @@
   <div>
     <div class="page-grid">
       <div class="">
-        <div class="">
+        <div class="flex flex-row items-center">
           <span class="text-3xl">🤝</span>
-          <input type="text" placeholder="search" v-model="partnerFilter"
-            class="border border-gray-400 rounded">
+          <span class="ml-2 text-2xl">Partnerships</span>
+          <div class="flex-grow" />
+          <input type="text" placeholder="Quick Search" v-model="partnerFilter"
+            class="search-box">
         </div>
 
         <div class="flex flex-col gap-y-2 mt-4">
@@ -39,7 +41,6 @@
           </div>
         </div>
       </div>
-      <!-- fix this--> 
       <PartnershipDetails
         v-if="selectedPartner"
         :partner="selectedPartner" 
@@ -73,6 +74,10 @@ export default {
 .page-grid {
   @apply grid gap-x-4;
   grid-template-columns: 400px minmax(0, 1fr);
+}
+
+.search-box {
+  @apply border border-gray-400 rounded text-sm px-2;
 }
 
 .partner-item {
