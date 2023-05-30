@@ -15,11 +15,10 @@
             v-for="p in partnerList" 
             :key="p.name"
             @click="selectedPartner = p"
-          >
-            <div 
-              class="partner-item"
+            class="partner-item"
               :class="{selected: selectedPartner === p}"
             >
+            <div class="partner-item-inner">
               <img :src="p.logo" class="h-8 max-w-16">
               <div class="text-md font-bold ml-4">{{ p.name  }}</div>
               <div v-if="p.new" class="italic ml-2 text-xs">New</div>
@@ -81,11 +80,23 @@ export default {
 }
 
 .partner-item {
-  @apply w-full bg-slate-200 flex flex-row items-center p-2 rounded-lg;
+  @apply w-full bg-slate-200 py-2 px-4 rounded-lg;
+
+  &.selected {
+    @apply bg-[#0500db] text-white;
+  }
+
+  &:hover {
+    @apply border-l-[#0500db] border-l-8;
+
+    .partner-item-inner {
+      margin-left: -8px;
+    }
+  }
 }
 
-.partner-item.selected {
-  @apply bg-[#0500db] text-white;
+.partner-item-inner {
+  @apply flex flex-row items-center;
 }
 
 .tag {

@@ -2,7 +2,7 @@
   <div>
     <h3>Resources</h3>
     <div 
-      v-for="r in partner?.resources.items"
+      v-for="r in partner?.resources?.items"
       :key="r.url"
       class="resource">
       <span class="text-2xl">{{ chooseIcon(r) }}</span>
