@@ -9,15 +9,15 @@
 
     <section>
       <h3>Key Features</h3>
-      <ul class="list-disc list-inside">
+      <ul>
         <li v-for="i in partner?.jointValue?.keyFeatures"
-        class="partner-content">{{ i }}</li>
+            class="partner-content">{{ i }}</li>
       </ul>
     </section>
 
     <section>
       <h3>How we work together</h3>
-      <ul class="list-disc list-inside">
+      <ul>
         <li v-for="i in partner?.jointValue?.howWeWorkTogether"
         class="partner-content">{{ i }}</li>
       </ul>
@@ -37,5 +37,9 @@ h3 {
 }
 .partner-content {
   @apply text-gray-600 text-sm;
+}
+
+ul {
+  @apply list-disc list-outside ml-4;
 }
 </style>

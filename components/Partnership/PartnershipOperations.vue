@@ -87,16 +87,4 @@ h3 {
     @apply text-gray-600 text-sm p-2;
   }
 }
-
-.owner {
-  @apply flex flex-row gap-2 items-center p-2;
-
-  &:hover {
-    @apply rounded-lg bg-gray-100;
-  }
-}
-
-.tag {
-  @apply border-2 border-gray-300 rounded text-gray-500 text-xs p-1;
-}
 </style>

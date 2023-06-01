@@ -9,7 +9,7 @@
       
     <section>
       <h3>Why Customers Love {{ partner.name }}</h3>
-      <ul class="list-disc list-inside">
+      <ul>
         <li v-for="i in partner?.partnerValue?.whyTheyAreLoved"
           class="partner-content">{{ i }}</li>
       </ul>
@@ -17,7 +17,7 @@
 
     <section>
       <h3>Core Solutions</h3>
-      <ul class="list-disc list-inside">
+      <ul>
         <li v-for="i in partner?.partnerValue?.coreSolutions"
           class="partner-content">{{ i }}</li>
       </ul>
@@ -25,7 +25,7 @@
 
     <section>
       <h3>Personas</h3>
-      <ul class="list-disc list-inside">
+      <ul>
         <li v-for="i in partner?.partnerValue?.personas"
           class="partner-content">{{ i }}</li>
       </ul>
@@ -46,5 +46,9 @@ h3 {
 }
 .partner-content {
   @apply text-gray-600 text-sm;
+}
+
+ul {
+  @apply list-disc list-outside ml-4;
 }
 </style>

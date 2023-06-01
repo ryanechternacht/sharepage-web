@@ -38,11 +38,11 @@
       </PButton>
     </div>
 
-    <LeadGuidance v-if="currentTab === 'guidance'" :partner="partner"/>
-    <LeadBackdrop v-else-if="currentTab === 'backdrop'" :partner="partner"/>
-    <LeadPartnership v-else-if="currentTab === 'partnership'" :partner="partner"/>
-    <LeadResources v-else-if="currentTab === 'resources'" :partner="partner"/>
-    <LeadOperations v-else-if="currentTab === 'operations'" :partner="partner"/>
+    <LeadGuidance v-if="currentTab === 'guidance'" :lead="lead"/>
+    <LeadBackdrop v-else-if="currentTab === 'backdrop'" :lead="lead"/>
+    <LeadPartnership v-else-if="currentTab === 'partnership'" :lead="lead"/>
+    <LeadResources v-else-if="currentTab === 'resources'" :lead="lead"/>
+    <LeadOperations v-else-if="currentTab === 'operations'" :lead="lead"/>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ const props = defineProps({
   lead: Object
 })
 
-const currentTab = ref('guidance')
+const currentTab = ref('backdrop')
 
 const approvalMessage = computed(() => {
   const { us, partner } = props.lead?.approval

@@ -49,19 +49,19 @@
 </template>
 
 <script setup>
-  import { usePartnersStore } from '@/stores/partners'
-  import { storeToRefs } from 'pinia'
+import { usePartnersStore } from '@/stores/partners'
+import { storeToRefs } from 'pinia'
 
-  const { partners } = storeToRefs(usePartnersStore())
+const { partners } = storeToRefs(usePartnersStore())
 
-  const partnerFilter = ref('');
-  const selectedPartner = ref(null);
+const partnerFilter = ref('');
+const selectedPartner = ref(null);
 
-  const partnerList = computed(() => {
-    return partnerFilter.value
-      ? partners.value.filter(p => p.name.toLowerCase().includes(partnerFilter.value.toLowerCase()))
-      : partners.value
-  })
+const partnerList = computed(() => {
+  return partnerFilter.value
+    ? partners.value.filter(p => p.name.toLowerCase().includes(partnerFilter.value.toLowerCase()))
+    : partners.value
+})
 </script>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
   <div class="owner">
-    <img :src="person.logo" class="h-8 max-w-16">
-    <span>{{ person.name }}</span>
+    <img :src="person.logo" class="h-6 max-w-12">
+    <span class="text-sm font-semibold text-gray-600">{{ person.name }}</span>
     <div class="flex-grow" />
     <div class="tag">{{ person.title  }}</div>
   </div>
@@ -20,4 +20,9 @@ const props = defineProps({
   &:hover {
     @apply rounded-lg bg-gray-100;
   }
-}</style>
+}
+
+.tag {
+  @apply border-2 border-gray-300 rounded text-gray-500 text-xs py-[2px] px-2;
+}
+</style>
