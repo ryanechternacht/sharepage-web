@@ -7,12 +7,12 @@
           <span class="ml-2 text-[#0500db] font-bold">Partnorize</span>
         </NuxtLink>
 
-        <NuxtLink to="/partnerships">
-          Partnerships
-        </NuxtLink>
-
         <NuxtLink to="/leads">
           Leads
+        </NuxtLink>
+
+        <NuxtLink to="/partnerships">
+          Partnerships
         </NuxtLink>
 
         <div class="flex-grow"></div>

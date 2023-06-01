@@ -9,6 +9,7 @@
         v-if="partner.website"
         :href="partner.website"
         target="_blank"
+        class="text-xs"
       >
         Partnership Website
       </a>
@@ -22,6 +23,7 @@
         Partnership Pending
       </span>
     </div>
+    
     <div class="flex flex-row gap-2">
       <PButton 
         @click="currentTab = 'joint-value'"
@@ -48,7 +50,6 @@
         :class="{selected: currentTab === 'operations'}">
         🧰 Operations
       </PButton>
-      
     </div>
     
     <PartnershipJointValue v-if="currentTab === 'joint-value'" :partner="partner"/>
@@ -77,11 +78,11 @@ a {
   @apply text-gray-500 underline;
 }
 
-.partnership-active, partnership-in-progress {
-  @apply text-blue-400;
+.partnership-active, .partnership-in-progress {
+  @apply text-blue-400 text-xs;
 }
 
 .partnership-pending {
-  @apply text-orange-400;
+  @apply text-orange-400 text-xs;
 }
 </style>
