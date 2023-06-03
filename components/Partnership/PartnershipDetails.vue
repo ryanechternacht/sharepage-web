@@ -23,36 +23,59 @@
         Partnership Pending
       </span>
     </div>
-    
+
     <div class="flex flex-row gap-2">
       <PButton 
         @click="currentTab = 'joint-value'"
-        :class="{selected: currentTab === 'joint-value'}">
+        :variant="currentTab === 'joint-value' ? 'primary' : ''">
         🪐 Joint Value
       </PButton>
       <PButton 
         @click="currentTab = 'partner-value'"
-        :class="{selected: currentTab === 'partner-value'}">
+        :variant="currentTab === 'partner-value' ? 'primary' : ''">
         🚀 Partner Value
       </PButton>
       <PButton 
         @click="currentTab = 'resources'"
-        :class="{selected: currentTab === 'resources'}">
+        :variant="currentTab === 'resources' ? 'primary' : ''">
         📓 Resources
       </PButton>
       <PButton 
         @click="currentTab = 'leads'"
-        :class="{selected: currentTab === 'leads'}">
+        :variant="currentTab === 'leads' ? 'primary' : ''">
         💎 Leads
       </PButton>      
       <PButton 
         @click="currentTab = 'operations'"
-        :class="{selected: currentTab === 'operations'}">
+        :variant="currentTab === 'operations' ? 'primary' : ''">
         🧰 Operations
       </PButton>
+
+      <div class="flex-grow" />
+
+      <template v-if="edit">
+        <PButton
+          @click="edit = false">
+          ❌ Cancel
+        </PButton>
+        <PButton
+          @click="edit = false"
+          variant="primary">
+          💾 Save
+        </PButton>
+      </template>
+      <template v-else>
+        <PButton
+          @click="edit = true">
+          ✏️ Edit
+        </PButton>
+      </template>
     </div>
     
-    <PartnershipJointValue v-if="currentTab === 'joint-value'" :partner="partner"/>
+    <PartnershipJointValue 
+      v-if="currentTab === 'joint-value'" 
+      :partner="partner"
+      :edit="edit"/>
     <PartnershipPartnerValue v-else-if="currentTab === 'partner-value'" :partner="partner"/>
     <PartnershipResources v-else-if="currentTab === 'resources'" :partner="partner"/>
     <PartnershipLeads v-else-if="currentTab === 'leads'" :partner="partner"/>
@@ -65,6 +88,7 @@ const props = defineProps({
   partner: Object
 })
 
+const edit = ref(false)
 const currentTab = ref('joint-value')
 </script>
 

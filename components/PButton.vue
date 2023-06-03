@@ -1,14 +1,14 @@
 <template>
   <button 
-    :class="{selected}" 
+    :class="{primary: variant === 'primary'}" 
     @click="clicked">
-    <slot></slot>
+    <slot />
   </button>
 </template>
 
 <script setup>
   const props = defineProps({
-    selected: Boolean
+    variant: String
   })
 
   const emit = defineEmits(['click'])
@@ -28,7 +28,7 @@ button:hover {
   @apply bg-gray-100;
 }
 
-button.selected, button.selected:hover {
+button.primary, button.primary:hover {
   @apply bg-[#0500db] text-white;
 }
 </style>

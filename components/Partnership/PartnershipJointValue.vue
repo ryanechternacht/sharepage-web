@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col gap-4">
+    {{ edit }}
     <section>
       <h3>Why We Partner</h3>
       <span class="partner-content">
@@ -9,10 +10,10 @@
 
     <section>
       <h3>Key Features</h3>
-      <ul>
-        <li v-for="i in partner?.jointValue?.keyFeatures"
-            class="partner-content">{{ i }}</li>
-      </ul>
+      <EditableList
+        :items="partner?.jointValue?.keyFeatures"
+        :edit="edit"
+        />
     </section>
 
     <section>
@@ -27,7 +28,8 @@
 
 <script setup>
 const props = defineProps({
-  partner: Object
+  partner: Object,
+  edit: Boolean
 })
 </script>
 
@@ -37,9 +39,5 @@ h3 {
 }
 .partner-content {
   @apply text-gray-600 text-sm;
-}
-
-ul {
-  @apply list-disc list-outside ml-4;
 }
 </style>
