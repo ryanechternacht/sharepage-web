@@ -51,7 +51,7 @@ ul.edit {
 }
 
 textarea.partner-content {
-  @apply w-full text-sm border border-gray-600 rounded-sm p-[1px];
+  @apply w-full text-sm border border-gray-600 rounded-sm p-[1px] align-text-top;
 }
 
 ul.view {
