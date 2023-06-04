@@ -9,26 +9,26 @@
       
     <section>
       <h3>Why Customers Love {{ partner.name }}</h3>
-      <ul>
-        <li v-for="i in partner?.partnerValue?.whyTheyAreLoved"
-          class="partner-content">{{ i }}</li>
-      </ul>
+      <EditableList
+        :items="partner?.partnerValue?.whyTheyAreLoved"
+        :edit="edit"
+        />
     </section>
 
     <section>
       <h3>Core Solutions</h3>
-      <ul>
-        <li v-for="i in partner?.partnerValue?.coreSolutions"
-          class="partner-content">{{ i }}</li>
-      </ul>
+      <EditableList
+        :items="partner?.partnerValue?.coreSolutions"
+        :edit="edit"
+        />
     </section>
 
     <section>
       <h3>Personas</h3>
-      <ul>
-        <li v-for="i in partner?.partnerValue?.personas"
-          class="partner-content">{{ i }}</li>
-      </ul>
+      <EditableList
+        :items="partner?.partnerValue?.personas"
+        :edit="edit"
+        />
     </section>
 
   </div>

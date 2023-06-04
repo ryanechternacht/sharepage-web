@@ -8,5 +8,4 @@ import { usePartnersStore } from '@/stores/partners'
 import { storeToRefs } from 'pinia'
 
 const { partners } = storeToRefs(usePartnersStore())
-
 </script>

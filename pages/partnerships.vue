@@ -38,6 +38,10 @@
               </div>
             </div>  
           </div>
+          <div>
+            hello
+            {{ partners[1].jointValue.keyFeatures }}
+          </div>
         </div>
       </div>
       <PartnershipDetails

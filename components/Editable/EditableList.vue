@@ -1,14 +1,15 @@
 <template>
   <div>
     <ul v-if="edit" class="edit">
-      <li v-for="(item, index) in innerItems" :key="index">
+      <li v-for="(item, index) in innerItems">
         <textarea 
           class="partner-content"
-          v-model.blur="innerItems[index]" />
+          :value="innerItems[index]"
+          @blur="inputChanged($event.target.value, index)" />
       </li>
     </ul>
     <ul v-else class="view">
-      <li v-for="item in items" :key="item">
+      <li v-for="item in items">
           <span class="partner-content">{{ item }}</span>
         </li>
     </ul>
@@ -16,6 +17,8 @@
 </template>
 
 <script setup>
+import { clone } from 'lodash';
+
 const props = defineProps({
   items: Array,
   edit: Boolean
@@ -32,6 +35,14 @@ watch(props, (newProps) => {
 onMounted(() => {
   innerItems.value = [...props.items]
 })
+
+const emit = defineEmits(['input'])
+
+function inputChanged (newValue, index) {
+  const newObject = clone(innerItems.value)
+  newObject[index] = newValue
+  emit('input', newObject)
+}
 </script>
 
 <style lang="postcss" scoped>
