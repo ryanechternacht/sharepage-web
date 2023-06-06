@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2">
     <div class="flex flex-row items-center gap-2">
       <img :src="myPartner.logo" class="h-8 max-w-16">
-      <div class="text-3xl">{{ myPartner.name }}</div>
+      <div class="text-3xl">{{ myPartner.name }} {{ myPartner.test }}</div>
       <div class="flex-grow" />
       
       <a 
@@ -76,8 +76,12 @@
       v-if="currentTab === 'joint-value'" 
       :partner="myPartner"
       :edit="edit"
-      @jointValueChanged="jointValueChanged"/>
-    <PartnershipPartnerValue v-else-if="currentTab === 'partner-value'" :partner="myPartner"/>
+      @jointValueChanged="myPartner.jointValue = $event" />
+    <PartnershipPartnerValue 
+      v-else-if="currentTab === 'partner-value'" 
+      :partner="myPartner"
+      :edit="edit"
+      @partnerValueChanged="myPartner.partnerValue = $event" />
     <PartnershipResources v-else-if="currentTab === 'resources'" :partner="myPartner"/>
     <PartnershipLeads v-else-if="currentTab === 'leads'" :partner="myPartner"/>
     <PartnershipOperations v-else-if="currentTab === 'operations'" :partner="myPartner"/>
@@ -86,6 +90,7 @@
 
 <script setup>
 import { usePartnersStore } from '@/stores/partners'
+import { cloneDeep } from 'lodash';
 
 const { savePartner } = usePartnersStore();
 
@@ -96,14 +101,10 @@ const props = defineProps({
 const edit = ref(false)
 const currentTab = ref('joint-value')
 
-const myPartner = ref(props?.partner)
-
-function jointValueChanged(newValue) {
-  myPartner.value.jointValue = newValue
-}
+const myPartner = ref(cloneDeep(props?.partner))
 
 function cancelEditing () {
-  myPartner.value = props?.partner
+  myPartner.value = cloneDeep(props?.partner)
   edit.value = false
 }
 
@@ -113,7 +114,7 @@ function save () {
 }
 
 watch(props, (newProps) => {
-  myPartner.value = props.partner
+  myPartner.value = cloneDeep(newProps.partner)
 })
 </script>
 

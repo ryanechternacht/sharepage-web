@@ -12,11 +12,11 @@
 
         <div class="flex flex-col gap-y-2 mt-4">
           <div 
-            v-for="p in partnerList" 
+            v-for="(p, i) in partnerList" 
             :key="p.name"
-            @click="selectedPartner = p"
+            @click="selectedPartnerIndex = i"
             class="partner-item"
-              :class="{selected: selectedPartner === p}"
+              :class="{selected: selectedPartnerIndex === i}"
             >
             <div class="partner-item-inner">
               <img :src="p.logo" class="h-8 max-w-16">
@@ -41,8 +41,8 @@
         </div>
       </div>
       <PartnershipDetails
-        v-if="selectedPartner"
-        :partner="selectedPartner" 
+        v-if="selectedPartnerIndex"
+        :partner="partners[selectedPartnerIndex]" 
         class="flex-grow" />
     </div>
   </div>
@@ -55,7 +55,7 @@ import { storeToRefs } from 'pinia'
 const { partners } = storeToRefs(usePartnersStore())
 
 const partnerFilter = ref('');
-const selectedPartner = ref(null);
+const selectedPartnerIndex = ref(null);
 
 const partnerList = computed(() => {
   return partnerFilter.value

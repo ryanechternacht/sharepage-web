@@ -12,6 +12,7 @@
       <EditableList
         :items="partner?.partnerValue?.whyTheyAreLoved"
         :edit="edit"
+        @input="whyTheyAreLovedChanged"
         />
     </section>
 
@@ -20,6 +21,7 @@
       <EditableList
         :items="partner?.partnerValue?.coreSolutions"
         :edit="edit"
+        @input="coreSolutionsChanged"
         />
     </section>
 
@@ -28,6 +30,7 @@
       <EditableList
         :items="partner?.partnerValue?.personas"
         :edit="edit"
+        @input="personasChanged"
         />
     </section>
 
@@ -35,9 +38,32 @@
 </template>
 
 <script setup>
+import { cloneDeep } from 'lodash';
+
 const props = defineProps({
-  partner: Object
+  partner: Object,
+  edit: Boolean
 })
+
+const emit = defineEmits(['partnerValueChanged'])
+
+function whyTheyAreLovedChanged (newValue) {
+  const newObj = cloneDeep(props.partner.partnerValue);
+  newObj.whyTheyAreLoved = newValue
+  emit('partnerValueChanged', newObj)
+}
+
+function coreSolutionsChanged (newValue) {
+  const newObj = cloneDeep(props.partner.partnerValue);
+  newObj.coreSolutions = newValue
+  emit('partnerValueChanged', newObj)
+}
+
+function personasChanged (newValue) {
+  const newObj = cloneDeep(props.partner.partnerValue);
+  newObj.personas = newValue
+  emit('partnerValueChanged', newObj)
+}
 </script>
 
 <style lang="postcss" scoped>

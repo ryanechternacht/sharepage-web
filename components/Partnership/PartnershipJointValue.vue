@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-4">
     <section>
-      <h3>Why We Partner</h3>
+      <h3>Why We Partner {{ partner.test }}</h3>
       <span class="partner-content">
         {{ partner?.jointValue?.whyWePartner }}
       </span>
@@ -21,13 +21,14 @@
       <EditableList
         :items="partner?.jointValue?.howWeWorkTogether"
         :edit="edit"
+        @input="howWeWorkTogetherChanged"
         />
     </section>
   </div>
 </template>
 
 <script setup>
-import { clone } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 const props = defineProps({
   partner: Object,
@@ -37,8 +38,14 @@ const props = defineProps({
 const emit = defineEmits(['jointValueChanged'])
 
 function keyFeaturesChanged (newValue) {
-  const newObj = clone(props.partner.jointValue);
+  const newObj = cloneDeep(props.partner.jointValue);
   newObj.keyFeatures = newValue
+  emit('jointValueChanged', newObj)
+}
+
+function howWeWorkTogetherChanged (newValue) {
+  const newObj = cloneDeep(props.partner.jointValue);
+  newObj.howWeWorkTogether = newValue
   emit('jointValueChanged', newObj)
 }
 </script>

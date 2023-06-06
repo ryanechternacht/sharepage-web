@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { keyBy, values } from 'lodash'
+import { keyBy, cloneDeep } from 'lodash'
 
 const partners = [{
     id: 1,
@@ -175,7 +175,7 @@ export const usePartnersStore = defineStore('partners', {
   },
   actions: {
     savePartner(partner) {
-      this.partners[partner.id] = partner
+      this.partners[partner.id] = cloneDeep(partner)
     }
   }
 })

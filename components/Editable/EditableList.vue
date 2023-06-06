@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { clone, remove } from 'lodash';
+import { clone } from 'lodash';
 
 const props = defineProps({
   items: Array,
@@ -59,7 +59,6 @@ function inputChanged (newValue, index) {
 }
 
 function removeIndex(i) {
-  // innerItems.value = [...innerItems.value.slice(0, i), ...innerItems.value.slice(i + 1)]
   emit('input', [...innerItems.value.slice(0, i), ...innerItems.value.slice(i + 1)])
 }
 
@@ -68,7 +67,6 @@ function addNewItem() {
   if (newItem.value) {
     innerItems.value = [...innerItems.value, newItem.value]
     newItem.value = ''
-    console.log(innerItems.value)
     emit('input', innerItems.value)
   }
 }
