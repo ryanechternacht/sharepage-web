@@ -74,17 +74,22 @@
     
     <PartnershipJointValue
       v-if="currentTab === 'joint-value'" 
-      :partner="myPartner"
-      :edit="edit"
-      @jointValueChanged="myPartner.jointValue = $event" />
+      v-model:joint-value="myPartner.jointValue"
+      :edit="edit" />
     <PartnershipPartnerValue 
       v-else-if="currentTab === 'partner-value'" 
-      :partner="myPartner"
+      v-model:partner-value="myPartner.partnerValue"
       :edit="edit"
-      @partnerValueChanged="myPartner.partnerValue = $event" />
-    <PartnershipResources v-else-if="currentTab === 'resources'" :partner="myPartner"/>
-    <PartnershipLeads v-else-if="currentTab === 'leads'" :partner="myPartner"/>
-    <PartnershipOperations v-else-if="currentTab === 'operations'" :partner="myPartner"/>
+      :partner-name="myPartner.name" />
+    <PartnershipResources
+      v-else-if="currentTab === 'resources'" 
+      :partner="myPartner" />
+    <PartnershipLeads 
+      v-else-if="currentTab === 'leads'" 
+      :partner="myPartner" />
+    <PartnershipOperations 
+      v-else-if="currentTab === 'operations'" 
+      :partner="myPartner" />
   </div>
 </template>
 

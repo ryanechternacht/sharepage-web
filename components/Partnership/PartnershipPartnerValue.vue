@@ -1,36 +1,37 @@
 <template>
   <div class="flex flex-col gap-4">
     <section>
-      <h3>What {{ partner.name }} Does</h3>
-      <span class="partner-content">
-        {{ partner?.partnerValue?.whatTheyDo }}
-      </span>
+      <h3>What {{ partnerName }} Does</h3>
+      <EditableTextarea
+        :edit="edit" 
+        :text="partnerValue?.whatTheyDo"
+        @update:text="update($event, 'whatTheyDo')" />
     </section>
       
     <section>
-      <h3>Why Customers Love {{ partner.name }}</h3>
+      <h3>Why Customers Love {{ partnerName }}</h3>
       <EditableList
-        :items="partner?.partnerValue?.whyTheyAreLoved"
+        :items="partnerValue?.whyTheyAreLoved"
         :edit="edit"
-        @input="whyTheyAreLovedChanged"
+        @update:items="update($event, 'whyTheyAreLoved')"
         />
     </section>
 
     <section>
       <h3>Core Solutions</h3>
       <EditableList
-        :items="partner?.partnerValue?.coreSolutions"
+        :items="partnerValue?.coreSolutions"
         :edit="edit"
-        @input="coreSolutionsChanged"
+        @update:items="update($event, 'coreSolutions')"
         />
     </section>
 
     <section>
       <h3>Personas</h3>
       <EditableList
-        :items="partner?.partnerValue?.personas"
+        :items="partnerValue?.personas"
         :edit="edit"
-        @input="personasChanged"
+        @update:items="update($event, 'personas')"
         />
     </section>
 
@@ -41,37 +42,23 @@
 import { cloneDeep } from 'lodash';
 
 const props = defineProps({
-  partner: Object,
-  edit: Boolean
+  partnerValue: Object,
+  edit: Boolean,
+  partnerName: String
 })
 
-const emit = defineEmits(['partnerValueChanged'])
+const emit = defineEmits(['update:partnerValue'])
 
-function whyTheyAreLovedChanged (newValue) {
-  const newObj = cloneDeep(props.partner.partnerValue);
-  newObj.whyTheyAreLoved = newValue
-  emit('partnerValueChanged', newObj)
-}
-
-function coreSolutionsChanged (newValue) {
-  const newObj = cloneDeep(props.partner.partnerValue);
-  newObj.coreSolutions = newValue
-  emit('partnerValueChanged', newObj)
-}
-
-function personasChanged (newValue) {
-  const newObj = cloneDeep(props.partner.partnerValue);
-  newObj.personas = newValue
-  emit('partnerValueChanged', newObj)
+function update(newValue, field) {
+  const newObj = cloneDeep(props.partnerValue)
+  newObj[field] = newValue
+  emit('update:partnerValue', newObj)
 }
 </script>
 
 <style lang="postcss" scoped>
 h3 {
   @apply font-bold;
-}
-.partner-content {
-  @apply text-gray-600 text-sm;
 }
 
 ul {

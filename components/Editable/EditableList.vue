@@ -50,16 +50,16 @@ onMounted(() => {
   innerItems.value = [...props.items]
 })
 
-const emit = defineEmits(['input'])
+const emit = defineEmits(['update:items'])
 
 function inputChanged (newValue, index) {
   const newObject = clone(innerItems.value)
   newObject[index] = newValue
-  emit('input', newObject)
+  emit('update:items', newObject)
 }
 
 function removeIndex(i) {
-  emit('input', [...innerItems.value.slice(0, i), ...innerItems.value.slice(i + 1)])
+  emit('update:items', [...innerItems.value.slice(0, i), ...innerItems.value.slice(i + 1)])
 }
 
 const newItem = ref('')
@@ -67,7 +67,7 @@ function addNewItem() {
   if (newItem.value) {
     innerItems.value = [...innerItems.value, newItem.value]
     newItem.value = ''
-    emit('input', innerItems.value)
+    emit('update:items', innerItems.value)
   }
 }
 </script>
@@ -78,7 +78,7 @@ ul.edit {
 
   textarea {
     @apply w-full text-sm border-b-[1.5px] border-gray-300  
-      align-text-top text-gray-700 mb-1 w-full;
+      align-text-top text-gray-600 mb-1 w-full;
   }
 }
 

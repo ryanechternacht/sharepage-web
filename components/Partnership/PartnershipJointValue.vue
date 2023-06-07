@@ -1,27 +1,28 @@
 <template>
   <div class="flex flex-col gap-4">
     <section>
-      <h3>Why We Partner {{ partner.test }}</h3>
-      <span class="partner-content">
-        {{ partner?.jointValue?.whyWePartner }}
-      </span>
+      <h3>Why We Partner</h3>
+      <EditableTextarea
+        :edit="edit" 
+        :text="jointValue?.whyWePartner"
+        @update:text="update($event, 'whyWePartner')" />
     </section>
 
     <section>
       <h3>Key Features</h3>
       <EditableList
-        :items="partner?.jointValue?.keyFeatures"
+        :items="jointValue?.keyFeatures"
         :edit="edit"
-        @input="keyFeaturesChanged"
+        @update:items="update($event, 'keyFeatures')"
         />
     </section>
 
     <section>
       <h3>How we work together</h3>
       <EditableList
-        :items="partner?.jointValue?.howWeWorkTogether"
+        :items="jointValue?.howWeWorkTogether"
         :edit="edit"
-        @input="howWeWorkTogetherChanged"
+        @update:items="update($event, 'howWeWorkTogether')"
         />
     </section>
   </div>
@@ -31,22 +32,16 @@
 import { cloneDeep } from 'lodash';
 
 const props = defineProps({
-  partner: Object,
-  edit: Boolean
+  edit: Boolean,
+  jointValue: Object
 })
 
-const emit = defineEmits(['jointValueChanged'])
+const emit = defineEmits(['update:jointValue'])
 
-function keyFeaturesChanged (newValue) {
-  const newObj = cloneDeep(props.partner.jointValue);
-  newObj.keyFeatures = newValue
-  emit('jointValueChanged', newObj)
-}
-
-function howWeWorkTogetherChanged (newValue) {
-  const newObj = cloneDeep(props.partner.jointValue);
-  newObj.howWeWorkTogether = newValue
-  emit('jointValueChanged', newObj)
+function update(newValue, field) {
+  const newObj = cloneDeep(props.jointValue)
+  newObj[field] = newValue
+  emit('update:jointValue', newObj)
 }
 </script>
 
