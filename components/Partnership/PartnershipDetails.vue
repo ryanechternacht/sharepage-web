@@ -125,14 +125,14 @@ watch(props, (newProps) => {
 
 <style lang="postcss" scoped>
 a {
-  @apply text-gray-500 underline;
+  @apply text-gray underline;
 }
 
 .partnership-active, .partnership-in-progress {
-  @apply text-blue-400 text-xs;
+  @apply text-blue text-xs;
 }
 
 .partnership-pending {
-  @apply text-orange-400 text-xs;
+  @apply text-yellow-dark text-xs;
 }
 </style>

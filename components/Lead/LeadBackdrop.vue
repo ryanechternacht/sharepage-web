@@ -37,7 +37,7 @@ h3 {
   @apply font-bold;
 }
 .partner-content {
-  @apply text-gray-600 text-sm;
+  @apply text-gray text-sm;
 }
 
 ul {

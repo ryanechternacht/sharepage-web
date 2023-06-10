@@ -69,10 +69,10 @@ const approvalMessage = computed(() => {
 
 <style lang="postcss" scoped>
 .lead-pending {
-  @apply text-orange-400 text-xs;
+  @apply text-yellow-dark text-xs;
 }
 
 .lead-accepted {
-  @apply text-blue-400 text-xs;
+  @apply text-blue text-xs;
 }
 </style>

@@ -28,7 +28,7 @@ h3 {
   @apply p-2 cursor-pointer flex flex-row items-center gap-x-2;
 
   &:hover {
-    @apply bg-gray-100 rounded-lg;
+    @apply bg-gray-light rounded-lg;
   }
 }
 </style>

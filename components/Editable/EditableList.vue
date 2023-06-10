@@ -77,8 +77,8 @@ ul.edit {
   @apply list-disc list-outside ml-4;
 
   textarea {
-    @apply w-full text-sm border-b-[1.5px] border-gray-300  
-      align-text-top text-gray-600 mb-1 w-full;
+    @apply w-full text-sm border-b-[1.5px] border-gray-light  
+      align-text-top text-gray mb-1 w-full;
   }
 }
 
@@ -88,6 +88,6 @@ ul.view {
 }
 
 span.partner-content {
-  @apply text-gray-600 text-sm;
+  @apply text-gray text-sm;
 }
 </style>

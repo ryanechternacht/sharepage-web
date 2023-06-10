@@ -84,7 +84,7 @@ h3 {
   }
 
   select {
-    @apply text-gray-600 text-sm p-2;
+    @apply text-gray text-sm p-2;
   }
 }
 </style>

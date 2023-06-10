@@ -10,18 +10,18 @@
       <span>{{ lead.name }}</span>
 
       <div class="flex-grow" />
-      <div class="flex flex-col text-xs text-gray-500 gap-1">
+      <div class="flex flex-col text-xs text-gray gap-1">
         <span>Our: {{ lead.dealStage }}</span>
         <span>Their: {{ lead.partnerDealStage }}</span>
       </div>
       <div 
         v-for="tag in lead.tags"
         :key="tag"
-        class="border-2 border-gray-300 rounded text-gray-500 text-xs p-1"
+        class="border-2 border-gray-light rounded text-gray text-xs p-1"
       >
         {{ tag }}
       </div>
-      <div class="text-gray-500 text-xs">
+      <div class="text-gray text-xs">
         <span v-if="lead.status === 'Active'">🟢</span>
         <span v-else-if="lead.status === 'Not Active'">🔴</span>
         {{ lead.status }}
@@ -41,11 +41,11 @@ h3 {
   @apply font-bold;
 }
 .lead-item {
-  @apply border border-gray-200 rounded-lg flex flex-row gap-x-4 
+  @apply border border-gray-light rounded-lg flex flex-row gap-x-4 
     px-4 py-4 items-center;
 }
 
 .lead-item:hover {
-  @apply bg-gray-100;
+  @apply bg-gray-light;
 }
 </style>

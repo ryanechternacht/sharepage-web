@@ -20,11 +20,11 @@ const emit = defineEmits(['update:text'])
 
 <style lang="postcss" scoped>
   textarea {
-    @apply w-full text-sm border-b-[1.5px] border-gray-300  
-      text-gray-600 mb-1 w-full;
+    @apply w-full text-sm border-b-[1.5px] border-gray-light  
+      text-gray mb-1 w-full;
   }
 
 span {
-  @apply text-gray-600 text-sm;
+  @apply text-gray text-sm;
 }
 </style>

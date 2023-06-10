@@ -72,18 +72,18 @@ const leadList = computed(() => {
 }
 
 .search-box {
-  @apply border border-gray-400 rounded text-sm px-2;
+  @apply border border-gray rounded text-sm px-2;
 }
 
 .lead-item {
-  @apply w-full bg-slate-200 py-2 px-4 rounded-lg;
+  @apply w-full bg-gray-light py-2 px-4 rounded-lg;
 
   &.selected {
-    @apply bg-[#0500db] text-white;
+    @apply bg-blue text-white;
   }
 
   &:hover {
-    @apply border-l-[#0500db] border-l-8;
+    @apply border-l-blue border-l-8;
 
     .lead-item-inner {
       margin-left: -8px;
@@ -96,7 +96,7 @@ const leadList = computed(() => {
 }
 
 .tag {
-  @apply border-[#0500db] border-2 rounded text-xs text-[#0500db] p-[2px];
+  @apply border-blue border-2 rounded text-xs text-blue p-[2px];
 }
 
 .selected .tag {

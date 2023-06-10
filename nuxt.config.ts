@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss', 'nuxt-lodash', '@pinia/nuxt'],
+  modules: [
+    '@nuxtjs/tailwindcss', 
+    'nuxt-lodash', 
+    '@pinia/nuxt', 
+    '@nuxtjs/google-fonts'
+  ],
   postcss: {
     // Add plugin names as key and arguments as value
     // Install them before as dependencies with npm or yarn
@@ -11,5 +16,11 @@ export default defineNuxtConfig({
       // 'postcss-responsive-type': {},
       // 'postcss-hexrgba': {}
     },
+  }, 
+  googleFonts: {
+    families: {
+      Inter: true,
+      Bitter: true
+    }
   }
 })
