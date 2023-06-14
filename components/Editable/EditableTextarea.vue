@@ -4,7 +4,7 @@
     :value="text"
     @blur="$emit('update:text', $event.target.value)" 
     rows="6"/>
-  <span v-else>
+  <span class="gray" v-else>
     {{ text }}
   </span>
 </template>
@@ -23,8 +23,4 @@ const emit = defineEmits(['update:text'])
     @apply w-full text-sm border-b-[1.5px] border-gray-light  
       text-gray mb-1 w-full;
   }
-
-span {
-  @apply text-gray text-sm;
-}
 </style>

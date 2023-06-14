@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="sticky bg-gray-light">
+  <div class="full-page min-h-screen">
+    <div class="sticky">
       <div class="flex flex-row items-center py-2 pl-2 h-12 gap-x-4">
         <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
           <img class="h-8 max-w-16" src="/partnorize-logo.jpeg" />
@@ -13,6 +13,10 @@
 
         <NuxtLink to="/partnerships">
           Partnerships
+        </NuxtLink>
+
+        <NuxtLink to="/dealroom">
+          Deal Room
         </NuxtLink>
 
         <div class="flex-grow"></div>

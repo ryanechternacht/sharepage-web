@@ -4,8 +4,12 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss', 
     'nuxt-lodash', 
     '@pinia/nuxt', 
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    'dayjs-nuxt'
   ],
+  dayjs: {
+    plugins: ['isSameOrAfter']
+  },
   postcss: {
     // Add plugin names as key and arguments as value
     // Install them before as dependencies with npm or yarn

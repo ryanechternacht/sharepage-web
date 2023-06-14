@@ -24,7 +24,7 @@
     </ul>
     <ul v-else class="view">
       <li v-for="item in items">
-          <span class="partner-content">{{ item }}</span>
+          <span class="gray">{{ item }}</span>
       </li>
     </ul>
   </div>
@@ -85,9 +85,5 @@ ul.edit {
 
 ul.view {
   @apply list-disc list-outside ml-4;
-}
-
-span.partner-content {
-  @apply text-gray text-sm;
 }
 </style>

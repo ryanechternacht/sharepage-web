@@ -20,7 +20,7 @@ module.exports = {
       red: {
         dark: '#5f2123',
         DEFAULT: '#973437',
-        light: 'f8ecec'
+        light: '#f8ecec'
       },
       purple: {
         dark: '#1a1834',
@@ -29,6 +29,7 @@ module.exports = {
       },
       gray: {
         dark: '#1a1834',
+        text: 'rgba(6 18 71 / 0.6)',
         DEFAULT: 'rgb(26 24 52 / 0.6)',
         light: 'rgb(26 24 52 / 0.05)'
       },
