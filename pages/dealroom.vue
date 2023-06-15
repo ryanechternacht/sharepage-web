@@ -4,21 +4,22 @@
       <!-- row 1 col 1 -->
       <div class="flex flex-col gap-y-2">
         <div class="flex flex-row items-center gap-x-3">
-          <img class="deal-logo" src="/svg/boa.svg" />
-          <h3>Bank of America</h3>
+          <img class="deal-logo" :src="deal.logo" />
+          <h3>{{ deal.name }}</h3>
           <div class="flex-grow" />
-          <h5>Active</h5>
+          <h5>{{ deal.status }}</h5>
         </div>
 
         <div class="flex flex-row items-center gap-x-1">
           <img class="seller-logo" src="/svg/gong.svg" />
           <div class="gray">Gong</div>
-          <div class="gray">&</div>
-          <img class="seller-logo" src="/svg/seismic.svg" />
-          <div class="gray">Seismic</div>
+          <template v-if="deal.partners">
+            <div class="gray">&</div>
+            <img class="seller-logo" :src="deal.partners[0].logo" />
+            <div class="gray">{{ deal.partners[0].name }}</div>
+          </template>
         </div>
       </div>
-
 
       <!-- row 1 col 2 -->
       <Tabs
@@ -45,17 +46,17 @@
         <section>
           <p class="mb-2">Bank of America Revenue Team</p>
 
-          <PersonList :people="gongTeam" />
+          <PersonList :people="deal.customerTeam" />
         </section>
-        <section>
-          <p class="mb-2">Gong Revenue Team</p>
+        <section v-for="p in deal.partners">
+          <p class="mb-2">{{ p.name }} Revenue Team</p>
 
-          <PersonList :people="gongTeam" />
+          <PersonList :people="p.team" />
         </section>
         <section>
           <p class="mb-2">Our Revenue Team</p>
 
-          <PersonList :people="ourTeam" />
+          <PersonList :people="deal.ourTeam" />
         </section>
       </div>
 
@@ -69,7 +70,7 @@
           v-else-if="selectedMainTab === 'Joint Value'"
         />
         <DealroomPartner
-          v-else-if="partners.includes(selectedMainTab)"
+          v-else-if="deal.partners.find(p => p.name === selectedMainTab)"
           :partner="selectedMainTab"
         />
       </div>
@@ -92,61 +93,13 @@
 </template>
 
 <script setup>
-const boaTeam = [{
-  name: 'Walter White',
-  title: 'Account Executive',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Cara Winslow',
-  title: 'Partnerships Manager',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Jack Gopher',
-  title: 'Marketing Expert',
-}, {
-  name: 'Gary Busy',
-  title: 'Product Expert',
-  linkedIn: 'https://google.com'
-}]
+import { useDealsStore } from '@/stores/deals'
 
-const gongTeam = [{
-  name: 'Walter White',
-  title: 'Account Executive',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Cara Winslow',
-  title: 'Partnerships Manager',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Jack Gopher',
-  title: 'Marketing Expert',
-}, {
-  name: 'Gary Busy',
-  title: 'Product Expert',
-  linkedIn: 'https://google.com'
-}]
-
-const ourTeam = [{
-  name: 'Rebekah Black',
-  title: 'Account Executive',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Carrot Toppe',
-  title: 'Partnerships Manager',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Jeremy Hunt',
-  title: 'Marketing Expert',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Gabriella Lopez',
-  title: 'Product Expert',
-}]
-
-const partners = ['Seismic'];
+const store = useDealsStore()
+const deal = store.getById(0)
 
 const mainTabs = ['Overview', 'Joint Value'];
-mainTabs.push(...partners)
+mainTabs.push(...deal.partners.map(p => p.name))
 const selectedMainTab = ref(mainTabs[0])
 
 const sideTabs = ['Activities', 'Comms', 'Meetings']

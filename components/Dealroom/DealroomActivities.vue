@@ -29,8 +29,8 @@ const activities = [{
   when: new Date(2023, 5, 13)
 }, {
   description: 'Update made to JVP',
-  user: 'Rebekah Black',
-  userOrg: 'Gong',
+  user: 'Walter White',
+  userOrg: 'Bank of America',
   when: new Date(2023, 5, 12)
 }, {
   description: 'Update made to JVP',
@@ -41,7 +41,7 @@ const activities = [{
   description: 'Update made to JVP',
   user: 'Rebekah Black',
   userOrg: 'Gong',
-  when: new Date(2023, 4, 10)
+  when: new Date(2023, 5, 10)
 }]
 
 const activityBuckets = groupBy(activities, a => a.when)
