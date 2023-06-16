@@ -19,8 +19,8 @@ const emit = defineEmits(['update:text'])
 </script>
 
 <style lang="postcss" scoped>
-  textarea {
-    @apply w-full text-sm border-b-[1.5px] border-gray-light  
-      text-gray mb-1 w-full;
-  }
+textarea {
+  @apply w-full text-sm border-b-[1.5px] border-gray-light  
+    text-gray mb-1 w-full;
+}
 </style>

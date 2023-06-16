@@ -65,6 +65,7 @@
       <div class="bg-white rounded-md p-6">
         <DealroomOverview
           v-if="selectedMainTab === 'Overview'"
+          :overview="deal.overview"
         />
         <DealroomJointValue
           v-else-if="selectedMainTab === 'Joint Value'"

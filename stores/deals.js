@@ -57,7 +57,55 @@ const deals = {
         name: 'Gary Busy',
         title: 'Product Expert',
       }]
-    }]
+    }],
+    overview: {
+      sections: [{
+        prompt: '🧙‍♀️ Why we think we’re better together',
+        type: 'text',
+        answer:
+          `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
+           do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+           Massa placerat duis ultricies lacus sed turpis tincidunt id 
+           aliquet. Diam in arcu cursus euismod quis viverra nibh.`
+      }, {
+        prompt: '🐙 The pain points we’re solving for',
+        type: 'text',
+        answer:
+          `Eget duis at tellus at. Amet mauris commodo quis imperdiet. 
+           Non odio euismod lacinia at quis risus sed vulputate odio. Ut
+           eu sem integer vitae justo. Urna duis convallis convallis 
+           tellus id interdum. Pellentesque sit amet porttitor eget 
+           dolor morbi.`
+    
+      }, {
+        prompt: '🤖 How our tools solve against your paint points',
+        type: 'text',
+        answer:
+          `Enim nec dui nunc mattis enim ut. Massa placerat duis
+           ultricies lacus sed turpis tincidunt id. Orci phasellus 
+           egestas tellus rutrum tellus pellentesque eu tincidunt. Vitae
+           congue mauris rhoncus aenean vel. Ac turpis egestas maecenas
+           pharetra convallis posuere.`
+    
+      }, {
+        prompt: '🔌 How our integration works',
+        type: 'text',
+        answer:
+          `Ac tincidunt vitae semper quis. Tincidunt praesent semper 
+           feugiat nibh sed. Sed felis eget velit aliquet sagittis id.
+           Cum sociis natoque penatibus et. A diam sollicitudin tempor
+           id eu nisl nunc.`
+      
+      }, {
+        prompt: '📓 Hand-picked resources',
+        type: 'list',
+        answers: [
+          'Sodales neque sodales ut etiam sit amet', 
+          'Et odio pellentesque diam volutpat commodo.', 
+          'Viverra aliquet eget sit amet tellus cras adipiscing enim eu.'
+        ]
+      }]
+    }
   }
 }
 
