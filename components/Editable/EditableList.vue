@@ -2,12 +2,12 @@
   <div>
     <ul v-if="edit" class="edit">
       <li 
-        v-for="(_, index) in innerItems"
+        v-for="(item, index) in items"
         class="mb-2">
         <div class="flex flex-row items-center">
           <!-- TODO I'd love to make these autogrow -->
           <textarea 
-            :value="innerItems[index]"
+            :value="item"
             @blur="inputChanged($event.target.value, index)" />
           <div class="w-[40px] flex flex-col items-center">
             <PButton @click="removeIndex(index)">X</PButton>
@@ -34,44 +34,30 @@
 </template>
 
 <script setup>
-import { clone } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 const props = defineProps({
   items: Array,
   edit: Boolean
 })
 
-const innerItems = ref([])
-
-//TODO
-// watch(props, (newProps) => {
-//   if (newProps.edit) {
-//     innerItems.value = [...newProps.items]
-//   }
-// })
-
-onMounted(() => {
-  innerItems.value = [...props.items]
-})
-
 const emit = defineEmits(['update:items'])
 
 function inputChanged (newValue, index) {
-  const newObject = clone(innerItems.value)
-  newObject[index] = newValue
-  emit('update:items', newObject)
+  const newItems = cloneDeep(props.items)
+  newItems[index] = newValue
+  emit('update:items', newItems)
 }
 
 function removeIndex(i) {
-  emit('update:items', [...innerItems.value.slice(0, i), ...innerItems.value.slice(i + 1)])
+  emit('update:items', [...props.items.slice(0, i), ...props.items.slice(i + 1)])
 }
 
 const newItem = ref('')
 function addNewItem() {
   if (newItem.value) {
-    innerItems.value = [...innerItems.value, newItem.value]
+    emit('update:items', [...props.items, newItem.value])
     newItem.value = ''
-    emit('update:items', innerItems.value)
   }
 }
 </script>

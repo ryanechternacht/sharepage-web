@@ -33,6 +33,7 @@
           v-if="s.type === 'list'"
           :items="s.answers"
           :edit="isEditing"
+          @update:items="updateItems(i, $event)"
         />
       </div>
     </template>
@@ -43,6 +44,7 @@
 import { cloneDeep } from 'lodash';
 
 const props = defineProps({ overview: Object })
+const emit = defineEmits(['update:overview'])
 
 const isEditing = ref(false)
 const myOverview = ref(props.overview)
@@ -50,6 +52,10 @@ const myOverview = ref(props.overview)
 function updateText (i, newValue) {
   // TODO expand to allow editing of the prompt too
   myOverview.value.sections[i].answer = newValue
+}
+
+function updateItems (i, newValue) {
+  myOverview.value.sections[i].answers = newValue
 }
 
 watch(props, (newProps) => {
@@ -64,8 +70,6 @@ function cancel () {
   myOverview.value = cloneDeep(props.overview)
   isEditing.value = false
 }
-
-const emit = defineEmits('update:overview')
 
 function save () {
   emit('update:overview', myOverview.value);
