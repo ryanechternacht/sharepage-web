@@ -101,8 +101,8 @@ const deals = {
         type: 'list',
         answers: [
           'Sodales neque sodales ut etiam sit amet', 
-          'Et odio pellentesque diam volutpat commodo.', 
-          'Viverra aliquet eget sit amet tellus cras adipiscing enim eu.'
+          // 'Et odio pellentesque diam volutpat commodo.', 
+          // 'Viverra aliquet eget sit amet tellus cras adipiscing enim eu.'
         ]
       }]
     }

@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
+    "@tinymce/tinymce-vue": "^5",
     "pinia": "^2.1.3"
   }
 }

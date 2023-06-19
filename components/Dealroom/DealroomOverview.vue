@@ -1,46 +1,77 @@
 <template>
-  <div class="overview-grid">
-    <template
-      v-for="(s, i) in overview?.sections"
+  <div class="flex flex-col gap-y-4">
+    <!-- TODO get this styling less intrusive -->
+    <div
+      
+      class="flex flex-row-reverse w-full gap-x-2"
+      style="margin-bottom: -1rem"
     >
-      <div
-        :class="{ 'col-span-1': i === 0,
-                  'col-span-2': i }"
+      <!-- TODO make this edit button work! -->
+      <span 
+        v-if="!isEditing"
+        @click="edit"
       >
+        edit
+      </span>
+      <template v-else>
+        <span @click="save">save</span>
+        <span @click="cancel">cancel</span>
+      </template>
+    </div>
+    <template
+      v-for="(s, i) in myOverview?.sections"
+    >
+      <div>
         <h3>{{ s.prompt }}</h3>
         <EditableTextarea
-        v-if="s.type === 'text'"
-        :text="s.answer"
-        :edit="edit"
+          v-if="s.type === 'text'"
+          :text="s.answer"
+          :edit="isEditing"
+          @update:text="updateText(i, $event)"
         />
         <EditableList
-        v-if="s.type === 'list'"
-        :items="s.answers"
-        :edit="edit"
+          v-if="s.type === 'list'"
+          :items="s.answers"
+          :edit="isEditing"
         />
       </div>
-      <div
-        v-if="i === 0"
-      >
-        <!-- TODO make this edit button work! -->
-        edit 
-      </div>  
     </template>
   </div>
 </template>
 
 <script setup>
+import { cloneDeep } from 'lodash';
+
 const props = defineProps({ overview: Object })
 
-const edit = ref(false)
+const isEditing = ref(false)
+const myOverview = ref(props.overview)
+
+function updateText (i, newValue) {
+  // TODO expand to allow editing of the prompt too
+  myOverview.value.sections[i].answer = newValue
+}
+
+watch(props, (newProps) => {
+  myOverview.value = cloneDeep(newProps.overview)
+})
+
+function edit () {
+  isEditing.value = true
+}
+
+function cancel () {
+  myOverview.value = cloneDeep(props.overview)
+  isEditing.value = false
+}
+
+function save () {
+  console.log('todo save')
+  isEditing.value = false
+}
 </script>
 
 <style lang="postcss" scoped>
-.overview-grid {
-  @apply grid gap-y-4 auto-rows-fr;
-  grid-template-columns: 1fr auto;
-}
-
 h3 {
   @apply mb-2;
 }
