@@ -1,9 +1,11 @@
 <template>
   <div>
     <ul v-if="edit" class="edit">
-      <li v-for="(_, index) in innerItems">
+      <li 
+        v-for="(_, index) in innerItems"
+        class="mb-2">
         <div class="flex flex-row items-center">
-          <!-- I'd love to make these autogrow -->
+          <!-- TODO I'd love to make these autogrow -->
           <textarea 
             :value="innerItems[index]"
             @blur="inputChanged($event.target.value, index)" />
@@ -17,14 +19,15 @@
           <textarea
             v-model="newItem"
             placeholder="Add a new Row"
-            @blur="addNewItem" />
+            @blur="addNewItem"
+            @keyup.enter="addNewItem" />
           <div class="w-[40px]" />
         </div>
       </li>
     </ul>
     <ul v-else class="view">
       <li v-for="item in items">
-          <span class="gray">{{ item }}</span>
+        <span class="gray">{{ item }}</span>
       </li>
     </ul>
   </div>
@@ -40,11 +43,12 @@ const props = defineProps({
 
 const innerItems = ref([])
 
-watch(props, (newProps) => {
-  if (newProps.edit) {
-    innerItems.value = [...newProps.items]
-  }
-})
+//TODO
+// watch(props, (newProps) => {
+//   if (newProps.edit) {
+//     innerItems.value = [...newProps.items]
+//   }
+// })
 
 onMounted(() => {
   innerItems.value = [...props.items]
@@ -77,8 +81,11 @@ ul.edit {
   @apply list-disc list-outside ml-4;
 
   textarea {
-    @apply w-full text-sm border-b-[1.5px] border-gray-light  
-      align-text-top text-gray mb-1 w-full;
+    @apply w-full border-b border-gray align-text-top pb-1;
+
+    &:focus-visible {
+      @apply outline-0;
+    }
   }
 }
 

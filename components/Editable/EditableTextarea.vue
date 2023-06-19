@@ -1,17 +1,18 @@
 <template>
-    <Editor
-      api-key="2htrrda1ywukt91mvkpsd7m0j884up00dz8u5jrllk8cf325"
-      :init="{
-        plugins: '',
-        menubar: false,
-      }"
-      :inline="true"
-      :class="{editable: edit, readonly: !edit}"
-      :disabled="!edit"
-      model-events="change keydown blur focus paste"
-      :modelValue="text"
-      @update:modelValue="newValue => $emit('update:text', newValue)"
-    />
+  <Editor
+    api-key="2htrrda1ywukt91mvkpsd7m0j884up00dz8u5jrllk8cf325"
+    :class="{editable: edit, readonly: !edit}"
+    :disabled="!edit"
+    :init="{
+      plugins: '',
+      menubar: false,
+    }"
+    :inline="true"
+    model-events="change keydown blur focus paste"
+    :modelValue="text"
+    style="min-height: 40px"
+    @update:modelValue="newValue => $emit('update:text', newValue)"
+  />
 </template>
 
 <script setup>
@@ -29,7 +30,11 @@ const v = ref(props.text)
 
 <style lang="postcss" scoped>
 .editable {
-  @apply text-sm border-b border-gray;
+  @apply text-sm border-b border-gray pb-1;
+
+  &:focus-visible {
+    @apply outline-0;
+  }
 }
 
 .readonly >>> {

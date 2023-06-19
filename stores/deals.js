@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { cloneDeep } from 'lodash';
 
 const deals = {
   0: {
@@ -101,8 +102,8 @@ const deals = {
         type: 'list',
         answers: [
           'Sodales neque sodales ut etiam sit amet', 
-          // 'Et odio pellentesque diam volutpat commodo.', 
-          // 'Viverra aliquet eget sit amet tellus cras adipiscing enim eu.'
+          'Et odio pellentesque diam volutpat commodo. Et odio pellentesque diam volutpat commodo. Et odio pellentesque diam volutpat commodo.', 
+          'Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Viverra aliquet eget sit amet tellus cras adipiscing enim eu.'
         ]
       }]
     }
@@ -113,5 +114,11 @@ export const useDealsStore = defineStore('deals', {
   state: () => ({ deals }),
   getters: {
     getById: (state) => (id) => state.deals[id]
+  },
+  actions: {
+    save(deal) {
+      // TODO call out to a backend
+      this.deals[deal.id] = cloneDeep(deal)
+    }
   }
 })

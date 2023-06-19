@@ -15,8 +15,8 @@
           <div class="gray">Gong</div>
           <template v-if="deal.partners">
             <div class="gray">&</div>
-            <img class="seller-logo" :src="deal.partners[0].logo" />
-            <div class="gray">{{ deal.partners[0].name }}</div>
+            <img class="seller-logo" :src="deal?.partners[0].logo" />
+            <div class="gray">{{ deal?.partners[0].name }}</div>
           </template>
         </div>
       </div>
@@ -66,12 +66,13 @@
         <DealroomOverview
           v-if="selectedMainTab === 'Overview'"
           :overview="deal.overview"
+          @update:overview="saveOverview"
         />
         <DealroomJointValue
           v-else-if="selectedMainTab === 'Joint Value'"
         />
         <DealroomPartner
-          v-else-if="deal.partners.find(p => p.name === selectedMainTab)"
+          v-else-if="deal.partners?.find(p => p.name === selectedMainTab)"
           :partner="selectedMainTab"
         />
       </div>
@@ -95,16 +96,35 @@
 
 <script setup>
 import { useDealsStore } from '@/stores/deals'
+import { cloneDeep } from 'lodash';
+import { storeToRefs } from 'pinia'
 
 const store = useDealsStore()
-const deal = store.getById(0)
+const { getById } = storeToRefs(store)
+const deal = ref(getById.value(0))
 
-const mainTabs = ['Overview', 'Joint Value'];
-mainTabs.push(...deal.partners.map(p => p.name))
-const selectedMainTab = ref(mainTabs[0])
+store.$subscribe(() => {
+  deal.value = getById.value(0)
+})
+
+const mainTabs = computed(
+  () => {
+    const tabs = ['Overview', 'Joint Value']
+    const extra = deal.value.partners ? deal.value.partners.map(p => p.name) : []
+    tabs.push(...extra)
+    return tabs
+  })
+
+const selectedMainTab = ref('Overview')
 
 const sideTabs = ['Activities', 'Comms', 'Meetings']
 const selectedSideTab = ref(sideTabs[0])
+
+function saveOverview (overview) {
+  const clone = cloneDeep(deal.value)
+  clone.overview = overview
+  store.save(clone)
+}
 </script>
 
 <style lang="postcss" scoped>

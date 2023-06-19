@@ -65,8 +65,10 @@ function cancel () {
   isEditing.value = false
 }
 
+const emit = defineEmits('update:overview')
+
 function save () {
-  console.log('todo save')
+  emit('update:overview', myOverview.value);
   isEditing.value = false
 }
 </script>
