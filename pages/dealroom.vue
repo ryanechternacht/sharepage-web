@@ -4,18 +4,18 @@
       <!-- row 1 col 1 -->
       <div class="flex flex-col gap-y-2">
         <div class="flex flex-row items-center gap-x-3">
-          <img class="deal-logo" :src="deal.logo" />
-          <h3>{{ deal.name }}</h3>
+          <img class="deal-logo" :src="deal?.logo" />
+          <h3>{{ deal?.name }}</h3>
           <div class="flex-grow" />
-          <h5>{{ deal.status }}</h5>
+          <h5>{{ deal?.status }}</h5>
         </div>
 
         <div class="flex flex-row items-center gap-x-1">
           <img class="seller-logo" src="/svg/gong.svg" />
           <div class="gray">Gong</div>
-          <template v-if="deal.partners">
+          <template v-if="deal?.partners">
             <div class="gray">&</div>
-            <img class="seller-logo" :src="deal?.partners[0].logo" />
+            <img class="seller-logo" :src="deal?.partners[0]?.logo" />
             <div class="gray">{{ deal?.partners[0].name }}</div>
           </template>
         </div>
@@ -46,9 +46,9 @@
         <section>
           <p class="mb-2">Bank of America Revenue Team</p>
 
-          <PersonList :people="deal.customerTeam" />
+          <PersonList :people="deal?.customerTeam" />
         </section>
-        <section v-for="p in deal.partners">
+        <section v-for="p in deal?.partners">
           <p class="mb-2">{{ p.name }} Revenue Team</p>
 
           <PersonList :people="p.team" />
@@ -56,7 +56,7 @@
         <section>
           <p class="mb-2">Our Revenue Team</p>
 
-          <PersonList :people="deal.ourTeam" />
+          <PersonList :people="deal?.ourTeam" />
         </section>
       </div>
 
@@ -65,14 +65,14 @@
       <div class="bg-white rounded-md p-6">
         <DealroomOverview
           v-if="selectedMainTab === 'Overview'"
-          :overview="deal.overview"
+          :overview="deal?.pages.overview"
           @update:overview="saveOverview"
         />
         <DealroomJointValue
           v-else-if="selectedMainTab === 'Joint Value'"
         />
         <DealroomPartner
-          v-else-if="deal.partners?.find(p => p.name === selectedMainTab)"
+          v-else-if="deal?.partners?.find(p => p.name === selectedMainTab)"
           :partner="selectedMainTab"
         />
       </div>
@@ -95,25 +95,27 @@
 </template>
 
 <script setup>
-import { useDealsStore } from '@/stores/deals'
-import { cloneDeep } from 'lodash';
+import { useOrbitsStore } from '@/stores/orbits'
+import { cloneDeep } from 'lodash'
 import { storeToRefs } from 'pinia'
 
-const store = useDealsStore()
-const { getById } = storeToRefs(store)
-const deal = ref(getById.value(0))
+const orbitId = 1
+
+const store = useOrbitsStore()
+const { getById, orbits } = storeToRefs(store)
+await store.fetchOrbit({ orbitId })
+const deal = ref(getById.value(orbitId))
 
 store.$subscribe(() => {
-  deal.value = getById.value(0)
+  deal.value = getById.value(orbitId)
 })
 
-const mainTabs = computed(
-  () => {
-    const tabs = ['Overview', 'Joint Value']
-    const extra = deal.value.partners ? deal.value.partners.map(p => p.name) : []
-    tabs.push(...extra)
-    return tabs
-  })
+const mainTabs = computed(() => {
+  const tabs = ['Overview', 'Joint Value']
+  const extra = deal.value?.partners ? deal.value.partners.map(p => p.name) : []
+  tabs.push(...extra)
+  return tabs
+})
 
 const selectedMainTab = ref('Overview')
 
@@ -122,7 +124,7 @@ const selectedSideTab = ref(sideTabs[0])
 
 function saveOverview (overview) {
   const clone = cloneDeep(deal.value)
-  clone.overview = overview
+  clone.pages.overview = overview
   store.save(clone)
 }
 </script>

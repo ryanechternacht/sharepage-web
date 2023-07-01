@@ -5,11 +5,13 @@ export default defineNuxtConfig({
     'nuxt-lodash', 
     '@pinia/nuxt', 
     '@nuxtjs/google-fonts',
-    'dayjs-nuxt'
+    'dayjs-nuxt',
   ],
+
   dayjs: {
     plugins: ['isSameOrAfter']
   },
+
   postcss: {
     // Add plugin names as key and arguments as value
     // Install them before as dependencies with npm or yarn
@@ -20,11 +22,16 @@ export default defineNuxtConfig({
       // 'postcss-responsive-type': {},
       // 'postcss-hexrgba': {}
     },
-  }, 
+  },
+
   googleFonts: {
     families: {
       Inter: true,
       Bitter: true
     }
-  }
+  },
+
+  devtools: {
+    enabled: true,
+  },
 })

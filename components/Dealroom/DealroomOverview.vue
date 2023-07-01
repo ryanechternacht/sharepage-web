@@ -1,37 +1,48 @@
 <template>
-  <div class="flex flex-col gap-y-4">
+  <div 
+    class="flex flex-col gap-y-4 mt-[-1rem]"
+    @mouseover="isMouseOver = true"
+    @mouseleave="isMouseOver = false"
+  >
     <!-- TODO get this styling less intrusive -->
     <div
-      
-      class="flex flex-row-reverse w-full gap-x-2"
-      style="margin-bottom: -1rem"
+      class="flex flex-row-reverse w-full items-center gap-x-2 h-[2em] mb-[-2em]"
     >
-      <!-- TODO make this edit button work! -->
-      <span 
-        v-if="!isEditing"
-        @click="edit"
-      >
-        edit
-      </span>
-      <template v-else>
-        <span @click="save">save</span>
-        <span @click="cancel">cancel</span>
+      <template v-if="isMouseOver">
+        <PButton
+          v-if="!isEditing"
+          @click="edit"
+          variant="gray-light">
+          ✏️ Edit
+        </PButton>
+        <template v-else>
+          <PButton 
+            @click="save"
+            variant="gray-light">
+            💾 Save
+          </PButton>
+          <PButton 
+            @click="cancel"
+            variant="gray-light">
+            ❌ Cancel
+          </PButton>
+        </template>
       </template>
     </div>
     <template
-      v-for="(s, i) in myOverview?.sections"
+      v-for="(s, i) in myOverview?.questions"
     >
       <div>
-        <h3>{{ s.prompt }}</h3>
+        <h3>{{ s.question }}</h3>
         <EditableTextarea
           v-if="s.type === 'text'"
-          :text="s.answer"
+          :text="s.answer.text"
           :edit="isEditing"
           @update:text="updateText(i, $event)"
         />
         <EditableList
           v-if="s.type === 'list'"
-          :items="s.answers"
+          :items="s.answer.items"
           :edit="isEditing"
           @update:items="updateItems(i, $event)"
         />
@@ -48,14 +59,15 @@ const emit = defineEmits(['update:overview'])
 
 const isEditing = ref(false)
 const myOverview = ref(props.overview)
+const isMouseOver = ref(false)
 
 function updateText (i, newValue) {
   // TODO expand to allow editing of the prompt too
-  myOverview.value.sections[i].answer = newValue
+  myOverview.value.questions[i].answer.text = newValue
 }
 
 function updateItems (i, newValue) {
-  myOverview.value.sections[i].answers = newValue
+  myOverview.value.questions[i].answer.items = newValue
 }
 
 watch(props, (newProps) => {

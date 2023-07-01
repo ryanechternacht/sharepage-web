@@ -4,18 +4,18 @@
       <li 
         v-for="(item, index) in items"
         class="mb-2">
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row">
           <!-- TODO I'd love to make these autogrow -->
           <textarea 
             :value="item"
             @blur="inputChanged($event.target.value, index)" />
-          <div class="w-[40px] flex flex-col items-center">
+          <div class="w-[40px] flex flex-col items-center self-center">
             <PButton @click="removeIndex(index)">X</PButton>
           </div>
         </div>
       </li>
       <li>
-        <div class="flex flex-row items-center">
+        <div class="flex flex-row">
           <textarea
             v-model="newItem"
             placeholder="Add a new Row"

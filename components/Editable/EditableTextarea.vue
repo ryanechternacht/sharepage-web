@@ -37,8 +37,8 @@ const v = ref(props.text)
   }
 }
 
-.readonly >>> {
-  p, div, ul, ol {
+.readonly {
+  :deep(p), :deep(div), :deep(ul), :deep(ol) {
     @apply text-gray-text;
   }
 }
