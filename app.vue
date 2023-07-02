@@ -22,7 +22,7 @@
         <div class="flex-grow"></div>
 
         <div class="p-12 font-16">
-          <NuxtLink to="https://localhost:3000/login">login</NuxtLink>
+          <NuxtLink to="/login">login</NuxtLink>
           👤
         </div>
       </div>
