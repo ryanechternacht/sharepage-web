@@ -49,4 +49,10 @@
   .gray-italic {
     @apply text-gray italic;
   }
+
+  input {
+    @apply p-2 body;
+    @apply gray;
+  }
+
 }

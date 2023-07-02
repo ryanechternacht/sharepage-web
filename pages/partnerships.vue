@@ -83,11 +83,11 @@ export default {
   @apply w-full bg-gray-light py-2 px-4 rounded-lg;
 
   &.selected {
-    @apply bg-blue text-white;
+    /* @apply bg-blue text-white; */
   }
 
   &:hover {
-    @apply border-l-blue border-l-8;
+    /* @apply border-l-blue border-l-8; */
 
     .partner-item-inner {
       margin-left: -8px;

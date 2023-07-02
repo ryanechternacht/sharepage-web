@@ -5,5 +5,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const parts = url.host.split('.')
   parts.splice(1, 0, 'api')
   
-  nuxtApp.apiUrl = url.protocol + '//' + parts.join('.')
+  nuxtApp.apiUrlBase = url.protocol + '//' + parts.join('.')
+
+  nuxtApp.apiUrl = (path) => new URL(path, nuxtApp.apiUrlBase).toString()
 })

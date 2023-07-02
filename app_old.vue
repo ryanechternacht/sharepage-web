@@ -1,6 +1,7 @@
 <template>
-  <div class="full-page min-h-screen">
-    <div class="sticky">
+  <div>
+  <!-- <div class="full-page min-h-screen"> -->
+    <!-- <div class="sticky">
       <div class="flex flex-row items-center py-2 pl-2 h-12 gap-x-4">
         <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
           <img class="h-8 max-w-16" src="/partnorize-logo.jpeg" />
@@ -26,11 +27,13 @@
           👤
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="p-8">
-      <NuxtPage />
-    </div>
+    <!-- <div class="p-8"> -->
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    <!-- </div> -->
   </div>
 </template>
 

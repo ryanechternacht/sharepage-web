@@ -125,8 +125,8 @@ export const useOrbitsStore = defineStore('orbits', {
       // TODO support urls file?
       // TODO support more stuff better?
       const { apiUrl } = useNuxtApp()
-      const { data, error, status, pending } = await useFetch(
-        new URL(`/v0.1/orbits/${orbitId}`, apiUrl).toString()
+      const { data } = await useFetch(
+        apiUrl(`/v0.1/orbits/${orbitId}`)
       )
       this.orbits[orbitId] = data
     }

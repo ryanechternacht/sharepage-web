@@ -143,7 +143,7 @@ section {
 
 <style lang="postcss">
 .full-page {
-  @apply bg-red-light;
+  /* @apply bg-red-light; */
 }
 
 .deal-logo {
