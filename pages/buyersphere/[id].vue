@@ -95,19 +95,24 @@
 </template>
 
 <script setup>
-import { useOrbitsStore } from '@/stores/orbits'
+import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { cloneDeep } from 'lodash'
 import { storeToRefs } from 'pinia'
 
-const orbitId = 1
+definePageMeta({
+  layout: "buyersphere",
+});
 
-const store = useOrbitsStore()
-const { getById, orbits } = storeToRefs(store)
-await store.fetchOrbit({ orbitId })
-const deal = ref(getById.value(orbitId))
+const route = useRoute()
+const buyersphereId = route.params.id
+
+const store = useBuyerspheresStore()
+const { getById } = storeToRefs(store)
+await store.fetchOrbit({ buyersphereId })
+const deal = ref(getById.value(buyersphereId))
 
 store.$subscribe(() => {
-  deal.value = getById.value(orbitId)
+  deal.value = getById.value(buyersphereId)
 })
 
 const mainTabs = computed(() => {
@@ -139,12 +144,6 @@ function saveOverview (overview) {
 section {
   @apply bg-white rounded-md py-3 px-4;
 }
-</style>
-
-<style lang="postcss">
-.full-page {
-  /* @apply bg-red-light; */
-}
 
 .deal-logo {
   @apply h-10;
@@ -156,5 +155,11 @@ section {
 
 .tag.selected {
   @apply border-b border-gray pb-0.5;
+}
+</style>
+
+<style lang="postcss">
+.full-page {
+  /* @apply bg-red-light; */
 }
 </style>

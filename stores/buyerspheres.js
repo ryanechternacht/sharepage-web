@@ -110,25 +110,25 @@ import { cloneDeep } from 'lodash';
 //   }
 // }
 
-export const useOrbitsStore = defineStore('orbits', {
-  state: () => ({ orbits: {} }),
+export const useBuyerspheresStore = defineStore('buyerspheres', {
+  state: () => ({ buyerspheres: {} }),
   getters: {
-    getById: (state) => (id) => state.orbits[id]
+    getById: (state) => (id) => state.buyerspheres[id]
   },
   actions: {
-    save(orbit) {
+    save(buyersphere) {
       // TODO call out to a backend
-      this.orbits[orbit.id] = cloneDeep(orbit)
+      this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
     },
-    async fetchOrbit({ orbitId }) {
+    async fetchOrbit({ buyersphereId }) {
       // TODO support force refresh
       // TODO support urls file?
       // TODO support more stuff better?
-      const { apiUrl } = useNuxtApp()
-      const { data } = await useFetch(
-        apiUrl(`/v0.1/orbits/${orbitId}`)
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}`
       )
-      this.orbits[orbitId] = data
+      this.buyerspheres[buyersphereId] = data
     }
   }
 })

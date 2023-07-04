@@ -34,4 +34,14 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
+
+  nitro: {
+    // TODO this for prod? https://stackoverflow.com/questions/74570188/how-do-i-set-proxy-in-nuxt3
+    // devProxy: {
+    //   '/api': {
+    //     target: 'http://api.localhost:3001',
+    //     changeOrigin: true
+    //   }
+    // }
+  }
 })

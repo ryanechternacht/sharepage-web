@@ -4,9 +4,25 @@
     
     <h1>Welcome to the Buyersphere 🚀</h1>
     
-    <input type="email" class="w-[380px]" placeholder="Enter your email" v-model="email"/>
+    <input 
+      v-model="email" 
+      class="w-[380px]" 
+      placeholder="Enter your email" 
+      type="email" 
+      @keypress.enter="sendEmail" />
     
-    <button type="submit" class="w-[380px]" @click="sendEmail">{{ buttonText }}</button>
+    <button 
+      class="w-[380px]" 
+      :disabled="buttonDisabled"
+      type="submit"
+      @click="sendEmail">
+      {{ buttonText }}
+    </button>
+
+    <div class="gray-italic w-[380px]">
+      Clicking the button above will send an email to the provided address
+      with a link to login. No password needed!
+    </div>
   </div>
 </template>
 
@@ -15,22 +31,29 @@ definePageMeta({
   layout: "public",
 });
 
-const { apiUrl } = useNuxtApp();
+const { apiFetch } = useNuxtApp();
 
 const email = ref('')
 
 const buttonText = ref('Login')
+const buttonDisabled = ref(false)
 
 async function sendEmail () {
-  if (!email.value) return
+  if (!email.value || buttonDisabled.value) return
+
+  buttonDisabled.value = true
+  buttonText.value = 'Sending Email'
   
-  const { error } = await useFetch(apiUrl('/v0.1/send-magic-link-login-email'), { 
+  const { error } = await apiFetch('/v0.1/send-magic-link-login-email', { 
     method: 'POST', 
     body: { user_email: email.value }
   })
-  
-  if (!error) {
+
+  if (!error.value) {
     buttonText.value = 'Email Sent!'
+  } else {
+    buttonText.value = 'Something went wrong'
+    buttonDisabled.value = false
   }
 }
 </script>
