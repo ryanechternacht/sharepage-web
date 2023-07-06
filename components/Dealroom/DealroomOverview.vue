@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="flex flex-col gap-y-4 mt-[-1rem]"
+    class="flex flex-col gap-y-4"
     @mouseover="isMouseOver = true"
     @mouseleave="isMouseOver = false"
   >

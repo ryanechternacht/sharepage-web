@@ -1,6 +1,6 @@
 <template>
   <button 
-    :class="[hoverBgClass, hoverTextClass, selectedClass]"
+    :class="[variantClass, selectedClass, sizeClass]"
     @click="clicked">
     <slot />
   </button>
@@ -10,6 +10,7 @@
 const props = defineProps({
   variant: String,
   selected: Boolean,
+  size: String
 })
 
 const emit = defineEmits(['click'])
@@ -20,27 +21,15 @@ const clicked = () => {
 
 // This garbage is because I couldn't get tailwind safelisting working correctly
 // and the classes were getting purged by tailwind
-const hoverBgClass = computed(
+const variantClass = computed(
   () => ({
-    'red-light': 'hover:bg-red-light',
-    'blue-light': 'hover:bg-blue-light',
-    'teal-light': 'hover:bg-teal-light',
-    'yellow-light': 'hover:bg-yellow-light',
-    'purple-light': 'hover:bg-purple-light',
-    'gray-light': 'hover:bg-gray-light',
-    '': 'hover:bg-gray'
-  }[props.variant ?? ''])
-)
-
-const hoverTextClass = computed(
-  () => ({
-    'red-light': 'hover:text-blue-dark',
-    'blue-light': 'hover:text-blue-dark',
-    'teal-light': 'hover:text-blue-dark',
-    'yellow-light': 'hover:text-blue-dark',
-    'purple-light': 'hover:text-blue-dark',
-    'gray-light': 'hover:text-blue-dark',
-    '': 'hover:text-white'
+    'red-light': 'hover:bg-red-light hover:text-blue-dark',
+    'blue-light': 'hover:bg-blue-light hover:text-blue-dark',
+    'teal-light': 'hover:bg-teal-light hover:text-blue-dark',
+    'yellow-light': 'hover:bg-yellow-light hover:text-blue-dark',
+    'purple-light': 'hover:bg-purple-light hover:text-blue-dark',
+    'gray-light': 'hover:bg-gray-light hover:text-blue-dark',
+    '': 'hover:bg-gray hover:text-white'
   }[props.variant ?? ''])
 )
 
@@ -48,7 +37,7 @@ const selectedClass = computed(
   () => {
     if (props.selected) {
       return {
-        'red-light': 'bg-gray-',
+        'red-light': 'bg-red-light',
         'blue-light': 'bg-blue-light',
         'teal-light': 'bg-teal-light',
         'yellow-light': 'bg-yellow-light',
@@ -61,6 +50,11 @@ const selectedClass = computed(
     }
   }
 )
+
+const sizeClass = computed(() => ({
+  'medium': '',
+  'large': 'text-base w-[2.5rem] h-[2.5rem]'
+}[props.size ?? 'medium']))
 
 </script>
 
