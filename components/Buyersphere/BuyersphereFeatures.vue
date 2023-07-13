@@ -1,0 +1,70 @@
+<template>
+  <div class="features-grid">
+    <div class="flex flex-cols justify-center gap-x-6 items-center h-full">
+      <div class="tag gray">Yes</div>
+      <div class="tag gray">Maybe</div>
+      <div class="tag gray">No</div>
+    </div>
+
+    <h3 class="gray italic text-center">Select what features you would like to explore</h3>
+    <template v-for="(f, i) in globalFeatures">
+      <div class="flex flex-cols justify-center gap-x-2 h-full">
+        <PButton 
+          variant="gray-light"
+          size="large"
+          :selected="myFeatures?.interests[f.id] === 'yes'"
+          @click="saveFeatureInterest(f.id, 'yes')">✅</PButton>
+        <PButton 
+          variant="gray-light"
+          size="large"
+          :selected="myFeatures?.interests[f.id] === 'maybe'"
+          @click="saveFeatureInterest(f.id, 'maybe')">🚧</PButton>
+        <PButton 
+          variant="gray-light"
+          size="large"
+          :selected="myFeatures?.interests[f.id] === 'no'"
+          @click="saveFeatureInterest(f.id, 'no')">⛔</PButton>
+      </div>
+      <div>
+        <h3 class="leading-[2.5rem]">Feature #{{ i + 1 }} {{ f.title }}</h3>
+        <div class="gray">{{ f.description }}</div>
+      </div>
+    </template>
+    <div>hello: {{ myFeatures }}</div>
+  </div>
+</template>
+
+<script setup>
+import { cloneDeep } from 'lodash';
+import { useFeaturesStore } from '@/stores/features'
+import { useBuyerspheresStore } from '@/stores/buyerspheres';
+import { storeToRefs } from 'pinia';
+
+const route = useRoute()
+const buyersphereId = route.params.id
+
+const store = useBuyerspheresStore()
+const { getById } = storeToRefs(store)
+await store.fetchOrbit({ buyersphereId })
+const buyersphere = ref(getById.value(buyersphereId))
+
+// is this worth doing for snappier UX? (probably)
+const myFeatures = ref(buyersphere.value.featuresAnswer)
+
+const featuresStore = useFeaturesStore()
+await featuresStore.fetchFeatures()
+const globalFeatures = ref(featuresStore.features)
+
+// TODO this should debounce
+function saveFeatureInterest (featureId, answer) {
+  myFeatures.value.interests[featureId] = answer
+  store.savefeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })
+}
+</script>
+
+<style lang="postcss" scoped>
+.features-grid {
+  @apply grid gap-x-6 gap-y-3;
+  grid-template-columns: auto 1fr;
+}
+</style>

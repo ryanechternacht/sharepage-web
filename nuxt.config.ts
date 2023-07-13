@@ -26,8 +26,9 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      Inter: true,
-      Bitter: true
+      // TODO only grab the right ones
+      Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      Bitter: [100, 200, 300, 400, 500, 600, 700, 800, 900]
     }
   },
 

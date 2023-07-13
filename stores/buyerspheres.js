@@ -110,6 +110,7 @@ import { cloneDeep } from 'lodash';
 //   }
 // }
 
+
 export const useBuyerspheresStore = defineStore('buyerspheres', {
   state: () => ({ buyerspheres: {} }),
   getters: {
@@ -120,6 +121,14 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       // TODO call out to a backend
       this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
     },
+    async savefeaturesAnswer({ buyersphereId, featuresAnswer }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/features`,
+        { method: 'PATCH', body: featuresAnswer }
+      )
+      this.buyerspheres[buyersphereId] = data
+    },
     async fetchOrbit({ buyersphereId }) {
       // TODO support force refresh
       // TODO support urls file?
@@ -128,6 +137,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`
       )
+
       this.buyerspheres[buyersphereId] = data
     }
   }

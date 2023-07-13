@@ -51,14 +51,14 @@
       <div>
         <section>
           <div class="mb-2 flex flex-row items-center gap-x-4">
-            <Logo src="/house_corrino.png" />
-            <h3 class="">House Corrino Team</h3>
+            <Logo src="/house_tully.png" />
+            <h3 class="">House Tully Team</h3>
           </div>
           <PersonList :people="customerTeam" />
 
           <div class="mt-4 mb-2 flex flex-row gap-x-4">
-            <Logo src="/house_atreides.webp" />
-            <h3 class="">House Atreides Team</h3>
+            <Logo src="/house_stark.png" />
+            <h3 class="">House Stark Team</h3>
           </div>
           <PersonList :people="ourTeam" />
         </section>
@@ -68,25 +68,23 @@
       <!-- TODO this should probably be routing based -->
       <div>
         <section>
-          <div class="w-full justify-center flex flex-row items-center gap-x-3 mb-4">
+          <div class="w-full justify-center flex flex-row items-center gap-x-4 mb-4">
             <NuxtLink :to="`/buyersphere/${route.params.id}`">OVERVIEW</NuxtLink>
             <NuxtLink :to="`/buyersphere/${route.params.id}/features`">FEATURES</NuxtLink>
-            <NuxtLink :to="`/buyersphere/${route.params.id}/pricing`">PRICING</NuxtLink>
+            <NuxtLink :to="`/buyersphere/${route.params.id}/contact`">CONTACT YOUR TEAM</NuxtLink>
           </div>
-          <DealroomOverview
+          <BuyersphereOverview
             v-if="route.params.section === ''"
-            :overview="deal?.pages.overview"
+            :intro-message="buyersphere.introMessage"
             @update:overview="saveOverview"
           />
-          <DealroomFeatures
+          <BuyersphereFeatures
             v-else-if="route.params.section === 'features'"
-            :feature-list="deal?.pages.features"
-            :features="{ features: {}}"
           />
-          <DealroomPartner
-            v-else-if="route.params.section === 'pricing'"
+          <!-- <BuyersphereContact
+            v-else-if="route.params.section === 'contact'"
             :partner="selectedMainTab"
-          />
+          /> -->
         </section>
       </div>
 
@@ -157,17 +155,17 @@ const buyersphereId = route.params.id
 const store = useBuyerspheresStore()
 const { getById } = storeToRefs(store)
 await store.fetchOrbit({ buyersphereId })
-const deal = ref(getById.value(buyersphereId))
+const buyersphere = ref(getById.value(buyersphereId))
 
 store.$subscribe(() => {
-  deal.value = getById.value(buyersphereId)
+  buyersphere.value = getById.value(buyersphereId)
 })
 
 const sideTabs = ['Activities', 'Comms', 'Meetings']
 const selectedSideTab = ref(sideTabs[0])
 
 function saveOverview (overview) {
-  const clone = cloneDeep(deal.value)
+  const clone = cloneDeep(buyersphere.value)
   clone.pages.overview = overview
   store.save(clone)
 }
@@ -205,6 +203,6 @@ section {
 }
 
 .router-link-active {
-  @apply bg-purple rounded-full text-white px-1 py-[1px];
+  @apply bg-purple rounded-full text-white px-2 py-[1px];
 }
 </style>
