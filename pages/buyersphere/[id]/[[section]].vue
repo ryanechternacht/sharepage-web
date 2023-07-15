@@ -5,10 +5,10 @@
       <section class="h-100% flex flex-col justify-items-center gap-2">
         <div class="logo-section section">
           <Logo
-            src="/house_corrino.png"
+            :src="buyersphere.buyerLogo"
             size="large"
             style="grid-area: logo" />
-          <h3 style="grid-area: company">House Corrino</h3>
+          <h3 style="grid-area: company">{{ buyersphere.buyer }}</h3>
           <Tag
             bg="bg-gray-light"
             width="3.75rem"
@@ -17,10 +17,10 @@
         </div>
         <div class="logo-section">
           <Logo
-            src="/house_atreides.webp"
+            :src="organization.logo"
             size="large"
             style="grid-area: logo" />
-          <h3 style="grid-area: company">House Atreides</h3>
+          <h3 style="grid-area: company">{{ organization.name }}</h3>
           <Tag
             bg="bg-gray-light"
             width="3.75rem"
@@ -51,16 +51,16 @@
       <div>
         <section>
           <div class="mb-2 flex flex-row items-center gap-x-4">
-            <Logo src="/house_tully.png" />
-            <h3 class="">House Tully Team</h3>
+            <Logo :src="buyersphere.buyerLogo" />
+            <h3>{{ buyersphere.buyer }}</h3>
           </div>
-          <PersonList :people="customerTeam" />
+          <PersonList :people="buyersphere.buyerTeam" />
 
           <div class="mt-4 mb-2 flex flex-row gap-x-4">
             <Logo src="/house_stark.png" />
             <h3 class="">House Stark Team</h3>
           </div>
-          <PersonList :people="ourTeam" />
+          <PersonList :people="buyersphere.sellerTeam" />
         </section>
       </div>
 
@@ -109,6 +109,7 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useOrganizationStore } from '@/stores/organization'
 import { cloneDeep } from 'lodash'
 import { storeToRefs } from 'pinia'
 
@@ -116,46 +117,49 @@ definePageMeta({
   layout: "buyersphere",
 });
 
-const customerTeam = ref([{
-  name: 'Walter White',
-  title: 'Account Executive',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Cara Winslow',
-  title: 'Partnerships Manager',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Jack Gopher',
-  title: 'Marketing Expert',
-}, {
-  name: 'Gary Busy',
-  title: 'Product Expert',
-  linkedIn: 'https://google.com'
-}])
-const ourTeam = ref([{
-  name: 'Rebekah Black',
-  title: 'Account Executive',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Carrot Toppe',
-  title: 'Partnerships Manager',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Jeremy Hunt',
-  title: 'Marketing Expert',
-  linkedIn: 'https://google.com'
-}, {
-  name: 'Gabriella Lopez',
-  title: 'Product Expert',
-}])
+// const customerTeam = ref([{
+//   name: 'Walter White',
+//   title: 'Account Executive',
+//   linkedIn: 'https://google.com'
+// }, {
+//   name: 'Cara Winslow',
+//   title: 'Partnerships Manager',
+//   linkedIn: 'https://google.com'
+// }, {
+//   name: 'Jack Gopher',
+//   title: 'Marketing Expert',
+// }, {
+//   name: 'Gary Busy',
+//   title: 'Product Expert',
+//   linkedIn: 'https://google.com'
+// }])
+// const ourTeam = ref([{
+//   name: 'Rebekah Black',
+//   title: 'Account Executive',
+//   linkedIn: 'https://google.com'
+// }, {
+//   name: 'Carrot Toppe',
+//   title: 'Partnerships Manager',
+//   linkedIn: 'https://google.com'
+// }, {
+//   name: 'Jeremy Hunt',
+//   title: 'Marketing Expert',
+//   linkedIn: 'https://google.com'
+// }, {
+//   name: 'Gabriella Lopez',
+//   title: 'Product Expert',
+// }])
 
 const route = useRoute()
 const buyersphereId = route.params.id
 
 const store = useBuyerspheresStore()
-const { getById } = storeToRefs(store)
-await store.fetchOrbit({ buyersphereId })
-const buyersphere = ref(getById.value(buyersphereId))
+const { getBuyersphereByIdCached } = storeToRefs(store)
+const buyersphere = await getBuyersphereByIdCached.value(buyersphereId)  
+
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+const organization = await getOrganizationCached.value()
 
 store.$subscribe(() => {
   buyersphere.value = getById.value(buyersphereId)

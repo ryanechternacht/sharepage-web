@@ -30,7 +30,6 @@
         <div class="gray">{{ f.description }}</div>
       </div>
     </template>
-    <div>hello: {{ myFeatures }}</div>
   </div>
 </template>
 
@@ -44,16 +43,15 @@ const route = useRoute()
 const buyersphereId = route.params.id
 
 const store = useBuyerspheresStore()
-const { getById } = storeToRefs(store)
-await store.fetchOrbit({ buyersphereId })
-const buyersphere = ref(getById.value(buyersphereId))
+const { getBuyersphereByIdCached } = storeToRefs(store)
+const buyersphere = await getBuyersphereByIdCached.value(buyersphereId)  
 
 // is this worth doing for snappier UX? (probably)
-const myFeatures = ref(buyersphere.value.featuresAnswer)
+const myFeatures = ref(buyersphere.featuresAnswer)
 
 const featuresStore = useFeaturesStore()
-await featuresStore.fetchFeatures()
-const globalFeatures = ref(featuresStore.features)
+const { getFeaturesCached } = storeToRefs(featuresStore)
+const globalFeatures = await getFeaturesCached.value()
 
 // TODO this should debounce
 function saveFeatureInterest (featureId, answer) {

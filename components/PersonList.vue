@@ -4,7 +4,7 @@
       <LetterAvatar :letter="p.name[0]" />
       <div class="flex flex-col">
         <p class="gray">{{ p.name }}</p>
-        <p class="gray-italic">{{ p.title }}</p>
+        <p class="gray-italic">{{ p.displayRole }}</p>
       </div>
       <div class="flex-grow" />
       <!-- <a v-if="p.linkedIn" :href="p.linkedIn" target="_blank">

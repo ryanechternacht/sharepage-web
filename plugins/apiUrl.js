@@ -23,6 +23,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     } else {
       requestOptions.credentials = 'include'
     }
+    // TODO switch to useAsyncData to get call dedpulciation
     return await useFetch(apiUrl(path), requestOptions)
   }
 })
