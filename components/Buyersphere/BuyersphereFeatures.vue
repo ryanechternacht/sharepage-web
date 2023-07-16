@@ -44,14 +44,18 @@ const buyersphereId = route.params.id
 
 const store = useBuyerspheresStore()
 const { getBuyersphereByIdCached } = storeToRefs(store)
-const buyersphere = await getBuyersphereByIdCached.value(buyersphereId)  
+
+const featuresStore = useFeaturesStore()
+const { getFeaturesCached } = storeToRefs(featuresStore)
+
+const [buyersphere, globalFeatures] = await Promise.all([
+  getBuyersphereByIdCached.value(buyersphereId),
+  getFeaturesCached.value()
+])
 
 // is this worth doing for snappier UX? (probably)
 const myFeatures = ref(buyersphere.featuresAnswer)
 
-const featuresStore = useFeaturesStore()
-const { getFeaturesCached } = storeToRefs(featuresStore)
-const globalFeatures = await getFeaturesCached.value()
 
 // TODO this should debounce
 function saveFeatureInterest (featureId, answer) {

@@ -97,11 +97,14 @@ const props = defineProps({ introMessage: String })
 // TODO do these in parallel?
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
-const painPoints = await getPainPointsCached.value()
 
 const personasStore = usePersonasStore()
 const { getPersonasCached } = storeToRefs(personasStore)
-const personas = await getPersonasCached.value()
+
+const [painPoints, personas] = await Promise.all([
+  getPainPointsCached.value(),
+  getPersonasCached.value()
+])
 
 // const emit = defineEmits(['update:overview'])
 
