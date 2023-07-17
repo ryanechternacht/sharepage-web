@@ -81,10 +81,10 @@
           <BuyersphereFeatures
             v-else-if="route.params.section === 'features'"
           />
-          <!-- <BuyersphereContact
+          <BuyersphereContact
             v-else-if="route.params.section === 'contact'"
             :partner="selectedMainTab"
-          /> -->
+          />
         </section>
       </div>
 
@@ -117,39 +117,6 @@ definePageMeta({
   layout: "buyersphere",
 });
 
-// const customerTeam = ref([{
-//   name: 'Walter White',
-//   title: 'Account Executive',
-//   linkedIn: 'https://google.com'
-// }, {
-//   name: 'Cara Winslow',
-//   title: 'Partnerships Manager',
-//   linkedIn: 'https://google.com'
-// }, {
-//   name: 'Jack Gopher',
-//   title: 'Marketing Expert',
-// }, {
-//   name: 'Gary Busy',
-//   title: 'Product Expert',
-//   linkedIn: 'https://google.com'
-// }])
-// const ourTeam = ref([{
-//   name: 'Rebekah Black',
-//   title: 'Account Executive',
-//   linkedIn: 'https://google.com'
-// }, {
-//   name: 'Carrot Toppe',
-//   title: 'Partnerships Manager',
-//   linkedIn: 'https://google.com'
-// }, {
-//   name: 'Jeremy Hunt',
-//   title: 'Marketing Expert',
-//   linkedIn: 'https://google.com'
-// }, {
-//   name: 'Gabriella Lopez',
-//   title: 'Product Expert',
-// }])
-
 const route = useRoute()
 const buyersphereId = route.params.id
 
@@ -161,9 +128,9 @@ const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 const organization = await getOrganizationCached.value()
 
-store.$subscribe(() => {
-  buyersphere.value = getById.value(buyersphereId)
-})
+// store.$subscribe(() => {
+//   buyersphere.value = getBuyersphereByIdCached.value(buyersphereId)
+// })
 
 const sideTabs = ['Activities', 'Comms', 'Meetings']
 const selectedSideTab = ref(sideTabs[0])
@@ -187,7 +154,7 @@ section {
 }
 
 .logo-section {
-  @apply grid;
+  @apply grid gap-x-2;
   grid-template-rows: auto auto;
   grid-template-columns: auto 1fr;
   grid-template-areas: "logo company" "logo label";

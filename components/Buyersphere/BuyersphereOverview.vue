@@ -146,6 +146,6 @@ h3 {
 }
 
 li {
-  @apply list-disc list-inside;
+  @apply list-disc ml-3;
 }
 </style>
