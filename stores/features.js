@@ -25,9 +25,7 @@ export const useFeaturesStore = defineStore('features', {
       if (!this.features.content
           || forceRefresh
           || is10MinutesOld(this.features.generatedAt)) {
-        const { data } = await apiFetch(
-          `/v0.1/features`
-        )
+        const { data } = await apiFetch(`/v0.1/features`)
         this.features = {
           content: data,
           generatedAt: dayjs().toJSON()

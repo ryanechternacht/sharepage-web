@@ -25,9 +25,7 @@ export const usePersonasStore = defineStore('personas', {
       if (!this.personas.content
           || forceRefresh
           || is10MinutesOld(this.personas.generatedAt)) {
-        const { data } = await apiFetch(
-          `/v0.1/personas`
-        )
+        const { data } = await apiFetch(`/v0.1/personas`)
         this.personas = {
           content: data,
           generatedAt: dayjs().toJSON()

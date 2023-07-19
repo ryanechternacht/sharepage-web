@@ -1,35 +1,26 @@
 import { defineStore } from 'pinia'
 
-function is10MinutesOld(jsonTimestamp) {
-  const dayjs = useDayjs()
-  return dayjs.duration(dayjs().diff(jsonTimestamp)).asMinutes() >= 10
-}
+// Unlike most caches, this dosn't use a time based refresh (because
+// this data changes so infrequently). It can still be force 
+// refreshed if necessary 
 
 export const useOrganizationStore = defineStore('organization', {
-  state: () => ({ organization: {} }),
+  state: () => ({ organization: null }),
   getters: {
     getOrganizationCached: (state) => async () => {
       await state.fetchOrganization()
-      return state.organization.content
-    }
+      return state.organization
+    },
   },
   actions: {
     async fetchOrganization({ forceRefresh } = {}) {
-      const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.organization.content
-          || forceRefresh
-          || is10MinutesOld(this.organization.generatedAt)) {
-        const { data } = await apiFetch(
-          `/v0.1/organization`
-        )
-        this.organization = {
-          content: data,
-          generatedAt: dayjs().toJSON()
-        }
+      if (!this.organization || forceRefresh) {
+        const { data } = await apiFetch(`/v0.1/organization`)
+        this.organization = data
       }
-    }
+    },
   }
 })
 

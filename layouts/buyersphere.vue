@@ -7,10 +7,10 @@
             <img src="/logo.svg">
             <h3>Buyersphere</h3>
           </NuxtLink>
-          <div class="p-12 font-16">
-            <NuxtLink to="/login">login</NuxtLink>
+          <div class="flex flex-row items-center gap-x-2">
+            <span>{{ user.name || user.email }}</span>
             👤
-          </div>  
+          </div>
         </div>
       </div>
       <div class="px-8 pb-8">
@@ -21,6 +21,12 @@
 </template>
 
 <script setup>
+import { useUserStore  } from '@/stores/user';
+import { storeToRefs } from 'pinia'
+
+const store = useUserStore()
+const { getUserCached } = storeToRefs(store)
+const user = await getUserCached.value()
 </script>
 
 <style lang="postcss" scoped>
