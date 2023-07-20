@@ -28,7 +28,8 @@ export default defineNuxtConfig({
     families: {
       // TODO only grab the right ones
       Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-      Bitter: [100, 200, 300, 400, 500, 600, 700, 800, 900]
+      Bitter: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      Roboto: [500] // for the google login button
     }
   },
 

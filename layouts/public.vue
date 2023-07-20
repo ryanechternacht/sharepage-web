@@ -12,9 +12,9 @@
         <h3 class="gray">PRICING</h3>
       </div>
       <div class="flex flex-row items-center gap-x-3">
-        <p class="gray">LOG IN</p>
+        <NuxtLink to="/login" class="gray">LOG IN</NuxtLink>
         <!-- TODO PButton rework -->
-        <button class="w-16">JOIN</button>
+        <NuxtLink to="/login" class="button w-16">JOIN</NuxtLink>
       </div>
     </div>
     <!-- TODO get this height to center dynamically -->
@@ -25,8 +25,8 @@
 </template>
 
 <style lang="postcss" scoped>
-button {
-  @apply p-2 rounded-md bg-blue-dark body;
+.button {
+  @apply p-2 rounded-md bg-blue-dark body text-center;
   @apply font-bold text-green;
 }
 </style>

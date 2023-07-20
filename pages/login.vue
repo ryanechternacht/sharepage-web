@@ -23,6 +23,15 @@
       Clicking the button above will send an email to the provided address
       with a link to login. No password needed!
     </div>
+
+    <a
+      href="https://test.stytch.com/v1/b2b/public/oauth/google/start?public_token=public-token-test-3d685515-f94a-4444-96f6-fd54e4d4c1e2&slug=stark"
+      class="google-button">
+      <img src="/svg/google.svg" class="mr-[18px] h-[18px] w-[18px]">
+      <span class="text-[14px] text-medium" style="font-family: Roboto">
+        Sign in with Google
+      </span>
+    </a>
   </div>
 </template>
 
@@ -62,5 +71,18 @@ async function sendEmail () {
 button {
   @apply p-2 rounded-md bg-blue-dark body;
   @apply font-bold text-green;
+}
+
+.google-button {
+  @apply flex flex-row items-center border border-[#dadce0] 
+    h-[40px] px-[12px] rounded-[4px];
+
+  &:hover {
+    @apply border-[#d2e3fc] bg-[rgba(66,133,244,.04)]
+  }
+
+  &:active {
+    @apply bg-[rgba(66,133,244,.1)]
+  }
 }
 </style>
