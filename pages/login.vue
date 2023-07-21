@@ -11,13 +11,14 @@
       type="email" 
       @keypress.enter="sendEmail" />
     
-    <button 
-      class="w-[380px]" 
-      :disabled="buttonDisabled"
-      type="submit"
-      @click="sendEmail">
-      {{ buttonText }}
-    </button>
+    <SubmitButton
+      class="w-[380px]"
+      :click-fn="sendEmail" 
+      :disabled="!email"
+      error-text="Something went wrong"
+      ready-text="Login"
+      submitting-text="Sending Email"
+      submitted-text="Email Sent!" />
 
     <div class="gray-italic w-[380px]">
       Clicking the button above will send an email to the provided address
@@ -44,33 +45,20 @@ const { apiFetch } = useNuxtApp();
 
 const email = ref('')
 
-const buttonText = ref('Login')
-const buttonDisabled = ref(false)
-
 async function sendEmail () {
-  if (!email.value || buttonDisabled.value) return
-
-  buttonDisabled.value = true
-  buttonText.value = 'Sending Email'
-  
   const { error } = await apiFetch('/v0.1/send-magic-link-login-email', { 
     method: 'POST', 
     body: { user_email: email.value }
   })
 
-  if (!error.value) {
-    buttonText.value = 'Email Sent!'
-  } else {
-    buttonText.value = 'Something went wrong'
-    buttonDisabled.value = false
-  }
+  if (error) throw error;
 }
 </script>
 
 <style lang="postcss" scoped>
 button {
   @apply p-2 rounded-md bg-blue-dark body;
-  @apply font-bold text-green;
+  @apply font-bold text-white;
 }
 
 .google-button {
