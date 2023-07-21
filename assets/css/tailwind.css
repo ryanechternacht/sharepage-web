@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 @layer base {
-  h1 {
+  h1, .h1 {
     @apply font-serif font-bold text-blue-dark;
     font-size: 2rem; /* 32px */
     line-height: 2.5rem; /* 38px */
   }
 
-  h2 {
+  h2, .h2 {
     @apply font-sans font-semibold text-blue-dark;
     font-size: 1.5rem; /* 24px */
     line-height: 1.8125rem; /* 29px */
   }
 
-  h3 {
+  h3, .h3 {
     @apply font-sans font-semibold text-blue-dark;
     font-size: 1rem; /* 16px */
     line-height: 1.1875rem; /* 19px */
@@ -27,7 +27,7 @@
     line-height: .9375rem; /* 15px */
   }
 
-  h5 {
+  h5, .h5 {
     @apply body;
     @apply text-teal-dark;
   }
@@ -51,7 +51,7 @@
   }
 
   input {
-    @apply p-2 body;
+    @apply p-2 body bg-gray-light rounded-md;
     @apply gray;
   }
 

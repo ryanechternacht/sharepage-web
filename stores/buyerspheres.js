@@ -63,15 +63,12 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       }
     },
     async startConversation({ buyersphereId, message }) {
-      console.log('startConversation', buyersphereId, message)
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/conversations`,
         { method: 'POST', body: {message} }
       )
-      console.log('data', data)
       this.conversations[buyersphereId].content.push(data.value)
-      console.log(this.conversations[buyersphereId].content)
     }
   }
 })

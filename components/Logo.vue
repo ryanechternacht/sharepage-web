@@ -16,24 +16,28 @@ const height = computed(
   () => ({
     'medium': 'h-[1.5rem]',
     'large': 'h-[2.5rem]',
+    'x-large': 'h-[5rem]',
   }[props.size ?? 'medium'])
 )
 const width = computed(
   () => ({
     'medium': 'w-[1.5rem]',
     'large': 'w-[2.5rem]',
+    'x-large': 'h-[5rem]',
   }[props.size ?? 'medium'])
 )
 const maxHeight = computed(
   () => ({
     'medium': 'max-h-[1.5rem]',
     'large': 'max-h-[2.5rem]',
+    'x-large': 'max-h-[5rem]',
   }[props.size ?? 'medium'])
 )
 const maxWidth = computed(
   () => ({
     'medium': 'max-w-[1.5rem]',
     'large': 'max-w-[2.5rem]',
+    'x-large': 'max-h-[5rem]',
   }[props.size ?? 'medium'])
 )
 </script>

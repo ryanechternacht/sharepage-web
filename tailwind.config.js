@@ -68,7 +68,8 @@ module.exports = {
         dark: '#1a1834',
         text: 'rgba(6 18 71 / 0.6)',
         DEFAULT: 'rgb(26 24 52 / 0.6)',
-        light: 'rgb(26 24 52 / 0.05)'
+        light: 'rgb(26 24 52 / 0.05)',
+        'light-opaque': '#f5f5f5'
       },
       white: '#fff'
     },

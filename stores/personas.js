@@ -6,7 +6,7 @@ function is10MinutesOld(jsonTimestamp) {
 }
 
 export const usePersonasStore = defineStore('personas', {
-  state: () => ({ personas: {} }),
+  state: () => ({ personas: [] }),
   getters: {
     getPersonasCached: (state) => async () => {
       await state.fetchPersonas()
@@ -14,10 +14,13 @@ export const usePersonasStore = defineStore('personas', {
     }
   },
   actions: {
-    // save(buyersphere) {
-    //   // TODO call out to a backend
-    //   this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
-    // },
+    async createPersona({ persona }) {
+      // const { apiFetch } = useNuxtApp()
+      // const { data } = await apiFetch()
+
+      // TODO implement
+      this.personas.content.push(persona)
+    },
     async fetchPersonas({ forceRefresh } = {}) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
