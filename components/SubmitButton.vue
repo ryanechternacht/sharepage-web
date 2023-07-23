@@ -30,9 +30,9 @@ async function doFn () {
   state.value = 'submitting'
   try {
     await props.clickFn()
-  } catch ($ex) {
+  } catch (ex) {
     state.value = 'error'
-    emit('click-error', $ex)
+    emit('click-error', ex)
     setInterval(() => state.value = 'ready', props.submittedDurationMs)
     return
   }

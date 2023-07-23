@@ -51,7 +51,7 @@ async function sendEmail () {
     body: { user_email: email.value }
   })
 
-  if (error) throw error;
+  if (error.value) throw error;
 }
 </script>
 
