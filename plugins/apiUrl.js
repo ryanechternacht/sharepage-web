@@ -1,5 +1,6 @@
 // TODO should this be a composable instead?
-import { camelCase, transform, isArray, isObject } from 'lodash';
+import lodash_pkg from 'lodash';
+const { camelCase, transform, isArray, isObject } = lodash_pkg;
 
 const camelize = obj => transform(obj, (acc, value, key, target) => {
   const camelKey = isArray(target) ? key : camelCase(key);

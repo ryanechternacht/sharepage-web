@@ -34,7 +34,8 @@
 </template>
 
 <script setup>
-import { cloneDeep } from 'lodash';
+import lodash_pkg from 'lodash';
+const { cloneDeep } = lodash_pkg;
 import { useFeaturesStore } from '@/stores/features'
 import { useBuyerspheresStore } from '@/stores/buyerspheres';
 import { storeToRefs } from 'pinia';

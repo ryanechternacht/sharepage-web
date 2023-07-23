@@ -19,7 +19,8 @@
 </template>
 
 <script setup>
-import { groupBy } from 'lodash'
+import lodash_pkg from 'lodash';
+const { groupBy } = lodash_pkg;
 const dayjs = useDayjs()
 
 const activities = [{

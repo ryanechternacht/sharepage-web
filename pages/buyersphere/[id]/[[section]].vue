@@ -125,7 +125,8 @@
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { useUserStore  } from '@/stores/user';
-import { cloneDeep } from 'lodash'
+import lodash_pkg from 'lodash';
+const { groupBy } = lodash_pkg;
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()

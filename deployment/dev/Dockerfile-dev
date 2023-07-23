@@ -1,0 +1,21 @@
+FROM --platform=linux/amd64 node:18-alpine
+
+# create destination directory
+RUN mkdir -p /usr/src/nuxt-app
+WORKDIR /usr/src/nuxt-app
+
+# copy the app, note .dockerignore
+COPY . /usr/src/nuxt-app/
+COPY ./deployment/dev/.env /usr/src/nuxt-app/
+
+RUN yarn install && \
+  yarn build
+
+EXPOSE 3000
+
+# Not fully sure what this does, 
+# but without it the image is borked
+ENV NUXT_HOST=0.0.0.0
+
+# start the app
+CMD [ "yarn", "start" ]

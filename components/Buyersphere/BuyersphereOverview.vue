@@ -90,7 +90,8 @@
 import { usePainPointsStore } from '@/stores/pain-points'
 import { usePersonasStore } from '@/stores/personas'
 import { storeToRefs } from 'pinia'
-import { cloneDeep } from 'lodash'
+import lodash_pkg from 'lodash'
+const  { cloneDeep } = lodash_pkg
 
 const props = defineProps({ introMessage: String })
 

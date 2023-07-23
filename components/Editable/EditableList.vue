@@ -34,7 +34,8 @@
 </template>
 
 <script setup>
-import { cloneDeep } from 'lodash';
+import lodash_pkg from 'lodash';
+const { groupBy } = lodash_pkg;
 
 const props = defineProps({
   items: Array,
