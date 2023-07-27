@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
-    <h1 class="leading-[3.75rem]">Our Personas</h1>
+    <h1 class="leading-[3.75rem]">The Personas We Serve</h1>
     <input 
       v-model="personaTitle"
       ref="titleElem"
@@ -14,11 +14,14 @@
       class="mt-1"
       placeholder="Add Persona One Line Description"
       @keyup.enter="checkReady('description')">
-    <button 
-      class="mt-2 bg-purple-dark w-[10rem] h-[2.5rem] rounded-md text-white"
-      @click="checkReady('button')">
-      Add Persona
-    </button>
+    <SubmitButton
+      class="mt-2 w-[10rem] h-[2.5rem]"
+      ready-text="Add Persona"
+      :submission-state="submissionState" 
+      submitted-text="Persona Saved"
+      submitting-text="Saving Persona"
+      @click="checkReady('button')"/>
+
     <div class="mt-10 w-full max-w-[800px]">
       <h3>🚀 Who our product serves:</h3>
       <ul>
@@ -35,6 +38,13 @@
 import { useOrganizationStore } from '@/stores/organization'
 import { usePersonasStore } from '@/stores/personas'
 import { storeToRefs } from 'pinia'
+import { useSubmit } from '@/composables/useSubmit'
+
+const { submissionState, submitFn } = useSubmit(async () => 
+  await personasStore.createPersona({ persona: {
+    title: personaTitle.value,
+    description: personaDescription.value
+  }}))
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -54,10 +64,7 @@ const descriptionElem = ref(null)
 
 async function checkReady(elem) {
   if (personaTitle.value && personaDescription.value) {
-    await personasStore.createPersona({ persona: {
-      title: personaTitle.value,
-      description: personaDescription.value
-    }})
+    submitFn()
     personaTitle.value = ''
     personaDescription.value = ''
     titleElem.value.focus()

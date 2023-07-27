@@ -15,11 +15,16 @@ export const usePersonasStore = defineStore('personas', {
   },
   actions: {
     async createPersona({ persona }) {
-      // const { apiFetch } = useNuxtApp()
-      // const { data } = await apiFetch()
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch("/v0.1/personas", {
+        method: 'POST',
+        body: persona
+      })
+
+      console.log('data', data.value)
 
       // TODO implement
-      this.personas.content.push(persona)
+      this.personas.content.push(data.value)
     },
     async fetchPersonas({ forceRefresh } = {}) {
       const dayjs = useDayjs()
@@ -28,7 +33,7 @@ export const usePersonasStore = defineStore('personas', {
       if (!this.personas.content
           || forceRefresh
           || is10MinutesOld(this.personas.generatedAt)) {
-        const { data } = await apiFetch(`/v0.1/personas`)
+        const { data } = await apiFetch("/v0.1/personas")
         this.personas = {
           content: data,
           generatedAt: dayjs().toJSON()

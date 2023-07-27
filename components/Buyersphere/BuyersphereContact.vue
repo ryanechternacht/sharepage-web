@@ -7,15 +7,14 @@
         class="bg-gray-light w-3/4 rounded-md p-2 min-h-[40px]"
         v-model="newConversation"
       />
-      <!-- TODO get this button standardized -->
-      <button 
-        class="bg-purple-dark w-[10rem] h-[2.5rem] rounded-md" 
-        :disabled="sendMessageState === 'sending'"
-        @click="startConversation">
-        <div class="w-full h-full flex flex-row items-center justify-center text-white">
-          {{ sendMessageButtonText }}
-        </div>
-      </button>
+      <SubmitButton
+        class="bg-purple-dark w-[10rem] h-[2.5rem]"
+        :submission-state="submissionState"
+        ready-text="Start a Conversation"
+        submitting-text="Sending Message"
+        submitted-text="Message Sent"
+        @click="submitFn"
+        />
     </div>
 
     <div class="w-full mt-4 mb-2">
@@ -48,20 +47,9 @@
 import Editor from '@tinymce/tinymce-vue'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
+import { useSubmit } from '@/composables/useSubmit';
 
 const newConversation = ref('')
-
-// TODO make this a reusable pattern?
-// submit button?
-const sendMessageState = ref('ready')
-const sendMessageButtonText = computed(
-  () => ({
-    'ready': 'Start a Conversation',
-    'sending': 'Sending Message',
-    'sent': 'Message Sent!'
-  }[sendMessageState.value])
-)
-
 const route = useRoute()
 const buyersphereId = route.params.id
 
@@ -80,10 +68,7 @@ const answeredQuestions = computed(
   () => conversations.filter(c => c.resolved)
 )
 
-async function startConversation () {
-  sendMessageState.value = 'sending'
+const { submissionState, submitFn } = useSubmit(async () => 
   await store.startConversation({ buyersphereId, message: newConversation })
-  sendMessageState.value = 'sent'
-  setInterval(() => sendMessageState.value = 'ready', 5000)
-}
+)
 </script>

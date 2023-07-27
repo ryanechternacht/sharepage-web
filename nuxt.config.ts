@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    layoutTransition: { name: 'layout', mode: 'out-in' },
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
+
   modules: [
     '@nuxtjs/tailwindcss', 
     'nuxt-lodash', 
@@ -38,6 +43,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    inlineDynamicImports: true
     // TODO this for prod? https://stackoverflow.com/questions/74570188/how-do-i-set-proxy-in-nuxt3
     // devProxy: {
     //   '/api': {

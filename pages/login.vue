@@ -9,16 +9,17 @@
       class="w-[380px]" 
       placeholder="Enter your email" 
       type="email" 
-      @keypress.enter="sendEmail" />
+      @keypress.enter="submitFn" />
     
     <SubmitButton
       class="w-[380px]"
-      :click-fn="sendEmail" 
       :disabled="!email"
       error-text="Something went wrong"
       ready-text="Login"
       submitting-text="Sending Email"
-      submitted-text="Email Sent!" />
+      submitted-text="Email Sent!" 
+      :submission-state="submissionState"
+      @click="submitFn" />
 
     <div class="gray-italic w-[380px]">
       Clicking the button above will send an email to the provided address
@@ -37,22 +38,23 @@
 </template>
 
 <script setup>
+import { useSubmit } from '@/composables/useSubmit'
+
 definePageMeta({
   layout: "public",
 });
 
 const { apiFetch } = useNuxtApp();
 
-const email = ref('')
-
-async function sendEmail () {
+const { submissionState, submitFn } = useSubmit(async () => {
   const { error } = await apiFetch('/v0.1/send-magic-link-login-email', { 
     method: 'POST', 
     body: { user_email: email.value }
   })
+  if (error.value) throw error.value;
+})
 
-  if (error.value) throw error;
-}
+const email = ref('')
 </script>
 
 <style lang="postcss" scoped>

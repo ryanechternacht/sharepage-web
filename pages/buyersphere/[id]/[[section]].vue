@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <NuxtLoadingIndicator /> -->
     <div class="bg-purple-lightest min-h-screen">
       <div class="sticky">
         <div class="flex flex-row items-center p-8 h-12 justify-between">
