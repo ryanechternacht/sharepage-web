@@ -21,9 +21,6 @@ export const usePersonasStore = defineStore('personas', {
         body: persona
       })
 
-      console.log('data', data.value)
-
-      // TODO implement
       this.personas.content.push(data.value)
     },
     async fetchPersonas({ forceRefresh } = {}) {

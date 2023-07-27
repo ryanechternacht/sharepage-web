@@ -16,10 +16,10 @@
       @keyup.enter="checkReady('description')">
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"
-      ready-text="Add Persona"
       :submission-state="submissionState" 
-      submitted-text="Persona Saved"
+      ready-text="Add Persona"
       submitting-text="Saving Persona"
+      submitted-text="Persona Saved"
       @click="checkReady('button')"/>
 
     <div class="mt-10 w-full max-w-[800px]">
@@ -40,12 +40,6 @@ import { usePersonasStore } from '@/stores/personas'
 import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit'
 
-const { submissionState, submitFn } = useSubmit(async () => 
-  await personasStore.createPersona({ persona: {
-    title: personaTitle.value,
-    description: personaDescription.value
-  }}))
-
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
@@ -56,6 +50,12 @@ const [organization, personas] = await Promise.all([
   getOrganizationCached.value(),
   getPersonasCached.value(),
 ])
+
+const { submissionState, submitFn } = useSubmit(async () => 
+  await personasStore.createPersona({ persona: {
+    title: personaTitle.value,
+    description: personaDescription.value
+  }}))
 
 const personaTitle = ref('')
 const personaDescription = ref('')

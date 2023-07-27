@@ -17,10 +17,15 @@ export const usePainPointsStore = defineStore('pain-points', {
     get: (state) => state.painPoints.content
   },
   actions: {
-    // save(buyersphere) {
-    //   // TODO call out to a backend
-    //   this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
-    // },
+    async createPainPoint({ painPoint }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch("/v0.1/pain-points", {
+        method: 'POST',
+        body: painPoint
+      })
+
+      this.painPoints.content.push(data.value)
+    },
     async fetchPainPoints({ forceRefresh } = {}) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()

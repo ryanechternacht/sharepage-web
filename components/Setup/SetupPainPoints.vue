@@ -14,13 +14,16 @@
       class="mt-1"
       placeholder="Add Pain Point One Line Description"
       @keyup.enter="checkReady('description')">
-    <button
-      class="mt-2 bg-purple-dark w-[10rem] h-[2.5rem] rounded-md text-white"
-      @click="checkReady('button')">
-      Add Pain Point
-    </button>
+    <SubmitButton
+      class="mt-2 w-[10rem] h-[2.5rem]"
+      :submission-state="submissionState" 
+      ready-text="Add Pain Point"
+      submitting-text="Saving Pain Point"
+      submitted-text="Pain Point Saved"
+      @click="checkReady('button')"/>
+
     <div class="mt-10 w-full max-w-[800px]">
-      <h3>🚀 Who our product serves:</h3>
+      <h3>🚀 Which customer pain points we solve:</h3>
       <ul>
         <li v-for="p in painPoints" class="list-disc ml-4">
           <span class="font-bold">{{ p.title }}: </span>
@@ -35,6 +38,7 @@
 import { useOrganizationStore } from '@/stores/organization'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { storeToRefs } from 'pinia'
+import { useSubmit } from '@/composables/useSubmit'
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -46,6 +50,12 @@ const [organization, painPoints] = await Promise.all([
   getOrganizationCached.value(),
   getPainPointsCached.value(),
 ])
+
+const { submissionState, submitFn } = useSubmit(async () => 
+  await painPointsStore.createPainPoint({ painPoint: {
+    title: painPointTitle.value,
+    description: painPointDescription.value
+  }}))
 
 const painPointTitle = ref('')
 const painPointDescription = ref('')
