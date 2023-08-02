@@ -14,10 +14,15 @@ export const useFeaturesStore = defineStore('features', {
     }
   },
   actions: {
-    // save(buyersphere) {
-    //   // TODO call out to a backend
-    //   this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
-    // },
+    async createFeature({ feature }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch("/v0.1/features", {
+        method: "POST",
+        body: feature
+      })
+
+      this.features.content.push(data.value)
+    },
     async fetchFeatures({ forceRefresh } = {}) {
       const { apiFetch } = useNuxtApp()
       const dayjs = useDayjs()

@@ -44,15 +44,36 @@
 
   .gray {
     @apply text-gray-text;
+
+    * {
+      @apply text-gray-text;
+    }
   }
 
   .gray-italic {
     @apply text-gray italic;
+
+    * {
+      @apply text-gray-text;
+    }
   }
 
   input {
     @apply p-2 body bg-gray-light rounded-md;
     @apply gray;
+
+    &:focus-visible {
+      outline: 0;
+    }
   }
 
+  ul {
+    list-style: circle;
+    list-style-position: inside;
+  }
+
+  ol {
+    list-style: decimal;
+    list-style-position: inside;
+  }
 }

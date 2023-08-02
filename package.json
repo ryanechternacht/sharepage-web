@@ -21,6 +21,10 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
     "@tinymce/tinymce-vue": "^5",
+    "@tiptap/extension-placeholder": "^2.0.4",
+    "@tiptap/pm": "^2.0.4",
+    "@tiptap/starter-kit": "^2.0.4",
+    "@tiptap/vue-3": "^2.0.4",
     "pinia": "^2.1.3"
   }
 }
