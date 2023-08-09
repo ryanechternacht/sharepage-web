@@ -22,7 +22,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     if (!requestOptions.headers) {
       requestOptions.headers = {}
     }
-    // requestOptions.headers['buyersphere-organization'] = subdomain
     if (process.server) {
       const headers = useRequestHeaders(['cookie'])
       requestOptions.headers = {...requestOptions.headers, ...headers}

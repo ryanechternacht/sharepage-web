@@ -125,9 +125,7 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
-import { useUserStore  } from '@/stores/user';
-import lodash_pkg from 'lodash';
-const { groupBy } = lodash_pkg;
+import { useUsersStore  } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
@@ -139,13 +137,13 @@ const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const userStore = useUserStore()
-const { getUserCached } = storeToRefs(userStore)
+const usersStore = useUsersStore()
+const { getMeCached } = storeToRefs(usersStore)
 
 const [buyersphere, organization, user] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
-  getUserCached.value()
+  getMeCached.value()
 ])
 
 // store.$subscribe(() => {

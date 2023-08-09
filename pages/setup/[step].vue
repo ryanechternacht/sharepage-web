@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { useUserStore  } from '@/stores/user'
+import { useUsersStore  } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { usePersonasStore } from '@/stores/personas'
@@ -81,8 +81,8 @@ import { storeToRefs } from 'pinia'
 const route = useRoute()
 const step = route.params.step
 
-const userStore = useUserStore()
-const { getUserCached } = storeToRefs(userStore)
+const usersStore = useUsersStore()
+const { getMeCached } = storeToRefs(usersStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -97,7 +97,7 @@ const featuresStore = useFeaturesStore()
 const { getFeaturesCached } = storeToRefs(featuresStore)
 
 const [user, organization, painPoints, personas, features] = await Promise.all([
-  getUserCached.value(),
+  getMeCached.value(),
   getOrganizationCached.value(),
   getPainPointsCached.value(),
   getPersonasCached.value(),

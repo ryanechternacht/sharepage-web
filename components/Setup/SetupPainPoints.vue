@@ -51,23 +51,20 @@ const [organization, painPoints] = await Promise.all([
   getPainPointsCached.value(),
 ])
 
+const painPointTitle = ref('')
+const painPointDescription = ref('')
+const titleElem = ref(null)
+const descriptionElem = ref(null)
+
 const { submissionState, submitFn } = useSubmit(async () => 
   await painPointsStore.createPainPoint({ painPoint: {
     title: painPointTitle.value,
     description: painPointDescription.value
   }}))
 
-const painPointTitle = ref('')
-const painPointDescription = ref('')
-const titleElem = ref(null)
-const descriptionElem = ref(null)
-
 async function checkReady(elem) {
   if (painPointTitle.value && painPointDescription.value) {
-    await painPointsStore.createPainPoint({ painPoint: {
-      title: painPointTitle.value,
-      description: painPointDescription.value
-    }})
+    submitFn()
     painPointTitle.value = ''
     painPointDescription.value = ''
     titleElem.value.focus()
