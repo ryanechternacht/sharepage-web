@@ -23,13 +23,12 @@
       @click="checkReady('button')"/>
 
     <div class="mt-10 w-full max-w-[800px]">
-      <h3>🚀 Who our product serves:</h3>
-      <ul>
-        <li v-for="p in personas" class="list-disc ml-4">
-          <span class="font-bold">{{ p.title }}: </span>
-          <span>{{ p.description }}</span>
-        </li>
-      </ul>
+      <h3 class="mb-2">🚀 Who our product serves:</h3>
+      <SetupItems
+        :items="personas"
+        @update-item="updateItem"
+        @delete-item="deleteItem"
+      />
     </div>
   </div>
 </template>
@@ -73,6 +72,14 @@ async function checkReady(elem) {
   } else {
     titleElem.value.focus()
   }
+}
+
+async function deleteItem({ item }) {
+  await personasStore.deletePersona({ persona: item })
+}
+
+async function updateItem({ item }) {
+  await personasStore.updatePersona({ persona: item })
 }
 </script>
 
