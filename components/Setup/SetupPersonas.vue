@@ -26,9 +26,8 @@
       <h3 class="mb-2">🚀 Who our product serves:</h3>
       <SetupItems
         :items="personas"
-        @update-item="updateItem"
-        @delete-item="deleteItem"
-      />
+        @update-item="updatePersona"
+        @delete-item="deletePersona" />
     </div>
   </div>
 </template>
@@ -74,11 +73,11 @@ async function checkReady(elem) {
   }
 }
 
-async function deleteItem({ item }) {
+async function deletePersona({ item }) {
   await personasStore.deletePersona({ persona: item })
 }
 
-async function updateItem({ item }) {
+async function updatePersona({ item }) {
   await personasStore.updatePersona({ persona: item })
 }
 </script>

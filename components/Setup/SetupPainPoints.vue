@@ -24,12 +24,10 @@
 
     <div class="mt-10 w-full max-w-[800px]">
       <h3>🚀 Which customer pain points we solve:</h3>
-      <ul>
-        <li v-for="p in painPoints" class="list-disc ml-4">
-          <span class="font-bold">{{ p.title }}: </span>
-          <span>{{ p.description }}</span>
-        </li>
-      </ul>
+      <SetupItems
+        :items="painPoints"
+        @update-item="updatePainPoint"
+        @delete-item="deletePainPoint" />
     </div>
   </div>
 </template>
@@ -73,6 +71,14 @@ async function checkReady(elem) {
   } else {
     titleElem.value.focus()
   }
+}
+
+async function deletePainPoint({ item }) {
+  await painPointsStore.deletePainPoint({ painPoint: item })
+}
+
+async function updatePainPoint({ item }) {
+  await painPointsStore.updatePainPoint({ painPoint: item })
 }
 </script>
 

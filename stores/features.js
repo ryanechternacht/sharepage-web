@@ -13,6 +13,14 @@ export const useFeaturesStore = defineStore('features', {
       return state.features.content
     }
   },
+  async deleteFeature({ feature }) {
+    const { apiFetch } = useNuxtApp()
+    const { data } = await apiFetch(`/v0.1/features/${feature.id}`, {
+      method: 'DELETE',
+    })
+
+    remove(this.features.content, f => f.id === feature.id)
+  },
   actions: {
     async createFeature({ feature }) {
       const { apiFetch } = useNuxtApp()
@@ -36,6 +44,16 @@ export const useFeaturesStore = defineStore('features', {
           generatedAt: dayjs().toJSON()
         }
       }
+    },
+    async updateFeature({ feature }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/features/${feature.id}`, {
+        method: 'PUT',
+        body: feature
+      })
+
+      const i = findIndex(this.features.content, f => f.id === feature.id)
+      this.features.content[i] = data.value
     }
   }
 })
