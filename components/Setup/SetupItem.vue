@@ -2,30 +2,24 @@
   <div class="flex flex-row gap-x-1">
     <div class="flex-grow">
       <div v-if="editing" class="flex flex-col gap-y-1 w-full">
-        <input 
-          v-model="itemTitle"
-          class="w-full"
-          placeholder="Add Persona Title">
-        <TipTapTextarea 
-          v-if="featureMode"
-          v-model="itemDescription"
-          class="mt-1 w-full"
-          placeholder="Add Feature Description" />
-        <input
-          v-else
-          v-model="itemDescription"
-          class="w-full"
-          placeholder="Add Persona One Line Description">
+        <slot name="editing" :item="copy" :update-item="updateItem">
+          <input 
+            :value="item.title"
+            class="w-full"
+            placeholder="Add Persona Title"
+            @blur="ev => updateItem('title', ev.target.value)">
+          <input
+            :value="item.description"
+            class="w-full"
+            placeholder="Add Persona One Line Description"
+            @blur="ev => updateItem('description', ev.target.value)">
+        </slot>
       </div>
       <div v-else>
-        <template v-if="featureMode">
-          <h3 class="mb-1">Feature #{{ index + 1 }} {{ item.title }}</h3>
-          <span class="gray inline-html" v-html="item.description" />
-        </template>
-        <template v-else>
+        <slot name="display" :item="item" :index="index">
           <span class="font-bold">{{ item.title }}: </span>
           <span>{{ item.description }}</span>
-        </template>
+        </slot>
       </div>
     </div>
     <div class="cursor-pointer">
@@ -49,30 +43,26 @@
 import lodash_pkg from 'lodash';
 const { cloneDeep } = lodash_pkg;
 
-// "feature-mode" is the differential rendering for the features version
-// it (and only it) also uses the index prop
 const props = defineProps({ 
   item: Object, 
-  featureMode: Boolean,
   index: Number
 })
 const emit = defineEmits(['updateItem', 'deleteItem'])
+const copy = ref(null)
 
 const editing = ref(false)
-const itemTitle = ref(null)
-const itemDescription = ref(null)
 
 function startEditing () {
-  itemTitle.value = props.item.title
-  itemDescription.value = props.item.description
+  copy.value = cloneDeep(props.item)
   editing.value = true
 }
 
+function updateItem (field, value) {
+  copy.value[field] = value
+}
+
 function commitChanges() {
-  const clone = cloneDeep(props.item)
-  clone.title = itemTitle.value
-  clone.description = itemDescription.value
-  emit('updateItem', { item: clone })
+  emit('updateItem', { item: copy.value })
   editing.value = false;
 }
 

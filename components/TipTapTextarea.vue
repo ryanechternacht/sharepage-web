@@ -25,7 +25,7 @@ const editor = useEditor({
       placeholder: props.placeholder,
     })
   ],
-  onUpdate() {
+  onBlur() {
     emit('update:modelValue', editor.value.getHTML())
   }
 })

@@ -24,9 +24,26 @@
     <div class="mt-10 w-full max-w-[800px]">
       <SetupItems
         :items="features"
-        :feature-mode="true" 
         @update-item="updateFeature"
-        @delete-item="deleteFeature" />
+        @delete-item="deleteFeature">
+        <template #display="{ index, item }">
+          <h3 class="mb-1">Feature #{{ index + 1 }} {{ item.title }}</h3>
+          <span class="gray inline-html" v-html="item.description" />
+        </template>
+
+        <template #editing="{ item, updateItem }">
+          <input 
+            :value="item.title"
+            class="w-full"
+            placeholder="Add Feature Title"
+            @blur="ev => updateItem('title', ev.target.value)">
+          <TipTapTextarea 
+            :model-value="item.description"
+            class="mt-1 w-full"
+            placeholder="Add Feature Description" 
+            @update:model-value="ev => updateItem('description', ev) "/>
+        </template>
+      </SetupItems> 
     </div>
   </div>
 </template>

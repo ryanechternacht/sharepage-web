@@ -6,7 +6,14 @@
       :index="i"
       :feature-mode="featureMode"
       @update-item="updateItem"
-      @delete-item="deleteItem" />
+      @delete-item="deleteItem">
+      <template #editing="{item, updateItem }">
+        <slot name="editing" :item="item" :update-item="updateItem" />
+      </template>
+      <template #display="{ index, item }">
+        <slot name="display" :item="item" :index="index" />
+      </template>
+    </SetupItem>
   </div>
 </template>
 
