@@ -1,15 +1,21 @@
 <template>
-  <div class="flex flex-col gap-y-2">
+  <div class="flex flex-col gap-y-4">
     <SetupItem
-      v-for="item in items"
+      v-for="(item, i) in items"
       :item="item"
+      :index="i"
+      :feature-mode="featureMode"
       @update-item="updateItem"
       @delete-item="deleteItem" />
   </div>
 </template>
 
 <script setup>
-const props = defineProps({ items: Array })
+// "feature-mode" is the differential rendering for the features version
+const props = defineProps({ 
+  items: Array, 
+  featureMode: { type: Boolean, default: false} 
+})
 const emit = defineEmits(['updateItem', 'deleteItem'])
 
 function updateItem ({ item }) {

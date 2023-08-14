@@ -23,7 +23,7 @@
       @click="checkReady('button')"/>
 
     <div class="mt-10 w-full max-w-[800px]">
-      <h3 class="mb-2">🚀 Who our product serves:</h3>
+      <h3 class="mb-4">🚀 Who our product serves:</h3>
       <SetupItems
         :items="personas"
         @update-item="updatePersona"

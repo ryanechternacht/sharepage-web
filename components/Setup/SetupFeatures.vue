@@ -21,11 +21,12 @@
       submitted-text="Feature Saved"
       @click="checkReady('button')"/>
 
-    <div class="flex flex-col gap-y-4 mt-8">
-      <div v-for="(f, i) in features" class="w-full max-w-[800px]">
-        <h3 class="mb-1">Feature #{{ i + 1 }} {{ f.title }}</h3>
-        <span class="gray inline-html" v-html="f.description" />
-      </div>
+    <div class="mt-10 w-full max-w-[800px]">
+      <SetupItems
+        :items="features"
+        :feature-mode="true" 
+        @update-item="updateFeature"
+        @delete-item="deleteFeature" />
     </div>
   </div>
 </template>
@@ -70,18 +71,18 @@ async function checkReady(elem) {
     titleElem.value.focus()
   }
 }
+
+async function deleteFeature({ item }) {
+  await featuresStore.deleteFeature({ feature: item })
+}
+
+async function updateFeature({ item }) {
+  await featuresStore.updateFeature({ feature: item })
+}
 </script>
 
 <style lang="postcss" scoped>
 input {
   @apply w-full max-w-[600px];
-}
-
-.inline-html :deep() p:first-child {
-  display: inline;
-}
-
-.inline-html :deep() li p {
-  display: inline;
 }
 </style>

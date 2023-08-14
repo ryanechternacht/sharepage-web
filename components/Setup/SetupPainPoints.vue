@@ -23,7 +23,7 @@
       @click="checkReady('button')"/>
 
     <div class="mt-10 w-full max-w-[800px]">
-      <h3>🚀 Which customer pain points we solve:</h3>
+      <h3 class="mb-4">✅ Which customer pain points we solve:</h3>
       <SetupItems
         :items="painPoints"
         @update-item="updatePainPoint"

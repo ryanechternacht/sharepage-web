@@ -6,14 +6,26 @@
           v-model="itemTitle"
           class="w-full"
           placeholder="Add Persona Title">
+        <TipTapTextarea 
+          v-if="featureMode"
+          v-model="itemDescription"
+          class="mt-1 w-full"
+          placeholder="Add Feature Description" />
         <input
+          v-else
           v-model="itemDescription"
           class="w-full"
           placeholder="Add Persona One Line Description">
       </div>
       <div v-else>
-        <span class="font-bold">{{ item.title }}: </span>
-        <span>{{ item.description }}</span>
+        <template v-if="featureMode">
+          <h3 class="mb-1">Feature #{{ index + 1 }} {{ item.title }}</h3>
+          <span class="gray inline-html" v-html="item.description" />
+        </template>
+        <template v-else>
+          <span class="font-bold">{{ item.title }}: </span>
+          <span>{{ item.description }}</span>
+        </template>
       </div>
     </div>
     <div class="cursor-pointer">
@@ -37,7 +49,13 @@
 import lodash_pkg from 'lodash';
 const { cloneDeep } = lodash_pkg;
 
-const props = defineProps({ item: Object })
+// "feature-mode" is the differential rendering for the features version
+// it (and only it) also uses the index prop
+const props = defineProps({ 
+  item: Object, 
+  featureMode: Boolean,
+  index: Number
+})
 const emit = defineEmits(['updateItem', 'deleteItem'])
 
 const editing = ref(false)
@@ -68,5 +86,12 @@ function deleteItem() {
 </script>
 
 <style lang="postcss" scoped>
+/* TODO should these be global? */
+.inline-html :deep() p:first-child {
+  display: inline;
+}
 
+.inline-html :deep() li p {
+  display: inline;
+}
 </style>

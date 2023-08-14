@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import lodash_pkg from 'lodash';
+const { remove, findIndex } = lodash_pkg;
 
 function is10MinutesOld(jsonTimestamp) {
   const dayjs = useDayjs()
@@ -13,14 +15,6 @@ export const useFeaturesStore = defineStore('features', {
       return state.features.content
     }
   },
-  async deleteFeature({ feature }) {
-    const { apiFetch } = useNuxtApp()
-    const { data } = await apiFetch(`/v0.1/features/${feature.id}`, {
-      method: 'DELETE',
-    })
-
-    remove(this.features.content, f => f.id === feature.id)
-  },
   actions: {
     async createFeature({ feature }) {
       const { apiFetch } = useNuxtApp()
@@ -30,6 +24,14 @@ export const useFeaturesStore = defineStore('features', {
       })
 
       this.features.content.push(data.value)
+    },
+    async deleteFeature({ feature }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/features/${feature.id}`, {
+        method: 'DELETE',
+      })
+  
+      remove(this.features.content, f => f.id === feature.id)
     },
     async fetchFeatures({ forceRefresh } = {}) {
       const { apiFetch } = useNuxtApp()
