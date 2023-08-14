@@ -30,7 +30,7 @@
       ready-text="Add Persona"
       submitting-text="Saving Persona"
       submitted-text="Persona Saved"
-      @click="checkReady('button')"/>
+      @click="checkReady('button')" />
 
     <div class="mt-10 w-full max-w-[400px]">
       <h3 class="text-center">Current Users:</h3>
