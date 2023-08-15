@@ -7,7 +7,7 @@
       :feature-mode="featureMode"
       @update-item="updateItem"
       @delete-item="deleteItem">
-      <template #editing="{item, updateItem }">
+      <template #editing="{ item, updateItem }">
         <slot name="editing" :item="item" :update-item="updateItem" />
       </template>
       <template #display="{ index, item }">

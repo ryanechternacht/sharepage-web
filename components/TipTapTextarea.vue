@@ -1,8 +1,7 @@
 <template>
   <editor-content 
     :editor="editor" 
-    class="editor p-2 body gray bg-gray-light rounded-md min-h-[50px]"
-    />
+    class="editor p-2 body gray bg-gray-light rounded-md min-h-[50px]" />
 </template>
 
 <script setup>
