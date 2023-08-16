@@ -148,7 +148,7 @@ const { submissionState, submitFn } = useSubmit(async () =>
   await pricingTiersStore.createPricingTier({ pricingTier: {
     title: pricingTierTitle.value,
     bestFor: pricingTierBestFor.value,
-    amountPeriodPeriod: pricingTierAmountPerPeriod.value,
+    amountPerPeriod: pricingTierAmountPerPeriod.value,
     amountOther: pricingTierAmountOther.value,
     periodType: pricingTierPeriodType.value,
     description: pricingTierDescription.value
