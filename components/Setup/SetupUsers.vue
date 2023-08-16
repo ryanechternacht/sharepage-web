@@ -7,29 +7,29 @@
         v-model="firstName"
         ref="firstNameElem"
         placeholder="First Name"
-        @keyup.enter="checkReady('firstName')">
+        @keyup.enter="checkReady()">
       <input
         v-model="lastName"
         ref="lastNameElem"
         placeholder="Last Name"
-        @keyup.enter="checkReady('lastName')">
+        @keyup.enter="checkReady()">
       <input
         v-model="roleTitle"
         ref="roleTitleElem"
         placeholder="Role Title"
-        @keyup.enter="checkReady('roleTitle')">
+        @keyup.enter="checkReady()">
       <input
         v-model="email"
         ref="emailElem"
         placeholder="Email"
-        @keyup.enter="checkReady('email')">
+        @keyup.enter="checkReady()">
     </div>
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"
       :submission-state="submissionState" 
-      ready-text="Add Persona"
-      submitting-text="Saving Persona"
-      submitted-text="Persona Saved"
+      ready-text="Add User"
+      submitting-text="Saving User"
+      submitted-text="User Saved"
       @click="checkReady('button')" />
 
     <div class="mt-10 w-full max-w-[400px]">
@@ -66,9 +66,9 @@ const emailElem = ref(null)
 
 const { submissionState, submitFn } = useSubmit(async () => 
   await usersStore.createUser({ user: {
-    first_name: firstName.value,
-    last_name: lastName.value,
-    display_role: roleTitle.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    displayRole: roleTitle.value,
     email: email.value
   }}))
 

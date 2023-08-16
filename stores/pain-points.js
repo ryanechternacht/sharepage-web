@@ -43,7 +43,7 @@ export const usePainPointsStore = defineStore('pain-points', {
       if (!this.painPoints.content
           || forceRefresh
           || is10MinutesOld(this.painPoints.generatedAt)) {
-        const { data } = await apiFetch(`/v0.1/pain-points`)
+        const { data } = await apiFetch('/v0.1/pain-points')
         this.painPoints = {
           content: data,
           generatedAt: dayjs().toJSON()

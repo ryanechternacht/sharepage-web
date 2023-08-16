@@ -103,10 +103,10 @@ const [organization, pricingTiers] = await Promise.all([
 const { submissionState, submitFn } = useSubmit(async () =>
   await pricingTiersStore.createPricingTier({ pricingTier: {
     title: pricingTierTitle.value,
-    best_for: pricingTierBestFor.value,
-    amount_period_period: pricingTierAmountPerPeriod.value,
-    amount_other: pricingTierAmountOther.value,
-    period_type: pricingTierPeriodType.value,
+    bestFor: pricingTierBestFor.value,
+    amountPeriodPeriod: pricingTierAmountPerPeriod.value,
+    amountOther: pricingTierAmountOther.value,
+    periodType: pricingTierPeriodType.value,
     description: pricingTierDescription.value
   }}))
 

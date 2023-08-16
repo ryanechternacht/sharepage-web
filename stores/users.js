@@ -24,7 +24,7 @@ export const useUsersStore = defineStore('users', {
   actions: {
     async createUser({ user }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch("/v0.1/users", {
+      const { data } = await apiFetch('/v0.1/users', {
         method: "POST",
         body: user
       })
@@ -35,7 +35,7 @@ export const useUsersStore = defineStore('users', {
       const { apiFetch } = useNuxtApp()
 
       if (!this.me || forceRefresh) {
-        const { data, error } = await apiFetch("/v0.1/users/me")
+        const { data, error } = await apiFetch('/v0.1/users/me')
         this.me = data
       }
     },
@@ -46,7 +46,7 @@ export const useUsersStore = defineStore('users', {
       if (!this.users.content
           || forceRefresh
           || is10MinutesOld(this.users.generatedAt)) {
-        const { data } = await apiFetch("/v0.1/users")
+        const { data } = await apiFetch('/v0.1/users')
         this.users = {
           content: data,
           generateAt: dayjs().toJSON()

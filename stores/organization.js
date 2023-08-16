@@ -17,7 +17,7 @@ export const useOrganizationStore = defineStore('organization', {
       const { apiFetch } = useNuxtApp()
 
       if (!this.organization || forceRefresh) {
-        const { data } = await apiFetch(`/v0.1/organization`)
+        const { data } = await apiFetch('/v0.1/organization')
         this.organization = data
       }
     },

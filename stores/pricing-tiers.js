@@ -43,7 +43,7 @@ export const usePricingTiersStore = defineStore('pricing-tiers', {
       if (!this.pricingTiers.content
           || forceRefresh
           || is10MinutesOld(this.pricingTiers.generatedAt)) {
-        const { data } = await apiFetch(`/v0.1/pricing-tiers`)
+        const { data } = await apiFetch('/v0.1/pricing-tiers')
         this.pricingTiers = {
           content: data,
           generatedAt: dayjs().toJSON()
