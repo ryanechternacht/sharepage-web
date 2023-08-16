@@ -8,8 +8,4 @@
 </template>
 
 <style lang="postcss">
-.router-link-active {
-  @apply border-b-2 border-blue;
-}
-
 </style>

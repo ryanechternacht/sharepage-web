@@ -16,7 +16,8 @@
       <div class="flex flex-row items-center gap-x-[2.25rem] relative">
         <NuxtLink
           to="/setup/company" 
-          class="step-box step-box-complete">Company</NuxtLink>
+          class="step-box"
+          :class="{'step-box-complete': hasCompany}">Company</NuxtLink>
         <NuxtLink
           to="/setup/personas" 
           class="step-box"
@@ -77,12 +78,14 @@ import { usePainPointsStore } from '@/stores/pain-points'
 import { usePersonasStore } from '@/stores/personas'
 import { useFeaturesStore } from '@/stores/features'
 import { storeToRefs } from 'pinia'
+import { usePricingTiersStore } from '@/stores/pricing-tiers'
+import { useDealTimingStore } from '@/stores/deal-timing'
 
 const route = useRoute()
 const step = route.params.step
 
 const usersStore = useUsersStore()
-const { getMeCached } = storeToRefs(usersStore)
+const { getMeCached, getUsersCached } = storeToRefs(usersStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -96,20 +99,32 @@ const { getPersonasCached } = storeToRefs(personasStore)
 const featuresStore = useFeaturesStore()
 const { getFeaturesCached } = storeToRefs(featuresStore)
 
-const [user, organization, painPoints, personas, features] = await Promise.all([
+const pricingTiersStore = usePricingTiersStore()
+const { getPricingTiersCached } = storeToRefs(pricingTiersStore)
+
+const dealTimingStore = useDealTimingStore()
+const { getDealTimingCached } = storeToRefs(dealTimingStore)
+
+const [user, organization, painPoints, personas, features, 
+       pricingTiers, dealTiming, users] 
+  = await Promise.all([
   getMeCached.value(),
   getOrganizationCached.value(),
   getPainPointsCached.value(),
   getPersonasCached.value(),
   getFeaturesCached.value(),
+  getPricingTiersCached.value(),
+  getDealTimingCached.value(),
+  getUsersCached.value()
 ])
 
+const hasCompany = false
 const hasPersonas = personas.length
 const hasPainPoints = painPoints.length
 const hasFeatures = features.length
-const hasPricingTiers = false
-const hasDealTiming = false
-const hasUsers = false
+const hasPricingTiers = pricingTiers.length
+const hasDealTiming = dealTiming.decisionDays
+const hasUsers = users.length > 1
 </script>
 
 <style lang="postcss" scoped>
