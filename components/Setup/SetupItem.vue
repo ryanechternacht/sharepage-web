@@ -22,7 +22,7 @@
         </slot>
       </div>
     </div>
-    <div class="cursor-pointer">
+    <div class="ml-3 cursor-pointer">
       <div v-if="editing" @click="commitChanges">✔️</div>
       <img v-else @click="startEditing" src="/svg/edit.svg">
     </div>

@@ -35,12 +35,12 @@
           <input 
             :value="item.title"
             class="w-full"
-            placeholder="Add Feature Title"
+            placeholder="Update Feature Title"
             @blur="ev => updateItem('title', ev.target.value)">
           <TipTapTextarea 
             :model-value="item.description"
             class="mt-1 w-full"
-            placeholder="Add Feature Description" 
+            placeholder="Update Feature Description" 
             @update:model-value="ev => updateItem('description', ev) "/>
         </template>
       </SetupItems> 
