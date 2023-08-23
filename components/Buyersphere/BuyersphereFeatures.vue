@@ -9,17 +9,17 @@
     <h3 class="gray italic text-center">Select what features you would like to explore</h3>
     <template v-for="(f, i) in globalFeatures">
       <div class="flex flex-cols justify-center gap-x-2 h-full">
-        <PButton 
+        <PButton
           variant="gray-light"
           size="large"
           :selected="myFeatures?.interests[f.id] === 'yes'"
           @click="saveFeatureInterest(f.id, 'yes')">✅</PButton>
-        <PButton 
+        <PButton
           variant="gray-light"
           size="large"
           :selected="myFeatures?.interests[f.id] === 'maybe'"
           @click="saveFeatureInterest(f.id, 'maybe')">🚧</PButton>
-        <PButton 
+        <PButton
           variant="gray-light"
           size="large"
           :selected="myFeatures?.interests[f.id] === 'no'"
