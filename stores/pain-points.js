@@ -15,7 +15,7 @@ export const usePainPointsStore = defineStore('pain-points', {
     getPainPointsCached: (state) => async () => {
       await state.fetchPainPoints()
       return state.painPoints.content
-    },
+  },
     get: (state) => state.painPoints.content
   },
   actions: {

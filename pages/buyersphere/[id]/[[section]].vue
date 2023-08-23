@@ -125,7 +125,7 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
-import { useUsersStore  } from '@/stores/users';
+import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
