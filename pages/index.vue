@@ -14,23 +14,23 @@
     </div>
 
     <div class="flex flex-col items-center">
-      <h1 class="mt-40">
+      <h1 class="mt-20">
         Show me 
-        <select v-model="owner" class="big-select bg-green">
+        <select v-model="owner" class="big-select bg-green-muted">
           <option :value="null">Anyone's</option>
           <option :value="user.id">My</option>
           <option v-for="u in usersExceptMe" :value="u.id">
             {{ u.firstName }} {{ u.lastName }}'s
           </option>
         </select>
-        <select v-model="status" class="big-select bg-blue">
+        <select v-model="status" class="big-select bg-blue-muted">
           <option>Active</option>
           <option>Not Active</option>
           <option>On Hold</option>
           <option>Opt Out</option>
         </select>
         Opportunities in
-        <select v-model="stage" class="big-select bg-purple">
+        <select v-model="stage" class="big-select bg-purple-muted">
           <option :value="null">All Opportunities</option>
           <option value="qualification">Qualification</option>
           <option value="evaluation">Evaluation</option>
@@ -39,7 +39,7 @@
         Stage
       </h1>
 
-      <button class="bg-purple-dark w-[10rem] h-[2.5rem] mt-8 text-white rounded">
+      <button class="bg-green-darker w-[10rem] h-[2.5rem] mt-8 text-white rounded">
         Add
       </button>
 
@@ -47,9 +47,9 @@
         <template v-for="b in buyerspheres">
           <Logo :src="b.buyerLogo" size="large" />
           <h3>{{ b.buyer }}</h3>
-          <Tag :bg="stageBgColor(b.currentStage)">{{ capitalize(b.currentStage) }}</Tag>
-          <Tag bg="bg-yellow-light">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
-          <div><Tag v-if="isOverdue(b)" bg="bg-red-light">Overdue</Tag></div>
+          <Tag :color="stageColor(b.currentStage)">{{ capitalize(b.currentStage) }}</Tag>
+          <Tag color="yellow">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
+          <div><Tag v-if="isOverdue(b)" color="red">Overdue</Tag></div>
         </template>
       </div>
     </div>
@@ -98,12 +98,12 @@ watch(owner, () => refresh, { flush: 'post' })
 watch(status, () => refresh, { flush: 'post' })
 watch(stage, () => refresh, { flush: 'post' })
 
-function stageBgColor (stage) {
+function stageColor (stage) {
   return {
-    'closed': 'bg-gray-lighter',
-    'qualification': 'bg-blue-light',
-    'evaluation': 'bg-green-light',
-    'decision': 'bg-red-light'
+    'closed': 'gray',
+    'qualification': 'blue',
+    'evaluation': 'green',
+    'decision': 'red'
   }[stage]
 }
 

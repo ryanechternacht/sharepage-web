@@ -13,15 +13,15 @@
           <Tag 
             width="5.5rem" 
             height="1.125rem" 
-            bg="bg-green-lightest">Next Stage</Tag>
+            color="green">Next Stage</Tag>
           <Tag 
             width="5.5rem" 
             height="1.125rem" 
-            bg="bg-yellow-lightest">Put on Hold</Tag>
+            color="orange">Put on Hold</Tag>
           <Tag 
             width="5.5rem" 
             height="1.125rem" 
-            bg="bg-red-light">Opt Out</Tag>
+            color="red">Opt Out</Tag>
         </div>
       </div>
       <div 

@@ -1,7 +1,7 @@
 <template>
   <div 
     :style="{ width, height }"
-    :class="[bg]"
+    :class="[bgColor]"
     class="flex flex-col items-center rounded-full justify-center px-2 py-[2px]">
     <div class="gray tag">
       <slot />
@@ -10,7 +10,20 @@
 </template>
 
 <script setup>
-const props = defineProps({ bg: String, width: String, height: String })
+const { color } = defineProps({ color: String, width: String, height: String })
+
+const bgColor = computed(() => {
+  return {
+    'teal': 'bg-teal-muted',
+    'blue': 'bg-blue-muted',
+    'green': 'bg-green-muted',
+    'purple': 'bg-purple-muted',
+    'orange': 'bg-orange-muted',
+    'red': 'bg-red-muted',
+    'gray': 'bg-gray-lighter',
+    'yellow': 'yellow-muted'
+  }[color ?? 'gray']
+})
 </script>
 
 <style lang="postcss" scoped>

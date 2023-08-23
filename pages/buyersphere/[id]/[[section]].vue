@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <NuxtLoadingIndicator /> -->
-    <div class="bg-purple-lightest min-h-screen">
+    <div class="bg-teal-white min-h-screen">
       <div class="sticky">
         <div class="flex flex-row items-center p-8 h-12 justify-between">
           <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
@@ -24,7 +24,7 @@
               style="grid-area: logo" />
             <h3 style="grid-area: company">{{ buyersphere.buyer }}</h3>
             <Tag
-              bg="bg-gray-lighter"
+              color="gray"
               width="3.75rem"
               height="0.75rem"
               style="grid-area: label">Buyer</Tag>
@@ -36,7 +36,7 @@
               style="grid-area: logo" />
             <h3 style="grid-area: company">{{ organization.name }}</h3>
             <Tag
-              bg="bg-gray-lighter"
+              color="gray"
               width="3.75rem"
               height="0.75rem"
               style="grid-area: label">Seller</Tag>
@@ -168,7 +168,7 @@ function saveOverview (overview) {
 }
 
 section {
-  @apply bg-white rounded-md py-2 px-3;
+  @apply bg-white rounded-md py-2 px-3 border border-gray-light;
 }
 
 .logo-section {
@@ -192,6 +192,6 @@ section {
 }
 
 .router-link-active {
-  @apply bg-purple rounded-full text-white px-2 py-[1px];
+  @apply bg-green-darker rounded-full text-white px-2 py-[1px];
 }
 </style>

@@ -9,6 +9,7 @@ module.exports = {
         mid: '#08C4B2',
         light: '#7DEAD5',
         muted: '#E2F7F3',
+        white: '#f3fffc'
       },
       blue: {
         primary: '#0A2960',
@@ -21,6 +22,7 @@ module.exports = {
         primary: '#040404',
       },
       green: {
+        darker: '#1F605D',
         dark: '#006B40',
         mid: '#59CB59',
         light: '#98E58E',
@@ -51,11 +53,14 @@ module.exports = {
         dark: '#364141',
         darkest: '#273333',
       },
-      white: '#fff'
+      white: '#fff',
+      yellow: {
+        muted: '#FFF9E5',
+      },
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      serif: ['Bitter', 'serif'],
+      rajdhani: ['Rajdhani', 'sans-serif']
     },
   },
 }

@@ -25,7 +25,7 @@ const emit = defineEmits(['click'])
 
 <style lang="postcss" scoped>
 button {
-  @apply p-2 rounded-md bg-blue-dark body;
+  @apply p-2 rounded-md bg-green-darker body;
   
   span {
     @apply font-bold text-white;
