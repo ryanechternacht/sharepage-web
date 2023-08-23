@@ -2,74 +2,54 @@ module.exports = {
   content: ['./src/**/*.{html,js}'],
   theme: {
     colors: {
-      purple: {
-        dark: '#1A1834',
-        DEFAULT: '#4F489D',
-        light: '#8A85C7',
-        lighter: '#CDCBE7',
-        lightest: '#EEEEF7',
-      },
+      // New colors
       teal: {
-        dark: '#083B4C',
-        DEFAULT: '#118AB2',
-        light: '#2EBCEB',
-        lighter: '#8BDAF4',
-        lightest: '#E8F8FD',
+        primary: '#03837C',
+        dark: '#083F3F',
+        mid: '#08C4B2',
+        light: '#7DEAD5',
+        muted: '#E2F7F3',
+      },
+      blue: {
+        primary: '#0A2960',
+        dark: '#0C3F89',
+        mid: '#205BC3',
+        light: '#A1C2F8',
+        muted: '#DEEAFB',
+      },
+      black: {
+        primary: '#040404',
       },
       green: {
-        dark: '#014B38',
-        DEFAULT: '#04D59F',
-        light: '#82FDDD',
-        lighter: '#B4FEEB',
-        lightest: '#E6FFF8',
+        dark: '#006B40',
+        mid: '#59CB59',
+        light: '#98E58E',
+        muted: '#E4F6E4',
       },
-      yellow: {
-        dark: '#B17C01',
-        DEFAULT: '#FEC84D',
-        light: '#FED066',
-        lighter: '#FFE8B3',
-        lightest: '#FFF7E6',
+      purple: {
+        dark: '#6C2277',
+        mid: '#AC44A8',
+        light: '#EC9AF1',
+        muted: '#EAE9F9',
       },
-      pink: {
-        dark: '#750B24',
-        DEFAULT: '#EE476E',
-        light: '#F05C7E',
-        lighter: '#F9B9C8',
-        lightest: '#FDE8ED',
-      },
-
-      // OLD that are saved
-      blue: {
-        dark: '#061247',
-        DEFAULT: '#0b31dd',
-        light: '#e7ebfd'
-      },
-      // teal: {
-      //   dark: '#1f605d',
-      //   DEFAULT: '#5ecbc5',
-      //   light: '#ecf9f8'
-      // },
-      // yellow: {
-      //   dark: '#b38500',
-      //   DEFAULT: '#ffd352',
-      //   light: '#fff9e5'
-      // },
       red: {
-        dark: '#5f2123',
-        DEFAULT: '#973437',
-        light: '#f8ecec'
+        dark: '#931847',
+        mid: '#CE3665',
+        light: '#FFB180',
+        muted: '#FCF0EB',
       },
-      // purple: {
-      //   dark: '#1a1834',
-      //   DEFAULT: '#4f489d',
-      //   light: '#cdcbe7'
-      // },
+      orange: {
+        dark: '#DD9903',
+        mid: '#FFBC00',
+        light: '#FFE16E',
+        muted: '#FFF7E7',
+      },
       gray: {
-        dark: '#1a1834',
-        text: 'rgba(6 18 71 / 0.6)',
-        DEFAULT: 'rgb(26 24 52 / 0.6)',
-        light: 'rgb(26 24 52 / 0.05)',
-        'light-opaque': '#f5f5f5'
+        lighter: '#F3F4F4',
+        light: '#DEE1E1',
+        mid: '#515E5F',
+        dark: '#364141',
+        darkest: '#273333',
       },
       white: '#fff'
     },

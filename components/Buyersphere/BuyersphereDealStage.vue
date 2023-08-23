@@ -3,7 +3,7 @@
     <template v-for="s in stages">
       <div 
         v-if="currentStage === s.name"
-        class="flex-grow flex flex-row items-center bg-gray-light rounded-md w-[6rem] h-full justify-between px-2"
+        class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between px-2"
         >
         <div class="flex-grow flex flex-col gap-y-1">
           <h3 clas=flex-grow>Current Stage: {{ s.name }}</h3>
@@ -26,7 +26,7 @@
       </div>
       <div 
         v-else
-        class="flex flex-col items-center bg-gray-light rounded-md w-[6rem] h-full justify-between py-1"
+        class="flex flex-col items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between py-1"
       >
         <div class="tag gray">Target: {{ s.date }}</div>
         <h3 class="gray">{{ s.name }}</h3>

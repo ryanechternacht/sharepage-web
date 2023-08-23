@@ -24,7 +24,7 @@
               style="grid-area: logo" />
             <h3 style="grid-area: company">{{ buyersphere.buyer }}</h3>
             <Tag
-              bg="bg-gray-light"
+              bg="bg-gray-lighter"
               width="3.75rem"
               height="0.75rem"
               style="grid-area: label">Buyer</Tag>
@@ -36,7 +36,7 @@
               style="grid-area: logo" />
             <h3 style="grid-area: company">{{ organization.name }}</h3>
             <Tag
-              bg="bg-gray-light"
+              bg="bg-gray-lighter"
               width="3.75rem"
               height="0.75rem"
               style="grid-area: label">Seller</Tag>
@@ -188,7 +188,7 @@ section {
 }
 
 .tag.selected {
-  @apply border-b border-gray pb-0.5;
+  @apply border-b border-gray-dark pb-0.5;
 }
 
 .router-link-active {

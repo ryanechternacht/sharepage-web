@@ -30,7 +30,7 @@ const v = ref(props.text)
 
 <style lang="postcss" scoped>
 .editable {
-  @apply text-sm border-b border-gray pb-1;
+  @apply text-sm border-b border-gray-dark pb-1;
 
   &:focus-visible {
     @apply outline-0;
@@ -39,7 +39,7 @@ const v = ref(props.text)
 
 .readonly {
   :deep(p), :deep(div), :deep(ul), :deep(ol) {
-    @apply text-gray-text;
+    @apply text-gray-mid;
   }
 }
 

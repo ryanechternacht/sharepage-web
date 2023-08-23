@@ -100,7 +100,7 @@ watch(stage, () => refresh, { flush: 'post' })
 
 function stageBgColor (stage) {
   return {
-    'closed': 'bg-gray-light',
+    'closed': 'bg-gray-lighter',
     'qualification': 'bg-blue-light',
     'evaluation': 'bg-green-light',
     'decision': 'bg-red-light'

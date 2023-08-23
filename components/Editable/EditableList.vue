@@ -68,7 +68,7 @@ ul.edit {
   @apply list-disc list-outside ml-4;
 
   textarea {
-    @apply w-full border-b border-gray align-text-top pb-1;
+    @apply w-full border-b border-gray-dark align-text-top pb-1;
 
     &:focus-visible {
       @apply outline-0;

@@ -43,23 +43,23 @@
   }
 
   .gray {
-    @apply text-gray-text;
+    @apply text-gray-mid;
 
     * {
-      @apply text-gray-text;
+      @apply text-gray-mid;
     }
   }
 
   .gray-italic {
-    @apply text-gray italic;
+    @apply text-gray-mid italic;
 
     * {
-      @apply text-gray-text;
+      @apply text-gray-mid;
     }
   }
 
   input, select {
-    @apply p-2 body bg-gray-light rounded-md;
+    @apply p-2 body bg-gray-lighter rounded-md;
     @apply gray;
 
     &:focus-visible {

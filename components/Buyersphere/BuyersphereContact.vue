@@ -4,7 +4,7 @@
       <h3>What's on your mind?</h3>
       <!-- TODO get an autogrow textarea -->
       <textarea 
-        class="bg-gray-light w-3/4 rounded-md p-2 min-h-[40px]"
+        class="bg-gray-lighter w-3/4 rounded-md p-2 min-h-[40px]"
         v-model="newConversation"
       />
       <SubmitButton
