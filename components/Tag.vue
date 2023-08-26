@@ -21,7 +21,7 @@ const bgColor = computed(() => {
     'orange': 'bg-orange-muted',
     'red': 'bg-red-muted',
     'gray': 'bg-gray-lighter',
-    'yellow': 'yellow-muted'
+    'yellow': 'bg-yellow-muted'
   }[color ?? 'gray']
 })
 </script>

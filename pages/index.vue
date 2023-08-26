@@ -58,7 +58,7 @@
             <Tag :color="stageColor(b.currentStage)">{{ capitalize(b.currentStage) }}</Tag>
           </div>
           <div class="grid-cell">
-            <Tag color="yellow">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
+            <Tag :color="pricingColor(b.pricingAnswer)">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
           </div>
           <div class="grid-cell">
             <Tag v-if="isOverdue(b)" color="red">Overdue</Tag>
@@ -123,7 +123,13 @@ function stageColor (stage) {
 function coalescePricingAnswer ({ selectedLevel }) {
   return selectedLevel && Object.keys(selectedLevel).length > 0
     ? selectedLevel
-    : "None Selected"
+    : "$--"
+}
+
+function pricingColor ({ selectedLevel }) {
+  return selectedLevel && Object.keys(selectedLevel).length > 0
+    ? "yellow"
+    : "gray"
 }
 
 const dayjs = useDayjs()

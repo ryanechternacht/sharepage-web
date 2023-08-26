@@ -1,24 +1,23 @@
 <template>
   <div class="container">
     <template v-for="s in stages">
-      <div 
+      <div
         v-if="currentStage === s.name"
-        class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between px-2"
-        >
+        class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between px-2 relative z-[1]">
         <div class="flex-grow flex flex-col gap-y-1">
           <h3 clas=flex-grow>Current Stage: {{ s.name }}</h3>
           <div class="gray">Asking the question, does this solution make sense for us?</div>
         </div>
-        <div class="py-0.5 flex flex-col">
-          <Tag 
+        <div class="py-0.5 flex flex-col gap-y-[2px]">
+          <Tag
             width="5.5rem" 
             height="1.125rem" 
             color="green">Next Stage</Tag>
-          <Tag 
+          <Tag
             width="5.5rem" 
             height="1.125rem" 
             color="orange">Put on Hold</Tag>
-          <Tag 
+          <Tag
             width="5.5rem" 
             height="1.125rem" 
             color="red">Opt Out</Tag>
@@ -26,13 +25,13 @@
       </div>
       <div 
         v-else
-        class="flex flex-col items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between py-1"
-      >
+        class="flex flex-col items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between py-1 z-[1]">
         <div class="tag gray">Target: {{ s.date }}</div>
         <h3 class="gray">{{ s.name }}</h3>
         <div class="tag gray italic">In XXX days</div>
       </div>
     </template>
+    <div class="w-full border border-gray-dark absolute" />
   </div>
 </template>
 
