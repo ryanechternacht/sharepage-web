@@ -45,7 +45,7 @@
 
         <!-- row 1 col 2 -->
         <section>
-          <BuyersphereDealStage />
+          <BuyersphereDealStage :buyersphere="buyersphere" />
         </section>
 
         <!-- row 1 col 3 -->
