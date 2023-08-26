@@ -31,7 +31,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres/${buyersphereId}/features`,
         { method: 'PATCH', body: featuresAnswer }
       )
-      this.buyerspheres[buyersphereId].featuresAnswer = data
+      this.buyerspheres[buyersphereId].content.featuresAnswer = data.value
     },
     async saveStage({ buyersphereId, stage }) {
       const { apiFetch } = useNuxtApp()
@@ -39,7 +39,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres/${buyersphereId}/stage`,
         { method: 'PATCH', body: { stage } }
       )
-      this.buyerspheres[buyersphereId].current_stage = data
+      this.buyerspheres[buyersphereId].content.currentStage = data.value.currentStage
     },
     async saveStatus({ buyersphereId, status }) {
       const { apiFetch } = useNuxtApp()
@@ -47,7 +47,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres/${buyersphereId}/status`,
         { method: 'PATCH', body: { status } }
       )
-      this.buyerspheres[buyersphereId].status = data
+      this.buyerspheres[buyersphereId].content.status = data.value.status
     },
     async fetchBuyersphere({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()

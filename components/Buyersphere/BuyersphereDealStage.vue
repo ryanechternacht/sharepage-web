@@ -6,35 +6,55 @@
         class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6.5rem] h-full justify-between px-2 relative z-[1]">
         <div class="flex-grow flex flex-col gap-y-1">
           <h3 clas=flex-grow>Current Stage: {{ s.name }}</h3>
-          <div class="gray">Asking the question, does this solution make sense for us?</div>
+          <div class="gray">{{ s.description }}</div>
         </div>
-        <div class="py-0.5 flex flex-col gap-y-[2px]">
-          <Tag
-            class="hover:cursor-pointer"
-            width="5.5rem"
-            height="1.125rem"
-            color="green"
-            @click="advanceStage">Next Stage</Tag>
-          <Tag
-            class="hover:cursor-pointer"
-            width="5.5rem"
-            height="1.125rem"
-            color="orange"
-            @click="putOnHold">Put on Hold</Tag>
-          <Tag
-            class="hover:cursor-pointer"
-            width="5.5rem"
-            height="1.125rem"
-            color="red"
-            @click="optOut">Opt Out</Tag>
+        <div v-if="buyersphere.currentStage !== 'adoption'" 
+          class="py-0.5 flex flex-col gap-y-[2px]">
+          <template v-if="buyersphere.status === 'active'">
+            <Tag
+              class="hover:cursor-pointer"
+              width="5.5rem"
+              height="1.125rem"
+              color="green"
+              @click="advanceStage">Next Stage</Tag>
+            <Tag
+              class="hover:cursor-pointer"
+              width="5.5rem"
+              height="1.125rem"
+              color="orange"
+              @click="putOnHold">Put on Hold</Tag>
+            <Tag
+              class="hover:cursor-pointer"
+              width="5.5rem"
+              height="1.125rem"
+              color="red"
+              @click="optOut">Opt Out</Tag>
+          </template>
+          <template v-else>
+            <Tag
+              width="5.5rem"
+              height="1.125rem"
+              color="red"
+              @click="putOnHold">{{ buyersphere.status === 'on-hold' ? 'ON HOLD' : 'OPT OUT' }}</Tag>
+            <Tag
+              class="hover:cursor-pointer"
+              width="5.5rem"
+              height="1.125rem"
+              color="green"
+              @click="activate">Activate?</Tag>
+          </template>
         </div>
       </div>
       <div 
         v-else
         class="flex flex-col items-center bg-gray-lighter rounded-md w-[6.5rem] h-full justify-between py-1 z-[1]">
-        <div class="tag gray">Target: {{ s.date }}</div>
+        <div v-if="currentStageNumber < s.stageNumber" 
+          class="tag gray">Target: {{ s.date }}</div>
+        <div v-else>On {{ s.happenedOn }}</div>
         <h3 class="gray">{{ s.name }}</h3>
-        <div class="tag gray italic">In {{ s.daysTo }} days</div>
+        <div v-if="currentStageNumber < s.stageNumber" 
+          class="tag gray italic">In {{ s.daysTo }} days</div>
+        <div v-else>&nbsp;</div>
       </div>
     </template>
     <div class="w-full border border-gray-dark absolute" />
@@ -49,22 +69,53 @@ const dayjs = useDayjs()
 const { buyersphere } = defineProps({ buyersphere: Object })
 const emit = defineEmits(['update:status', 'update:stage'])
 
-function buildStage (stage, targetDate, happenedOn) {
+const stageMapping = {
+  'qualification': 0,
+  'evaluation': 1,
+  'decision': 2,
+  'adoption': 3
+}
+
+const currentStageNumber = computed(() => stageMapping[buyersphere.currentStage])
+
+function buildStage (stage, stageNumber, description, targetDate, happenedOn) {
   const targetDayjs =  dayjs(new Date(targetDate))
 
   return {
-    name: stage, 
+    name: stage,
+    description,
+    stageNumber,
     date: targetDayjs.format('MMM D'), 
     daysTo: targetDayjs.diff(dayjs(), 'days') + 1,
-    happenedOn: dayjs(new Date(happenedOn))
+    happenedOn: dayjs(new Date(happenedOn)).format('MMM D')
   }
 }
 
 const stages = ref([
-  buildStage('Qualification', buyersphere.qualificationDate, buyersphere.qualifiedOn),
-  buildStage('Evaluation', buyersphere.evaluationDate, buyersphere.evaluatedOn),
-  buildStage('Decision', buyersphere.decisionDate, buyersphere.decidedOn),
-  buildStage('Adopted', buyersphere.adoptionDate, buyersphere.adoptedOn),
+  buildStage(
+    'Qualification',
+    0,
+    'Asking the question, does this solution make sense for us?',
+    buyersphere.qualificationDate,
+    buyersphere.qualifiedOn),
+  buildStage(
+    'Evaluation',
+    1,
+    'Examining in detail if this is the right solution',
+    buyersphere.evaluationDate,
+    buyersphere.evaluatedOn),
+  buildStage(
+    'Decision',
+    2,
+    'Examining in detail if this is the right solution',
+    buyersphere.decisionDate,
+    buyersphere.decidedOn),
+  buildStage(
+    'Adoption',
+    3,
+    'Congrats! Now let\'s make this a success!',
+    buyersphere.adoptionDate,
+    buyersphere.adoptedOn),
 ])
 
 function advanceStage() {
@@ -78,7 +129,6 @@ function advanceStage() {
 
   if (answer) {
     emit('update:stage', { stage: nextStage })
-    location.reload()
   }
 }
 
@@ -95,6 +145,14 @@ function optOut() {
   
   if (answer) {
     emit('update:status', { status: "opt-out" })
+  }
+}
+
+function activate() {
+  const answer = confirm(`Are you sure you want to reactive the buying process?`)
+  
+  if (answer) {
+    emit('update:status', { status: "active" })
   }
 }
 </script>
