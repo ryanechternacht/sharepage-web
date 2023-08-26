@@ -3,7 +3,7 @@
     <template v-for="s in stages">
       <div
         v-if="capitalize(buyersphere.currentStage) === s.name"
-        class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between px-2 relative z-[1]">
+        class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6.5rem] h-full justify-between px-2 relative z-[1]">
         <div class="flex-grow flex flex-col gap-y-1">
           <h3 clas=flex-grow>Current Stage: {{ s.name }}</h3>
           <div class="gray">Asking the question, does this solution make sense for us?</div>
@@ -31,7 +31,7 @@
       </div>
       <div 
         v-else
-        class="flex flex-col items-center bg-gray-lighter rounded-md w-[6rem] h-full justify-between py-1 z-[1]">
+        class="flex flex-col items-center bg-gray-lighter rounded-md w-[6.5rem] h-full justify-between py-1 z-[1]">
         <div class="tag gray">Target: {{ s.date }}</div>
         <h3 class="gray">{{ s.name }}</h3>
         <div class="tag gray italic">In {{ s.daysTo }} days</div>
@@ -47,6 +47,7 @@ const { capitalize } = lodash_pkg;
 const dayjs = useDayjs()
 
 const { buyersphere } = defineProps({ buyersphere: Object })
+const emit = defineEmits(['update:status', 'update:stage'])
 
 function buildStage (stage, targetDate, happenedOn) {
   const targetDayjs =  dayjs(new Date(targetDate))
@@ -68,26 +69,33 @@ const stages = ref([
 
 function advanceStage() {
   const nextStage = {
-    'qualification': 'Evaluation',
-    'evaluation': 'Decision',
-    'decision': 'Adoption'
+    'qualification': 'evaluation',
+    'evaluation': 'decision',
+    'decision': 'adoption'
   }[buyersphere.currentStage]
 
-  const answer = confirm(`Are you sure you'd like to proceed to the ${nextStage} stage?`)
+  const answer = confirm(`Are you sure you'd like to proceed to the ${capitalize(nextStage)} stage?`)
 
-  // TODO advance stage
+  if (answer) {
+    emit('update:stage', { stage: nextStage })
+    location.reload()
+  }
 }
 
 function putOnHold() {
   const answer = confirm(`Are you sure you'd like to opt out of this buying process?`)
 
-  // TODO put on hold
+  if (answer) {
+    emit('update:status', { status: "on-hold"})
+  }
 }
 
 function optOut() {
   const answer = confirm(`Are you sure you want to stop this buying process?`)
   
-  // TODO opt out
+  if (answer) {
+    emit('update:status', { status: "opt-out" })
+  }
 }
 </script>
 

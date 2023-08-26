@@ -26,13 +26,28 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       // this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
-      console.log('saveFeaturesAnswer', buyersphereId, featuresAnswer)
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/features`,
         { method: 'PATCH', body: featuresAnswer }
       )
       this.buyerspheres[buyersphereId].featuresAnswer = data
+    },
+    async saveStage({ buyersphereId, stage }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/stage`,
+        { method: 'PATCH', body: { stage } }
+      )
+      this.buyerspheres[buyersphereId].current_stage = data
+    },
+    async saveStatus({ buyersphereId, status }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/status`,
+        { method: 'PATCH', body: { status } }
+      )
+      this.buyerspheres[buyersphereId].status = data
     },
     async fetchBuyersphere({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()

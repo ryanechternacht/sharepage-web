@@ -45,7 +45,10 @@
 
         <!-- row 1 col 2 -->
         <section>
-          <BuyersphereDealStage :buyersphere="buyersphere" />
+          <BuyersphereDealStage 
+            :buyersphere="buyersphere"
+            @update:stage="updateStage"
+            @update:status="updateStatus" />
         </section>
 
         <!-- row 1 col 3 -->
@@ -132,7 +135,7 @@ const route = useRoute()
 const buyersphereId = route.params.id
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached,  } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -154,9 +157,18 @@ const sideTabs = ['Activities', 'Comms', 'Meetings']
 const selectedSideTab = ref(sideTabs[0])
 
 function saveOverview (overview) {
-  const clone = cloneDeep(buyersphere.value)
-  clone.pages.overview = overview
-  store.save(clone)
+  throw "not implemented!"
+  // const clone = cloneDeep(buyersphere.value)
+  // clone.pages.overview = overview
+  // store.save(clone)
+}
+
+function updateStage ({ stage }) {
+  buyersphereStore.saveStage({ buyersphereId, stage })
+}
+
+function updateStatus ({ status }) {
+  buyersphereStore.saveStatus({ buyersphereId, status })
 }
 </script>
 

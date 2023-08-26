@@ -56,7 +56,7 @@ module.exports = {
       },
       white: '#fff',
       yellow: {
-        muted: '#FFF9E5',
+        muted: '#FFF7E7',
       },
     },
     fontFamily: {

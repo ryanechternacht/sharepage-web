@@ -60,7 +60,6 @@ const myFeatures = ref(buyersphere.featuresAnswer)
 
 // TODO this should debounce
 function saveFeatureInterest (featureId, answer) {
-  console.log('saveFeatureInterest', featureId, answer)
   myFeatures.value.interests[featureId] = answer
   store.saveFeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })
 }
