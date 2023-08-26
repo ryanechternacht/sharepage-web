@@ -2,7 +2,7 @@
   <div class="flex flex-row gap-x-5 items-end">
     <PButton
       v-for="tab in tabs"
-      variant="gray-light"
+      variant="gray"
       :selected="tab === selectedTab"
       @click="clickHandler(tab)"
     >{{ tab }}</PButton>

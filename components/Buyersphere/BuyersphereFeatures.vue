@@ -10,17 +10,17 @@
     <template v-for="(f, i) in globalFeatures">
       <div class="flex flex-cols justify-center gap-x-2 h-full">
         <PButton
-          variant="gray-light"
+          variant="gray"
           size="large"
           :selected="myFeatures?.interests[f.id] === 'yes'"
           @click="saveFeatureInterest(f.id, 'yes')">✅</PButton>
         <PButton
-          variant="gray-light"
+          variant="gray"
           size="large"
           :selected="myFeatures?.interests[f.id] === 'maybe'"
           @click="saveFeatureInterest(f.id, 'maybe')">🚧</PButton>
         <PButton
-          variant="gray-light"
+          variant="gray"
           size="large"
           :selected="myFeatures?.interests[f.id] === 'no'"
           @click="saveFeatureInterest(f.id, 'no')">⛔</PButton>
@@ -60,6 +60,7 @@ const myFeatures = ref(buyersphere.featuresAnswer)
 
 // TODO this should debounce
 function saveFeatureInterest (featureId, answer) {
+  console.log('saveFeatureInterest', featureId, answer)
   myFeatures.value.interests[featureId] = answer
   store.saveFeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })
 }

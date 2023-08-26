@@ -47,6 +47,7 @@ module.exports = {
         muted: '#FFF7E7',
       },
       gray: {
+        lightest: '#FaFaFa',
         lighter: '#F3F4F4',
         light: '#DEE1E1',
         mid: '#515E5F',

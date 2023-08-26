@@ -26,6 +26,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       // this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
+      console.log('saveFeaturesAnswer', buyersphereId, featuresAnswer)
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/features`,

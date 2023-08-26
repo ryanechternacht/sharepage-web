@@ -28,8 +28,8 @@ const variantClass = computed(
     'teal-light': 'hover:bg-teal-light hover:text-blue-dark',
     'yellow-light': 'hover:bg-yellow-light hover:text-blue-dark',
     'purple-light': 'hover:bg-purple-light hover:text-blue-dark',
-    'gray-lighter': 'hover:bg-gray-lighter hover:text-blue-dark',
-    '': 'hover:bg-gray hover:text-white'
+    'gray': 'hover:bg-gray-lightest hover:text-blue-dark',
+    '': 'hover:bg-gray-lightest hover:text-white'
   }[props.variant ?? ''])
 )
 
@@ -42,8 +42,8 @@ const selectedClass = computed(
         'teal-light': 'bg-teal-light',
         'yellow-light': 'bg-yellow-light',
         'purple-light': 'bg-purple-light',
-        'gray-lighter': 'bg-gray-lighter',
-        '': 'bg-gray'
+        'gray': 'bg-gray-lighter',
+        '': 'bg-gray-lighter'
       }[props.variant ?? '']
     } else {
       return ''
