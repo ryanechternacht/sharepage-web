@@ -13,8 +13,8 @@
       </div>
     </div>
 
-    <div class="flex flex-col items-center">
-      <h1 class="mt-20">
+    <div class="flex flex-col items-center text-center w-[720px] mx-auto">
+      <h1 class="mt-20 leading-[56px]">
         Show me 
         <select v-model="owner" class="big-select bg-green-muted">
           <option :value="null">Anyone's</option>
@@ -31,7 +31,7 @@
         </select>
         Opportunities in
         <select v-model="stage" class="big-select bg-purple-muted">
-          <option :value="null">All Opportunities</option>
+          <option :value="null">Any</option>
           <option value="qualification">Qualification</option>
           <option value="evaluation">Evaluation</option>
           <option value="decision">Decision</option>
@@ -44,13 +44,26 @@
       </button>
 
       <div class="buyersphere-table mt-10">
-        <template v-for="b in buyerspheres">
-          <Logo :src="b.buyerLogo" size="large" />
-          <h3>{{ b.buyer }}</h3>
-          <Tag :color="stageColor(b.currentStage)">{{ capitalize(b.currentStage) }}</Tag>
-          <Tag color="yellow">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
-          <div><Tag v-if="isOverdue(b)" color="red">Overdue</Tag></div>
-        </template>
+        <NuxtLink 
+          v-for="b in buyerspheres" 
+          class="grid-row"
+          :to="{ path: `/buyersphere/${b.id}` }">
+          <div class="grid-cell">
+            <Logo :src="b.buyerLogo" size="large" />
+          </div>
+          <div class="grid-cell left-align">
+            <h3>{{ b.buyer }}</h3>
+          </div>
+          <div class="grid-cell">
+            <Tag :color="stageColor(b.currentStage)">{{ capitalize(b.currentStage) }}</Tag>
+          </div>
+          <div class="grid-cell">
+            <Tag color="yellow">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
+          </div>
+          <div class="grid-cell">
+            <Tag v-if="isOverdue(b)" color="red">Overdue</Tag>
+          </div>
+        </NuxtLink>
       </div>
     </div>
   </div>
@@ -129,11 +142,33 @@ function isOverdue ({ currentStage, qualificationDate, evaluationDate, decisionD
 
 <style lang="postcss" scoped>
 .big-select {
-  @apply inline mx-1 h1;
+  @apply inline mx-1 h1 p-[2px];
 }
 
 .buyersphere-table {
-  @apply grid gap-x-4 gap-y-4 items-center;
+  @apply grid;
   grid-template-columns: repeat(5, max-content);
+
+  .grid-cell {
+    @apply p-2 h-full flex flex-row items-center;
+
+    * {
+      @apply flex-grow;
+    }
+
+    &.left-align * {
+      flex-grow: 0;
+    }
+  }
+
+  .grid-row {
+    @apply contents;
+    &:hover {
+      @apply cursor-pointer;
+      .grid-cell {
+        @apply bg-gray-lighter;
+      }
+    }
+  }
 }
 </style>
