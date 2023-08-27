@@ -3,18 +3,16 @@
     <div class="flex flex-col items-center gap-y-2">
       <h3>What's on your mind?</h3>
       <!-- TODO get an autogrow textarea -->
-      <textarea 
-        class="bg-gray-lighter w-3/4 rounded-md p-2 min-h-[40px]"
-        v-model="newConversation"
-      />
+      <TipTapTextarea
+        class="w-3/4"
+        v-model="newConversation" />
       <SubmitButton
         class="bg-purple-dark w-[10rem] h-[2.5rem]"
         :submission-state="submissionState"
         ready-text="Start a Conversation"
         submitting-text="Sending Message"
         submitted-text="Message Sent"
-        @click="submitFn"
-        />
+        @click="submitFn" />
     </div>
 
     <div class="w-full mt-4 mb-2">
@@ -25,7 +23,7 @@
           class="flex flex-row gap-x-2 items-start"
         >
           <PersonRow :person="c.author" class="w-[180px] shrink-0" />
-          <div class="whitespace-pre">{{ c.message }}</div>
+          <div class="gray inline-html" v-html="c.message" />
         </div>
       </div>
       
@@ -44,7 +42,6 @@
 </template>
 
 <script setup>
-import Editor from '@tinymce/tinymce-vue'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit';
@@ -72,3 +69,6 @@ const { submissionState, submitFn } = useSubmit(async () =>
   await store.startConversation({ buyersphereId, message: newConversation })
 )
 </script>
+
+<style lang="pcss" scoped>
+</style>

@@ -100,7 +100,6 @@
             />
             <BuyersphereContact
               v-else-if="route.params.section === 'contact'"
-              :partner="selectedMainTab"
             />
           </section>
         </div>

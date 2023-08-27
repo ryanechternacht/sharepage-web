@@ -11,8 +11,7 @@
     <TipTapTextarea 
       v-model="featureDescription"
       class="mt-1 w-full max-w-[600px]"
-      placeholder="Add Feature Description"
-      />
+      placeholder="Add Feature Description" />
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"
       :submission-state="submissionState" 
@@ -41,7 +40,7 @@
             :model-value="item.description"
             class="mt-1 w-full"
             placeholder="Update Feature Description" 
-            @update:model-value="ev => updateItem('description', ev) "/>
+            @update:model-value="ev => updateItem('description', ev)" />
         </template>
       </SetupItems> 
     </div>

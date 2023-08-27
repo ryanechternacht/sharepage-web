@@ -77,3 +77,17 @@
     list-style-position: inside;
   }
 }
+
+.inline-html p:first-child {
+  display: inline;
+}
+
+.inline-html li p {
+  display: inline;
+}
+
+.inline-html p:after {
+  content :"";
+  display: inline-block;
+  width: 0px;
+}

@@ -76,12 +76,4 @@ function deleteItem() {
 </script>
 
 <style lang="postcss" scoped>
-/* TODO should these be global? */
-.inline-html :deep() p:first-child {
-  display: inline;
-}
-
-.inline-html :deep() li p {
-  display: inline;
-}
 </style>
