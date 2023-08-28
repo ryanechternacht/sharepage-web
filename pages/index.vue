@@ -45,7 +45,8 @@
 
       <div class="buyersphere-table mt-10">
         <NuxtLink 
-          v-for="b in buyerspheres" 
+          v-for="b in buyerspheres"
+          :key="b.id"
           class="grid-row"
           :to="{ path: `/buyersphere/${b.id}` }">
           <div class="grid-cell">

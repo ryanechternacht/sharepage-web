@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center">
     <h3>We have budget for at least the lowest tier</h3>
-    <div class="flex flex-row gap-x-2">
+    <div class="mt-3 flex flex-row gap-x-2">
       <Tag
         class="hover:cursor-pointer"
         :class="{'selected-can-pay': buyersphere.pricingCanPay === 'yes'}"
@@ -24,7 +24,7 @@
         color="red"
         @click="updateCanPay('no')">No</Tag>
     </div>
-    <div class="flex flex-row gap-x-6 w-full px-[2.25rem]">
+    <div class="mt-6 flex flex-row gap-x-6 w-full px-[2.25rem]">
       <div v-for="pt in pricingTiers"
         class="flex flex-col justify-around justify-items-center bg-gray-lighter rounded-md flex-1 h-[100px] cursor-pointer p-1"
         :class="{'selected-pricing-tier': pt.id === buyersphere.pricingTierId}"
@@ -38,7 +38,7 @@
         </h3>
       </div>
     </div>
-    <div class="flex flex-col gap-y-3 w-full px-[2.25rem">
+    <div class="mt-6 flex flex-col gap-y-3 w-full px-[2.25rem]">
       <div v-for="pt in pricingTiers">
         <h3>{{ pt.title }}: Best For {{ pt.bestFor }}</h3>
         <p class="gray">{{ pt.description }}</p>
