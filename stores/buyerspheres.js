@@ -28,23 +28,23 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/features`,
-        { method: 'PATCH', body: featuresAnswer }
+        `/v0.1/buyerspheres/${buyersphereId}`,
+        { method: 'PATCH', body: { featuresAnswer } }
       )
       this.buyerspheres[buyersphereId].content.featuresAnswer = data.value
     },
     async saveStage({ buyersphereId, stage }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/stage`,
-        { method: 'PATCH', body: { stage } }
+        `/v0.1/buyerspheres/${buyersphereId}`,
+        { method: 'PATCH', body: { currentStage: stage } }
       )
       this.buyerspheres[buyersphereId].content.currentStage = data.value.currentStage
     },
     async saveStatus({ buyersphereId, status }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/status`,
+        `/v0.1/buyerspheres/${buyersphereId}`,
         { method: 'PATCH', body: { status } }
       )
       this.buyerspheres[buyersphereId].content.status = data.value.status

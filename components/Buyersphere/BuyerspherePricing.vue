@@ -52,7 +52,7 @@ import lodash_pkg from 'lodash';
 const { cloneDeep } = lodash_pkg;
 import { usePricingTiersStore } from '@/stores/pricing-tiers'
 import { storeToRefs } from 'pinia';
-import { format, Money3Component } from 'v-money3';
+import { format } from 'v-money3';
 
 const { buyersphere } = defineProps({ buyersphere: Object })
 const emit = defineEmits(['update:can-pay', 'update:tier-id'])
