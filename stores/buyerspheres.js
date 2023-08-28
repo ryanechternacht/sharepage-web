@@ -49,6 +49,22 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.buyerspheres[buyersphereId].content.status = data.value.status
     },
+    async savePricingCanPay({ buyersphereId, pricingCanPay }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}`,
+        { method: 'PATCH', body: { pricingCanPay } }
+      )
+      this.buyerspheres[buyersphereId].content.pricingCanPay = data.value.pricingCanPay
+    },
+    async savePricingTierId({ buyersphereId, pricingTierId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}`,
+        { method: 'PATCH', body: { pricingTierId } }
+      )
+      this.buyerspheres[buyersphereId].content.pricingTierId = data.value.pricingTierId
+    },
     async fetchBuyersphere({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()

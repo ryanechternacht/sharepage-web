@@ -88,19 +88,22 @@
             <div class="w-full justify-center flex flex-row items-center gap-x-4 mb-4">
               <NuxtLink :to="`/buyersphere/${route.params.id}`">OVERVIEW</NuxtLink>
               <NuxtLink :to="`/buyersphere/${route.params.id}/features`">FEATURES</NuxtLink>
+              <NuxtLink :to="`/buyersphere/${route.params.id}/pricing`">PRICING</NuxtLink>
               <NuxtLink :to="`/buyersphere/${route.params.id}/contact`">CONTACT YOUR TEAM</NuxtLink>
             </div>
             <BuyersphereOverview
               v-if="route.params.section === ''"
               :intro-message="buyersphere.introMessage"
-              @update:overview="saveOverview"
-            />
+              @update:overview="saveOverview" />
             <BuyersphereFeatures
-              v-else-if="route.params.section === 'features'"
-            />
+              v-else-if="route.params.section === 'features'" />
+            <BuyerspherePricing
+              v-else-if="route.params.section === 'pricing'"
+              :buyersphere="buyersphere"
+              @update:can-pay="updatePricingCanPay"
+              @update:tier-id="updatePricingTierId" />
             <BuyersphereContact
-              v-else-if="route.params.section === 'contact'"
-            />
+              v-else-if="route.params.section === 'contact'" />
           </section>
         </div>
 
@@ -168,6 +171,14 @@ function updateStage ({ stage }) {
 
 function updateStatus ({ status }) {
   buyersphereStore.saveStatus({ buyersphereId, status })
+}
+
+function updatePricingCanPay ({ canPay }) {
+  buyersphereStore.savePricingCanPay({ buyersphereId, pricingCanPay: canPay })
+}
+
+function updatePricingTierId ({ tierId }) {
+  buyersphereStore.savePricingTierId({ buyersphereId, pricingTierId: tierId })
 }
 </script>
 

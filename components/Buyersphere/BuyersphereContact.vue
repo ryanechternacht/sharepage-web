@@ -70,5 +70,5 @@ const { submissionState, submitFn } = useSubmit(async () =>
 )
 </script>
 
-<style lang="pcss" scoped>
+<style lang="postcss" scoped>
 </style>

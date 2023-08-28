@@ -34,8 +34,6 @@
 </template>
 
 <script setup>
-import lodash_pkg from 'lodash';
-const { cloneDeep } = lodash_pkg;
 import { useFeaturesStore } from '@/stores/features'
 import { useBuyerspheresStore } from '@/stores/buyerspheres';
 import { storeToRefs } from 'pinia';
@@ -57,8 +55,7 @@ const [buyersphere, globalFeatures] = await Promise.all([
 // is this worth doing for snappier UX? (probably)
 const myFeatures = ref(buyersphere.featuresAnswer)
 
-
-// TODO this should debounce
+// TODO this should emit (not hit the store directly?)
 function saveFeatureInterest (featureId, answer) {
   myFeatures.value.interests[featureId] = answer
   store.saveFeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })

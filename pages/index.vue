@@ -7,7 +7,7 @@
           <h3>Buyersphere</h3>
         </NuxtLink>
         <div class="flex flex-row items-center gap-x-2">
-          <span>{{ user.name || user.email }}</span>
+          <span>{{ user.first_name ? user.first_name + ' ' + user.last_name : user.email }}</span>
           👤
         </div>
       </div>
@@ -58,7 +58,7 @@
             <Tag :color="stageColor(b.currentStage)">{{ capitalize(b.currentStage) }}</Tag>
           </div>
           <div class="grid-cell">
-            <Tag :color="pricingColor(b.pricingAnswer)">{{ coalescePricingAnswer(b.pricingAnswer) }}</Tag>
+            <Tag :color="pricingColor(b.pricingTierId)">{{ coalescePricingAnswer(b.pricingTierId) }}</Tag>
           </div>
           <div class="grid-cell">
             <Tag v-if="isOverdue(b)" color="red">Overdue</Tag>
@@ -71,16 +71,21 @@
 
 <script setup>
 import { useUsersStore } from '@/stores/users';
+import { usePricingTiersStore } from '@/stores/pricing-tiers'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, sortBy, capitalize } = lodash_pkg;
+const { capitalize, filter, find, sortBy } = lodash_pkg;
 
 const usersStore = useUsersStore()
 const { getMeCached, getUsersCached } = storeToRefs(usersStore)
 
-const [user, users] = await Promise.all([
+const pricingTiersStore = usePricingTiersStore()
+const { getPricingTiersCached } = storeToRefs(pricingTiersStore)
+
+const [user, users, pricingTiers] = await Promise.all([
   getMeCached.value(),
-  getUsersCached.value()
+  getUsersCached.value(),
+  getPricingTiersCached.value()
 ])
 
 const usersExceptMe = ref(
@@ -120,16 +125,16 @@ function stageColor (stage) {
   }[stage]
 }
 
-function coalescePricingAnswer ({ selectedLevel }) {
-  return selectedLevel && Object.keys(selectedLevel).length > 0
-    ? selectedLevel
-    : "$--"
+function coalescePricingAnswer (pricingTierId) {
+  const tier = find(pricingTiers, pt => pt.id === pricingTierId)
+
+  return tier ? tier.title : "$--"
 }
 
-function pricingColor ({ selectedLevel }) {
-  return selectedLevel && Object.keys(selectedLevel).length > 0
-    ? "yellow"
-    : "gray"
+function pricingColor (pricingTierId) {
+  const tier = find(pricingTiers, pt => pt.id === pricingTierId)
+
+  return tier ? "yellow" : "gray"
 }
 
 const dayjs = useDayjs()
