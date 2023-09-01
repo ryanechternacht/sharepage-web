@@ -92,25 +92,22 @@
         <section class="flex-grow">
           <h3 class="section-header">🚀 Information</h3>
           <div class="gray-outline px-12 pt-6 pb-8">
-            <div class="w-full justify-center flex flex-row items-center gap-x-4 mb-4">
-              <NuxtLink :to="`/buyersphere/${route.params.id}`">OVERVIEW</NuxtLink>
-              <NuxtLink :to="`/buyersphere/${route.params.id}/features`">FEATURES</NuxtLink>
-              <NuxtLink :to="`/buyersphere/${route.params.id}/pricing`">PRICING</NuxtLink>
-              <!-- <NuxtLink :to="`/buyersphere/${route.params.id}/contact`">CONTACT YOUR TEAM</NuxtLink> -->
-            </div>
+            <PillNav
+              class="mb-4"
+              :options="mainSections"
+              :selected="mainSection"
+              @update:selected="changeSection"/>
             <BuyersphereOverview
-              v-if="route.params.section === ''"
+              v-if="mainSection === 'overview'"
               :intro-message="buyersphere.introMessage"
               @update:overview="saveOverview" />
             <BuyersphereFeatures
-              v-else-if="route.params.section === 'features'" />
+              v-else-if="mainSection === 'features'" />
             <BuyerspherePricing
-              v-else-if="route.params.section === 'pricing'"
+              v-else-if="mainSection === 'pricing'"
               :buyersphere="buyersphere"
               @update:can-pay="updatePricingCanPay"
               @update:tier-id="updatePricingTierId" />
-            <!-- <BuyersphereContact
-              v-else-if="route.params.section === 'contact'" /> -->
           </div>
         </section>
 
@@ -161,12 +158,23 @@ const [buyersphere, organization, user] = await Promise.all([
   getMeCached.value()
 ])
 
+const mainSections = ['overview', 'features', 'pricing']
+const mainSection = computed(
+  () => route.params.section ? route.params.section : 'overview')
+
+async function changeSection (section) {
+  console.log('section', section === 'overview')
+  await navigateTo({ path: section === 'overview' 
+    ? `/buyersphere/${route.params.id}` 
+    : `/buyersphere/${route.params.id}/${section}` })
+}
+
 // store.$subscribe(() => {
 //   buyersphere.value = getBuyersphereByIdCached.value(buyersphereId)
 // })
 
-const sideTabs = ['Activities', 'Comms', 'Meetings']
-const selectedSideTab = ref(sideTabs[0])
+// const sideTabs = ['Activities', 'Comms', 'Meetings']
+// const selectedSideTab = ref(sideTabs[0])
 
 function saveOverview (overview) {
   throw "not implemented!"
@@ -239,9 +247,9 @@ section {
   @apply border-b border-gray-dark pb-0.5;
 }
 
-.router-link-active {
+/* .router-link-active {
   @apply bg-green-jewel rounded-full text-white px-2 py-[1px];
-}
+} */
 
 .white-background {
   @apply bg-white;

@@ -28,8 +28,8 @@ const variantClass = computed(
     'teal-pastel': 'hover:bg-teal-pastel hover:text-blue-jewel',
     'yellow-pastel': 'hover:bg-yellow-pastel hover:text-blue-jewel',
     'purple-pastel': 'hover:bg-purple-pastel hover:text-blue-jewel',
-    'gray': 'hover:bg-gray-lightest hover:text-blue-jewel',
-    '': 'hover:bg-gray-lightest hover:text-white'
+    'gray': 'hover:bg-gray-lighter hover:text-blue-jewel',
+    '': 'hover:bg-gray-lighter hover:text-white'
   }[props.variant ?? ''])
 )
 
