@@ -22,7 +22,9 @@
         </div>
         <div class="flex flex-row items-center gap-x border-gray-lighter border-x border-b rounded-b-md p-1.5">
           <div class="gray inline-html" v-html="q.message" />
-          <div class="border border-gray-mid rounded-md p-1.5 text-[.5rem]">✔️</div>
+          <div class="center-xy border border-gray-mid rounded-md w-[1.25rem] min-w-[1.25rem] h-[1.25rem] min-h-[1.25rem]">
+            <img src="/svg/checkmark.svg">
+          </div>
         </div>
       </div>
     </div>

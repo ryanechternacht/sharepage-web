@@ -162,8 +162,4 @@ function activate() {
   @apply flex flex-row items-center h-full justify-between py-2 gap-x-4;
   position: relative;
 }
-.label {
-  @apply w-[5.5rem] h-[1.125rem] rounded-full tag gray
-    flex flex-row items-center justify-items-center;
-}
 </style>
