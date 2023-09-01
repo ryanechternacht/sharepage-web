@@ -112,7 +112,11 @@ function formatDate(date) {
 }
 
 .question-text {
-  @apply gray inline-html w-full;
+  @apply !gray inline-html w-full;
+  
+  * {
+    @apply gray;
+  }
 }
 
 .question-action {

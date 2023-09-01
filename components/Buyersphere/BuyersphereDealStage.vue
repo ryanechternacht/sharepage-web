@@ -3,32 +3,26 @@
     <template v-for="s in stages">
       <div
         v-if="capitalize(buyersphere.currentStage) === s.name"
-        class="flex-grow flex flex-row items-center bg-gray-lighter rounded-md w-[6.5rem] h-full justify-between px-2 relative z-[1]">
+        class="flex-grow flex flex-row items-center bg-purple-background rounded-md w-[6.5rem] h-full justify-between px-2 relative z-[1]">
         <div class="flex-grow flex flex-col gap-y-1">
           <h3 clas=flex-grow>Current Stage: {{ s.name }}</h3>
           <div class="gray">{{ s.description }}</div>
         </div>
         <div v-if="buyersphere.currentStage !== 'adoption'" 
-          class="py-0.5 flex flex-col gap-y-[2px]">
+          class="py-0.5 flex flex-col gap-y-1">
           <template v-if="buyersphere.status === 'active'">
-            <Tag
-              class="hover:cursor-pointer"
-              width="5.5rem"
-              height="1.125rem"
-              color="green"
-              @click="advanceStage">Next Stage</Tag>
-            <Tag
-              class="hover:cursor-pointer"
-              width="5.5rem"
-              height="1.125rem"
+            <MiniButton 
+              color="teal"
+              text="Next Stage"
+              @click="advanceStage" />
+            <MiniButton 
               color="orange"
-              @click="putOnHold">Put on Hold</Tag>
-            <Tag
-              class="hover:cursor-pointer"
-              width="5.5rem"
-              height="1.125rem"
+              text="Put on Hold" 
+              @click="putOnHold"/>
+            <MiniButton 
               color="red"
-              @click="optOut">Opt Out</Tag>
+              text="Opt Out" 
+              @click="optOut"/>
           </template>
           <template v-else>
             <Tag
@@ -36,18 +30,18 @@
               height="1.125rem"
               color="red"
               @click="putOnHold">{{ buyersphere.status === 'on-hold' ? 'ON HOLD' : 'OPT OUT' }}</Tag>
-            <Tag
-              class="hover:cursor-pointer"
-              width="5.5rem"
-              height="1.125rem"
-              color="green"
-              @click="activate">Activate?</Tag>
+            <MiniButton 
+              color="teal"
+              text="Activate?" 
+              @click="activate"/>
           </template>
         </div>
       </div>
-      <div 
-        v-else
-        class="flex flex-col items-center bg-gray-lighter rounded-md w-[6.5rem] h-full justify-between py-1 z-[1]">
+      <div v-else
+        class="flex flex-col items-center rounded-md w-[6.5rem] h-full justify-between py-1 z-[1]"
+        :class="{'bg-gray-lighter': currentStageNumber < s.stageNumber,
+                 'bg-green-background': currentStageNumber > s.stageNumber}">
+        
         <div v-if="currentStageNumber < s.stageNumber" 
           class="tag gray">Target: {{ s.date }}</div>
         <div v-else>On {{ s.happenedOn }}</div>
