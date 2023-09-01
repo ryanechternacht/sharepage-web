@@ -161,9 +161,6 @@ async function changeSection (section) {
 //   buyersphere.value = getBuyersphereByIdCached.value(buyersphereId)
 // })
 
-// const sideTabs = ['Activities', 'Comms', 'Meetings']
-// const selectedSideTab = ref(sideTabs[0])
-
 function saveOverview (overview) {
   throw "not implemented!"
   // const clone = cloneDeep(buyersphere.value)

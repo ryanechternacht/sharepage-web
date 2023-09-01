@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import lodash_pkg from 'lodash';
-const { cloneDeep } = lodash_pkg;
+const { find } = lodash_pkg;
 
 function is10MinutesOld(jsonTimestamp) {
   const dayjs = useDayjs()
@@ -102,6 +102,15 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'POST', body: {message} }
       )
       this.conversations[buyersphereId].content.push(data.value)
+    },
+    async updateConversation({ buyersphereId, conversationId, resolved }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
+        { method: 'PATCH', body: { resolved }}
+      )
+      const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
+      c.resolved = resolved
     }
   }
 })

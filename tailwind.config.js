@@ -60,5 +60,10 @@ module.exports = {
       sans: ['Inter', 'sans-serif'],
       rajdhani: ['Rajdhani', 'sans-serif']
     },
+    extend: {
+      spacing: {
+        '.5': '.125rem'
+      }
+    }
   },
 }
