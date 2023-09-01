@@ -7,7 +7,7 @@
         class="w-3/4"
         v-model="newConversation" />
       <SubmitButton
-        class="bg-purple-dark w-[10rem] h-[2.5rem]"
+        class="w-[10rem] h-[2.5rem]"
         :submission-state="submissionState"
         ready-text="Start a Conversation"
         submitting-text="Sending Message"

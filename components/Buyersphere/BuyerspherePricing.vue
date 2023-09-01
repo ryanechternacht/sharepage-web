@@ -87,7 +87,7 @@ function updatePricingTier (tierId) {
 
 <style lang="postcss" scoped>
 .selected-can-pay {
-  @apply bg-green-darker;
+  @apply bg-green-jewel;
 
   :deep(.tag)  {
     @apply text-white;
@@ -95,7 +95,7 @@ function updatePricingTier (tierId) {
 }
 
 .selected-pricing-tier {
-  @apply bg-green-darker;
+  @apply bg-green-jewel;
 
   h3 {
     @apply text-white;

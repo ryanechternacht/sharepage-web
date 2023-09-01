@@ -16,21 +16,21 @@
     <div class="flex flex-col items-center text-center w-[720px] mx-auto">
       <h1 class="mt-20 leading-[56px]">
         Show me 
-        <select v-model="owner" class="big-select bg-green-muted">
+        <select v-model="owner" class="big-select bg-green-background">
           <option :value="null">Anyone's</option>
           <option :value="user.id">My</option>
           <option v-for="u in usersExceptMe" :value="u.id">
             {{ u.firstName }} {{ u.lastName }}'s
           </option>
         </select>
-        <select v-model="status" class="big-select bg-blue-muted">
+        <select v-model="status" class="big-select bg-blue-background">
           <option>Active</option>
           <option>Not Active</option>
           <option>On Hold</option>
           <option>Opt Out</option>
         </select>
         Opportunities in
-        <select v-model="stage" class="big-select bg-purple-muted">
+        <select v-model="stage" class="big-select bg-purple-background">
           <option :value="null">Any</option>
           <option value="qualification">Qualification</option>
           <option value="evaluation">Evaluation</option>
@@ -39,7 +39,7 @@
         Stage
       </h1>
 
-      <button class="bg-green-darker w-[10rem] h-[2.5rem] mt-8 text-white rounded">
+      <button class="bg-green-jewel w-[10rem] h-[2.5rem] mt-8 text-white rounded">
         Add
       </button>
 

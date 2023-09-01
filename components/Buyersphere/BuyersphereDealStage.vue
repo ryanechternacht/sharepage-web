@@ -107,7 +107,7 @@ const stages = ref([
   buildStage(
     'Decision',
     2,
-    'Examining in detail if this is the right solution',
+    'Making the decision if this is the right choice',
     buyersphere.decisionDate,
     buyersphere.decidedOn),
   buildStage(

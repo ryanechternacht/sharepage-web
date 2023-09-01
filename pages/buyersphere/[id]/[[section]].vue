@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- <NuxtLoadingIndicator /> -->
-    <div class="bg-teal-white min-h-screen">
-      <div class="sticky">
+    <div class="min-h-screen">
+      <div class="bg-teal-background sticky">
         <div class="flex flex-row items-center p-8 h-12 justify-between">
           <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
             <img src="/logo.svg">
@@ -14,10 +14,11 @@
           </div>
         </div>
       </div>
-      <div class="dealroom-grid">
+      <!-- <div class="dealroom-grid"> -->
+      <div class="bg-teal-background grid-row pb-3">
         <!-- row 1 col 1 -->
-        <section class="h-100% flex flex-col justify-items-center gap-2">
-          <div class="logo-section section">
+        <section class="side-bar h-100% flex flex-col justify-items-center gap-2">
+          <div class="logo-section">
             <Logo
               :src="buyersphere.buyerLogo"
               size="large"
@@ -44,7 +45,7 @@
         </section>
 
         <!-- row 1 col 2 -->
-        <section>
+        <section class="flex-grow">
           <BuyersphereDealStage 
             :buyersphere="buyersphere"
             @update:stage="updateStage"
@@ -52,7 +53,7 @@
         </section>
 
         <!-- row 1 col 3 -->
-        <section class="flex flex-col">
+        <section class="side-bar flex flex-col">
           <div class="flex-grow flex flex-row justify-between items-center">
             <h3>Qualification by:</h3>
             <h3 class="text-purple">June 28th</h3>
@@ -63,33 +64,39 @@
             <div class="gray">+ RESOURCE</div>
           </div>
         </section>
+      </div>
 
         <!-- row 2 col 1 -->
-        <div>
-          <section>
+      <div class="grid-row">
+        <section class="side-bar">
+          <h3 class="section-header">👋 People</h3>
+          <div class="gray-outline p-3">
             <div class="mb-2 flex flex-row items-center gap-x-4">
               <Logo :src="buyersphere.buyerLogo" />
               <h3>{{ buyersphere.buyer }}</h3>
             </div>
             <PersonList :people="buyersphere.buyerTeam" />
+          </div>
 
-            <div class="mt-4 mb-2 flex flex-row gap-x-4">
+          <div class="gray-outline mt-4 p-3">
+            <div class="mb-2 flex flex-row gap-x-4">
               <Logo src="/house_stark.png" />
               <h3 class="">House Stark Team</h3>
             </div>
             <PersonList :people="buyersphere.sellerTeam" />
-          </section>
-        </div>
+          </div>
+        </section>
 
         <!-- row 2 col 2 -->
         <!-- TODO this should probably be routing based -->
-        <div>
-          <section>
+        <section class="flex-grow">
+          <h3 class="section-header">🚀 Information</h3>
+          <div class="gray-outline px-12 pt-6 pb-8">
             <div class="w-full justify-center flex flex-row items-center gap-x-4 mb-4">
               <NuxtLink :to="`/buyersphere/${route.params.id}`">OVERVIEW</NuxtLink>
               <NuxtLink :to="`/buyersphere/${route.params.id}/features`">FEATURES</NuxtLink>
               <NuxtLink :to="`/buyersphere/${route.params.id}/pricing`">PRICING</NuxtLink>
-              <NuxtLink :to="`/buyersphere/${route.params.id}/contact`">CONTACT YOUR TEAM</NuxtLink>
+              <!-- <NuxtLink :to="`/buyersphere/${route.params.id}/contact`">CONTACT YOUR TEAM</NuxtLink> -->
             </div>
             <BuyersphereOverview
               v-if="route.params.section === ''"
@@ -102,15 +109,18 @@
               :buyersphere="buyersphere"
               @update:can-pay="updatePricingCanPay"
               @update:tier-id="updatePricingTierId" />
-            <BuyersphereContact
-              v-else-if="route.params.section === 'contact'" />
-          </section>
-        </div>
+            <!-- <BuyersphereContact
+              v-else-if="route.params.section === 'contact'" /> -->
+          </div>
+        </section>
 
         <!-- row 2 col 3 -->
         <!-- TODO should this be routing based? -->
-        <div>
-          <div class="bg-white rounded-md p-6">
+        <section class="side-bar">
+          <h3 class="section-header">💡 Collaborate</h3>
+          <BuyersphereCollaboration 
+            class="gray-outline p-3"/>
+          <!-- <div class="bg-white rounded-md p-6">
             <DealroomActivities
               v-if="selectedSideTab === 'Activities'"
             />
@@ -120,8 +130,8 @@
             <DealroomMeetings
               v-else-if="selectedSideTab === 'Meetings'"
             />
-          </div>
-        </div>
+          </div> -->
+        </section>
       </div>
     </div>
   </div>
@@ -183,14 +193,30 @@ function updatePricingTierId ({ tierId }) {
 </script>
 
 <style lang="postcss" scoped>
-.dealroom-grid {
+/* .dealroom-grid {
   @apply px-8 pb-8 grid gap-x-4 gap-y-3;
   grid-template-rows: auto 1fr;
   grid-template-columns: 274px 1fr 274px; 
+} */
+
+.grid-row {
+  @apply flex flex-row gap-x-4 px-8;
+}
+
+.side-bar {
+  @apply min-w-[274px] max-w-[274px];
 }
 
 section {
-  @apply bg-white rounded-md py-2 px-3 border border-gray-light;
+  @apply bg-white rounded-md py-2 px-3;
+}
+
+.gray-outline {
+  @apply rounded-md border border-gray-lighter;
+}
+
+.section-header {
+  @apply leading-[48px];
 }
 
 .logo-section {
@@ -214,6 +240,10 @@ section {
 }
 
 .router-link-active {
-  @apply bg-green-darker rounded-full text-white px-2 py-[1px];
+  @apply bg-green-jewel rounded-full text-white px-2 py-[1px];
+}
+
+.white-background {
+  @apply bg-white;
 }
 </style>

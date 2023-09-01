@@ -27,11 +27,6 @@
     /* line-height: .9375rem; 15px */
   }
 
-  h5, .h5 {
-    @apply body;
-    @apply text-teal-dark;
-  }
-
   .tag {
     @apply font-sans font-medium text-gray-dark;
     font-size: .625rem; /* 10px */

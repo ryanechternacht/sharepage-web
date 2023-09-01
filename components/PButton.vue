@@ -23,12 +23,12 @@ const clicked = () => {
 // and the classes were getting purged by tailwind
 const variantClass = computed(
   () => ({
-    'red-light': 'hover:bg-red-light hover:text-blue-dark',
-    'blue-light': 'hover:bg-blue-light hover:text-blue-dark',
-    'teal-light': 'hover:bg-teal-light hover:text-blue-dark',
-    'yellow-light': 'hover:bg-yellow-light hover:text-blue-dark',
-    'purple-light': 'hover:bg-purple-light hover:text-blue-dark',
-    'gray': 'hover:bg-gray-lightest hover:text-blue-dark',
+    'red-pastel': 'hover:bg-red-pastel hover:text-blue-jewel',
+    'blue-pastel': 'hover:bg-blue-pastel hover:text-blue-jewel',
+    'teal-pastel': 'hover:bg-teal-pastel hover:text-blue-jewel',
+    'yellow-pastel': 'hover:bg-yellow-pastel hover:text-blue-jewel',
+    'purple-pastel': 'hover:bg-purple-pastel hover:text-blue-jewel',
+    'gray': 'hover:bg-gray-lightest hover:text-blue-jewel',
     '': 'hover:bg-gray-lightest hover:text-white'
   }[props.variant ?? ''])
 )
@@ -37,11 +37,11 @@ const selectedClass = computed(
   () => {
     if (props.selected) {
       return {
-        'red-light': 'bg-red-light',
-        'blue-light': 'bg-blue-light',
-        'teal-light': 'bg-teal-light',
-        'yellow-light': 'bg-yellow-light',
-        'purple-light': 'bg-purple-light',
+        'red-pastel': 'bg-red-pastel',
+        'blue-pastel': 'bg-blue-pastel',
+        'teal-pastel': 'bg-teal-pastel',
+        'yellow-pastel': 'bg-yellow-pastel',
+        'purple-pastel': 'bg-purple-pastel',
         'gray': 'bg-gray-lighter',
         '': 'bg-gray-lighter'
       }[props.variant ?? '']

@@ -59,7 +59,7 @@ const email = ref('')
 
 <style lang="postcss" scoped>
 button {
-  @apply p-2 rounded-md bg-blue-dark body;
+  @apply p-2 rounded-md bg-blue-jewel body;
   @apply font-bold text-white;
 }
 

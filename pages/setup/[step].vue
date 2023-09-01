@@ -135,10 +135,10 @@ const hasUsers = users.length > 1
 }
 
 .step-box.step-box-complete {
-  @apply bg-green-muted;
+  @apply bg-green-background;
 }
 
 .step-box.router-link-active, .step-box.step-box-complete.router-link-active {
-  @apply bg-purple-muted;
+  @apply bg-purple-background;
 }
 </style>

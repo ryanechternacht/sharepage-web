@@ -26,8 +26,8 @@
 
 <style lang="postcss" scoped>
 .button {
-  @apply p-2 rounded-md bg-blue-dark body text-center;
-  @apply font-bold text-green-dark;
+  @apply p-2 rounded-md bg-blue-jewel body text-center;
+  @apply font-bold text-green-jewel;
 }
 </style>
 
