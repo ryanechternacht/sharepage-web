@@ -14,7 +14,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="dealroom-grid"> -->
       <div class="bg-teal-background grid-row pb-3">
         <!-- row 1 col 1 -->
         <section class="side-bar h-100% flex flex-col justify-items-center gap-2">
@@ -117,17 +116,6 @@
           <h3 class="section-header">💡 Collaborate</h3>
           <BuyersphereCollaboration 
             class="gray-outline p-3"/>
-          <!-- <div class="bg-white rounded-md p-6">
-            <DealroomActivities
-              v-if="selectedSideTab === 'Activities'"
-            />
-            <DealroomComms
-              v-else-if="selectedSideTab === 'Comms'"
-            />
-            <DealroomMeetings
-              v-else-if="selectedSideTab === 'Meetings'"
-            />
-          </div> -->
         </section>
       </div>
     </div>
@@ -201,12 +189,6 @@ function updatePricingTierId ({ tierId }) {
 </script>
 
 <style lang="postcss" scoped>
-/* .dealroom-grid {
-  @apply px-8 pb-8 grid gap-x-4 gap-y-3;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 274px 1fr 274px; 
-} */
-
 .grid-row {
   @apply flex flex-row gap-x-4 px-8;
 }
