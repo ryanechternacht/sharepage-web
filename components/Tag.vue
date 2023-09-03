@@ -1,7 +1,7 @@
 <template>
   <div 
     :style="{ width, height }"
-    :class="[bgColor]"
+    :class="[bgColor, thin ? thin : '']"
     class="flex flex-col items-center rounded-full justify-center px-2 py-[2px]">
     <div class="gray tag">
       <slot />
@@ -27,4 +27,5 @@ const bgColor = computed(() => {
 </script>
 
 <style lang="postcss" scoped>
+
 </style>

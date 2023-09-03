@@ -8,23 +8,21 @@ function is10MinutesOld(jsonTimestamp) {
 }
 
 export const useBuyerspheresStore = defineStore('buyerspheres', {
-  state: () => ({ buyerspheres: {}, conversations: {} }),
+  state: () => ({ 
+    buyerspheres: {}, 
+    conversations: {}
+  }),
   getters: {
     getBuyersphereByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphere({ buyersphereId })
       return state.buyerspheres[buyersphereId]?.content
     },
-    getBuyersphereConversationsByIdCached: (state) => async(buyersphereId) => {
+    getBuyersphereConversationsByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphereConversations({ buyersphereId })
       return state.conversations[buyersphereId]?.content
     }
   },
   actions: {
-    save(buyersphere) {
-      // TODO call out to a backend
-      throw "not implemented!"
-      // this.buyerspheres[buyersphere.id] = cloneDeep(buyersphere)
-    },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
@@ -111,6 +109,6 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
       c.resolved = resolved
-    }
+    },
   }
 })

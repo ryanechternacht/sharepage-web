@@ -95,7 +95,7 @@
               class="mb-4"
               :options="mainSections"
               :selected="mainSection"
-              @update:selected="changeSection"/>
+              @update:selected="changeSection" />
             <BuyersphereOverview
               v-if="mainSection === 'overview'"
               :intro-message="buyersphere.introMessage"
@@ -107,6 +107,9 @@
               :buyersphere="buyersphere"
               @update:can-pay="updatePricingCanPay"
               @update:tier-id="updatePricingTierId" />
+            <BuyersphereResources
+              v-else-if="mainSection === 'resources'"
+              :resources="buyersphere.resources" />
           </div>
         </section>
 
@@ -146,12 +149,11 @@ const [buyersphere, organization, user] = await Promise.all([
   getMeCached.value()
 ])
 
-const mainSections = ['overview', 'features', 'pricing']
+const mainSections = ['overview', 'features', 'pricing', 'resources']
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'overview')
 
 async function changeSection (section) {
-  console.log('section', section === 'overview')
   await navigateTo({ path: section === 'overview' 
     ? `/buyersphere/${route.params.id}` 
     : `/buyersphere/${route.params.id}/${section}` })
