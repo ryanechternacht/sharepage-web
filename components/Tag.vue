@@ -1,7 +1,7 @@
 <template>
   <div 
     :style="{ width, height }"
-    :class="[bgColor, thin ? thin : '']"
+    :class="[bgColor]"
     class="flex flex-col items-center rounded-full justify-center px-2 py-[2px]">
     <div class="gray tag">
       <slot />

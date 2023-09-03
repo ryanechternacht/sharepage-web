@@ -24,7 +24,7 @@ const colorClasses = computed(
   @apply cursor-pointer px-2 rounded-md;
 
   &.big {
-    @apply py-2 px-4;
+    @apply py-1 px-6;
   }
 }
 </style>
