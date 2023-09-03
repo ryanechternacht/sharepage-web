@@ -1,11 +1,9 @@
 <template>
   <div class="w-full justify-center flex flex-row items-center gap-x-4">
-    <div
+    <BsButton
       v-for="o in options"
-      class="option"
-      :class="{selected: o === selected}"
-      @click="emit('update:selected', o)"
-    >{{ capitalize(o) }}</div>
+      :color="o === selected ? 'teal' : 'none'"
+      @click="emit('update:selected', o)">{{ capitalize(o) }}</BsButton>
   </div>
 </template>
 
@@ -18,11 +16,4 @@ const emit = defineEmits(['update:selected'])
 </script>
 
 <style lang="postcss" scoped>
-.option {
-  @apply px-2 cursor-pointer rounded-md border border-gray-light text-gray-darker;
-}
-
-.option.selected {
-  @apply border-0 bg-teal-primary text-white;
-}
 </style>
