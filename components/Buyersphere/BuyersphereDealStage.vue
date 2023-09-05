@@ -9,7 +9,7 @@
           <div class="gray">{{ s.description }}</div>
         </div>
         <div v-if="buyersphere.currentStage !== 'adoption'" 
-          class="py-0.5 flex flex-col gap-y-1">
+          class="py-0.5 flex flex-col gap-y-1 min-w-[5.25rem]">
           <template v-if="buyersphere.status === 'active'">
             <MiniButton 
               color="teal"

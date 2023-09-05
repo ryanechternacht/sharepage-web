@@ -109,7 +109,10 @@
               @update:tier-id="updatePricingTierId" />
             <BuyersphereResources
               v-else-if="mainSection === 'resources'"
-              :resources="buyersphere.resources" />
+              :resources="buyersphere.resources"
+              @create:resource="createResource"
+              @update:resource="updateResource"
+              @delete:resource="deleteResource" />
           </div>
         </section>
 
@@ -184,6 +187,18 @@ function updatePricingCanPay ({ canPay }) {
 
 function updatePricingTierId ({ tierId }) {
   buyersphereStore.savePricingTierId({ buyersphereId, pricingTierId: tierId })
+}
+
+function createResource({ title, link }) {
+  buyersphereStore.createResource({ buyersphereId, title, link })
+}
+
+function updateResource({ resourceId, title, link }) {
+  buyersphereStore.updateResource({ buyersphereId, resourceId, title, link })
+}
+
+function deleteResource({ resourceId }) {
+  buyersphereStore.deleteResource({ buyersphereId, resourceId })
 }
 </script>
 

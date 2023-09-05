@@ -2,36 +2,31 @@
   <div class="flex flex-col gap-y-2">
     <div class="flex flex-row items-center gap-x-2">
       <h3>Resources</h3>
-      <BsButton v-if="editing" color="teal" @click="editing = false">
-        Save Edits
-      </BsButton>
-      <template v-else>
-        <BsButton @click="addNew = true">+ add</BsButton>
-      </template>
+      <BsButton @click="creating = true">+ add</BsButton>
     </div>
 
-    <BuyersphereResource v-for="r in resources" 
-      :resource="r" />
+    <BuyersphereResource v-for="r in resources"
+      :resource="r" 
+      @update:resource="obj => emit('update:resource', obj)"
+      @delete:resource="obj => emit('delete:resource', obj)" />
 
-    <!-- <div v-if="editing"
-      class="resource">
-      <img src="/svg/notebook.svg" class="resource-icon">
-      <input class="resource-title"
-        placeholder="Resource Title"
-        v-model="newResourceTitle">
-      <div class="resource-tags">new</div>
-      <a class="resource-view" 
-        target="_blank" 
-        color="teal">Add This Resource</a>
-    </div> -->
+    <BuyersphereResource v-if="creating"
+      :creating="true" 
+      @update:resource="createResource"
+      @dismiss-create="creating = false" />
   </div>
 </template>
 
 <script setup>
 const { resources } = defineProps({ resources: Array })
+const emit = defineEmits(['create:resource', 'update:resource', 'delete:resource'])
 
-const editing = ref(false)
+const creating = ref(false)
 
+function createResource(obj) {
+  emit('create:resource', obj)
+  creating.value = false
+}
 </script>
 
 <style lang="postcss" scoped>

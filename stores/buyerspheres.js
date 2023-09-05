@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import lodash_pkg from 'lodash';
-const { find } = lodash_pkg;
+const { find, findIndex, remove } = lodash_pkg;
 
 function is10MinutesOld(jsonTimestamp) {
   const dayjs = useDayjs()
@@ -110,5 +110,34 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
       c.resolved = resolved
     },
+    async createResource({ buyersphereId, title, link }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/resources`,
+        { method: 'POST', body: { title, link } }
+      )
+      this.buyerspheres[buyersphereId].content.resources.push(data.value)
+    },
+    async updateResource({ buyersphereId, resourceId, title, link }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/resources/${resourceId}`,
+        { method: 'PATCH', body: { title, link }}
+      )
+      
+      const ri = findIndex(
+        this.buyerspheres[buyersphereId].content.resources, 
+        r => r.id === resourceId)
+      this.buyerspheres[buyersphereId].content.resources[ri] = data.value
+    },
+    async deleteResource({ buyersphereId, resourceId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/resources/${resourceId}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.buyerspheres[buyersphereId].content.resources, r => r.id === resourceId)
+    }
   }
 })

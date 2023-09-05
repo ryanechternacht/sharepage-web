@@ -1,11 +1,23 @@
 <template>
-  <div class="flex flex-row gap-x-2">
+  <div class="flex flex-row gap-x-1">
     <div class="resource flex-grow">
       <img src="/svg/notebook.svg" class="resource-icon">
-      <h3 class="resource-title">{{ resource.title }}</h3>
-      <div class="resource-tags">
-        <Tag color="teal" height="12px" width="80px">Public</Tag>
-        <Tag color="gray" height="12px" width="80px">{{ formatDate(resource.createdat) }}</Tag>
+      <div class="resource-mid-higher">
+        <input v-if="editing"
+          v-model="editedTitle"
+          class="w-full"
+          placeholder="Resource Title">
+        <h3 v-else>{{ resource.title }}</h3>
+      </div>
+      <div class="resource-mid-lower">
+        <input v-if="editing"
+          v-model="editedLink"
+          class="w-full"
+          placeholder="Resource Link">
+        <div v-else class="flex flex-row gap-x-2">
+          <Tag color="teal" height="12px" width="80px">Public</Tag>
+          <Tag color="gray" height="12px" width="80px">{{ formatDate(resource.createdat) }}</Tag>
+        </div>
       </div>
       <div class="resource-view">
         <BsButton v-if="editing"
@@ -13,8 +25,7 @@
           color="teal"
           @click="save">Save</BsButton>
           <!-- navigateTo helper isn't respecting _blank -->
-          <a
-            v-else
+          <a v-else
             class="cursor-pointer px-6 rounded-md border border-gray-light py-1"
             target="_blank"
             :href="resource.link">View</a>
@@ -22,48 +33,76 @@
     </div>
 
     <!-- TODO get these to show/hide on hover -->
-    <img 
-      src="/svg/edit.svg" 
+    <img v-if="editing"
+      src="/svg/x.svg"
+      class="row-icon"
+      @click="dismissEdit">
+    <img v-else
+      src="/svg/edit.svg"
       class="row-icon"
       @click="edit"
     >
-    <img 
-      src="/svg/trash.svg" 
+    <img
+      src="/svg/trash.svg"
       class="row-icon"
-      @click="emit('delete:resource', { resourceId: r.id })">
+      @click="deleteResource">
   </div>
 </template>
 
 <script setup>
-import lodash_pkg from 'lodash'
-const  { cloneDeep } = lodash_pkg
-
-const { resource } = defineProps({ resource: Object })
-
-const emit = defineEmits(['update:resource', 'delete:resource'])
+const props = defineProps({ resource: Object, creating: Boolean })
+const emit = defineEmits(['update:resource', 'delete:resource', 'dismiss-create'])
 
 const dayjs = useDayjs()
 function formatDate(date) {
   return dayjs(date).format('MMM D')
 }
 
-const editing = ref(false)
+const editing = ref(!!props.creating)
 const editedTitle = ref('')
 const editedLink = ref('')
 
 function edit () {
   editing.value = true
-  editedTitle.value = resource.title
-  editedLink.value = link.title
+  editedTitle.value = props.resource.title
+  editedLink.value = props.resource.link
 }
 
 function save () {
-  const clone = cloneDeep(resource)
-  clone.title = editedTitle.value
-  clone.link = editedLink.value
+  if (props.creating) {
+    emit('update:resource', { 
+      title: editedTitle.value, 
+      link: editedLink.value,
+    })
+  } else {
+    emit('update:resource', { 
+      resourceId: props.resource.id,
+      title: editedTitle.value, 
+      link: editedLink.value,
+    })
+    editing.value = false;
+  }
+}
 
-  emit('update:resource', { resource: clone })
-  editing.value = false;
+function dismissEdit () {
+  if (props.creating) {
+    emit('dismiss-create')
+  } else {
+    editing.value = false;
+  }
+}
+
+function deleteResource () {
+  if (props.creating) {
+    emit('dismiss-create')
+    return
+  }
+
+  const c = confirm('Are you sure you want to delete this resource?')
+
+  if (c) {
+    emit('delete:resource', { resourceId: props.resource.id })
+  }
 }
 </script>
 
@@ -72,8 +111,8 @@ function save () {
   @apply grid border border-gray-light rounded-md p-2;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
-    "icon title view"
-    "icon tags view";
+    "icon mid-higher view"
+    "icon mid-lower view";
 }
 
 .resource-icon {
@@ -81,13 +120,14 @@ function save () {
   grid-area: icon;
 }
 
-.resource-title {
-  grid-area: title;
+.resource-mid-higher {
+  @apply mr-2 mb-.5;
+  grid-area: mid-higher;
 }
 
-.resource-tags {
-  @apply flex flex-row gap-x-2;
-  grid-area: tags;
+.resource-mid-lower {
+  @apply mr-2;
+  grid-area: mid-lower;
 }
 
 .resource-view {
@@ -96,6 +136,6 @@ function save () {
 }
 
 .row-icon {
-  @apply p-2;
+  @apply p-1 cursor-pointer max-w-[1.5rem];
 }
 </style>
