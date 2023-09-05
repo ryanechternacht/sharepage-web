@@ -49,6 +49,12 @@
           Deal Timing
         </NuxtLink>
         <NuxtLink
+          to="/setup/resources" 
+          class="step-box"
+          :class="{'step-box-complete': hasResources}">
+          Resources
+        </NuxtLink>
+        <NuxtLink
           to="/setup/users" 
           class="step-box"
           :class="{'step-box-complete': hasUsers}">
@@ -58,14 +64,15 @@
       </div>
     </div>
 
-    <div class="mx-8 mt-8">
-      <SetupCompany v-if="step === 'company'"/>
-      <SetupPersonas v-if="step === 'personas'"/>
-      <SetupPainPoints v-if="step === 'pain-points'"/>
-      <SetupFeatures v-if="step === 'features'"/>
-      <SetupPricingTiers v-if="step === 'pricing-tiers'"/>
-      <SetupDealTiming v-if="step === 'deal-timing'"/>
-      <SetupUsers v-if="step === 'users'"/>
+    <div class="mx-8 mt-8 mb-40">
+      <SetupCompany v-if="step === 'company'" />
+      <SetupPersonas v-else-if="step === 'personas'" />
+      <SetupPainPoints v-else-if="step === 'pain-points'" />
+      <SetupFeatures v-else-if="step === 'features'" />
+      <SetupPricingTiers v-else-if="step === 'pricing-tiers'" />
+      <SetupDealTiming v-else-if="step === 'deal-timing'" />
+      <SetupResources v-else-if="step === 'resources'" />
+      <SetupUsers v-else-if="step === 'users'" />
     </div>
 
   </div>
@@ -73,22 +80,19 @@
 
 <script setup>
 import { useUsersStore  } from '@/stores/users'
-import { useOrganizationStore } from '@/stores/organization'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { usePersonasStore } from '@/stores/personas'
 import { useFeaturesStore } from '@/stores/features'
 import { storeToRefs } from 'pinia'
 import { usePricingTiersStore } from '@/stores/pricing-tiers'
 import { useDealTimingStore } from '@/stores/deal-timing'
+import { useResourcesStore } from '~/stores/resources'
 
 const route = useRoute()
 const step = route.params.step
 
 const usersStore = useUsersStore()
 const { getMeCached, getUsersCached } = storeToRefs(usersStore)
-
-const organizationStore = useOrganizationStore()
-const { getOrganizationCached } = storeToRefs(organizationStore)
 
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
@@ -105,18 +109,21 @@ const { getPricingTiersCached } = storeToRefs(pricingTiersStore)
 const dealTimingStore = useDealTimingStore()
 const { getDealTimingCached } = storeToRefs(dealTimingStore)
 
-const [user, organization, painPoints, personas, features, 
-       pricingTiers, dealTiming, users] 
+const resourcesStore = useResourcesStore()
+const { getResourcesCached } = storeToRefs(resourcesStore)
+
+const [user, painPoints, personas, features, pricingTiers, dealTiming, 
+       resources, users] 
   = await Promise.all([
-  getMeCached.value(),
-  getOrganizationCached.value(),
-  getPainPointsCached.value(),
-  getPersonasCached.value(),
-  getFeaturesCached.value(),
-  getPricingTiersCached.value(),
-  getDealTimingCached.value(),
-  getUsersCached.value()
-])
+    getMeCached.value(),
+    getPainPointsCached.value(),
+    getPersonasCached.value(),
+    getFeaturesCached.value(),
+    getPricingTiersCached.value(),
+    getDealTimingCached.value(),
+    getResourcesCached.value(),
+    getUsersCached.value()
+  ])
 
 const hasCompany = false
 const hasPersonas = personas.length
@@ -124,6 +131,7 @@ const hasPainPoints = painPoints.length
 const hasFeatures = features.length
 const hasPricingTiers = pricingTiers.length
 const hasDealTiming = dealTiming.decisionDays
+const hasResources = resources.length
 const hasUsers = users.length > 1
 </script>
 

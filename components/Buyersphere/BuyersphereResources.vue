@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-y-2">
     <div class="flex flex-row items-center gap-x-2">
       <h3>Resources</h3>
-      <BsButton @click="creating = true">+ add</BsButton>
+      <BsButton v-if="!hideAdd" @click="creating = true">+ add</BsButton>
     </div>
 
     <BuyersphereResource v-for="r in resources"
@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-const { resources } = defineProps({ resources: Array })
+const { resources } = defineProps({ resources: Array, hideAdd: Boolean })
 const emit = defineEmits(['create:resource', 'update:resource', 'delete:resource'])
 
 const creating = ref(false)
