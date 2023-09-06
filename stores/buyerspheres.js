@@ -138,6 +138,35 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
 
       remove(this.buyerspheres[buyersphereId].content.resources, r => r.id === resourceId)
+    },
+    async createNote({ buyersphereId, title, body, authorId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/notes`,
+        { method: 'POST', body: { title, body, authorId } }
+      )
+      this.buyerspheres[buyersphereId].content.notes.push(data.value)
+    },
+    async updateNote({ buyersphereId, noteId, title, body, authorId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/notes/${noteId}`,
+        { method: 'PATCH', body: { title, body, authorId }}
+      )
+      
+      const ni = findIndex(
+        this.buyerspheres[buyersphereId].content.notes, 
+        n => n.id === noteId)
+      this.buyerspheres[buyersphereId].content.notes[ni] = data.value
+    },
+    async deleteNote({ buyersphereId, noteId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/notes/${noteId}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.buyerspheres[buyersphereId].content.notes, n => n.id === noteId)
     }
   }
 })

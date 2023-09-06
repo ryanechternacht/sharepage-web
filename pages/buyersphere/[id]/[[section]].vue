@@ -107,6 +107,9 @@
               :buyersphere="buyersphere"
               @update:can-pay="updatePricingCanPay"
               @update:tier-id="updatePricingTierId" />
+            <BuyersphereNotes
+              v-else-if="mainSection === 'notes'"
+              :notes="buyersphere.notes" />
             <BuyersphereResources
               v-else-if="mainSection === 'resources'"
               :resources="buyersphere.resources"
@@ -152,7 +155,7 @@ const [buyersphere, organization, user] = await Promise.all([
   getMeCached.value()
 ])
 
-const mainSections = ['overview', 'features', 'pricing', 'resources']
+const mainSections = ['overview', 'features', 'pricing', 'notes', 'resources']
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'overview')
 

@@ -14,7 +14,7 @@
       class="mt-1"
       ref="linkElem"
       placeholder="Add Resource Link"
-      @keyup.enter="checkReady('link')">
+      @keyup.enter="checkReady">
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"
       :submission-state="submissionState" 
@@ -67,9 +67,9 @@ async function checkReady() {
     resourceLink.value = ''
     titleElem.focus()
   } else if (!resourceTitle.value) {
-    linkElem.value.focus()
-  } else {
     titleElem.value.focus()
+  } else {
+    linkElem.value.focus()
   }
 }
 
