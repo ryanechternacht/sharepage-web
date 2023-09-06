@@ -24,7 +24,7 @@
       <h3 class="mt-10">Notes</h3>
       <BuyersphereNote v-for="n in notes"
         :note="n"
-        @update:note="obj => emit('update:note', obj)"
+        @update:note="updateNote"
         @delete:note="deleteNote" />
     </div>
   </div>
@@ -72,6 +72,10 @@ async function checkReady() {
   } else {
     bodyElem.value.focus()
   }
+}
+
+function updateNote({ noteId, title, body }) {
+  buyersphereStore.updateNote({ buyersphereId, noteId, title, body })
 }
 
 function deleteNote({ noteId }) {

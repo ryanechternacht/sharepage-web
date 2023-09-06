@@ -10,13 +10,23 @@
         <h3 v-else>{{ note.title }}</h3>
       </div>
       <div class="note-mid-lower">
-        <input v-if="editing"
-          v-model="editedLink"
-          class="w-full"
-          placeholder="Note Link">
-        <div v-else class="flex flex-row gap-x-2">
-          <Tag color="teal" height="12px" width="80px">Public</Tag>
-          <Tag color="gray" height="12px" width="80px">{{ formatDate(note.createdat) }}</Tag>
+        <div v-if="!editing" 
+          class="flex flex-row gap-x-2">
+          <Tag color="teal" 
+            height=".75rem" 
+            width="5rem">
+            Public
+          </Tag>
+          <Tag color="gray" 
+            height=".75rem"
+            class="min-w-[80px]">
+            From {{ note.author.firstName }} {{ note.author.lastName.substring(0, 1) }}
+          </Tag>
+          <Tag color="gray" 
+            height=".75rem" 
+            width="5rem">
+            {{ formatDate(note.createdat) }}
+          </Tag>
         </div>
       </div>
       <div class="note-view-button">
@@ -24,18 +34,19 @@
           big
           color="teal"
           @click="save">Save</BsButton>
-          <!-- navigateTo helper isn't respecting _blank -->
-          <BsButton v-else-if="viewing"
-            big
-            @click="viewing = false">Close</BsButton>
-          <BsButton v-else
-            big
-            @click="viewing = true">View</BsButton>
+        <BsButton v-else-if="viewing"
+          big
+          @click="viewing = false">Close</BsButton>
+        <BsButton v-else
+          big
+          @click="viewing = true">View</BsButton>
       </div>
-      <div
-        v-if="viewing"
+      <div v-if="viewing"
         v-html="note.body" 
-        class="inline-html note-bottom rounded-md bg-gray-lighter p-1 mt-2" />
+        class="inline-html note-bottom rounded-md bg-gray-lighter p-1" />
+      <TipTapTextarea v-if="editing"
+        v-model="editedBody" 
+        class="note-bottom"/>
     </div>
 
     <!-- TODO get these to show/hide on hover -->
@@ -65,20 +76,20 @@ function formatDate(date) {
 
 const editing = ref(false)
 const editedTitle = ref('')
-const editedLink = ref('')
+const editedBody = ref('')
 const viewing = ref(false)
 
 function edit () {
   editing.value = true
   editedTitle.value = props.note.title
-  editedLink.value = props.note.link
+  editedBody.value = props.note.body
 }
 
 function save () {
   emit('update:note', { 
     noteId: props.note.id,
     title: editedTitle.value, 
-    link: editedLink.value,
+    body: editedBody.value,
   })
   editing.value = false;
 }
@@ -131,6 +142,7 @@ function deleteNote () {
 }
 
 .note-bottom {
+  @apply mt-2;
   grid-area: bottom;
 }
 </style>

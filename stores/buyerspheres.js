@@ -147,11 +147,11 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.buyerspheres[buyersphereId].content.notes.push(data.value)
     },
-    async updateNote({ buyersphereId, noteId, title, body, authorId }) {
+    async updateNote({ buyersphereId, noteId, title, body }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/notes/${noteId}`,
-        { method: 'PATCH', body: { title, body, authorId }}
+        { method: 'PATCH', body: { title, body }}
       )
       
       const ni = findIndex(
