@@ -19,17 +19,23 @@
           <Tag color="gray" height="12px" width="80px">{{ formatDate(note.createdat) }}</Tag>
         </div>
       </div>
-      <div class="note-view">
+      <div class="note-view-button">
         <BsButton v-if="editing"
           big
           color="teal"
           @click="save">Save</BsButton>
           <!-- navigateTo helper isn't respecting _blank -->
-          <a v-else
-            class="cursor-pointer px-6 rounded-md border border-gray-light py-1"
-            target="_blank"
-            :href="note.link">View</a>
+          <BsButton v-else-if="viewing"
+            big
+            @click="viewing = false">Close</BsButton>
+          <BsButton v-else
+            big
+            @click="viewing = true">View</BsButton>
       </div>
+      <div
+        v-if="viewing"
+        v-html="note.body" 
+        class="inline-html note-bottom rounded-md bg-gray-lighter p-1 mt-2" />
     </div>
 
     <!-- TODO get these to show/hide on hover -->
@@ -61,6 +67,7 @@ function formatDate(date) {
 const editing = ref(false)
 const editedTitle = ref('')
 const editedLink = ref('')
+const viewing = ref(false)
 
 function edit () {
   editing.value = true
@@ -95,8 +102,9 @@ function deleteNote () {
   @apply grid border border-gray-light rounded-md p-2;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
-    "icon mid-higher view"
-    "icon mid-lower view";
+    "icon mid-higher view-button"
+    "icon mid-lower view-button"
+    "bottom bottom bottom";
 }
 
 .note-icon {
@@ -114,12 +122,16 @@ function deleteNote () {
   grid-area: mid-lower;
 }
 
-.note-view {
+.note-view-button {
   @apply my-auto;
-  grid-area: view;
+  grid-area: view-button;
 }
 
 .row-icon {
   @apply p-1 cursor-pointer max-w-[1.5rem];
+}
+
+.note-bottom {
+  grid-area: bottom;
 }
 </style>

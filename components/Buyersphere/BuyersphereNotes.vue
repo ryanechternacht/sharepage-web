@@ -12,8 +12,7 @@
         v-model="noteBody"
         ref="bodyElem"
         class="h-[160px]" 
-        placeholder="New Note Body"
-        @keyup.enter="checkReady" />
+        placeholder="New Note Body" />
       <SubmitButton 
         class="w-[10rem] h-[2.5rem] self-center"
         :submission-state="submissionState"
