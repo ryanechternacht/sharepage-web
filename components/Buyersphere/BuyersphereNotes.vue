@@ -25,7 +25,7 @@
       <BuyersphereNote v-for="n in notes"
         :note="n"
         @update:note="obj => emit('update:note', obj)"
-        @delete:note="obj => emit('delete:note', obj)" />
+        @delete:note="deleteNote" />
     </div>
   </div>
 </template>
@@ -73,6 +73,10 @@ async function checkReady() {
     bodyElem.value.focus()
   }
 }
+
+function deleteNote({ noteId }) {
+  buyersphereStore.deleteNote({ buyersphereId, noteId })
+} 
 </script>
 
 <style lang="postcss" scoped>

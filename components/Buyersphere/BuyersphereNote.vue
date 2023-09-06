@@ -46,8 +46,7 @@
     <img v-else
       src="/svg/edit.svg"
       class="row-icon"
-      @click="edit"
-    >
+      @click="edit">
     <img
       src="/svg/trash.svg"
       class="row-icon"
