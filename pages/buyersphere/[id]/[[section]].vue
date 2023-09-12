@@ -75,6 +75,7 @@
               <h3>{{ buyersphere.buyer }}</h3>
             </div>
             <PersonList :people="buyersphere.buyerTeam" />
+            <button class="p-2 bg-teal-primay" @click="test">Trial</button>
           </div>
 
           <div class="gray-outline mt-4 p-3">
@@ -136,6 +137,27 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
+import { useModal } from 'vue-final-modal'
+import MyModal from '@/components/MyModal.vue'
+
+const { open } = useModal({
+  // component: MyModal,
+  // attrs: {
+  //   title: 'Hello World!',
+  // },
+  // slots: {
+  //   default: '<p>The content of the modal</p>',
+  // },
+  component: MyModal,
+  attrs: {
+    source: '/public/house_stark.png'
+  }
+})
+
+function test () {
+  console.log('test')
+  open()
+}
 
 const route = useRoute()
 const buyersphereId = route.params.id
