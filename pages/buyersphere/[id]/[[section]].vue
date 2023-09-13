@@ -71,17 +71,18 @@
           <h3 class="section-header">👋 People</h3>
           <div class="gray-outline p-3">
             <div class="mb-2 flex flex-row items-center gap-x-4">
-              <Logo :src="buyersphere.buyerLogo" />
-              <h3>{{ buyersphere.buyer }}</h3>
+              <div class="w-full flex flex-row justify-between">
+                <p>{{ buyersphere.buyer }} Team</p>
+                <BsButton @click="openBuyerModal">+ Add</BsButton>
+              </div>
             </div>
             <PersonList :people="buyersphere.buyerTeam" />
-            <button class="p-2 bg-teal-primay" @click="test">Trial</button>
           </div>
 
           <div class="gray-outline mt-4 p-3">
-            <div class="mb-2 flex flex-row gap-x-4">
-              <Logo src="/house_stark.png" />
-              <h3 class="">House Stark Team</h3>
+            <div class="w-full flex flex-row justify-between">
+              <p>{{ organization.name }} Team</p>
+              <BsButton @click="openSellerModal">+ Add</BsButton>
             </div>
             <PersonList :people="buyersphere.sellerTeam" />
           </div>
@@ -138,26 +139,8 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
-import MyModal from '@/components/MyModal.vue'
-
-const { open } = useModal({
-  // component: MyModal,
-  // attrs: {
-  //   title: 'Hello World!',
-  // },
-  // slots: {
-  //   default: '<p>The content of the modal</p>',
-  // },
-  component: MyModal,
-  attrs: {
-    source: '/public/house_stark.png'
-  }
-})
-
-function test () {
-  console.log('test')
-  open()
-}
+import AddBuyerModal from '@/components/AddBuyerModal.vue'
+import AddSellerModal from '@/components/AddSellerModal.vue'
 
 const route = useRoute()
 const buyersphereId = route.params.id
@@ -186,6 +169,27 @@ async function changeSection (section) {
     ? `/buyersphere/${route.params.id}` 
     : `/buyersphere/${route.params.id}/${section}` })
 }
+
+const { open: openBuyerModal, close: closeBuyerModal } = useModal({
+  component: AddBuyerModal,
+  attrs: {
+    buyer: buyersphere.buyer,
+    buyersphereId,
+    onClose () {
+      closeBuyerModal()
+    }
+  }
+})
+
+const { open: openSellerModal, close: closeSellerModal } = useModal({
+  component: AddSellerModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeSellerModal()
+    }
+  }
+})
 
 // store.$subscribe(() => {
 //   buyersphere.value = getBuyersphereByIdCached.value(buyersphereId)
