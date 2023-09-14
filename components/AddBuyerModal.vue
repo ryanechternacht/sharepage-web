@@ -8,7 +8,6 @@
         <h3 class="flex-grow">{{ buyer }} Team</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
-      <div>{{ error }}</div>
       <div class="flex flex-row mb-2 gap-x-2">
         <input v-model="firstName" 
           ref="firstNameElem"

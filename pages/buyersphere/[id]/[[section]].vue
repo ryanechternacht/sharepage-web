@@ -139,8 +139,8 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
-import AddBuyerModal from '@/components/AddBuyerModal.vue'
-import AddSellerModal from '@/components/AddSellerModal.vue'
+import AddBuyerModal from '@/components/AddBuyerModal'
+import AddSellerModal from '@/components/AddSellerModal'
 
 const route = useRoute()
 const buyersphereId = route.params.id

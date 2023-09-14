@@ -39,11 +39,14 @@
         Stage
       </h1>
 
-      <button class="bg-green-jewel w-[10rem] h-[2.5rem] mt-8 text-white rounded">
-        Add
-      </button>
-
       <div class="buyersphere-table mt-10">
+        <div class="header-row">
+          <h3>Buyersphers</h3>
+          <BsButton class=""
+            @click="openBuyersphereModal">
+            + Add
+          </BsButton>
+        </div>
         <NuxtLink 
           v-for="b in buyerspheres"
           :key="b.id"
@@ -76,6 +79,8 @@ import { usePricingTiersStore } from '@/stores/pricing-tiers'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, filter, find, sortBy } = lodash_pkg;
+import { useModal } from 'vue-final-modal'
+import AddBuyersphereModal from '@/components/AddBuyersphereModal'
 
 const usersStore = useUsersStore()
 const { getMeCached, getUsersCached } = storeToRefs(usersStore)
@@ -150,6 +155,16 @@ function isOverdue ({ currentStage, qualificationDate, evaluationDate, decisionD
     return false
   }
 } 
+
+const { open: openBuyersphereModal, close: closeBuyersphereModal } = useModal({
+  component: AddBuyersphereModal,
+  attrs: {
+    onClose () {
+      closeBuyersphereModal()
+      refresh()
+    }
+  }
+})
 </script>
 
 <style lang="postcss" scoped>
@@ -160,6 +175,10 @@ function isOverdue ({ currentStage, qualificationDate, evaluationDate, decisionD
 .buyersphere-table {
   @apply grid;
   grid-template-columns: repeat(5, max-content);
+
+  .header-row {
+    @apply col-span-5 flex flex-row gap-x-4 items-center;
+  }
 
   .grid-cell {
     @apply p-2 h-full flex flex-row items-center;
