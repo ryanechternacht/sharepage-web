@@ -2,17 +2,18 @@
   <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">The Pain Points We Solve</h1>
+    <h3 class="w-[600px] mt-5">Create New Pain Points</h3>
     <input
       v-model="painPointTitle"
       ref="titleElem"
-      class="mt-5"
-      placeholder="Add Pain Point Title"
+      class="mt-1"
+      placeholder="Pain Point Title"
       @keyup.enter="checkReady('title')">
     <input
       v-model="painPointDescription"
       ref="descriptionElem"
       class="mt-1"
-      placeholder="Add Pain Point One Line Description"
+      placeholder="Pain Point One Line Description"
       @keyup.enter="checkReady('description')">
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"

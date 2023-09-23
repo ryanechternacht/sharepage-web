@@ -2,17 +2,18 @@
   <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">The Personas We Serve</h1>
+    <h3 class="w-[600px] mt-5">Create New Persona</h3>
     <input 
       v-model="personaTitle"
       ref="titleElem"
-      class="mt-5"
-      placeholder="Add Persona Title"
+      class="mt-1"
+      placeholder="Persona Title"
       @keyup.enter="checkReady('title')">
     <input
       v-model="personaDescription"
       ref="descriptionElem"
       class="mt-1"
-      placeholder="Add Persona One Line Description"
+      placeholder="Persona One Line Description"
       @keyup.enter="checkReady('description')">
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"

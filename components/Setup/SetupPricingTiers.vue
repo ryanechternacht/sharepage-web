@@ -2,12 +2,13 @@
 <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">Our Products Core PricingTiers</h1>
+    <h3 class="w-[600px] mt-5">Create New Pricing Tier</h3>
     <div class="flex flex-col gap-y-2 w-[600px]">
       <input 
         v-model="pricingTierTitle"
         ref="titleElem"
         class="w-full"
-        placeholder="Add Pricing Tier Title"
+        placeholder="Pricing Tier Title"
         @keyup.enter="checkReady()">
       <input 
         v-model="pricingTierBestFor"
@@ -45,7 +46,7 @@
       <TipTapTextarea 
         v-model="pricingTierDescription"
         class="w-full"
-        placeholder="Add Pricing Tier Description"
+        placeholder="Pricing Tier Description"
         />
       </div>
       <SubmitButton

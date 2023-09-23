@@ -54,7 +54,7 @@
   }
 
   input, select {
-    @apply p-2 body bg-gray-lighter rounded-md;
+    @apply p-2 body border border-gray-lighter rounded-md;
     @apply gray;
 
     &:focus-visible {

@@ -3,17 +3,19 @@
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">Resources</h1>
     <h3>Default resources that auto show up in every buyersphere</h3>
+
+    <h3 class="w-[600px] mt-5">Create New Resource</h3>
     <input 
       v-model="resourceTitle"
       ref="titleElem"
-      class="mt-5"
-      placeholder="Add Resource Title"
+      class="mt-1"
+      placeholder="Resource Title"
       @keyup.enter="checkReady">
     <input
       v-model="resourceLink"
       class="mt-1"
       ref="linkElem"
-      placeholder="Add Resource Link"
+      placeholder="Resource Link"
       @keyup.enter="checkReady">
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"

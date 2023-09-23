@@ -2,8 +2,8 @@
   <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">Deal Timing</h1>
-    <h3>Default Amount of Time for customer to be:</h3>
-    <div class="mt-10 grid grid-cols-2 grid-rows-3 gap-y-2 gap-x-4">
+    <h3 class="mt-5">Default Amount of Time (days) for customer to be:</h3>
+    <div class="mt-5 grid grid-cols-2 grid-rows-3 gap-y-2 gap-x-4">
       <h3>Qualified</h3>
       <input 
         v-model.number="qualifiedDays"

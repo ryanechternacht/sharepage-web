@@ -2,16 +2,17 @@
   <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">Our Products Core Features</h1>
+    <h3 class="w-[600px] mt-5">Create New Feature</h3>
     <input 
       v-model="featureTitle"
       ref="titleElem"
-      class="mt-5"
-      placeholder="Add Feature Title"
+      class="mt-1"
+      placeholder="Feature Title"
       @keyup.enter="checkReady('title')">
     <TipTapTextarea 
       v-model="featureDescription"
       class="mt-1 w-full max-w-[600px]"
-      placeholder="Add Feature Description" />
+      placeholder="Feature Description" />
     <SubmitButton
       class="mt-2 w-[10rem] h-[2.5rem]"
       :submission-state="submissionState" 
