@@ -1,17 +1,6 @@
 <template>
   <div>
-    <div class="sticky">
-      <div class="flex flex-row items-center p-8 h-12 justify-between">
-        <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
-          <img src="/logo.svg">
-          <h3>Buyersphere</h3>
-        </NuxtLink>
-        <div class="flex flex-row items-center gap-x-2">
-          <span>{{ user.name || user.email }}</span>
-          👤
-        </div>
-      </div>
-    </div>
+    <TopNav />
     <div class="flex flex-col items-center">
       <div class="flex flex-row items-center gap-x-[2.25rem] relative">
         <NuxtLink
@@ -112,10 +101,9 @@ const { getDealTimingCached } = storeToRefs(dealTimingStore)
 const resourcesStore = useResourcesStore()
 const { getResourcesCached } = storeToRefs(resourcesStore)
 
-const [user, painPoints, personas, features, pricingTiers, dealTiming, 
+const [painPoints, personas, features, pricingTiers, dealTiming, 
        resources, users] 
   = await Promise.all([
-    getMeCached.value(),
     getPainPointsCached.value(),
     getPersonasCached.value(),
     getFeaturesCached.value(),

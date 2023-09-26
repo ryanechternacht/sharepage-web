@@ -1,17 +1,6 @@
 <template>
   <div>
-    <div class="sticky">
-      <div class="flex flex-row items-center p-8 h-12 justify-between">
-        <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
-          <img src="/logo.svg">
-          <h3>Buyersphere</h3>
-        </NuxtLink>
-        <div class="flex flex-row items-center gap-x-2">
-          <span>{{ user.first_name ? user.first_name + ' ' + user.last_name : user.email }}</span>
-          👤
-        </div>
-      </div>
-    </div>
+    <TopNav />
 
     <div class="flex flex-col items-center text-center w-[720px] mx-auto">
       <h1 class="mt-20 leading-[56px]">

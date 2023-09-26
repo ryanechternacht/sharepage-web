@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-row gap-x-4 items-center">
+    <!-- TODO this should become a logo (and the same as the topnav) -->
     <LetterAvatar :letter="person.firstName[0]" />
     <div class="flex flex-col">
       <p class="gray">{{ person.firstName }} {{ person.lastName }}</p>

@@ -4,6 +4,7 @@
       <p class="bold">Ask a question:</p>
       <TipTapTextarea
         v-model="newQuestion"
+        placeholder="Enter your question"
         class="w-full h-12" />
       <SubmitButton
         class="mx-auto"

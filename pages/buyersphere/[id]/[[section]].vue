@@ -1,19 +1,9 @@
 <template>
   <div>
+    <!-- TODO add this back in? -->
     <!-- <NuxtLoadingIndicator /> -->
     <div class="min-h-screen">
-      <div class="bg-teal-background sticky">
-        <div class="flex flex-row items-center p-8 h-12 justify-between">
-          <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
-            <img src="/logo.svg">
-            <h3>Buyersphere</h3>
-          </NuxtLink>
-          <div class="flex flex-row items-center gap-x-2">
-            <span>{{ user.name || user.email }}</span>
-            👤
-          </div>
-        </div>
-      </div>
+      <TopNav />
       <div class="bg-teal-background grid-row pb-3">
         <!-- row 1 col 1 -->
         <section class="side-bar h-100% flex flex-col justify-items-center gap-2">
@@ -136,7 +126,6 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
-import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddBuyerModal from '@/components/AddBuyerModal'
@@ -151,13 +140,9 @@ const { getBuyersphereByIdCached,  } = storeToRefs(buyersphereStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const usersStore = useUsersStore()
-const { getMeCached } = storeToRefs(usersStore)
-
-const [buyersphere, organization, user] = await Promise.all([
+const [buyersphere, organization] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getOrganizationCached.value(),
-  getMeCached.value()
+  getOrganizationCached.value()
 ])
 
 const mainSections = ['overview', 'features', 'pricing', 'notes', 'resources']
