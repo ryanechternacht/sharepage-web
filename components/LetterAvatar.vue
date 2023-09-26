@@ -1,9 +1,0 @@
-<template>
-  <div class="bg-teal-primary rounded-full h-6 w-6 center-xy"> 
-    <h3 class="dark mx-auto">{{ letter }}</h3>
-  </div>
-</template>
-
-<script setup>
-const props = defineProps({ letter: String })
-</script>

@@ -64,6 +64,7 @@ module.exports = {
       spacing: {
         '.5': '.125rem'
       }
+      // TODO is it worth it to add max-w-XXX here like I use in icons?
     }
   },
 }

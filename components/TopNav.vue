@@ -16,11 +16,7 @@
 
         <div class="flex flex-row items-center gap-x-2">
           <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
-          <img v-if="user.image"
-            :src="user.image"
-            class="rounded-full max-w-8 max-h-8">
-            <!-- TODO, why does max-w-8 not work? -->
-          <span v-else>👤</span>
+          <UserAvatar :user="user" size="large" />
         </div>
       </div>
     </div>
