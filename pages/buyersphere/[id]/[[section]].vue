@@ -3,56 +3,58 @@
     <!-- TODO add this back in? -->
     <!-- <NuxtLoadingIndicator /> -->
     <div class="min-h-screen">
-      <TopNav />
-      <div class="bg-teal-background grid-row pb-3">
-        <!-- row 1 col 1 -->
-        <section class="side-bar h-100% flex flex-col justify-items-center gap-2">
-          <div class="logo-section">
-            <Logo
-              :src="buyersphere.buyerLogo"
-              size="large"
-              style="grid-area: logo" />
-            <h3 style="grid-area: company">{{ buyersphere.buyer }}</h3>
-            <Tag
-              color="gray"
-              width="3.75rem"
-              height="0.75rem"
-              style="grid-area: label">Buyer</Tag>
-          </div>
-          <div class="logo-section">
-            <Logo
-              :src="organization.logo"
-              size="large"
-              style="grid-area: logo" />
-            <h3 style="grid-area: company">{{ organization.name }}</h3>
-            <Tag
-              color="gray"
-              width="3.75rem"
-              height="0.75rem"
-              style="grid-area: label">Seller</Tag>
-          </div>
-        </section>
+      <div class="bg-teal-background">
+        <TopNav />
+        <div class="grid-row pb-3">
+          <!-- row 1 col 1 -->
+          <section class="side-bar h-100% flex flex-col justify-items-center gap-2">
+            <div class="logo-section">
+              <Logo
+                :src="buyersphere.buyerLogo"
+                size="large"
+                style="grid-area: logo" />
+              <h3 style="grid-area: company">{{ buyersphere.buyer }}</h3>
+              <Tag
+                color="gray"
+                width="3.75rem"
+                height="0.75rem"
+                style="grid-area: label">Buyer</Tag>
+            </div>
+            <div class="logo-section">
+              <Logo
+                :src="organization.logo"
+                size="large"
+                style="grid-area: logo" />
+              <h3 style="grid-area: company">{{ organization.name }}</h3>
+              <Tag
+                color="gray"
+                width="3.75rem"
+                height="0.75rem"
+                style="grid-area: label">Seller</Tag>
+            </div>
+          </section>
 
-        <!-- row 1 col 2 -->
-        <section class="flex-grow">
-          <BuyersphereDealStage 
-            :buyersphere="buyersphere"
-            @update:stage="updateStage"
-            @update:status="updateStatus" />
-        </section>
+          <!-- row 1 col 2 -->
+          <section class="flex-grow">
+            <BuyersphereDealStage 
+              :buyersphere="buyersphere"
+              @update:stage="updateStage"
+              @update:status="updateStatus" />
+          </section>
 
-        <!-- row 1 col 3 -->
-        <section class="side-bar flex flex-col">
-          <div class="flex-grow flex flex-row justify-between items-center">
-            <h3>Qualification by:</h3>
-            <h3 class="text-purple">June 28th</h3>
-          </div>
-          <div class="flex-grow flex flex-row justify-between items-center">
-            <div class="gray">+ ACTION</div>
-            <div class="gray">+ NOTE</div>
-            <div class="gray">+ RESOURCE</div>
-          </div>
-        </section>
+          <!-- row 1 col 3 -->
+          <section class="side-bar flex flex-col">
+            <div class="flex-grow flex flex-row justify-between items-center">
+              <h3>Qualification by:</h3>
+              <h3 class="text-purple">June 28th</h3>
+            </div>
+            <div class="flex-grow flex flex-row justify-between items-center">
+              <div class="gray">+ ACTION</div>
+              <div class="gray">+ NOTE</div>
+              <div class="gray">+ RESOURCE</div>
+            </div>
+          </section>
+        </div>
       </div>
 
         <!-- row 2 col 1 -->
@@ -126,6 +128,7 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
+import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddBuyerModal from '@/components/AddBuyerModal'
