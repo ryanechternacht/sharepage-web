@@ -65,6 +65,7 @@ const emailElem = ref(null)
 const displayRole = ref('')
 const displayRoleElem = ref(null)
 
+// TODO enter doesn't work here
 function invite () {
   if (!firstName.value) {
     firstNameElem.value.focus()
