@@ -127,7 +127,7 @@ function advanceStage() {
 }
 
 function putOnHold() {
-  const answer = confirm(`Are you sure you'd like to opt out of this buying process?`)
+  const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
   if (answer) {
     emit('update:status', { status: "on-hold"})

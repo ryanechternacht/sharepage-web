@@ -148,6 +148,19 @@ const [buyersphere, organization] = await Promise.all([
   getOrganizationCached.value()
 ])
 
+console.log('buyersphere', buyersphere)
+
+if (buyersphere === null) {
+  // TODO if we're here, the user has an account, but can't see this specific
+  // buyersphere
+  // await navigateTo('/error/buyersphere-access', { replace: true })
+  showError({ 
+    statusCode: 404, 
+    statusMessage: `We're sorry, but you don't have access to this Buyersphere.
+      Please reach out to your contact if you think this is a mistake.`
+  })
+}
+
 const mainSections = ['overview', 'features', 'pricing', 'notes', 'resources']
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'overview')
