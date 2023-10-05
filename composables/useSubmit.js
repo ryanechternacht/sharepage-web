@@ -23,6 +23,7 @@ export const useSubmit = (fn, submittedDurationMs = 3000) => {
     } catch (ex) {
       submissionState.value = 'error'
       error.value = ex
+      console.log(ex)
       setTimeout(() => submissionState.value = 'ready', submittedDurationMs)
       return
     }

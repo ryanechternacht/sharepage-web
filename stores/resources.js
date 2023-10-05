@@ -27,7 +27,7 @@ export const useResourcesStore = defineStore('resources', {
     },
     async deleteResource({ resourceId }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(`/v0.1/resources/${resourceId}`, {
+      await apiFetch(`/v0.1/resources/${resourceId}`, {
         method: 'DELETE',
       })
 
@@ -42,7 +42,7 @@ export const useResourcesStore = defineStore('resources', {
           || is10MinutesOld(this.resources.generatedAt)) {
         const { data } = await apiFetch('/v0.1/resources')
         this.resources = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }

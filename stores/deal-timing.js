@@ -26,7 +26,7 @@ export const useDealTimingStore = defineStore('deal-timing', {
           || is10MinutesOld(this.dealTiming.generatedAt)) {
         const { data } = await apiFetch('/v0.1/deal-timing')
         this.dealTiming = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
@@ -40,7 +40,7 @@ export const useDealTimingStore = defineStore('deal-timing', {
       })
 
       this.dealTiming = {
-        content: data,
+        content: data.value,
         generatedAt: dayjs().toJSON()
       }
     },

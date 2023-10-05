@@ -18,7 +18,7 @@ export const useOrganizationStore = defineStore('organization', {
 
       if (!this.organization || forceRefresh) {
         const { data } = await apiFetch('/v0.1/organization')
-        this.organization = data
+        this.organization = data.value
       }
     },
   }

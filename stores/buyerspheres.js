@@ -29,6 +29,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres`,
         { method: 'POST', body: { buyer, buyerLogo } }
       )
+      // TODO do i need to fetch here?
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()
@@ -80,7 +81,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       {
         const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}`)
         this.buyerspheres[buyersphereId] = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
@@ -95,7 +96,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       {
         const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/conversations`)
         this.conversations[buyersphereId] = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
@@ -110,7 +111,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     },
     async updateConversation({ buyersphereId, conversationId, resolved }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
+      await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
         { method: 'PATCH', body: { resolved }}
       )
@@ -139,7 +140,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     },
     async deleteResource({ buyersphereId, resourceId }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
+      await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/resources/${resourceId}`,
         { method: 'DELETE' }
       )
@@ -168,7 +169,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     },
     async deleteNote({ buyersphereId, noteId }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
+      await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/notes/${noteId}`,
         { method: 'DELETE' }
       )

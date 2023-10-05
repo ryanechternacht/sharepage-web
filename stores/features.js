@@ -27,7 +27,7 @@ export const useFeaturesStore = defineStore('features', {
     },
     async deleteFeature({ feature }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(`/v0.1/features/${feature.id}`, {
+      await apiFetch(`/v0.1/features/${feature.id}`, {
         method: 'DELETE',
       })
   
@@ -42,7 +42,7 @@ export const useFeaturesStore = defineStore('features', {
           || is10MinutesOld(this.features.generatedAt)) {
         const { data } = await apiFetch('/v0.1/features')
         this.features = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }

@@ -43,6 +43,10 @@ const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
 const personasStore = usePersonasStore()
+personasStore.$subscribe((_, state) => {
+  console.log('state changed', state)
+})
+
 const { getPersonasCached } = storeToRefs(personasStore)
 
 const [organization, personas] = await Promise.all([
@@ -63,7 +67,7 @@ const descriptionElem = ref(null)
 
 async function checkReady(elem) {
   if (personaTitle.value && personaDescription.value) {
-    submitFn()
+    await submitFn()
     personaTitle.value = ''
     personaDescription.value = ''
     titleElem.value.focus()

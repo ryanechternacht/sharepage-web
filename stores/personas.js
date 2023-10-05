@@ -8,7 +8,7 @@ function is10MinutesOld(jsonTimestamp) {
 }
 
 export const usePersonasStore = defineStore('personas', {
-  state: () => ({ personas: {} }),
+  state: () => ({ personas: [] }),
   getters: {
     getPersonasCached: (state) => async () => {
       await state.fetchPersonas()
@@ -22,10 +22,10 @@ export const usePersonasStore = defineStore('personas', {
         method: 'POST',
         body: persona
       })
-
       this.personas.content.push(data.value)
     },
     async deletePersona({ persona }) {
+      console.log('delete?')
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(`/v0.1/personas/${persona.id}`, {
         method: 'DELETE',
@@ -34,6 +34,7 @@ export const usePersonasStore = defineStore('personas', {
       remove(this.personas.content, p => p.id === persona.id)
     },
     async fetchPersonas({ forceRefresh } = {}) {
+      console.log('fetch?')
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -42,12 +43,13 @@ export const usePersonasStore = defineStore('personas', {
           || is10MinutesOld(this.personas.generatedAt)) {
         const { data } = await apiFetch('/v0.1/personas')
         this.personas = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
     async updatePersona({ persona }) {
+      console.log('update?')
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(`/v0.1/personas/${persona.id}`, {
         method: 'PUT',

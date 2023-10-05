@@ -35,8 +35,8 @@ export const useUsersStore = defineStore('users', {
       const { apiFetch } = useNuxtApp()
 
       if (!this.me || forceRefresh) {
-        const { data, error } = await apiFetch('/v0.1/users/me')
-        this.me = data
+        const { data } = await apiFetch('/v0.1/users/me')
+        this.me = data.value
       }
     },
     async fetchUsers({ forceRefresh } = {}) {
@@ -48,7 +48,7 @@ export const useUsersStore = defineStore('users', {
           || is10MinutesOld(this.users.generatedAt)) {
         const { data } = await apiFetch('/v0.1/users')
         this.users = {
-          content: data,
+          content: data.value,
           generateAt: dayjs().toJSON()
         }
       }

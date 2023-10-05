@@ -30,7 +30,7 @@ export const usePricingTiersStore = defineStore('pricing-tiers', {
     },
     async deletePricingTier({ pricingTier }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(`/v0.1/pricing-tiers/${pricingTier.id}`, {
+      await apiFetch(`/v0.1/pricing-tiers/${pricingTier.id}`, {
         method: 'DELETE'
       })
 
@@ -45,7 +45,7 @@ export const usePricingTiersStore = defineStore('pricing-tiers', {
           || is10MinutesOld(this.pricingTiers.generatedAt)) {
         const { data } = await apiFetch('/v0.1/pricing-tiers')
         this.pricingTiers = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }

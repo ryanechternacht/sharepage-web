@@ -30,7 +30,7 @@ export const usePainPointsStore = defineStore('pain-points', {
     },
     async deletePainPoint({ painPoint }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(`/v0.1/pain-points/${painPoint.id}`, {
+      await apiFetch(`/v0.1/pain-points/${painPoint.id}`, {
         method: 'DELETE'
       })
 
@@ -45,7 +45,7 @@ export const usePainPointsStore = defineStore('pain-points', {
           || is10MinutesOld(this.painPoints.generatedAt)) {
         const { data } = await apiFetch('/v0.1/pain-points')
         this.painPoints = {
-          content: data,
+          content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
