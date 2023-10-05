@@ -81,7 +81,7 @@ async function checkReady(elem) {
     submitFn()
     featureTitle.value = ''
     featureDescription.value = ''
-    titleElem.focus()
+    titleElem.value.focus()
   } else if (elem === 'title') {
     descriptionElem.value.focus()
   } else {

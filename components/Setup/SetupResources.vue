@@ -67,7 +67,7 @@ async function checkReady() {
     submitFn()
     resourceTitle.value = ''
     resourceLink.value = ''
-    titleElem.focus()
+    titleElem.value.focus()
   } else if (!resourceTitle.value) {
     titleElem.value.focus()
   } else {

@@ -148,8 +148,6 @@ const [buyersphere, organization] = await Promise.all([
   getOrganizationCached.value()
 ])
 
-console.log('buyersphere', buyersphere)
-
 if (buyersphere === null) {
   // TODO if we're here, the user has an account, but can't see this specific
   // buyersphere
