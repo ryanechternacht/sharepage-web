@@ -26,10 +26,13 @@
           </template>
           <template v-else>
             <Tag
-              width="5.5rem"
+              v-if="buyersphere.status === 'on-hold'"
               height="1.125rem"
-              color="red"
-              @click="putOnHold">{{ buyersphere.status === 'on-hold' ? 'ON HOLD' : 'OPT OUT' }}</Tag>
+              color="orange">ON HOLD</Tag>
+            <Tag
+              v-else-if="buyersphere.status === 'opt-out'"
+              height="1.125rem"
+              color="red">OPT OUT</Tag>
             <MiniButton 
               color="teal"
               text="Activate?" 
