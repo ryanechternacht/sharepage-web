@@ -11,12 +11,16 @@ const camelize = obj => transform(obj, (acc, value, key, target) => {
 export default defineNuxtPlugin(async (nuxtApp) => {
   const url = useRequestURL()
   const parts = url.host.split('.')
+
+  // save slug in case we need it (auth does)
+  nuxtApp.apiSlug = parts[0]
+
   parts.splice(1, 0, 'api')
 
   // TODO should we just pull this from config?
   const apiUrlBase = url.protocol + '//' + parts.join('.')
   const apiUrl = (path) => new URL(path, apiUrlBase).toString()
-  
+
   nuxtApp.apiFetch = async (path, options) => {
     const requestOptions = {...options, transform: camelize}
     if (!requestOptions.headers) {

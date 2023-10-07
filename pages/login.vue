@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center gap-y-5">
+  <div class="flex flex-col items-center gap-y-5 mb-20">
     <img src="/logo-big.svg">
     
     <h1>Welcome to the Buyersphere 🚀</h1>
@@ -27,7 +27,7 @@
     </div>
 
     <a
-      href="https://test.stytch.com/v1/b2b/public/oauth/google/start?public_token=public-token-test-3d685515-f94a-4444-96f6-fd54e4d4c1e2&slug=stark"
+      :href="googleLoginLink"
       class="google-button">
       <img src="/svg/google.svg" class="mr-[18px] h-[18px] w-[18px]">
       <span class="text-[14px] text-medium" style="font-family: Roboto">
@@ -44,7 +44,7 @@ definePageMeta({
   layout: "public",
 });
 
-const { apiFetch } = useNuxtApp();
+const { apiFetch, apiSlug } = useNuxtApp();
 
 const { submissionState, submitFn } = useSubmit(async () => {
   const { error } = await apiFetch('/v0.1/send-magic-link-login-email', { 
@@ -55,11 +55,22 @@ const { submissionState, submitFn } = useSubmit(async () => {
 })
 
 const email = ref('')
+
+const { public: publicConfig } = useRuntimeConfig()
+
+// TODO should this just be a backend call that redirects you?
+const googleLoginLink = computed(
+  () => `${publicConfig.stytchBaseUrl}/v1/b2b/public/oauth/google/start` +
+    `?public_token=${publicConfig.stytchPublicToken}` + 
+    `&slug=${apiSlug}` + 
+    `&login_redirect_url=${publicConfig.stytchRedirectUrl}`
+)
 </script>
 
 <style lang="postcss" scoped>
 button {
-  @apply p-2 rounded-md bg-blue-jewel body;
+  @apply body;
+  @apply p-2 rounded-md bg-blue-jewel;
   @apply font-bold text-white;
 }
 
