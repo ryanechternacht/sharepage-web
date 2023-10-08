@@ -7,7 +7,8 @@
         <TopNav />
         <div class="grid-row pb-3">
           <!-- row 1 col 1 -->
-          <section class="side-bar h-100% flex flex-col justify-items-center gap-2">
+          <section class="side-bar h-100% flex flex-col justify-items-center gap-2"
+            :class="{ grayscale: !isActive }">
             <div class="logo-section">
               <Logo
                 :src="buyersphere.buyerLogo"
@@ -43,7 +44,8 @@
           </section>
 
           <!-- row 1 col 3 -->
-          <section class="side-bar flex flex-col">
+          <section class="side-bar flex flex-col"
+            :class="{ grayscale: !isActive }">
             <div class="flex-grow flex flex-row justify-between items-center">
               <h3>Qualification by:</h3>
               <h3 class="text-purple">June 28th</h3>
@@ -58,7 +60,8 @@
       </div>
 
         <!-- row 2 col 1 -->
-      <div class="grid-row">
+      <div class="grid-row"
+        :class="{ grayscale: !isActive }">
         <section class="side-bar">
           <h3 class="section-header">👋 People</h3>
           <div class="gray-outline p-3">
@@ -151,7 +154,6 @@ const [buyersphere, organization] = await Promise.all([
 if (buyersphere === null) {
   // TODO if we're here, the user has an account, but can't see this specific
   // buyersphere
-  // await navigateTo('/error/buyersphere-access', { replace: true })
   showError({ 
     statusCode: 404, 
     statusMessage: `We're sorry, but you don't have access to this Buyersphere.
@@ -190,9 +192,7 @@ const { open: openSellerModal, close: closeSellerModal } = useModal({
   }
 })
 
-// store.$subscribe(() => {
-//   buyersphere.value = getBuyersphereByIdCached.value(buyersphereId)
-// })
+const isActive = computed(() => buyersphere.status === 'active')
 
 function saveOverview (overview) {
   throw "not implemented!"
