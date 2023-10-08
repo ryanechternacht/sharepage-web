@@ -78,7 +78,8 @@
           <div class="gray-outline mt-4 p-3">
             <div class="w-full flex flex-row justify-between">
               <p>{{ organization.name }} Team</p>
-              <BsButton @click="openSellerModal">+ Add</BsButton>
+              <BsButton v-if="user.buyersphereRole === 'admin'" 
+                @click="openSellerModal">+ Add</BsButton>
             </div>
             <PersonList :people="buyersphere.sellerTeam" />
           </div>
@@ -132,6 +133,7 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddBuyerModal from '@/components/AddBuyerModal'
@@ -146,9 +148,13 @@ const { getBuyersphereByIdCached,  } = storeToRefs(buyersphereStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [buyersphere, organization] = await Promise.all([
+const usersStore = useUsersStore()
+const { getMeCached } = storeToRefs(usersStore)
+
+const [buyersphere, organization, user] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getOrganizationCached.value()
+  getOrganizationCached.value(),
+  getMeCached.value()
 ])
 
 if (buyersphere === null) {
