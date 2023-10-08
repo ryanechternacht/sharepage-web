@@ -47,13 +47,14 @@
           <section class="side-bar flex flex-col"
             :class="{ grayscale: !isActive }">
             <div class="flex-grow flex flex-row justify-between items-center">
-              <h3>Qualification by:</h3>
-              <h3 class="text-purple">June 28th</h3>
+              <h3>{{ actionDate.stage }} by:</h3>
+              <h3 :class="[actionDate.isOverdue ? 'text-red-jewel' : 'text-green-darker']">
+                {{ actionDate.date }}
+              </h3>
             </div>
-            <div class="flex-grow flex flex-row justify-between items-center">
-              <div class="gray">+ ACTION</div>
-              <div class="gray">+ NOTE</div>
-              <div class="gray">+ RESOURCE</div>
+            <div class="flex-grow flex flex-row justify-around items-center">
+              <BsButton @click="navigateTo(`/buyersphere/${buyersphereId}/notes`)">+ Note</BsButton>
+              <BsButton @click="navigateTo(`/buyersphere/${buyersphereId}/resources`)">+ Resource</BsButton>
             </div>
           </section>
         </div>
@@ -131,7 +132,6 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
-import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddBuyerModal from '@/components/AddBuyerModal'
@@ -193,6 +193,21 @@ const { open: openSellerModal, close: closeSellerModal } = useModal({
 })
 
 const isActive = computed(() => buyersphere.status === 'active')
+
+const dayjs = useDayjs()
+function formatDate(date) {
+  return dayjs(date).format('MMM Do')
+}
+
+const actionDate = computed(() => {
+  if (buyersphere.currentStage === 'qualification') {
+    return {
+      stage: 'Qualification by', 
+      date: formatDate(buyersphere.qualificationDate),
+      isOverdue: dayjs(new Date()).isAfter(buyersphere.qualificationDate)
+    }
+  }
+})
 
 function saveOverview (overview) {
   throw "not implemented!"

@@ -82,7 +82,7 @@ function buildStage (stage, stageNumber, description, targetDate, happenedOn) {
     name: stage,
     description,
     stageNumber,
-    date: targetDayjs.format('MMM D'), 
+    date: targetDayjs.format('MMM Do'), 
     daysTo: targetDayjs.diff(dayjs(), 'days') + 1,
     happenedOn: dayjs(new Date(happenedOn)).format('MMM D')
   }
