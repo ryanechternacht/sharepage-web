@@ -206,25 +206,25 @@ function formatDate(date) {
 const actionDate = computed(() => {
   if (buyersphere.currentStage === 'qualification') {
     return {
-      stage: 'Qualification by', 
+      stage: 'Qualification', 
       date: formatDate(buyersphere.qualificationDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.qualificationDate)
     }
   } else if (buyersphere.currentStage === 'evaluation') {
     return {
-      stage: 'Evaluated by', 
+      stage: 'Evaluated', 
       date: formatDate(buyersphere.evaluationDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.evaluationDate)
     }
   } else if (buyersphere.currentStage === 'decision') {
     return {
-      stage: 'Decided by', 
+      stage: 'Decided', 
       date: formatDate(buyersphere.decisionDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.decisionDate)
     }
   } else if (buyersphere.currentStage === 'adoption') {
     return {
-      stage: 'Adopted by', 
+      stage: 'Adopted', 
       date: formatDate(buyersphere.adoptionDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.adoptionDate)
     }
