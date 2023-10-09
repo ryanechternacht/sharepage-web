@@ -4,17 +4,47 @@
     @mouseover="isMouseOver = true"
     @mouseleave="isMouseOver = false"
   >
-    <div>
-      <h3>A message from Rickard Stark</h3>
-      <div>{{ introMessage }}</div>
+    <div v-if="user.buyersphereRole === 'admin'">
+      <div class="flex flex-row items-center justify-between">
+        <h3>A message from {{ organization.name }}</h3>
+        <div v-if="editing" class="flex flex-row gap-x-2">
+          <BsButton
+            color="teal"
+            @click="save">Save</BsButton>
+          <BsButton @click="dismissEdit">Dismiss</BsButton>
+        </div>
+        <img v-else
+          src="/svg/edit.svg"
+          class="row-icon"
+          @click="edit">
+      </div>
+      <TipTapTextarea
+        v-if="editing"
+        v-model="editedIntroMessage"
+        class="w-full" />
+      <div v-else-if="buyersphere.introMessage"
+        class="gray inline-html"
+        v-html="buyersphere.introMessage" />
+      <div v-else
+        class="p-2 bg-gray-lighter w-max rounded-md">
+        <h3>Write a personal Introduction</h3>
+        <BsButton 
+          big
+          class="bg-white w-[7rem]" 
+          @click="edit">✍️ Write</BsButton>
+      </div>
+    </div>
 
+    <div v-else-if="buyersphere.introMessage">
+      <h3>A message from {{ organization.name }}</h3>
+      <div>{{ buyersphere.introMessage }}</div>
     </div>
 
     <div>
       <h3>🚀 Who our product serves:</h3>
       <div>
         <ul>
-          <li v-for="p in personas">
+          <li v-for="p in personas" class="gray">
             <span class="font-bold">{{ p.title }}:</span>
             {{ p.description }}
           </li>
@@ -26,119 +56,66 @@
       <h3>✅ The problems we solve:</h3>
       <div>
         <ul>
-          <li v-for="pp in painPoints">
+          <li v-for="pp in painPoints" class="gray">
             <span class="font-bold">{{ pp.title }}:</span>
             {{ pp.description }}
           </li>
         </ul>
       </div>
     </div>
-    
-    <div>
-      <h3>📓 Resources to help you qualify if Seismic is right for you</h3>
-    </div>
-
-    <!-- TODO get this styling less intrusive -->
-    <!-- <div
-      class="flex flex-row-reverse w-full items-center gap-x-2 h-[2em] mb-[-2em]"
-    >
-    </div> -->
-      <!-- <template v-if="isMouseOver">
-        <PButton
-          v-if="!isEditing"
-          @click="edit"
-          variant="gray-light">
-          ✏️ Edit
-        </PButton>
-        <template v-else>
-          <PButton 
-            @click="save"
-            variant="gray-light">
-            💾 Save
-          </PButton>
-          <PButton 
-            @click="cancel"
-            variant="gray-light">
-            ❌ Cancel
-          </PButton>
-        </template>
-      </template>
-    </div>
-    <template
-      v-for="(s, i) in myOverview?.questions"
-    >
-      <div>
-        <h3>{{ s.question }}</h3>
-        <EditableTextarea
-          v-if="s.type === 'text'"
-          :text="s.answer.text"
-          :edit="isEditing"
-          @update:text="updateText(i, $event)"
-        />
-        <EditableList
-          v-if="s.type === 'list'"
-          :items="s.answer.items"
-          :edit="isEditing"
-          @update:items="updateItems(i, $event)"
-        />
-      </div>
-    </template> -->
   </div>
 </template>
 
 <script setup>
 import { usePainPointsStore } from '@/stores/pain-points'
 import { usePersonasStore } from '@/stores/personas'
+import { useUsersStore } from '@/stores/users'
+import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
-import lodash_pkg from 'lodash'
-const  { cloneDeep } = lodash_pkg
 
-const props = defineProps({ introMessage: String })
-
-// TODO do these in parallel?
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
 
 const personasStore = usePersonasStore()
 const { getPersonasCached } = storeToRefs(personasStore)
 
-const [painPoints, personas] = await Promise.all([
+const usersStore = useUsersStore()
+const { getMeCached } = storeToRefs(usersStore)
+
+const route = useRoute()
+const buyersphereId = route.params.id
+
+const buyersphereStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached,  } = storeToRefs(buyersphereStore)
+
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const [painPoints, personas, user, buyersphere, organization] = await Promise.all([
   getPainPointsCached.value(),
-  getPersonasCached.value()
+  getPersonasCached.value(),
+  getMeCached.value(),
+  getBuyersphereByIdCached.value(buyersphereId),
+  getOrganizationCached.value(),
 ])
 
-// const emit = defineEmits(['update:overview'])
+const editing = ref(false)
+const editedIntroMessage = ref('')
 
-// const isEditing = ref(false)
-// const myOverview = ref(props.overview)
-// const isMouseOver = ref(false)
+function edit() {
+  editing.value = true
+  editedIntroMessage.value = buyersphere.introMessage
+}
 
-// function updateText (i, newValue) {
-//   // TODO expand to allow editing of the prompt too
-//   myOverview.value.questions[i].answer.text = newValue
-// }
+function save() {
+  editing.value = false
+  buyersphereStore.saveIntroMessage({ buyersphereId, introMessage: editedIntroMessage.value })
+}
 
-// function updateItems (i, newValue) {
-//   myOverview.value.questions[i].answer.items = newValue
-// }
-
-// watch(props, (newProps) => {
-//   myOverview.value = cloneDeep(newProps.overview)
-// })
-
-// function edit () {
-//   isEditing.value = true
-// }
-
-// function cancel () {
-//   myOverview.value = cloneDeep(props.overview)
-//   isEditing.value = false
-// }
-
-// function save () {
-//   emit('update:overview', myOverview.value);
-//   isEditing.value = false
-// }
+function dismissEdit() {
+  editing.value = false
+}
 </script>
 
 <style lang="postcss" scoped>

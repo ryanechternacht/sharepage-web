@@ -88,7 +88,7 @@ function buildStage (stage, stageNumber, description, targetDate, happenedOn) {
   }
 }
 
-const stages = ref([
+const stages = computed(() => [
   buildStage(
     'Qualification',
     0,

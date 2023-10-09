@@ -96,9 +96,7 @@
               :selected="mainSection"
               @update:selected="changeSection" />
             <BuyersphereOverview
-              v-if="mainSection === 'overview'"
-              :intro-message="buyersphere.introMessage"
-              @update:overview="saveOverview" />
+              v-if="mainSection === 'overview'" />
             <BuyersphereFeatures
               v-else-if="mainSection === 'features'" />
             <BuyerspherePricing
@@ -154,7 +152,7 @@ const { getMeCached } = storeToRefs(usersStore)
 const [buyersphere, organization, user] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
-  getMeCached.value()
+  getMeCached.value(),
 ])
 
 if (buyersphere === null) {
@@ -212,7 +210,25 @@ const actionDate = computed(() => {
       date: formatDate(buyersphere.qualificationDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.qualificationDate)
     }
-  }
+  } else if (buyersphere.currentStage === 'evaluation') {
+    return {
+      stage: 'Evaluated by', 
+      date: formatDate(buyersphere.evaluationDate),
+      isOverdue: dayjs(new Date()).isAfter(buyersphere.evaluationDate)
+    }
+  } else if (buyersphere.currentStage === 'decision') {
+    return {
+      stage: 'Decided by', 
+      date: formatDate(buyersphere.decisionDate),
+      isOverdue: dayjs(new Date()).isAfter(buyersphere.decisionDate)
+    }
+  } else if (buyersphere.currentStage === 'adoption') {
+    return {
+      stage: 'Adopted by', 
+      date: formatDate(buyersphere.adoptionDate),
+      isOverdue: dayjs(new Date()).isAfter(buyersphere.adoptionDate)
+    }
+  } 
 })
 
 function saveOverview (overview) {

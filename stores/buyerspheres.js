@@ -37,7 +37,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres/${buyersphereId}`,
         { method: 'PATCH', body: { featuresAnswer } }
       )
-      this.buyerspheres[buyersphereId].content.featuresAnswer = data.value
+      this.buyerspheres[buyersphereId].content.featuresAnswer = data.value.featuresAnswer
     },
     async saveStage({ buyersphereId, stage }) {
       const { apiFetch } = useNuxtApp()
@@ -45,7 +45,22 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres/${buyersphereId}`,
         { method: 'PATCH', body: { currentStage: stage } }
       )
-      this.buyerspheres[buyersphereId].content.currentStage = data.value.currentStage
+      
+      const b = this.buyerspheres[buyersphereId].content
+      b.currentStage = data.value.currentStage
+
+      if (data.value.qualifiedOn) {
+        b.qualifiedOn = data.value.qualifiedOn
+      }
+      if (data.value.evaluatedOn) {
+        b.evaluatedOn = data.value.evaluatedOn
+      }
+      if (data.value.decidedOn) {
+        b.decidedOn = data.value.decidedOn
+      }
+      if (data.value.adoptedOn) {
+        b.adoptedOn = data.value.adoptedOn
+      }
     },
     async saveStatus({ buyersphereId, status }) {
       const { apiFetch } = useNuxtApp()
@@ -70,6 +85,15 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'PATCH', body: { pricingTierId } }
       )
       this.buyerspheres[buyersphereId].content.pricingTierId = data.value.pricingTierId
+    },
+    async saveIntroMessage({ buyersphereId, introMessage }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}`,
+        { method: 'PATCH', body: { introMessage }}
+      )
+      
+      this.buyerspheres[buyersphereId].content.introMessage = data.value.introMessage
     },
     async fetchBuyersphere({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
@@ -193,6 +217,6 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       
       this.buyerspheres[buyersphereId].content.sellerTeam = data.value
-    }
+    },
   }
 })
