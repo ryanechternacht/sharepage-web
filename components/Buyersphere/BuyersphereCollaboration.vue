@@ -5,7 +5,7 @@
       <TipTapTextarea
         v-model="newQuestion"
         placeholder="Enter your question"
-        class="w-full h-12" />
+        class="w-full" />
       <SubmitButton
         class="mx-auto"
         :submission-state="submissionState"
