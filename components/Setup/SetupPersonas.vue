@@ -42,6 +42,7 @@ import { useSubmit } from '@/composables/useSubmit'
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
+const personasStore = usePersonasStore()
 const { getPersonasCached } = storeToRefs(personasStore)
 
 const [organization, personas] = await Promise.all([

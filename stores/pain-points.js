@@ -10,8 +10,6 @@ function is10MinutesOld(jsonTimestamp) {
 export const usePainPointsStore = defineStore('pain-points', {
   state: () => ({ painPoints: {} }),
   getters: {
-    // Use this to fetch if needed and return the data. This 
-    // is normally what you want to use
     getPainPointsCached: (state) => async () => {
       await state.fetchPainPoints()
       return state.painPoints.content

@@ -10,8 +10,6 @@ function is10MinutesOld(jsonTimestamp) {
 export const usePricingTiersStore = defineStore('pricing-tiers', {
   state: () => ({ pricingTiers: {} }),
   getters: {
-    // Use this to fetch if needed and return the data. This 
-    // is normally what you want to use
     getPricingTiersCached: (state) => async () => {
       await state.fetchPricingTiers()
       return state.pricingTiers.content

@@ -21,6 +21,15 @@ export const useOrganizationStore = defineStore('organization', {
         this.organization = data.value
       }
     },
+    async saveOrganization({ name, logo }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch('/v0.1/organization', {
+        method: 'PATCH',
+        body: { name, logo }
+      })
+
+      this.organization = data.value
+    }
   }
 })
 

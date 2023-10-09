@@ -156,7 +156,7 @@ const [buyersphere, organization, user] = await Promise.all([
 ])
 
 if (buyersphere === null) {
-  // TODO if we're here, the user has an account, but can't see this specific
+  // if we're here, the user has an account, but can't see this specific
   // buyersphere
   showError({ 
     statusCode: 404, 
@@ -230,13 +230,6 @@ const actionDate = computed(() => {
     }
   } 
 })
-
-function saveOverview (overview) {
-  throw "not implemented!"
-  // const clone = cloneDeep(buyersphere.value)
-  // clone.pages.overview = overview
-  // store.save(clone)
-}
 
 function updateStage ({ stage }) {
   buyersphereStore.saveStage({ buyersphereId, stage })

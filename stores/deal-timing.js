@@ -8,8 +8,6 @@ function is10MinutesOld(jsonTimestamp) {
 export const useDealTimingStore = defineStore('deal-timing', {
   state: () => ({ dealTiming: {} }),
   getters: {
-    // Use this to fetch if needed and return the data. This 
-    // is normally what you want to use
     getDealTimingCached: (state) => async () => {
       await state.fetchDealTiming()
       return state.dealTiming.content
