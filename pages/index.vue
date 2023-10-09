@@ -134,11 +134,11 @@ function pricingColor (pricingTierId) {
 
 const dayjs = useDayjs()
 function isOverdue ({ currentStage, qualificationDate, evaluationDate, decisionDate }) {
-  if (currentStage === 'qualification' && dayjs().isBefore(dayjs(qualificationDate))) {
+  if (currentStage === 'qualification' && dayjs().isAfter(dayjs(qualificationDate))) {
     return true
-  } else if (currentStage === 'evaluation', dayjs().isBefore(dayjs(evaluationDate))) {
+  } else if (currentStage === 'evaluation', dayjs().isAfter(dayjs(evaluationDate))) {
     return true
-  } else if (currentStage === 'decision', dayjs().isBefore(dayjs(decisionDate))) {
+  } else if (currentStage === 'decision', dayjs().isAfter(dayjs(decisionDate))) {
     return true
   } else {
     return false
