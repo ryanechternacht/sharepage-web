@@ -41,12 +41,12 @@
           big
           @click="viewing = true">View</BsButton>
       </div>
-      <div v-if="viewing"
-        v-html="note.body" 
-        class="inline-html note-bottom rounded-md bg-gray-lighter p-1" />
       <TipTapTextarea v-if="editing"
         v-model="editedBody" 
         class="note-bottom"/>
+      <div v-else-if="viewing"
+        v-html="note.body" 
+        class="inline-html note-bottom rounded-md bg-gray-lighter p-1" />
     </div>
 
     <!-- TODO get these to show/hide on hover -->
