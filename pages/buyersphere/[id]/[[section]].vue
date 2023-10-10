@@ -47,7 +47,7 @@
           <section class="side-bar flex flex-col"
             :class="{ grayscale: !isActive }">
             <div class="flex-grow flex flex-row justify-between items-center">
-              <h3>{{ actionDate.stage }} by:</h3>
+              <h3>{{ actionDate.stage }}</h3>
               <h3 :class="[actionDate.isOverdue ? 'text-red-jewel' : 'text-green-darker']">
                 {{ actionDate.date }}
               </h3>
@@ -206,29 +206,35 @@ function formatDate(date) {
 const actionDate = computed(() => {
   if (buyersphere.currentStage === 'qualification') {
     return {
-      stage: 'Qualification', 
+      stage: 'Qualification by:', 
       date: formatDate(buyersphere.qualificationDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.qualificationDate)
     }
   } else if (buyersphere.currentStage === 'evaluation') {
     return {
-      stage: 'Evaluated', 
+      stage: 'Evaluated by:', 
       date: formatDate(buyersphere.evaluationDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.evaluationDate)
     }
   } else if (buyersphere.currentStage === 'decision') {
     return {
-      stage: 'Decided', 
+      stage: 'Decided by:', 
       date: formatDate(buyersphere.decisionDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.decisionDate)
     }
   } else if (buyersphere.currentStage === 'adoption') {
     return {
-      stage: 'Adopted', 
+      stage: 'Adopted by:', 
       date: formatDate(buyersphere.adoptionDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.adoptionDate)
     }
-  } 
+  } else if (buyersphere.currentStage === 'closed') {
+    return {
+      stage: 'Deal is Closed',
+      date: '',
+      isOverdue: true
+    }
+  }
 })
 
 function updateStage ({ stage }) {

@@ -6,15 +6,11 @@
         <h3>Buyersphere</h3>
       </div>
       <div class="flex flex-row items-center gap-x-4">
-        <h3 class="gray">HOME</h3>
-        <h3 class="gray">HOW IT WORKS</h3>
-        <h3 class="gray">PARTNER SEARCH</h3>
-        <h3 class="gray">PRICING</h3>
       </div>
       <div class="flex flex-row items-center gap-x-3">
-        <NuxtLink to="/login" class="gray">LOG IN</NuxtLink>
-        <!-- TODO PButton rework -->
-        <NuxtLink to="/login" class="button w-16">JOIN</NuxtLink>
+        <!-- TODO add these login options back if we use this for more than login -->
+        <!-- <NuxtLink to="/login" class="gray">LOG IN</NuxtLink> -->
+        <!-- <NuxtLink to="/login" class="button w-16">JOIN</NuxtLink> -->
       </div>
     </div>
     <!-- TODO get this height to center dynamically -->
@@ -26,8 +22,8 @@
 
 <style lang="postcss" scoped>
 .button {
-  @apply p-2 rounded-md bg-blue-jewel body text-center;
-  @apply font-bold text-green-jewel;
+  @apply p-2 rounded-md bg-teal-primary body text-center;
+  @apply font-bold text-white;
 }
 </style>
 

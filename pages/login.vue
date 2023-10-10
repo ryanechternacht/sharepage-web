@@ -56,24 +56,18 @@ const { submissionState, submitFn } = useSubmit(async () => {
 
 const email = ref('')
 
-const { public: publicConfig } = useRuntimeConfig()
+const { stytch } = useAppConfig()
 
 // TODO should this just be a backend call that redirects you?
 const googleLoginLink = computed(
-  () => `${publicConfig.stytchBaseUrl}/v1/b2b/public/oauth/google/start` +
-    `?public_token=${publicConfig.stytchPublicToken}` + 
+  () => `${stytch.baseUrl}/v1/b2b/public/oauth/google/start` +
+    `?public_token=${stytch.publicToken}` + 
     `&slug=${apiSlug}` + 
-    `&login_redirect_url=${publicConfig.stytchRedirectUrl}`
+    `&login_redirect_url=${stytch.redirectUri}`
 )
 </script>
 
 <style lang="postcss" scoped>
-button {
-  @apply body;
-  @apply p-2 rounded-md bg-blue-jewel;
-  @apply font-bold text-white;
-}
-
 .google-button {
   @apply flex flex-row items-center border border-[#dadce0] 
     h-[40px] px-[12px] rounded-[4px];

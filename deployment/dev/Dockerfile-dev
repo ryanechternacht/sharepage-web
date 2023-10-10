@@ -6,7 +6,7 @@ WORKDIR /usr/src/nuxt-app
 
 # copy the app, note .dockerignore
 COPY . /usr/src/nuxt-app/
-COPY ./deployment/dev/.env /usr/src/nuxt-app/
+COPY ./deployment/dev/app.config.js /usr/src/nuxt-app/
 
 RUN yarn install && \
   yarn build
