@@ -4,21 +4,24 @@
     <div class="mt-3 flex flex-row gap-x-2">
       <Tag
         class="hover:cursor-pointer"
-        :class="{'selected-can-pay': buyersphere.pricingCanPay === 'yes'}"
+        :class="{'selected-can-pay': buyersphere.pricingCanPay === 'yes',
+                 'not-selected-can-pay-selected-green': buyersphere.pricingCanPay && buyersphere.pricingCanPay !== 'yes'}"
         width="5.5rem"
         height="1.125rem"
         color="green"
         @click="updateCanPay('yes')">Yes</Tag>
       <Tag
         class="hover:cursor-pointer"
-        :class="{'selected-can-pay': buyersphere.pricingCanPay === 'maybe'}"
+        :class="{'selected-can-pay': buyersphere.pricingCanPay === 'maybe',
+                 'not-selected-can-pay-selected-orange': buyersphere.pricingCanPay && buyersphere.pricingCanPay !== 'maybe'}"
         width="5.5rem"
         height="1.125rem"
         color="orange"
         @click="updateCanPay('maybe')">Maybe</Tag>
       <Tag
         class="hover:cursor-pointer"
-        :class="{'selected-can-pay': buyersphere.pricingCanPay === 'no'}"
+        :class="{'selected-can-pay': buyersphere.pricingCanPay === 'no',
+                 'not-selected-can-pay-selected-red': buyersphere.pricingCanPay && buyersphere.pricingCanPay !== 'no'}"
         width="5.5rem"
         height="1.125rem"
         color="red"
@@ -87,12 +90,41 @@ function updatePricingTier (tierId) {
 
 <style lang="postcss" scoped>
 .selected-can-pay {
-  @apply bg-green-jewel;
+  @apply bg-teal-primary;
 
-  :deep(.tag)  {
+  :deep(.tag) {
     @apply text-white;
   }
 }
+
+.another-can-pay-selected {
+  @apply bg-gray-lighter;
+}
+
+.not-selected-can-pay-selected-green {
+  @apply bg-gray-lighter;
+
+  &:hover {
+    @apply bg-green-pastel;
+  }
+}
+
+.not-selected-can-pay-selected-orange {
+  @apply bg-gray-lighter;
+
+  &:hover {
+    @apply bg-orange-pastel;
+  }
+}
+
+.not-selected-can-pay-selected-red {
+  @apply bg-gray-lighter;
+
+  &:hover {
+    @apply bg-red-pastel;
+  }
+}
+
 
 .selected-pricing-tier {
   @apply bg-green-jewel;
