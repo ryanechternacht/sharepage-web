@@ -14,9 +14,9 @@
 
         <div class="flex-grow" />
 
-        <div class="flex flex-row items-center gap-x-2">
-          <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
+        <div class="flex flex-row-reverse items-center gap-x-2 min-w-[200px]">
           <UserAvatar :user="user" size="large" />
+          <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
         </div>
       </div>
     </div>

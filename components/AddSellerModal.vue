@@ -6,12 +6,12 @@
     <div flex flex-col>
       <div class="flex flex-row items-center mb-3">
         <h3 class="flex-grow">Your Team</h3>
-        <BsButton @click="emit('close')">Cancel</BsButton>
+        <BsButton @click="emit('close')">Close</BsButton>
       </div>
       <div class="flex flex-col gap-y-2">
         <div v-for="u in users"
-          class="flex flex-row justify-between items-center hover:bg-gray-lightest p-1 rounded-md">
-          <PersonRow :person="u" />
+          class="flex flex-row justify-between items-center hover:bg-gray-lighter p-1 rounded-md">
+          <PersonRow :person="u" class="flex-grow" />
           <div>
             <BsButton v-if="!isInBuyersphere(u)"
               @click="addToDeal(u)">Invite to Deal</BsButton>

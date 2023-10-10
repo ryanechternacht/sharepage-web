@@ -6,7 +6,6 @@
       <p class="gray">{{ person.firstName }} {{ person.lastName }}</p>
       <p class="gray-italic">{{ person.displayRole }}</p>
     </div>
-    <div class="flex-grow" />
   </div>
 </template>
 
