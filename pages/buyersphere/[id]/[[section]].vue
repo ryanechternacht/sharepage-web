@@ -228,12 +228,6 @@ const actionDate = computed(() => {
       date: formatDate(buyersphere.adoptionDate),
       isOverdue: dayjs(new Date()).isAfter(buyersphere.adoptionDate)
     }
-  } else if (buyersphere.currentStage === 'closed') {
-    return {
-      stage: 'Deal is Closed',
-      date: '',
-      isOverdue: true
-    }
   }
 })
 

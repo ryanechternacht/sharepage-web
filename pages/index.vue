@@ -13,10 +13,10 @@
           </option>
         </select>
         <select v-model="status" class="big-select bg-blue-background">
-          <option>Active</option>
-          <option>Not Active</option>
-          <option>On Hold</option>
-          <option>Opt Out</option>
+          <option value="active">Active</option>
+          <option value="not-active">Not Active</option>
+          <option class="on-hold">On Hold</option>
+          <option class="opt-out">Opt Out</option>
         </select>
         Opportunities in
         <select v-model="stage" class="big-select bg-purple-background">
@@ -91,7 +91,7 @@ const usersExceptMe = ref(
 )
 
 const owner = ref(null)
-const status = ref('Active')
+const status = ref('active')
 const stage = ref(null)
 
 // TODO this shouldn't be necessary, but query doesn't seem to be
@@ -113,7 +113,6 @@ watch(stage, () => refresh, { flush: 'post' })
 
 function stageColor (stage) {
   return {
-    'closed': 'gray',
     'qualification': 'blue',
     'evaluation': 'green',
     'decision': 'red'

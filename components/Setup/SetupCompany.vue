@@ -23,7 +23,7 @@
         class="mt-1">
 
       <SubmitButton
-        class="mt-10 mx-20"
+        class="mt-10 mx-40"
         :submission-state="submissionState" 
         ready-text="Save Organization Settings"
         submitting-text="Saving Settings"
