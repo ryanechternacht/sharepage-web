@@ -5,10 +5,10 @@
           <img src="/logo.svg">
           <h3>Buyersphere</h3>
         </NuxtLink>
-        <NuxtLink class="" to="/">
+        <NuxtLink to="/">
           <h4>Dashboard</h4>
         </NuxtLink>
-        <NuxtLink class="" to="/setup">
+        <NuxtLink v-if="user.buyersphereRole === 'admin'" to="/setup">
           <h4>Setup</h4>
         </NuxtLink>
 
