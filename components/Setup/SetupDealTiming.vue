@@ -25,6 +25,13 @@
         ref="decisionDaysElem"
         placeholder="30 days"
         @keyup.enter="checkReady()">
+      <h3>Adoption</h3>
+      <input
+        v-model.number="adoptionDays"
+        type="Number"
+        ref="adoptionDaysElem"
+        placeholder="30 days"
+        @keyup.enter="checkReady()">
     </div>
     <SubmitButton
       class="mt-4 w-[10rem] h-[2.5rem]"
@@ -56,26 +63,31 @@ const [organization, dealTiming] = await Promise.all([
 const qualifiedDays = ref(dealTiming?.qualifiedDays)
 const evaluationDays = ref(dealTiming?.evaluationDays)
 const decisionDays = ref(dealTiming?.decisionDays)
+const adoptionDays = ref(dealTiming?.adoptionDays)
 const qualifiedDaysElem = ref(null)
 const evaluationDaysElem = ref(null)
 const decisionDaysElem = ref(null)
+const adoptionDaysElem = ref(null)
 
 const { submissionState, submitFn } = useSubmit(async () => 
   await dealTimingStore.upsertDealTiming({ dealTiming: {
     qualifiedDays: qualifiedDays.value,
     evaluationDays: evaluationDays.value,
-    decisionDays: decisionDays.value
+    decisionDays: decisionDays.value,
+    adoptionDays: adoptionDays.value
   }}))
 
 async function checkReady() {
-  if (qualifiedDays.value && evaluationDays.value && decisionDays.value) {
-    submitFn()
-  } else if (!qualifiedDays.value) {
+  if (!qualifiedDays.value) {
     qualifiedDaysElem.value.focus()
   } else if (!evaluationDays.value) {
     evaluationDaysElem.value.focus()
   } else if (!decisionDays.value) {
     decisionDaysElem.value.focus()
+  } else if (!adoptionDays.value) {
+    adoptionDaysElem.value.focus()
+  } else {
+    submitFn()
   }
 }
 </script>
