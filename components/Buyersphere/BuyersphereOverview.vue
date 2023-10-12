@@ -37,7 +37,7 @@
 
     <div v-else-if="buyersphere.introMessage">
       <h3>A message from {{ organization.name }}</h3>
-      <div>{{ buyersphere.introMessage }}</div>
+      <div class="gray inline-html" v-html="buyersphere.introMessage" />
     </div>
 
     <div>
