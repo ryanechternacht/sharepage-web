@@ -1,7 +1,12 @@
 <template>
+  <!-- For some reason, setting height on this element and height: 100% on the
+       inner .ProseMirror element makes the prose mirror set it's height correctly,
+       but setting a min-height on here (and the height 100% on .ProseMirror) doesn't
+       set the .ProseMirror height correctly. So we are going to flow a value down
+       to the .ProseMirror -->
   <editor-content 
     :editor="editor" 
-    class="editor p-2 body gray border border-gray-lighter rounded-md min-h-[50px]" />
+    class="editor p-2 body gray border border-gray-lighter rounded-md" />
 </template>
 
 <script setup>
@@ -11,7 +16,8 @@ import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-
 
 const props = defineProps({ 
   modelValue: { type: String, required: true },
-  placeholder: { type: String, default: '' }
+  placeholder: { type: String, default: '' },
+  minHeight: { type: String, default: "40px" }
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -57,7 +63,8 @@ watch(() => props.modelValue, (newModelValue) => {
   }
 
   .ProseMirror {
-    @apply h-full min-h-[40px];
+    @apply h-full;
+    min-height: v-bind(minHeight);
   }
 }
 </style>

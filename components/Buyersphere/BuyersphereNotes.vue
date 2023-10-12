@@ -11,7 +11,7 @@
       <TipTapTextarea 
         v-model="noteBody"
         ref="bodyElem"
-        class="h-[160px]" 
+        min-height="140px"
         placeholder="New Note Body" />
       <SubmitButton 
         class="w-[10rem] h-[2.5rem] self-center"
