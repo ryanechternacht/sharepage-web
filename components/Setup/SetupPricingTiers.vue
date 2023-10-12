@@ -51,8 +51,10 @@
       </div>
       <SubmitButton
         class="mt-2 w-[10rem] h-[2.5rem]"
+        :class="{'bg-gray-light': pricingTiers.length >= 4}"
+        :disabled="pricingTiers.length >= 4"
         :submission-state="submissionState" 
-        ready-text="Add Pricing Tier"
+        :ready-text="pricingTiers.length < 4 ? 'Add Pricing Tier' : 'Only 4 Allowed'"
         submitting-text="Saving Pricing Tier"
         submitted-text="Pricing Tier Saved"
         @click="checkReady()"/>

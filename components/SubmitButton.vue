@@ -1,6 +1,6 @@
 <template>
   <button 
-    :disabled="disabled || submissionState === 'submitting'"
+    :disabled="disabled || submissionState === 'submitting' || submissionState === 'submitted'"
     @click="emit('click')"
   >
     <span v-if="submissionState === 'ready'">{{ readyText }}</span>
@@ -26,6 +26,10 @@ const emit = defineEmits(['click'])
 <style lang="postcss" scoped>
 button {
   @apply p-2 rounded-md bg-teal-primary body;
+
+  &:disabled {
+    @apply bg-gray-mid text-white;
+  }
   
   span {
     @apply font-bold text-white;

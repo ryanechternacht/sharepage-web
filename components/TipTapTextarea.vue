@@ -57,7 +57,7 @@ watch(() => props.modelValue, (newModelValue) => {
   }
 
   .ProseMirror {
-    @apply h-full
+    @apply h-full min-h-[40px];
   }
 }
 </style>
