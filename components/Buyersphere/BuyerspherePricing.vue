@@ -44,7 +44,7 @@
     <div class="mt-6 flex flex-col gap-y-3 w-full px-[2.25rem]">
       <div v-for="pt in pricingTiers">
         <h3>{{ pt.title }}: Best For {{ pt.bestFor }}</h3>
-        <p class="gray">{{ pt.description }}</p>
+        <div class="gray inline-html" v-html="pt.description" />
       </div>
     </div>
   </div>

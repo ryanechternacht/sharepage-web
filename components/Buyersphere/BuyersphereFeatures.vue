@@ -27,7 +27,7 @@
       </div>
       <div>
         <h3 class="leading-[2.5rem]">Feature #{{ i + 1 }} {{ f.title }}</h3>
-        <div class="gray">{{ f.description }}</div>
+        <div class="gray inline-html" v-html="f.description" />
       </div>
     </template>
   </div>
