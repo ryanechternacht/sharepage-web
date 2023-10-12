@@ -7,7 +7,7 @@
         <TopNav />
         <div class="grid-row pb-3">
           <!-- row 1 col 1 -->
-          <section class="side-bar h-100% flex flex-col justify-items-center gap-2"
+          <section class="side-bar h-100% logo-grid"
             :class="{ grayscale: !isActive }">
             <div class="logo-section">
               <Logo
@@ -20,6 +20,13 @@
                 width="3.75rem"
                 height="0.75rem"
                 style="grid-area: label">Buyer</Tag>
+            </div>
+            <div>
+              <img
+                v-if="user.buyersphereRole === 'admin'"
+                class="cursor-pointer w-4"
+                src="/svg/settings.svg"
+                @click="openEditModal">
             </div>
             <div class="logo-section">
               <Logo
@@ -134,14 +141,15 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
-import AddBuyerModal from '@/components/AddBuyerModal'
-import AddSellerModal from '@/components/AddSellerModal'
+import BuyersphereAddBuyerModal from '@/components/Buyersphere/AddBuyerModal'
+import BuyersphereAddSellerModal from '@/components/Buyersphere/AddSellerModal'
+import BuyersphereEditBuyersphereModal from '@/components/Buyersphere/EditBuyersphereModal'
 
 const route = useRoute()
 const buyersphereId = route.params.id
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached,  } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -176,7 +184,7 @@ async function changeSection (section) {
 }
 
 const { open: openBuyerModal, close: closeBuyerModal } = useModal({
-  component: AddBuyerModal,
+  component: BuyersphereAddBuyerModal,
   attrs: {
     buyer: buyersphere.buyer,
     buyersphereId,
@@ -187,11 +195,21 @@ const { open: openBuyerModal, close: closeBuyerModal } = useModal({
 })
 
 const { open: openSellerModal, close: closeSellerModal } = useModal({
-  component: AddSellerModal,
+  component: BuyersphereAddSellerModal,
   attrs: {
     buyersphereId,
     onClose () {
       closeSellerModal()
+    }
+  }
+})
+
+const { open: openEditModal, close: closeEditModal } = useModal({
+  component: BuyersphereEditBuyersphereModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeEditModal()
     }
   }
 })
@@ -271,6 +289,11 @@ function deleteResource({ resourceId }) {
 
 section {
   @apply bg-white rounded-md py-2 px-3;
+}
+
+.logo-grid {
+  @apply grid grid-rows-2 gap-y-2 gap-x-1;
+  grid-template-columns: 1fr auto;
 }
 
 .gray-outline {
