@@ -1,7 +1,7 @@
 <template>
   <editor-content 
     :editor="editor" 
-    class="editor p-2 body gray border border-gray-lighter rounded-md" />
+    class="editor p-2 body gray border border-gray-lighter rounded-md min-h-[50px]" />
 </template>
 
 <script setup>
@@ -57,7 +57,7 @@ watch(() => props.modelValue, (newModelValue) => {
   }
 
   .ProseMirror {
-    @apply min-h-[40px]
+    @apply h-full
   }
 }
 </style>
