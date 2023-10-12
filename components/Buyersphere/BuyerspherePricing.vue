@@ -127,7 +127,7 @@ function updatePricingTier (tierId) {
 
 
 .selected-pricing-tier {
-  @apply bg-green-jewel;
+  @apply bg-teal-primary;
 
   h3 {
     @apply text-white;
