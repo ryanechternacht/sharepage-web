@@ -5,12 +5,14 @@
           <img src="/logo.svg">
           <h3>Buyersphere</h3>
         </NuxtLink>
-        <NuxtLink to="/">
-          <h4>Dashboard</h4>
-        </NuxtLink>
-        <NuxtLink v-if="user.buyersphereRole === 'admin'" to="/setup">
-          <h4>Setup</h4>
-        </NuxtLink>
+        <template v-if="user.buyersphereRole === 'admin'">
+          <NuxtLink to="/dashboard">
+            <h4>Dashboard</h4>
+          </NuxtLink>
+          <NuxtLink to="/setup">
+            <h4>Setup</h4>
+          </NuxtLink>
+        </template>
 
         <div class="flex-grow" />
 
