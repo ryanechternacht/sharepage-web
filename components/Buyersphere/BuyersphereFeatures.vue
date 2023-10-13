@@ -7,7 +7,7 @@
     </div>
 
     <h3 class="gray italic text-center">Select what features you would like to explore</h3>
-    <template v-for="(f, i) in globalFeatures">
+    <template v-for="f in globalFeatures">
       <div class="flex flex-cols justify-center gap-x-2 h-full">
         <PButton
           variant="gray"
@@ -26,7 +26,7 @@
           @click="saveFeatureInterest(f.id, 'no')">⛔</PButton>
       </div>
       <div>
-        <h3 class="leading-[2.5rem]">Feature #{{ i + 1 }} {{ f.title }}</h3>
+        <h3 class="leading-[2.5rem]">{{ f.title }}</h3>
         <div class="gray inline-html" v-html="f.description" />
       </div>
     </template>
