@@ -1,15 +1,70 @@
 <template>
   <VueFinalModal
     class="flex justify-center items-center"
-    content-class="p-4 bg-white rounded-md"
+    content-class="p-4 bg-white rounded-md w-[400px]"
   >
-    <div>
-      Hello, world!
+    <div class="flex flex-col items-center gap-4">
+      <h1>Buyersphere Settings</h1>
+      <div class="w-full">
+        <h3>Buyer Name</h3>
+        <input v-model="buyerName" 
+          class="w-full"
+          placeholder="Buyer Name">
+      </div>
+      <div class="w-full">
+        <h3>Buyer Logo</h3>
+        <input v-model="buyerLogo" 
+          class="w-full"
+          placeholder="Buyer Logo">
+      </div>
+      <div class="w-full">
+        <h3>Buyersphere Stage</h3>
+        <select v-model="stage" 
+          class="w-full"
+          placeholder="Current Stage">
+          <option value="qualification">Qualification</option>
+          <option value="evaluation">Evaluation</option>
+          <option value="decision">Decision</option>
+          <option value="adoption">Adoption</option>
+        </select>
+      </div>
+      <SubmitButton
+        class="mx-20 h-[2.5rem]"
+        :submission-state="submissionState" 
+        ready-text="Save Buyersphere Settings"
+        submitting-text="Saving Buyersphere Settings"
+        submitted-text="Buyersphere Settings Saved"
+        @click="submitFn" />
     </div>
   </VueFinalModal>
 </template>
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
+import { useSubmit } from '@/composables/useSubmit'
+import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { storeToRefs } from 'pinia'
 
+const props = defineProps({
+  buyersphereId: { type: Number, required: true }
+})
+
+const emit = defineEmits(['close'])
+const buyersphereStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+
+const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
+
+const buyerName = ref(buyersphere.buyer)
+const buyerLogo = ref(buyersphere.buyerLogo)
+const stage = ref(buyersphere.currentStage)
+
+const { submissionState, submitFn } = useSubmit(async () => {
+  await buyersphereStore.saveBuyersphereSettings({
+    buyersphereId: props.buyersphereId,
+    buyer: buyerName.value,
+    buyerLogo: buyerLogo.value,
+    currentStage: stage.value
+  })
+})
 </script>

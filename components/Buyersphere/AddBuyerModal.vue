@@ -39,7 +39,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useSubmit } from '@/composables/useSubmit';
+import { useSubmit } from '@/composables/useSubmit'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 
 const props = defineProps({
@@ -51,7 +51,7 @@ const emit = defineEmits(['close'])
 
 const store = useBuyerspheresStore()
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   const user = {firstName, lastName, email, displayRole}
   await store.createBuyerUser({ buyersphereId: props.buyersphereId, user})
 })
