@@ -26,14 +26,14 @@
       with a link to login. No password needed!
     </div>
 
-    <a
+    <!-- <a
       :href="googleLoginLink"
       class="google-button">
       <img src="/svg/google.svg" class="mr-[18px] h-[18px] w-[18px]">
       <span class="text-[14px] text-medium" style="font-family: Roboto">
         Sign in with Google
       </span>
-    </a>
+    </a> -->
   </div>
 </template>
 
