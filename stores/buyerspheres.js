@@ -141,7 +141,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/conversations`,
-        { method: 'POST', body: {message} }
+        { method: 'POST', body: {message, dueDate} }
       )
       this.conversations[buyersphereId].content.push(data.value)
     },

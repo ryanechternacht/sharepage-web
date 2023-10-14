@@ -26,6 +26,7 @@
     "@tiptap/starter-kit": "^2.0.4",
     "@tiptap/vue-3": "^2.0.4",
     "@vue-final-modal/nuxt": "^1.0.0",
+    "@vuepic/vue-datepicker": "^7.1.0",
     "pinia": "^2.1.3",
     "v-money3": "^3.24.0",
     "vue-final-modal": "^4.4.5"

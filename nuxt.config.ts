@@ -15,6 +15,10 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
   ],
 
+  build: {
+    transpile: ["@vuepic/vue-datepicker"],
+  },
+
   runtimeConfig: {
     public: {
       // set in .env

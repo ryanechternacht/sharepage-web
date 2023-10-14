@@ -1,11 +1,18 @@
 <template>
   <div>
     <div class="flex flex-col gap-y-2">
-      <p class="bold">Ask a question:</p>
+      <p class="bold">Create an Action Item:</p>
       <TipTapTextarea
         v-model="newQuestion"
-        placeholder="Enter your question"
+        ref="newQuestionElem"
+        placeholder="What needs to be done?"
         class="w-full" />
+      <vue-date-picker 
+        v-model="newDueDate"
+        ref="newDueDateElem"
+        :auto-apply="true"
+        :enable-time-picker="false"
+        placeholder="By when?" />
       <SubmitButton
         class="mx-auto"
         :submission-state="submissionState"
@@ -60,7 +67,6 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit';
 
-const newQuestion = ref(null)
 const route = useRoute()
 const buyersphereId = route.params.id
 
@@ -81,14 +87,28 @@ const answeredQuestions = computed(
   () => conversations.filter(c => c.resolved)
 )
 
+const newQuestion = ref(null)
+const newQuestionElem = ref(null)
+const newDueDate = ref(null)
+const newDueDateElem = ref(null)
+
 const { submissionState, submitFn } = useSubmit(async () =>
-  await store.startConversation({ buyersphereId, message: newQuestion.value })
+  await store.startConversation({ 
+    buyersphereId, 
+    message: newQuestion.value,
+    dueDate: newDueDate.value,
+  })
 )
 
 async function checkReady () {
-  if (newQuestion.value) {
+  if (!newQuestion.value) {
+    newQuestionElem.value.focus()
+  } else if (!newDueDate.value) {
+    newDueDateElem.value.openMenu()
+  } else {
     await submitFn()
     newQuestion.value = null
+    newDueDate.value = null
   }
 }
 
