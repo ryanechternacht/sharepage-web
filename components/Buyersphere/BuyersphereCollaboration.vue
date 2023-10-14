@@ -24,9 +24,9 @@
       <SubmitButton
         class="mx-auto"
         :submission-state="submissionState"
-        ready-text="Create"
-        submitting-text="Creating"
-        submitted-text="Created" 
+        ready-text="Create Action Item"
+        submitting-text="Creating Action Item"
+        submitted-text="Action Item Created" 
         @click="checkReady" />
 
       <div class="border border-gray-lighter" />
@@ -36,35 +36,19 @@
         v-model:selected="section" />
 
       <template v-if="section === 'open'">
-        <div v-for="q in unansweredQuestions">
-          <div class="question-title">
-            <span class="flex-grow">Assigned To: {{ q.assignedTo.firstName }} {{ q.assignedTo.lastName }}</span>
-            <span class="italic">{{ formatDate(q.dueDate) }}</span>
-          </div>
-          <div class="question-body">
-            <div class="question-text" v-html="q.message" />
-            <div class="question-action"
-              @click="updateQuestion({ id: q.id, resolved: true })">
-              <img src="/svg/checkmark.svg">
-            </div>
-          </div>
-        </div>
+        <BuyersphereCollaborationItem v-for="q in unansweredQuestions"
+          :item="q"
+          :buyersphere-id="buyersphereId"
+          :resolved-state-when-clicked="true"
+          @edit-item="editItem(q)" />
       </template>
 
       <template v-if="section === 'completed'">
-        <div v-for="q in answeredQuestions">
-          <div class="question-title">
-            <span class="flex-grow">Assigned To: {{ q.assignedTo.firstName }} {{ q.assignedTo.lastName }}</span>
-            <span class="italic">{{ formatDate(q.dueDate) }}</span>
-          </div>
-          <div class="question-body">
-            <div class="question-text" v-html="q.message" />
-            <div class="question-action"
-              @click="updateQuestion({ id: q.id, resolved: false })">
-              <img src="/svg/reply.svg">
-            </div>
-          </div>
-        </div>
+        <BuyersphereCollaborationItem v-for="q in answeredQuestions"
+          :item="q"
+          :buyersphere-id="buyersphereId"
+          :resolved-state-when-clicked="false"
+          @edit-item="editItem(q)" />
       </template>
     </div>
   </div>
@@ -76,9 +60,11 @@ import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit';
 import lodash_pkg from 'lodash';
 const { concat, filter, sortBy } = lodash_pkg;
+import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
-const buyersphereId = route.params.id
+const buyersphereId = parseInt(route.params.id)
 
 const store = useBuyerspheresStore()
 const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(store)
@@ -139,36 +125,21 @@ async function checkReady () {
   }
 }
 
-async function updateQuestion ({ id, resolved }) {
-  store.updateConversation({ buyersphereId, conversationId: id, resolved })
-}
+const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
+  component: EditCollaborationItemModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeEditModal ()
+    }
+  }
+})
 
-const dayjs = useDayjs()
-function formatDate(date) {
-  return dayjs(date).format('MMM D')
+function editItem(item) {
+  patchModalOptions({ attrs: { item }})
+  openEditModal()
 }
 </script>
 
 <style lang="postcss" scoped>
-.question-title {
-  @apply bg-teal-pastel flex flex-row rounded-t-md px-1.5 py-.5;
-}
-
-.question-body {
-  @apply flex flex-row items-center border-gray-lighter 
-    border-x border-b rounded-b-md p-1.5;
-}
-
-.question-text {
-  @apply !gray inline-html w-full;
-  
-  * {
-    @apply gray;
-  }
-}
-
-.question-action {
-  @apply center-xy border border-gray-light rounded-md cursor-pointer
-    w-[1.25rem] min-w-[1.25rem] h-[1.25rem] min-h-[1.25rem] p-1;
-}
 </style>

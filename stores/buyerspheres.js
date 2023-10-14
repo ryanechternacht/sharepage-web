@@ -145,14 +145,25 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.conversations[buyersphereId].content.push(data.value)
     },
-    async updateConversation({ buyersphereId, conversationId, resolved }) {
+    async updateConversation({ buyersphereId, conversationId, resolved, dueDate, message, assignedTo }) {
       const { apiFetch } = useNuxtApp()
-      await apiFetch(
+      const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
-        { method: 'PATCH', body: { resolved }}
+        { method: 'PATCH', body: { resolved, dueDate, message, assignedTo }}
       )
       const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
-      c.resolved = resolved
+      if (data.value.resolved) {
+        c.resolved = data.value.resolved
+      }
+      if (data.value.dueDate) {
+        c.dueDate = data.value.dueDate
+      }
+      if (data.value.message) {
+        c.message = data.value.message
+      }
+      if (data.value.assignedTo) {
+        c.assignedTo = data.value.assignedTo
+      }
     },
     async createResource({ buyersphereId, title, link }) {
       const { apiFetch } = useNuxtApp()
