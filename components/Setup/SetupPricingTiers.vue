@@ -45,6 +45,7 @@
       </div>
       <TipTapTextarea 
         v-model="pricingTierDescription"
+        ref="descriptionElem"
         class="w-full"
         placeholder="Pricing Tier Description"
         />

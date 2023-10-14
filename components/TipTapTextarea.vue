@@ -5,7 +5,7 @@
        set the .ProseMirror height correctly. So we are going to flow a value down
        to the .ProseMirror -->
   <editor-content 
-    :editor="editor" 
+    :editor="editor"
     class="editor p-2 body gray border border-gray-lighter rounded-md" />
 </template>
 
@@ -38,6 +38,12 @@ const editor = useEditor({
 watch(() => props.modelValue, (newModelValue) => {
   editor.value.commands.setContent(newModelValue, false)
 })
+
+function focus () {
+  editor.value.commands.focus()
+}
+
+defineExpose({ focus })
 </script>
 
 <style lang="postcss" scoped>

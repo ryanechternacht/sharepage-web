@@ -11,6 +11,7 @@
       @keyup.enter="checkReady('title')">
     <TipTapTextarea 
       v-model="featureDescription"
+      ref="descriptionElem"
       class="mt-1 w-full max-w-[600px]"
       placeholder="Feature Description" />
     <SubmitButton
@@ -72,8 +73,8 @@ const { submissionState, submitFn } = useSubmit(async () =>
   }}))
 
 const featureTitle = ref('')
-const featureDescription = ref('')
 const titleElem = ref(null)
+const featureDescription = ref('')
 const descriptionElem = ref(null)
 
 async function checkReady(elem) {
