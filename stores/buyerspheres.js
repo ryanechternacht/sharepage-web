@@ -137,7 +137,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
-    async startConversation({ buyersphereId, message }) {
+    async startConversation({ buyersphereId, message, dueDate }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/conversations`,

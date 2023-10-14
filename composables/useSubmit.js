@@ -27,7 +27,7 @@ export const useSubmit = (fn, submittedDurationMs = 3000) => {
       return
     }
     submissionState.value = 'submitted'
-    setTimeout(() => { submissionState.value = 'ready'; console.log('timeout') }, submittedDurationMs)
+    setTimeout(() => submissionState.value = 'ready', submittedDurationMs)
   }
   
   return {submissionState, error, submitFn }

@@ -31,7 +31,7 @@
         <div v-for="q in unansweredQuestions">
           <div class="question-title">
             <span class="flex-grow">From: {{ q.author.firstName }} {{ q.author.lastName }}</span>
-            <span class="italic">{{ formatDate(q.createdAt) }}</span>
+            <span class="italic">{{ formatDate(q.dueDate) }}</span>
           </div>
           <div class="question-body">
             <div class="question-text" v-html="q.message" />
@@ -47,7 +47,7 @@
         <div v-for="q in answeredQuestions">
           <div class="question-title">
             <span class="flex-grow">From: {{ q.author.firstName }} {{ q.author.lastName }}</span>
-            <span class="italic">{{ formatDate(q.createdAt) }}</span>
+            <span class="italic">{{ formatDate(q.dueDate) }}</span>
           </div>
           <div class="question-body">
             <div class="question-text" v-html="q.message" />
@@ -66,6 +66,8 @@
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit';
+import lodash_pkg from 'lodash';
+const { filter, sortBy } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = route.params.id
@@ -81,10 +83,16 @@ const sections = ['open', 'resolved']
 const section = ref('open')
 
 const unansweredQuestions = computed(
-  () => conversations.filter(c => !c.resolved)
+  () => sortBy(
+    filter(conversations, c => !c.resolved),
+    ['dueDate']
+  )
 )
 const answeredQuestions = computed(
-  () => conversations.filter(c => c.resolved)
+  () => sortBy(
+    filter(conversations, c => c.resolved),
+    ['dueDate']
+  )
 )
 
 const newQuestion = ref(null)
