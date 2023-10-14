@@ -13,6 +13,14 @@
         :auto-apply="true"
         :enable-time-picker="false"
         placeholder="By when?" />
+      <select v-model="newAssignee"
+        ref="newAssigneeElem">
+        <option disabled hidden value="null">Assigned to Whom?</option>
+        <option v-for="u in allBuyersphereUsers"
+          :value="u.id">
+          {{ u.firstName }} {{ u.lastName }}
+        </option>
+      </select>
       <SubmitButton
         class="mx-auto"
         :submission-state="submissionState"
@@ -30,7 +38,7 @@
       <template v-if="section === 'open'">
         <div v-for="q in unansweredQuestions">
           <div class="question-title">
-            <span class="flex-grow">From: {{ q.author.firstName }} {{ q.author.lastName }}</span>
+            <span class="flex-grow">Assigned To: {{ q.assignedTo.firstName }} {{ q.assignedTo.lastName }}</span>
             <span class="italic">{{ formatDate(q.dueDate) }}</span>
           </div>
           <div class="question-body">
@@ -43,10 +51,10 @@
         </div>
       </template>
 
-      <template v-if="section === 'resolved'">
+      <template v-if="section === 'completed'">
         <div v-for="q in answeredQuestions">
           <div class="question-title">
-            <span class="flex-grow">From: {{ q.author.firstName }} {{ q.author.lastName }}</span>
+            <span class="flex-grow">Assigned To: {{ q.assignedTo.firstName }} {{ q.assignedTo.lastName }}</span>
             <span class="italic">{{ formatDate(q.dueDate) }}</span>
           </div>
           <div class="question-body">
@@ -67,19 +75,20 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit';
 import lodash_pkg from 'lodash';
-const { filter, sortBy } = lodash_pkg;
+const { concat, filter, sortBy } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = route.params.id
 
 const store = useBuyerspheresStore()
-const { getBuyersphereConversationsByIdCached } = storeToRefs(store)
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(store)
 
-const [conversations] = await Promise.all([
+const [buyersphere, conversations] = await Promise.all([
+  getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId)
 ])
 
-const sections = ['open', 'resolved']
+const sections = ['open', 'completed']
 const section = ref('open')
 
 const unansweredQuestions = computed(
@@ -95,16 +104,23 @@ const answeredQuestions = computed(
   )
 )
 
+const allBuyersphereUsers = computed(
+  () => concat(buyersphere.buyerTeam, buyersphere.sellerTeam)
+)
+
 const newQuestion = ref(null)
 const newQuestionElem = ref(null)
 const newDueDate = ref(null)
 const newDueDateElem = ref(null)
+const newAssignee = ref(null)
+const newAssigneeElem = ref(null)
 
 const { submissionState, submitFn } = useSubmit(async () =>
   await store.startConversation({ 
     buyersphereId, 
     message: newQuestion.value,
     dueDate: newDueDate.value,
+    assignedTo: newAssignee.value,
   })
 )
 
@@ -113,10 +129,13 @@ async function checkReady () {
     newQuestionElem.value.focus()
   } else if (!newDueDate.value) {
     newDueDateElem.value.openMenu()
+  } else if (!newAssignee.value) {
+    newAssigneeElem.value.focus()
   } else {
     await submitFn()
     newQuestion.value = null
     newDueDate.value = null
+    newAssignee.value = null
   }
 }
 
