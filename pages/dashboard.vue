@@ -30,7 +30,7 @@
 
       <div class="buyersphere-table mt-10">
         <div class="header-row">
-          <h3>Buyersphers</h3>
+          <h3>Buyerspheres</h3>
           <BsButton class=""
             @click="openBuyersphereModal">
             + Add
