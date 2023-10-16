@@ -27,6 +27,7 @@
     </div>
 
     <a
+      v-if="showGoogleLogin"
       :href="googleLoginLink"
       class="google-button">
       <img src="/svg/google.svg" class="mr-[18px] h-[18px] w-[18px]">
@@ -57,6 +58,10 @@ const { submissionState, submitFn } = useSubmit(async () => {
 const email = ref('')
 
 const { stytch } = useAppConfig()
+
+const showGoogleLogin = computed(
+  () => apiSlug !== 'app'
+)
 
 // TODO should this just be a backend call that redirects you?
 const googleLoginLink = computed(
