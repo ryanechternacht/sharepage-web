@@ -1,8 +1,14 @@
 <template>
   <div class="flex flex-col items-center gap-y-5 mb-20">
-    <img src="/logo-big.svg">
+    <img 
+      :src="organization ? organization.logo : '/logo-big.svg'"
+      class="w-20">
     
-    <h1>Welcome to the Buyersphere 🚀</h1>
+    <h1>
+      {{ organization 
+        ? `Welcome to ${organization.name}`
+        : "Welcome to the Buyersphere 🚀" }}
+    </h1>
     
     <input 
       v-model="email" 
@@ -40,10 +46,17 @@
 
 <script setup>
 import { useSubmit } from '@/composables/useSubmit'
+import { useOrganizationStore } from '@/stores/organization'
+import { storeToRefs } from 'pinia'
 
 definePageMeta({
   layout: "public",
 });
+
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const organization = await getOrganizationCached.value()
 
 const { apiFetch, apiSlug } = useNuxtApp();
 
