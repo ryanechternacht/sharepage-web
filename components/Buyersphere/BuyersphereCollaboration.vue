@@ -1,6 +1,25 @@
 <template>
   <div>
-    <div class="flex flex-col gap-y-2">
+    <div class="flex flex-col gap-5 items-center w-full">
+      <div class="collaboration-box">
+        <h3 class="self-center">+ New</h3>
+
+        <template v-if="section === 'open'">
+          <BuyersphereCollaborationItem v-for="q in unansweredQuestions"
+            :item="q"
+            :buyersphere-id="buyersphereId"
+            :resolved-state-when-clicked="true"
+            @edit-item="editItem(q)" />
+        </template>
+      </div>
+      <div class="collaboration-box">
+        <h3 class="self-center">🔮 Upcoming</h3>
+
+        <div v-for="c in ['first', 'second', 'third']">{{ c }}</div>
+      </div>
+    </div>
+
+    <!-- <div class="flex flex-col gap-y-2">
       <p class="bold">Create an Action Item:</p>
       <TipTapTextarea
         v-model="newQuestion"
@@ -50,7 +69,7 @@
           :resolved-state-when-clicked="false"
           @edit-item="editItem(q)" />
       </template>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -142,4 +161,8 @@ function editItem(item) {
 </script>
 
 <style lang="postcss" scoped>
+.collaboration-box {
+  @apply flex flex-col w-full border border-gray-lighter rounded-md
+    px-4 py-2 gap-2
+}
 </style>

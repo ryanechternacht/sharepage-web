@@ -1,6 +1,13 @@
 <template>
-  <div>
-    <div class="question-title">
+  <div class="collaboration-item">
+    <img class="w-6 p-1 border border-gray-lighter rounded-md" src="/svg/bell.svg">
+    <div class="flex-grow inline-html" v-html="item.message"/>
+    <UserAvatar :user="{ firstName: 'bob' }" />
+    <img class="edit-button hidden"
+      src="/svg/edit.svg"
+      @click="emit('edit-item')">
+
+    <!-- <div class="question-title">
       <span class="flex-grow">Assigned To: {{ item.assignedTo.firstName }} {{ item.assignedTo.lastName }}</span>
       <span class="italic">{{ formatDate(item.dueDate) }}</span>
     </div>
@@ -14,7 +21,7 @@
         @click="updateQuestion({ id: item.id, resolved: props.resolvedStateWhenClicked })">
         <img :src="resolvedStateWhenClicked ? '/svg/checkmark.svg' : '/svg/reply.svg'">
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -42,7 +49,19 @@ const emit = defineEmits(['edit-item'])
 </script>
 
 <style lang="postcss" scoped>
-.question-title {
+.collaboration-item {
+  @apply flex flex-row items-center w-full gap-2;
+
+  &:hover .edit-button {
+    @apply block;
+  }
+}
+
+.edit-button {
+  @apply w-6 p-1 border border-gray-lighter rounded-md cursor-pointer;
+}
+
+/* .question-title {
   @apply bg-teal-pastel flex flex-row rounded-t-md px-1.5 py-.5;
 }
 
@@ -62,5 +81,5 @@ const emit = defineEmits(['edit-item'])
 .question-action {
   @apply center-xy border border-gray-light rounded-md cursor-pointer
     w-[1.25rem] min-w-[1.25rem] h-[1.25rem] min-h-[1.25rem] p-1;
-}
+} */
 </style>
