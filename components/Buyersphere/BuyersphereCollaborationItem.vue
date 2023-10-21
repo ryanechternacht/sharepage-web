@@ -1,34 +1,25 @@
 <template>
-  <div class="collaboration-item">
+  <div class="collaboration-item"
+    @click="emit('edit-item')">
     <img class="w-6 p-1 border border-gray-lighter rounded-md" src="/svg/bell.svg">
     <div class="flex-grow inline-html" v-html="item.message"/>
-    <UserAvatar :user="{ firstName: 'bob' }" />
-    <img class="edit-button hidden"
-      src="/svg/edit.svg"
-      @click="emit('edit-item')">
-
-    <!-- <div class="question-title">
-      <span class="flex-grow">Assigned To: {{ item.assignedTo.firstName }} {{ item.assignedTo.lastName }}</span>
-      <span class="italic">{{ formatDate(item.dueDate) }}</span>
+    
+    <div class="avatar">
+      <UserAvatar v-if="item.assignedTo" 
+        :user="item.assignedTo" />
+      <Logo v-else
+        :src="buyersphere.buyerLogo" />
     </div>
-    <div class="question-body">
-      <div class="question-text" v-html="item.message" />
-      <div class="question-action"
-        @click="emit('edit-item')">
-        <img src="/svg/edit.svg">
-      </div>
-      <div class="question-action"
-        @click="updateQuestion({ id: item.id, resolved: props.resolvedStateWhenClicked })">
-        <img :src="resolvedStateWhenClicked ? '/svg/checkmark.svg' : '/svg/reply.svg'">
-      </div>
-    </div> -->
+    
+    <img class="resolve-button hidden"
+      :src="resolvedStateWhenClicked ? '/svg/checkmark.svg' : '/svg/reply.svg'"
+      @click.stop="updateQuestion({ id: item.id, resolved: props.resolvedStateWhenClicked })">
   </div>
 </template>
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-
-const store = useBuyerspheresStore()
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
   item: { type: Object, required: true },
@@ -36,12 +27,19 @@ const props = defineProps({
   resolvedStateWhenClicked: { type: Boolean, required: true }
 })
 
+const store = useBuyerspheresStore()
+
+const { getBuyersphereByIdCached } = storeToRefs(store)
+
+const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
+
 const dayjs = useDayjs()
 function formatDate(date) {
   return dayjs(date).format('MMM D')
 }
 
 async function updateQuestion ({ id, resolved }) {
+  console.log('update')
   store.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
 }
 
@@ -50,15 +48,24 @@ const emit = defineEmits(['edit-item'])
 
 <style lang="postcss" scoped>
 .collaboration-item {
-  @apply flex flex-row items-center w-full gap-2;
+  @apply grid items-center w-full gap-2 cursor-pointer;
+  grid-template-columns: auto 1fr auto;
 
-  &:hover .edit-button {
+  &:hover .resolve-button {
     @apply block;
+  }
+
+  &:hover .avatar {
+    @apply hidden;
   }
 }
 
-.edit-button {
+.resolve-button {
   @apply w-6 p-1 border border-gray-lighter rounded-md cursor-pointer;
+}
+
+.avatar {
+  @apply w-6;
 }
 
 /* .question-title {

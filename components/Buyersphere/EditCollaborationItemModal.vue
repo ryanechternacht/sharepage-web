@@ -69,9 +69,11 @@ const allBuyersphereUsers = computed(
   () => concat(buyersphere.buyerTeam, buyersphere.sellerTeam)
 )
 
+console.log('item', props.item)
+
 const resolved = ref(props.item.resolved)
 const message = ref(props.item.message)
-const assignedTo = ref(props.item.assignedTo.id)
+const assignedTo = ref(props.item.assignedTo?.id)
 const dueDate = ref(props.item.dueDate)
 
 const { submissionState, submitFn } = useSubmit(async () => {

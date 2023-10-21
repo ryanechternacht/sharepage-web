@@ -152,16 +152,16 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'PATCH', body: { resolved, dueDate, message, assignedTo }}
       )
       const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
-      if (data.value.resolved) {
+      if (data.value.resolved !== undefined) {
         c.resolved = data.value.resolved
       }
-      if (data.value.dueDate) {
+      if (data.value.dueDate !== undefined) {
         c.dueDate = data.value.dueDate
       }
-      if (data.value.message) {
+      if (data.value.message !== undefined) {
         c.message = data.value.message
       }
-      if (data.value.assignedTo) {
+      if (data.value.assignedTo !== undefined) {
         c.assignedTo = data.value.assignedTo
       }
     },

@@ -4,18 +4,20 @@
       <div class="collaboration-box">
         <h3 class="self-center">+ New</h3>
 
-        <template v-if="section === 'open'">
-          <BuyersphereCollaborationItem v-for="q in unansweredQuestions"
-            :item="q"
-            :buyersphere-id="buyersphereId"
-            :resolved-state-when-clicked="true"
-            @edit-item="editItem(q)" />
-        </template>
+        <BuyersphereCollaborationItem v-for="q in unansweredQuestions"
+          :item="q"
+          :buyersphere-id="buyersphereId"
+          :resolved-state-when-clicked="true"
+          @edit-item="editItem(q)" />
       </div>
       <div class="collaboration-box">
         <h3 class="self-center">🔮 Upcoming</h3>
 
-        <div v-for="c in ['first', 'second', 'third']">{{ c }}</div>
+        <BuyersphereCollaborationItem v-for="q in answeredQuestions"
+          :item="q"
+          :buyersphere-id="buyersphereId"
+          :resolved-state-when-clicked="false"
+          @edit-item="editItem(q)" />
       </div>
     </div>
 
@@ -155,6 +157,7 @@ const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOpti
 })
 
 function editItem(item) {
+  console.log('editItem', item)
   patchModalOptions({ attrs: { item }})
   openEditModal()
 }
