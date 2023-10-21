@@ -22,13 +22,14 @@
       </div>
       <div class="w-full">
         <h3>Assigned To</h3>
-        <select v-model="assignedTo">
+        <select v-model="assignedToId">
           <option disabled hidden value="null">Assigned to Whom?</option>
           <option v-for="u in allBuyersphereUsers"
             :value="u.id">
             {{ u.firstName }} {{ u.lastName }}
           </option>
         </select>
+        <p>Team: {{ capitalize(assignedTeam) }}</p>
       </div>
       <div class="w-full">
         <h3>Resolved?</h3>
@@ -50,9 +51,10 @@
 import { VueFinalModal } from 'vue-final-modal'
 import { useSubmit } from '@/composables/useSubmit'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { concat } = lodash_pkg;
+const { capitalize, concat, find } = lodash_pkg;
 
 const props = defineProps({
   item: { type: Object, required: true },
@@ -61,29 +63,54 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const store = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(store)
-const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
+const buyersphereStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const [buyersphere, organization] = await Promise.all([
+  getBuyersphereByIdCached.value(props.buyersphereId),
+  getOrganizationCached.value()
+])
 
 const allBuyersphereUsers = computed(
-  () => concat(buyersphere.buyerTeam, buyersphere.sellerTeam)
+  () => concat(
+    {
+      id: -1,
+      firstName: buyersphere.buyer,
+      lastName: "Team",
+      team: "buyer"
+    },
+    buyersphere.buyerTeam, 
+    {
+      id: -2,
+      firstName: organization.name,
+      lastName: "Team",
+      team: "seller"
+    },
+    buyersphere.sellerTeam)
 )
-
-console.log('item', props.item)
 
 const resolved = ref(props.item.resolved)
 const message = ref(props.item.message)
-const assignedTo = ref(props.item.assignedTo?.id)
 const dueDate = ref(props.item.dueDate)
+const assignedToId = ref(props.item.assignedTo?.id ??
+  (props.item.assignedTeam === "buyer" ? -1 : -2))
+
+const assignedTeam = computed(
+  () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
+)
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  store.updateConversation({ 
+  buyersphereStore.updateConversation({ 
     buyersphereId: props.buyersphereId,
     conversationId: props.item.id,
     resolved: resolved.value,
     message: message.value,
-    assignedTo: assignedTo.value,
+    assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
     dueDate: dueDate.value,
+    assignedTeam: assignedTeam.value
   })
 })
 

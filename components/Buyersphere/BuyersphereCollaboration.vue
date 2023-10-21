@@ -157,7 +157,6 @@ const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOpti
 })
 
 function editItem(item) {
-  console.log('editItem', item)
   patchModalOptions({ attrs: { item }})
   openEditModal()
 }

@@ -61,16 +61,16 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       const b = this.buyerspheres[buyersphereId].content
       b.currentStage = data.value.currentStage
 
-      if (data.value.qualifiedOn) {
+      if (data.value.qualifiedOn !== undefined) {
         b.qualifiedOn = data.value.qualifiedOn
       }
-      if (data.value.evaluatedOn) {
+      if (data.value.evaluatedOn !== undefined) {
         b.evaluatedOn = data.value.evaluatedOn
       }
-      if (data.value.decidedOn) {
+      if (data.value.decidedOn !== undefined) {
         b.decidedOn = data.value.decidedOn
       }
-      if (data.value.adoptedOn) {
+      if (data.value.adoptedOn !== undefined) {
         b.adoptedOn = data.value.adoptedOn
       }
     },
@@ -145,11 +145,12 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.conversations[buyersphereId].content.push(data.value)
     },
-    async updateConversation({ buyersphereId, conversationId, resolved, dueDate, message, assignedTo }) {
+    async updateConversation({ buyersphereId, conversationId, resolved, 
+                               dueDate, message, assignedTo, assignedTeam }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
-        { method: 'PATCH', body: { resolved, dueDate, message, assignedTo }}
+        { method: 'PATCH', body: { resolved, dueDate, message, assignedTo, assignedTeam }}
       )
       const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
       if (data.value.resolved !== undefined) {
@@ -163,6 +164,9 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       }
       if (data.value.assignedTo !== undefined) {
         c.assignedTo = data.value.assignedTo
+      }
+      if (data.value.assignedTeam !== undefined) {
+        c.assignedTeam = data.value.assignedTeam
       }
     },
     async createResource({ buyersphereId, title, link }) {

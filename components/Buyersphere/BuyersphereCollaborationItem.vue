@@ -39,7 +39,6 @@ function formatDate(date) {
 }
 
 async function updateQuestion ({ id, resolved }) {
-  console.log('update')
   store.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
 }
 
