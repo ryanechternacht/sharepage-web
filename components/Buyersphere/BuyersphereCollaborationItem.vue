@@ -7,8 +7,10 @@
     <div class="avatar">
       <UserAvatar v-if="item.assignedTo" 
         :user="item.assignedTo" />
-      <Logo v-else
+      <Logo v-else-if="item.assignedTeam === 'buyer'"
         :src="buyersphere.buyerLogo" />
+      <logo v-else
+        :src="organization.logo" />
     </div>
     
     <img class="resolve-button hidden"
@@ -19,6 +21,7 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useOrganizationStore } from '@/stores/organization';
 import { storeToRefs } from 'pinia'
 
 const props = defineProps({
@@ -27,11 +30,16 @@ const props = defineProps({
   resolvedStateWhenClicked: { type: Boolean, required: true }
 })
 
-const store = useBuyerspheresStore()
+const buyersphereStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
-const { getBuyersphereByIdCached } = storeToRefs(store)
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
+const [buyersphere, organization] = await Promise.all([
+  getBuyersphereByIdCached.value(props.buyersphereId),
+  getOrganizationCached.value()
+])
 
 const dayjs = useDayjs()
 function formatDate(date) {
@@ -39,7 +47,7 @@ function formatDate(date) {
 }
 
 async function updateQuestion ({ id, resolved }) {
-  store.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
+  buyersphereStore.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
 }
 
 const emit = defineEmits(['edit-item'])
