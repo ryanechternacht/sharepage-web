@@ -43,11 +43,6 @@ const [buyersphere, organization] = await Promise.all([
   getOrganizationCached.value()
 ])
 
-// const dayjs = useDayjs()
-// function formatDate(date) {
-//   return dayjs(date).format('MMM D')
-// }
-
 async function updateQuestion ({ id, resolved }) {
   buyersphereStore.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
 }
@@ -68,14 +63,14 @@ const icon = computed(() => {
     if (props.item.resolved) {
       return '❓'
     }
-    return new Date(props.item.dueDate) < new Date() ? '⁉️' : '❓'
+    return new Date(props.item.dueDate) < new Date() ? '🤔' : '❓'
   }
 
   else if (props.item.collaborationType === 'comment') {
     if (props.item.resolved) {
       return '❗'
     }
-    return new Date(props.item.dueDate) < new Date() ? '⁉️' : '❗'
+    return new Date(props.item.dueDate) < new Date() ? '👉' : '❗'
   }
 }
 )
@@ -98,7 +93,7 @@ const emit = defineEmits(['edit-item'])
 }
 
 .resolve-button {
-  @apply w-6 p-1 border border-gray-lighter rounded-md cursor-pointer;
+  @apply w-6 px-1 py-2 border border-gray-lighter rounded-md cursor-pointer;
 }
 
 .avatar {
