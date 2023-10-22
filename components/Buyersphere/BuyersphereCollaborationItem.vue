@@ -53,12 +53,30 @@ async function updateQuestion ({ id, resolved }) {
 }
 
 const icon = computed(() => {
-  return {
-    task: '📝',
-    question: '❓',
-    comment: '❗',
-    meeting: '🗓️'
-  }[props.item.collaborationType]
+  if (props.item.collaborationType === 'meeting') {
+    return '🗓️'
+  }
+
+  else if (props.item.collaborationType === 'task') {
+    if (props.item.resolved) {
+      return '✅'
+    }
+    return new Date(props.item.dueDate) < new Date() ? '🔥' : '📝'
+  }
+
+  else if (props.item.collaborationType === 'question') {
+    if (props.item.resolved) {
+      return '❓'
+    }
+    return new Date(props.item.dueDate) < new Date() ? '⁉️' : '❓'
+  }
+
+  else if (props.item.collaborationType === 'comment') {
+    if (props.item.resolved) {
+      return '❗'
+    }
+    return new Date(props.item.dueDate) < new Date() ? '⁉️' : '❗'
+  }
 }
 )
 

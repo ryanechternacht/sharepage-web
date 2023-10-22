@@ -11,67 +11,34 @@
           @edit-item="editItem(q)" />
       </div>
       <div class="collaboration-box">
+        <h3 class="self-center">🔥 Active</h3>
+        <div class="py-1 px-4 border border-gray-lighter rounded-md mx-auto mt-[-.5rem]">1 Week</div>
+
+        <BuyersphereCollaborationItem v-for="q in activeItems"
+          :item="q"
+          :buyersphere-id="buyersphereId"
+          :resolved-state-when-clicked="false"
+          @edit-item="editItem(q)" />
+      </div>
+      <div class="collaboration-box">
         <h3 class="self-center">🔮 Upcoming</h3>
 
-        <BuyersphereCollaborationItem v-for="q in answeredQuestions"
+        <BuyersphereCollaborationItem v-for="q in upcomingItems"
+          :item="q"
+          :buyersphere-id="buyersphereId"
+          :resolved-state-when-clicked="false"
+          @edit-item="editItem(q)" />
+      </div>
+      <div class="collaboration-box">
+        <h3 class="self-center">✅ Completed</h3>
+
+        <BuyersphereCollaborationItem v-for="q in completedItems"
           :item="q"
           :buyersphere-id="buyersphereId"
           :resolved-state-when-clicked="false"
           @edit-item="editItem(q)" />
       </div>
     </div>
-
-    <!-- <div class="flex flex-col gap-y-2">
-      <p class="bold">Create an Action Item:</p>
-      <TipTapTextarea
-        v-model="newQuestion"
-        ref="newQuestionElem"
-        placeholder="What needs to be done?"
-        class="w-full" />
-      <vue-date-picker 
-        v-model="newDueDate"
-        ref="newDueDateElem"
-        :auto-apply="true"
-        :enable-time-picker="false"
-        placeholder="By when?" />
-      <select v-model="newAssignee"
-        ref="newAssigneeElem">
-        <option disabled hidden value="null">Assigned to Whom?</option>
-        <option v-for="u in allBuyersphereUsers"
-          :value="u.id">
-          {{ u.firstName }} {{ u.lastName }}
-        </option>
-      </select>
-      <SubmitButton
-        class="mx-auto"
-        :submission-state="submissionState"
-        ready-text="Create Action Item"
-        submitting-text="Creating Action Item"
-        submitted-text="Action Item Created" 
-        @click="checkReady" />
-
-      <div class="border border-gray-lighter" />
-
-      <PillNav
-        :options="sections"
-        v-model:selected="section" />
-
-      <template v-if="section === 'open'">
-        <BuyersphereCollaborationItem v-for="q in unansweredQuestions"
-          :item="q"
-          :buyersphere-id="buyersphereId"
-          :resolved-state-when-clicked="true"
-          @edit-item="editItem(q)" />
-      </template>
-
-      <template v-if="section === 'completed'">
-        <BuyersphereCollaborationItem v-for="q in answeredQuestions"
-          :item="q"
-          :buyersphere-id="buyersphereId"
-          :resolved-state-when-clicked="false"
-          @edit-item="editItem(q)" />
-      </template>
-    </div> -->
   </div>
 </template>
 
@@ -95,18 +62,25 @@ const [buyersphere, conversations] = await Promise.all([
   getBuyersphereConversationsByIdCached.value(buyersphereId)
 ])
 
-const sections = ['open', 'completed']
-const section = ref('open')
-
-const unansweredQuestions = computed(
+const completedItems = computed(
   () => sortBy(
-    filter(conversations, c => !c.resolved),
+    filter(conversations, c => c.resolved),
     ['dueDate']
   )
 )
-const answeredQuestions = computed(
+
+var nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+
+const activeItems = computed(
   () => sortBy(
-    filter(conversations, c => c.resolved),
+    filter(conversations, c => !c.resolved && new Date(c.dueDate) < nextWeek),
+    ['dueDate']
+  )
+)
+
+const upcomingItems = computed(
+  () => sortBy(
+    filter(conversations, c => !c.resolved && new Date(c.dueDate) >= nextWeek),
     ['dueDate']
   )
 )
