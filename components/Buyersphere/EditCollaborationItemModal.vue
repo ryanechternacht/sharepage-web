@@ -13,6 +13,15 @@
           class="w-full" />
       </div>
       <div class="w-full">
+        <h3>Collaboration Type</h3>
+        <select v-model="collaborationType">
+          <option value="comment">Comment</option>
+          <option value="meeting">Meeting</option>
+          <option value="question">Question</option>
+          <option value="task">Task</option>
+        </select>
+      </div>
+      <div class="w-full">
         <h3>Due Date</h3>
         <vue-date-picker 
           v-model="dueDate"
@@ -23,7 +32,6 @@
       <div class="w-full">
         <h3>Assigned To</h3>
         <select v-model="assignedToId">
-          <option disabled hidden value="null">Assigned to Whom?</option>
           <option v-for="u in allBuyersphereUsers"
             :value="u.id">
             {{ u.firstName }} {{ u.lastName }}
@@ -97,6 +105,7 @@ const message = ref(props.item.message)
 const dueDate = ref(props.item.dueDate)
 const assignedToId = ref(props.item.assignedTo?.id ??
   (props.item.assignedTeam === "buyer" ? -1 : -2))
+const collaborationType = ref(props.item.collaborationType)
 
 const assignedTeam = computed(
   () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
@@ -110,7 +119,8 @@ const { submissionState, submitFn } = useSubmit(async () => {
     message: message.value,
     assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
     dueDate: dueDate.value,
-    assignedTeam: assignedTeam.value
+    assignedTeam: assignedTeam.value,
+    collaborationType: collaborationType.value
   })
 })
 
