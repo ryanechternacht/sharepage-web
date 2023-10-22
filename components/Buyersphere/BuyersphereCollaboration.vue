@@ -3,13 +3,47 @@
     <div class="flex flex-col gap-5 items-center w-full">
       <div class="collaboration-box">
         <h3 class="self-center">+ New</h3>
+        <TipTapTextarea
+          v-model="newMessage"
+          ref="newMessageElem"
+          placeholder="What needs to be done?"
+          class="w-full" />
+        <select v-model="newCollaborationType"
+          ref="newCollaborationTypeElem">
+          <option disabled hidden value="null">What type of Item?</option>
+          <option value="comment">Comment</option>
+          <option value="meeting">Meeting</option>
+          <option value="question">Question</option>
+          <option value="task">Task</option>
+        </select>
+        <vue-date-picker 
+          v-model="newDueDate"
+          ref="newDueDateElem"
+          :auto-apply="true"
+          :enable-time-picker="false"
+          placeholder="By when?" />
+        <select v-model="newAssignedToId"
+          ref="newAssignedToIdElem">
+          <option disabled hidden value="null">Assigned to Whom?</option>
+          <option v-for="u in allBuyersphereUsers"
+            :value="u.id">
+            {{ u.firstName }} {{ u.lastName }}
+          </option>
+        </select>
+        <SubmitButton
+          class="mx-auto"
+          :submission-state="submissionState"
+          ready-text="Create"
+          submitting-text="Creating"
+          submitted-text="Created" 
+          @click="checkReady" />
       </div>
       <div class="collaboration-box">
         <h3 class="self-center">🔥 Active</h3>
         <div class="py-1 px-4 border border-gray-lighter rounded-md mx-auto mt-[-.5rem]">1 Week</div>
 
         <template v-for="g in activeItemsGrouped">
-          <div class="tag gray-italic self-end">{{ formatDate(g.date) }}</div>
+          <div class="date-header ">{{ formatDate(g.date) }}</div>
           <BuyersphereCollaborationItem v-for="q in g.items"
             :item="q"
             :buyersphere-id="buyersphereId"
@@ -21,7 +55,7 @@
         <h3 class="self-center">🔮 Upcoming</h3>
 
         <template v-for="g in upcomingItemsGrouped">
-          <div class="tag gray-italic self-end">{{ formatDate(g.date) }}</div>
+          <div class="date-header ">{{ formatDate(g.date) }}</div>
           <BuyersphereCollaborationItem v-for="q in g.items"
             :item="q"
             :buyersphere-id="buyersphereId"
@@ -33,7 +67,7 @@
         <h3 class="self-center">✅ Completed</h3>
 
         <template v-for="g in completedItemsGrouped">
-          <div class="tag gray-italic self-end">{{ formatDate(g.date) }}</div>
+          <div class="date-header ">{{ formatDate(g.date) }}</div>
           <BuyersphereCollaborationItem v-for="q in g.items"
             :item="q"
             :buyersphere-id="buyersphereId"
@@ -47,22 +81,27 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { useSubmit } from '@/composables/useSubmit';
 import lodash_pkg from 'lodash';
-const { concat, filter, groupBy, map, orderBy, sortBy } = lodash_pkg;
+const { concat, filter, find, groupBy, map, orderBy } = lodash_pkg;
 import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const store = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(store)
+const buyersphereStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
-const [buyersphere, conversations] = await Promise.all([
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const [buyersphere, conversations, organization] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId)
+  getBuyersphereConversationsByIdCached.value(buyersphereId),
+  getOrganizationCached.value(),
 ])
 
 const completedItemsGrouped = computed(() => 
@@ -91,7 +130,7 @@ const activeItemsGrouped = computed(() =>
       (v, k) => { return { date: k, items: v} }
     ),
     ['date'],
-    ['desc']
+    ['asc']
   )
 )
 
@@ -105,42 +144,72 @@ const upcomingItemsGrouped = computed(() =>
       (v, k) => { return { date: k, items: v} }
     ),
     ['date'],
-    ['desc']
+    ['asc']
   )
 )
 
 const allBuyersphereUsers = computed(
-  () => concat(buyersphere.buyerTeam, buyersphere.sellerTeam)
+  () => concat(
+    {
+      id: -1,
+      firstName: buyersphere.buyer,
+      lastName: "Team",
+      team: "buyer"
+    },
+    buyersphere.buyerTeam, 
+    {
+      id: -2,
+      firstName: organization.name,
+      lastName: "Team",
+      team: "seller"
+    },
+    buyersphere.sellerTeam)
 )
 
-const newQuestion = ref(null)
-const newQuestionElem = ref(null)
+const newMessage = ref(null)
+const newMessageElem = ref(null)
+const newCollaborationType = ref(null)
+const newCollaborationTypeElem = ref(null)
 const newDueDate = ref(null)
 const newDueDateElem = ref(null)
-const newAssignee = ref(null)
-const newAssigneeElem = ref(null)
+const newAssignedToId = ref(null)
+const newAssignedToIdElem = ref(null)
+const newAssignedTeam = computed(() => 
+  find(allBuyersphereUsers.value, u => u.id === newAssignedToId.value).team
+)
 
 const { submissionState, submitFn } = useSubmit(async () =>
-  await store.startConversation({ 
+  await buyersphereStore.startConversation({ 
     buyersphereId, 
-    message: newQuestion.value,
+    message: newMessage.value,
     dueDate: newDueDate.value,
-    assignedTo: newAssignee.value,
+    assignedTo: newAssignedToId.value > 0 ? newAssignedToId.value : null,
+    assignedTeam: newAssignedTeam.value,
+    collaborationType: newCollaborationType.value,
   })
 )
 
 async function checkReady () {
-  if (!newQuestion.value) {
-    newQuestionElem.value.focus()
+  console.log('check ready')
+  if (!newMessage.value) {
+    console.log('new message')
+    newMessageElem.value.focus()
+  } else if (!newCollaborationType.value) {
+    console.log('collab type')
+    newCollaborationTypeElem.value.focus()
   } else if (!newDueDate.value) {
+    console.log('due date')
     newDueDateElem.value.openMenu()
-  } else if (!newAssignee.value) {
-    newAssigneeElem.value.focus()
+  } else if (!newAssignedTeam.value) {
+    console.log('assigned to')
+    newAssignedToIdElem.value.focus()
   } else {
+    console.log('submit')
     await submitFn()
-    newQuestion.value = null
+    newMessage.value = null
     newDueDate.value = null
-    newAssignee.value = null
+    newAssignedToId.value = null
+    newCollaborationType.value = null
   }
 }
 
@@ -169,5 +238,9 @@ function formatDate(date) {
 .collaboration-box {
   @apply flex flex-col w-full border border-gray-lighter rounded-md
     px-4 py-2 gap-2
+}
+
+.date-header {
+  @apply tag gray-italic self-end mb-[-.25rem];
 }
 </style>
