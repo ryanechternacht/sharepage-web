@@ -1,7 +1,9 @@
 <template>
   <div class="collaboration-item"
     @click="emit('edit-item')">
-    <img class="w-6 p-1 border border-gray-lighter rounded-md" src="/svg/bell.svg">
+    <div class="p-0.5 text-base border border-gray-lighter rounded-md">
+      {{ icon }}
+    </div>
     <div class="flex-grow inline-html" v-html="item.message"/>
     
     <div class="avatar">
@@ -9,7 +11,7 @@
         :user="item.assignedTo" />
       <Logo v-else-if="item.assignedTeam === 'buyer'"
         :src="buyersphere.buyerLogo" />
-      <logo v-else
+      <Logo v-else
         :src="organization.logo" />
     </div>
     
@@ -41,14 +43,24 @@ const [buyersphere, organization] = await Promise.all([
   getOrganizationCached.value()
 ])
 
-const dayjs = useDayjs()
-function formatDate(date) {
-  return dayjs(date).format('MMM D')
-}
+// const dayjs = useDayjs()
+// function formatDate(date) {
+//   return dayjs(date).format('MMM D')
+// }
 
 async function updateQuestion ({ id, resolved }) {
   buyersphereStore.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
 }
+
+const icon = computed(() => {
+  return {
+    task: '📝',
+    question: '❓',
+    comment: '❗',
+    meeting: '🗓️'
+  }[props.item.collaborationType]
+}
+)
 
 const emit = defineEmits(['edit-item'])
 </script>
@@ -74,26 +86,4 @@ const emit = defineEmits(['edit-item'])
 .avatar {
   @apply w-6;
 }
-
-/* .question-title {
-  @apply bg-teal-pastel flex flex-row rounded-t-md px-1.5 py-.5;
-}
-
-.question-body {
-  @apply flex flex-row gap-x-1 items-center border-gray-lighter 
-    border-x border-b rounded-b-md p-1.5;
-}
-
-.question-text {
-  @apply !gray inline-html w-full;
-  
-  * {
-    @apply gray;
-  }
-}
-
-.question-action {
-  @apply center-xy border border-gray-light rounded-md cursor-pointer
-    w-[1.25rem] min-w-[1.25rem] h-[1.25rem] min-h-[1.25rem] p-1;
-} */
 </style>
