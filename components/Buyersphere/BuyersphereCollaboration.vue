@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex flex-col gap-5 items-center w-full">
-      <div class="collaboration-box">
-        <h3 class="self-center">+ New</h3>
+      <div class="collaboration-box !gap-1">
+      <h3 class="self-center">+ New</h3>
         <TipTapTextarea
           v-model="newMessage"
           ref="newMessageElem"
@@ -21,7 +21,8 @@
           ref="newDueDateElem"
           :auto-apply="true"
           :enable-time-picker="false"
-          placeholder="By when?" />
+          placeholder="By when?"
+          input-class-name="date-picker" />
         <select v-model="newAssignedToId"
           ref="newAssignedToIdElem">
           <option disabled hidden value="null">Assigned to Whom?</option>
@@ -40,7 +41,7 @@
       </div>
       <div class="collaboration-box">
         <h3 class="self-center">🔥 Active</h3>
-        <div class="py-1 px-4 border border-gray-lighter rounded-md mx-auto mt-[-.5rem]">1 Week</div>
+        <div class="py-1 px-4 border border-gray-lighter rounded-md mx-auto mt-[-.5rem]">Next 7 days</div>
 
         <template v-for="g in activeItemsGrouped">
           <div class="date-header ">{{ formatDate(g.date) }}</div>
@@ -190,21 +191,15 @@ const { submissionState, submitFn } = useSubmit(async () =>
 )
 
 async function checkReady () {
-  console.log('check ready')
   if (!newMessage.value) {
-    console.log('new message')
     newMessageElem.value.focus()
   } else if (!newCollaborationType.value) {
-    console.log('collab type')
     newCollaborationTypeElem.value.focus()
   } else if (!newDueDate.value) {
-    console.log('due date')
     newDueDateElem.value.openMenu()
   } else if (!newAssignedTeam.value) {
-    console.log('assigned to')
     newAssignedToIdElem.value.focus()
   } else {
-    console.log('submit')
     await submitFn()
     newMessage.value = null
     newDueDate.value = null
@@ -242,5 +237,17 @@ function formatDate(date) {
 
 .date-header {
   @apply tag gray-italic self-end mb-[-.25rem];
+}
+
+select, :deep(.editor) {
+  @apply p-0.5;
+}
+
+:deep(.date-picker) {
+  @apply text-sm py-0.5 pr-0.5 pl-[1.75rem];
+}
+
+:deep(.dp__input_wrap) svg {
+  @apply px-2;
 }
 </style>
