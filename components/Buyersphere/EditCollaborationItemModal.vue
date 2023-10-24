@@ -57,7 +57,6 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useSubmit } from '@/composables/useSubmit'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
