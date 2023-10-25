@@ -26,10 +26,10 @@
           Features
         </NuxtLink>
         <NuxtLink
-          to="/setup/pricing-tiers" 
+          to="/setup/pricing" 
           class="step-box"
-          :class="{'step-box-complete': hasPricingTiers}">
-          Pricing Tiers
+          :class="{'step-box-complete': hasPricing}">
+          Pricing
         </NuxtLink>
         <NuxtLink
           to="/setup/deal-timing" 
@@ -58,7 +58,7 @@
       <SetupPersonas v-else-if="step === 'personas'" />
       <SetupPainPoints v-else-if="step === 'pain-points'" />
       <SetupFeatures v-else-if="step === 'features'" />
-      <SetupPricingTiers v-else-if="step === 'pricing-tiers'" />
+      <SetupPricing v-else-if="step === 'pricing'" />
       <SetupDealTiming v-else-if="step === 'deal-timing'" />
       <SetupResources v-else-if="step === 'resources'" />
       <SetupUsers v-else-if="step === 'users'" />
@@ -117,7 +117,7 @@ const hasCompany = false
 const hasPersonas = personas.length
 const hasPainPoints = painPoints.length
 const hasFeatures = features.length
-const hasPricingTiers = pricingTiers.length
+const hasPricing = pricingTiers.length
 const hasDealTiming = dealTiming.decisionDays
 const hasResources = resources.length
 const hasUsers = users.length > 1

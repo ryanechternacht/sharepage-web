@@ -8,7 +8,7 @@ function is10MinutesOld(jsonTimestamp) {
 }
 
 export const usePricingStore = defineStore('pricing', {
-  state: () => ({ pricingTiers: {} }),
+  state: () => ({ pricingTiers: {}, settings: {} }),
   getters: {
     getPricingCached: (state) => async () => {
       await state.fetchPricing()
@@ -40,10 +40,15 @@ export const usePricingStore = defineStore('pricing', {
 
       if (!this.pricingTiers.content
           || forceRefresh
-          || is10MinutesOld(this.pricingTiers.generatedAt)) {
+          || is10MinutesOld(this.pricingTiers.generatedAt)
+          || is10MinutesOld(this.settings.generatedAt)) {
         const { data } = await apiFetch('/v0.1/pricing')
         this.pricingTiers = {
           content: data.value.pricingTiers,
+          generatedAt: dayjs().toJSON()
+        }
+        this.settings = {
+          content: data.value.settings,
           generatedAt: dayjs().toJSON()
         }
       }
