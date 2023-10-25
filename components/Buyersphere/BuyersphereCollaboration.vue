@@ -156,14 +156,14 @@ const allBuyersphereUsers = computed(
       lastName: "Team",
       team: "buyer"
     },
-    buyersphere.buyerTeam, 
+    buyersphere.buyerTeam ?? [], 
     {
       id: -2,
       firstName: organization.name,
       lastName: "Team",
       team: "seller"
     },
-    buyersphere.sellerTeam)
+    buyersphere.sellerTeam ?? [])
 )
 
 const newMessage = ref(null)
