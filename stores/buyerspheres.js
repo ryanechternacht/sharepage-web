@@ -30,18 +30,18 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'POST', body: { buyer, buyerLogo } }
       )
     },
-    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, currentStage }) {
+    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, currentStage, showPricing }) {
       const { apiFetch } = useNuxtApp()
       const { data, error } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { buyer, buyerLogo, currentStage } }
+        { method: 'PATCH', body: { buyer, buyerLogo, currentStage, showPricing } }
       )
 
       const b = this.buyerspheres[buyersphereId].content
       b.currentStage = data.value.currentStage
       b.buyer = data.value.buyer
       b.buyerLogo = data.value.buyerLogo
-
+      b.showPricing = data.value.showPricing
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()

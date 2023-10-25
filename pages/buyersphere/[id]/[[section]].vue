@@ -173,9 +173,11 @@ if (buyersphere === null) {
   })
 }
 
-const mainSections = buyersphere.showPricing
-  ? ['overview', 'features', 'pricing', 'notes', 'resources']
-  : ['overview', 'features', 'notes', 'resources']
+const mainSections = computed(() => 
+  buyersphere.showPricing
+    ? ['overview', 'features', 'pricing', 'notes', 'resources']
+    : ['overview', 'features', 'notes', 'resources']
+)
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'overview')
 

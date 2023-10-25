@@ -28,6 +28,12 @@
           <option value="adoption">Adoption</option>
         </select>
       </div>
+      <div class="w-full flex flex-row items-center">
+        <input id="showByDefault"
+          type="checkbox"
+          v-model="showPricing">
+        <label for="showByDefault" class="ml-2 h3">Show Pricing</label>
+      </div>
       <SubmitButton
         class="mx-20 h-[2.5rem]"
         :submission-state="submissionState" 
@@ -57,13 +63,15 @@ const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
 const buyerName = ref(buyersphere.buyer)
 const buyerLogo = ref(buyersphere.buyerLogo)
 const stage = ref(buyersphere.currentStage)
+const showPricing = ref(buyersphere.showPricing)
 
 const { submissionState, submitFn } = useSubmit(async () => {
   await buyersphereStore.saveBuyersphereSettings({
     buyersphereId: props.buyersphereId,
     buyer: buyerName.value,
     buyerLogo: buyerLogo.value,
-    currentStage: stage.value
+    currentStage: stage.value,
+    showPricing: showPricing.value
   })
 })
 </script>
