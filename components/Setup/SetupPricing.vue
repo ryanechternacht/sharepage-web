@@ -2,6 +2,15 @@
 <div class="flex flex-col items-center">
     <Logo :src="organization.logo" size="x-large" />
     <h1 class="leading-[3.75rem]">Our Products Core PricingTiers</h1>
+    <div class="w-[600px] flex flex-row items-center">
+      <input id="showByDefault"
+        type="checkbox"
+        :checked="settings.showByDefault"
+        @change="updateShowByDefault">
+      <label for="showByDefault" class="ml-2 h3">Show Pricing by Default</label>
+    </div>
+    
+
     <h3 class="w-[600px] mt-5">Create New Pricing Tier</h3>
     <div class="flex flex-col gap-y-2 w-[600px]">
       <input 
@@ -139,16 +148,20 @@ const moneyConfig = {
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const pricingTiersStore = usePricingStore()
-const { getPricingCached } = storeToRefs(pricingTiersStore)
+const pricingStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingStore)
 
-const [organization, pricingTiers] = await Promise.all([
+const [organization, { pricingTiers, settings }] = await Promise.all([
   getOrganizationCached.value(),
   getPricingCached.value(),
 ])
 
+function updateShowByDefault() {
+  pricingStore.updateSettings({ showByDefault: !settings.showByDefault })
+}
+
 const { submissionState, submitFn } = useSubmit(async () =>
-  await pricingTiersStore.createPricingTier({ pricingTier: {
+  await pricingStore.createPricingTier({ pricingTier: {
     title: pricingTierTitle.value,
     bestFor: pricingTierBestFor.value,
     amountPerPeriod: pricingTierAmountPerPeriod.value,
@@ -205,11 +218,11 @@ async function checkReady() {
 }
 
 async function deletePricingTier({ item }) {
-  await pricingTiersStore.deletePricingTier({ pricingTier: item })
+  await pricingStore.deletePricingTier({ pricingTier: item })
 }
 
 async function updatePricingTier({ item }) {
-  await pricingTiersStore.updatePricingTier({ pricingTier: item })
+  await pricingStore.updatePricingTier({ pricingTier: item })
 }
 </script>
 

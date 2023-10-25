@@ -63,7 +63,7 @@ const emit = defineEmits(['update:can-pay', 'update:tier-id'])
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
-const pricingTiers = await getPricingCached.value()
+const { pricingTiers } = await getPricingCached.value()
 
 const periodMap = {
   'annually': 'yr',

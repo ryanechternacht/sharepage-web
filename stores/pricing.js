@@ -12,7 +12,10 @@ export const usePricingStore = defineStore('pricing', {
   getters: {
     getPricingCached: (state) => async () => {
       await state.fetchPricing()
-      return state.pricingTiers.content
+      return {
+        pricingTiers: state.pricingTiers.content,
+        settings: state.settings.content
+      }
     },
     get: (state) => state.pricingTiers.content
   },
@@ -52,7 +55,7 @@ export const usePricingStore = defineStore('pricing', {
           generatedAt: dayjs().toJSON()
         }
       }
-    }, 
+    },
     async updatePricingTier({ pricingTier }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(`/v0.1/pricing-tiers/${pricingTier.id}`, {
@@ -63,5 +66,14 @@ export const usePricingStore = defineStore('pricing', {
       const i = findIndex(this.pricingTiers.content, pt => pt.id === pricingTier.id)
       this.pricingTiers.content[i] = data.value
     },
+    async updateSettings({ showByDefault }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch('/v0.1/pricing', {
+        method: 'PATCH',
+        body: { showByDefault }
+      })
+
+      this.settings.content.showByDefault = data.value.showByDefault
+    }
   }
 })

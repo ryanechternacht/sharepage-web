@@ -92,8 +92,8 @@ const { getPersonasCached } = storeToRefs(personasStore)
 const featuresStore = useFeaturesStore()
 const { getFeaturesCached } = storeToRefs(featuresStore)
 
-const pricingTiersStore = usePricingStore()
-const { getPricingCached } = storeToRefs(pricingTiersStore)
+const pricingStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingStore)
 
 const dealTimingStore = useDealTimingStore()
 const { getDealTimingCached } = storeToRefs(dealTimingStore)
@@ -101,7 +101,7 @@ const { getDealTimingCached } = storeToRefs(dealTimingStore)
 const resourcesStore = useResourcesStore()
 const { getResourcesCached } = storeToRefs(resourcesStore)
 
-const [painPoints, personas, features, pricingTiers, dealTiming, 
+const [painPoints, personas, features, { pricingTiers }, dealTiming, 
        resources, users] 
   = await Promise.all([
     getPainPointsCached.value(),

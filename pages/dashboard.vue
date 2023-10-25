@@ -74,10 +74,10 @@ import AddBuyersphereModal from '@/components/AddBuyersphereModal'
 const usersStore = useUsersStore()
 const { getMeCached, getUsersCached } = storeToRefs(usersStore)
 
-const pricingTiersStore = usePricingStore()
-const { getPricingCached } = storeToRefs(pricingTiersStore)
+const pricingStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingStore)
 
-const [user, users, pricingTiers] = await Promise.all([
+const [user, users, { pricingTiers }] = await Promise.all([
   getMeCached.value(),
   getUsersCached.value(),
   getPricingCached.value()
