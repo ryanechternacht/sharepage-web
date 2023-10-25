@@ -64,7 +64,7 @@
 
 <script setup>
 import { useUsersStore } from '@/stores/users';
-import { usePricingTiersStore } from '@/stores/pricing-tiers'
+import { usePricingStore } from '@/stores/pricing'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, filter, find, sortBy } = lodash_pkg;
@@ -74,13 +74,13 @@ import AddBuyersphereModal from '@/components/AddBuyersphereModal'
 const usersStore = useUsersStore()
 const { getMeCached, getUsersCached } = storeToRefs(usersStore)
 
-const pricingTiersStore = usePricingTiersStore()
-const { getPricingTiersCached } = storeToRefs(pricingTiersStore)
+const pricingTiersStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingTiersStore)
 
 const [user, users, pricingTiers] = await Promise.all([
   getMeCached.value(),
   getUsersCached.value(),
-  getPricingTiersCached.value()
+  getPricingCached.value()
 ])
 
 const usersExceptMe = ref(

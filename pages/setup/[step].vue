@@ -73,7 +73,7 @@ import { usePainPointsStore } from '@/stores/pain-points'
 import { usePersonasStore } from '@/stores/personas'
 import { useFeaturesStore } from '@/stores/features'
 import { storeToRefs } from 'pinia'
-import { usePricingTiersStore } from '@/stores/pricing-tiers'
+import { usePricingStore } from '@/stores/pricing'
 import { useDealTimingStore } from '@/stores/deal-timing'
 import { useResourcesStore } from '~/stores/resources'
 
@@ -92,8 +92,8 @@ const { getPersonasCached } = storeToRefs(personasStore)
 const featuresStore = useFeaturesStore()
 const { getFeaturesCached } = storeToRefs(featuresStore)
 
-const pricingTiersStore = usePricingTiersStore()
-const { getPricingTiersCached } = storeToRefs(pricingTiersStore)
+const pricingTiersStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingTiersStore)
 
 const dealTimingStore = useDealTimingStore()
 const { getDealTimingCached } = storeToRefs(dealTimingStore)
@@ -107,7 +107,7 @@ const [painPoints, personas, features, pricingTiers, dealTiming,
     getPainPointsCached.value(),
     getPersonasCached.value(),
     getFeaturesCached.value(),
-    getPricingTiersCached.value(),
+    getPricingCached.value(),
     getDealTimingCached.value(),
     getResourcesCached.value(),
     getUsersCached.value()

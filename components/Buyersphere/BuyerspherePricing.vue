@@ -53,17 +53,17 @@
 <script setup>
 import lodash_pkg from 'lodash';
 const { cloneDeep } = lodash_pkg;
-import { usePricingTiersStore } from '@/stores/pricing-tiers'
+import { usePricingStore } from '@/stores/pricing'
 import { storeToRefs } from 'pinia';
 import { format } from 'v-money3';
 
 const { buyersphere } = defineProps({ buyersphere: Object })
 const emit = defineEmits(['update:can-pay', 'update:tier-id'])
 
-const pricingStore = usePricingTiersStore()
-const { getPricingTiersCached } = storeToRefs(pricingStore)
+const pricingStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingStore)
 
-const pricingTiers = await getPricingTiersCached.value()
+const pricingTiers = await getPricingCached.value()
 
 const periodMap = {
   'annually': 'yr',

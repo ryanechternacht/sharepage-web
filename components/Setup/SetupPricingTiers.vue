@@ -124,7 +124,7 @@
 
 <script setup>
 import { useOrganizationStore } from '@/stores/organization'
-import { usePricingTiersStore } from '@/stores/pricing-tiers'
+import { usePricingStore } from '@/stores/pricing'
 import { storeToRefs } from 'pinia'
 import { format, Money3Component } from 'v-money3';
 
@@ -139,12 +139,12 @@ const moneyConfig = {
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const pricingTiersStore = usePricingTiersStore()
-const { getPricingTiersCached } = storeToRefs(pricingTiersStore)
+const pricingTiersStore = usePricingStore()
+const { getPricingCached } = storeToRefs(pricingTiersStore)
 
 const [organization, pricingTiers] = await Promise.all([
   getOrganizationCached.value(),
-  getPricingTiersCached.value(),
+  getPricingCached.value(),
 ])
 
 const { submissionState, submitFn } = useSubmit(async () =>

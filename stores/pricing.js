@@ -7,11 +7,11 @@ function is10MinutesOld(jsonTimestamp) {
   return dayjs.duration(dayjs().diff(jsonTimestamp)).asMinutes() >= 1
 }
 
-export const usePricingTiersStore = defineStore('pricing-tiers', {
+export const usePricingStore = defineStore('pricing', {
   state: () => ({ pricingTiers: {} }),
   getters: {
-    getPricingTiersCached: (state) => async () => {
-      await state.fetchPricingTiers()
+    getPricingCached: (state) => async () => {
+      await state.fetchPricing()
       return state.pricingTiers.content
     },
     get: (state) => state.pricingTiers.content
@@ -34,16 +34,16 @@ export const usePricingTiersStore = defineStore('pricing-tiers', {
 
       remove(this.pricingTiers.content, pt => pt.id === pricingTier.id)
     },
-    async fetchPricingTiers({ forceRefresh } = {}) {
+    async fetchPricing({ forceRefresh } = {}) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
       if (!this.pricingTiers.content
           || forceRefresh
           || is10MinutesOld(this.pricingTiers.generatedAt)) {
-        const { data } = await apiFetch('/v0.1/pricing-tiers')
+        const { data } = await apiFetch('/v0.1/pricing')
         this.pricingTiers = {
-          content: data.value,
+          content: data.value.pricingTiers,
           generatedAt: dayjs().toJSON()
         }
       }
