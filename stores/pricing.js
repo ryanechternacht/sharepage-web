@@ -69,7 +69,7 @@ export const usePricingStore = defineStore('pricing', {
     async updateSettings({ showByDefault }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch('/v0.1/pricing', {
-        method: 'PATCH',
+        method: 'PUT',
         body: { showByDefault }
       })
 

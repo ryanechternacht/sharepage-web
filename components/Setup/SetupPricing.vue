@@ -7,7 +7,7 @@
         type="checkbox"
         :checked="settings.showByDefault"
         @change="updateShowByDefault">
-      <label for="showByDefault" class="ml-2 h3">Show Pricing by Default</label>
+      <label for="showByDefault" class="ml-2 h3">Show Pricing in New Buyerspheres by Default</label>
     </div>
     
 

@@ -75,13 +75,13 @@ import { useFeaturesStore } from '@/stores/features'
 import { storeToRefs } from 'pinia'
 import { usePricingStore } from '@/stores/pricing'
 import { useDealTimingStore } from '@/stores/deal-timing'
-import { useResourcesStore } from '~/stores/resources'
+import { useResourcesStore } from '@/stores/resources'
 
 const route = useRoute()
 const step = route.params.step
 
 const usersStore = useUsersStore()
-const { getMeCached, getUsersCached } = storeToRefs(usersStore)
+const { getUsersCached } = storeToRefs(usersStore)
 
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
