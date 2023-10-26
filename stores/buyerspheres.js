@@ -51,11 +51,20 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.buyerspheres[buyersphereId].content.featuresAnswer = data.value.featuresAnswer
     },
-    async saveStage({ buyersphereId, stage }) {
+    async advanceStage({ buyersphereId, stage }) {
+      const body = { currentStage: stage }
+      if (stage === "evaluation") {
+        body.qualifiedOn = new Date().toISOString()
+      } else if (stage === "decision") {
+        body.evaluatedOn = new Date().toISOString()
+      } else if (stage === "adoption") {
+        body.decidedOn = new Date().toISOString()
+      }
+
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { currentStage: stage } }
+        { method: 'PATCH', body }
       )
       
       const b = this.buyerspheres[buyersphereId].content

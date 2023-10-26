@@ -254,7 +254,7 @@ const actionDate = computed(() => {
 })
 
 function updateStage ({ stage }) {
-  buyersphereStore.saveStage({ buyersphereId, stage })
+  buyersphereStore.advanceStage({ buyersphereId, stage })
 }
 
 function updateStatus ({ status }) {
