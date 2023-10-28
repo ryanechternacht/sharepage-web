@@ -76,13 +76,13 @@ const stageMapping = {
 const currentStageNumber = computed(() => stageMapping[buyersphere.currentStage])
 
 function buildStage (stage, stageNumber, description, targetDate, happenedOn) {
-  const targetDayjs =  dayjs(new Date(targetDate))
+  const targetDayjs =  dayjs(new Date(targetDate), "YYYY-MM-DD")
 
   return {
     name: stage,
     description,
     stageNumber,
-    date: targetDayjs.format('MMM Do'), 
+    date: targetDayjs.utc().format('MMM Do'), 
     daysTo: targetDayjs.diff(dayjs(), 'days') + 1,
     happenedOn: dayjs(new Date(happenedOn)).format('MMM D')
   }

@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   },
 
   dayjs: {
-    plugins: ['isSameOrAfter', 'duration', 'advancedFormat']
+    plugins: ['isSameOrAfter', 'duration', 'advancedFormat', 'utc']
   },
 
   postcss: {

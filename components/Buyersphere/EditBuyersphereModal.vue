@@ -19,7 +19,7 @@
       </div>
       <div class="w-full">
         <h3>Buyersphere Stage</h3>
-        <select v-model="stage" 
+        <select v-model="stage"
           class="w-full"
           placeholder="Current Stage">
           <option value="qualification">Qualification</option>
@@ -27,6 +27,33 @@
           <option value="decision">Decision</option>
           <option value="adoption">Adoption</option>
         </select>
+      </div>
+      <div class="w-full">
+        <h3>Qualification Target Date</h3>
+        <vue-date-picker 
+          v-model="qualificationTargetDate"
+          :auto-apply="true"
+          model-type="yyyy-MM-dd"
+          :enable-time-picker="false"
+          placeholder="By when?" />
+      </div>
+      <div class="w-full">
+        <h3>Evaluation Target Date</h3>
+        <vue-date-picker 
+          v-model="evaluationTargetDate"
+          :auto-apply="true"
+          model-type="yyyy-MM-dd"
+          :enable-time-picker="false"
+          placeholder="By when?" />
+      </div>
+      <div class="w-full">
+        <h3>Decision Target Date</h3>
+        <vue-date-picker 
+          v-model="decisionTargetDate"
+          :auto-apply="true"
+          model-type="yyyy-MM-dd"
+          :enable-time-picker="false"
+          placeholder="By when?" />
       </div>
       <div class="w-full flex flex-row items-center">
         <input id="showByDefault"
@@ -63,6 +90,9 @@ const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
 const buyerName = ref(buyersphere.buyer)
 const buyerLogo = ref(buyersphere.buyerLogo)
 const stage = ref(buyersphere.currentStage)
+const qualificationTargetDate = ref(buyersphere.qualificationDate)
+const evaluationTargetDate = ref(buyersphere.evaluationDate)
+const decisionTargetDate = ref(buyersphere.decisionDate)
 const showPricing = ref(buyersphere.showPricing)
 
 const { submissionState, submitFn } = useSubmit(async () => {
@@ -71,7 +101,10 @@ const { submissionState, submitFn } = useSubmit(async () => {
     buyer: buyerName.value,
     buyerLogo: buyerLogo.value,
     currentStage: stage.value,
-    showPricing: showPricing.value
+    qualificationDate: qualificationTargetDate.value,
+    evaluationDate: evaluationTargetDate.value,
+    decisionDate: decisionTargetDate.value,
+    showPricing: showPricing.value,
   })
 })
 </script>

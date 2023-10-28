@@ -30,11 +30,13 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'POST', body: { buyer, buyerLogo } }
       )
     },
-    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, currentStage, showPricing }) {
+    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, currentStage, showPricing,
+                                    qualificationDate, evaluationDate, decisionDate }) {
       const { apiFetch } = useNuxtApp()
       const { data, error } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { buyer, buyerLogo, currentStage, showPricing } }
+        { method: 'PATCH', body: { buyer, buyerLogo, currentStage, showPricing,
+                                   qualificationDate, evaluationDate, decisionDate } }
       )
 
       const b = this.buyerspheres[buyersphereId].content
@@ -42,6 +44,9 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       b.buyer = data.value.buyer
       b.buyerLogo = data.value.buyerLogo
       b.showPricing = data.value.showPricing
+      b.qualificationDate = data.value.qualificationDate
+      b.evaluationDate = data.value.evaluationDate
+      b.decisionDate = data.value.decisionDate
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()
