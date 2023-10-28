@@ -93,25 +93,25 @@ const stages = computed(() => [
     'Qualification',
     0,
     'Asking the question, does this solution make sense for us?',
-    buyersphere.qualificationDate,
+    null,
     buyersphere.qualifiedOn),
   buildStage(
     'Evaluation',
     1,
     'Examining in detail if this is the right solution',
-    buyersphere.evaluationDate,
+    buyersphere.qualificationDate,
     buyersphere.evaluatedOn),
   buildStage(
     'Decision',
     2,
     'Making the decision if this is the right choice',
-    buyersphere.decisionDate,
+    buyersphere.evaluationDate,
     buyersphere.decidedOn),
   buildStage(
     'Adoption',
     3,
     'Congrats! Now let\'s make this a success!',
-    buyersphere.adoptionDate,
+    buyersphere.decisionDate,
     buyersphere.adoptedOn),
 ])
 
