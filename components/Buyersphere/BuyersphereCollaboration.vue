@@ -21,6 +21,7 @@
           ref="newDueDateElem"
           :auto-apply="true"
           :enable-time-picker="false"
+          model-type="yyyy-MM-dd"
           placeholder="By when?"
           input-class-name="date-picker" />
         <select v-model="newAssignedToId"

@@ -26,6 +26,7 @@
         <vue-date-picker 
           v-model="dueDate"
           :auto-apply="true"
+          model-type="yyyy-MM-dd"
           :enable-time-picker="false"
           placeholder="By when?" />
       </div>
