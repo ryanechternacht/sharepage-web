@@ -38,7 +38,8 @@
             Go To Buyersphere
           </NuxtLink>
           <BsButton v-else class="hidden create-button"
-            color="teal">Create Buyershere</BsButton>
+            color="teal"
+            @click="createBuyersphere(oppty)">Create Buyershere</BsButton>
         </div>
       </div>
     </div>
@@ -47,6 +48,8 @@
 
 <script setup>
 import { format } from 'v-money3';
+import { useModal } from 'vue-final-modal'
+import AddBuyersphereModal from '@/components/AddBuyersphereModal'
 
 const moneyConfig = {
   precision: 0,
@@ -68,6 +71,26 @@ const { apiFetch } = useNuxtApp()
 const { data: opportunities, refresh } = await apiFetch('/v0.1/salesforce/opportunities', { 
   query
 })
+
+const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
+  component: AddBuyersphereModal,
+  attrs: {
+    onClose () {
+      closeModal()
+      refresh()
+    }
+  }
+})
+
+function createBuyersphere(oppty) {
+  console.log('createBuyersphere', oppty)
+  patchModalOptions({ attrs: {
+    dealAmount: oppty.amount,
+    buyer: oppty.accountName,
+    crmOpportunityId: oppty.id
+  }})
+  openModal()
+}
 
 </script>
 

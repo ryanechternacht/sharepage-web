@@ -23,11 +23,11 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     }
   },
   actions: {
-    async createBuyersphere({ buyer, buyerLogo }) {
+    async createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres`,
-        { method: 'POST', body: { buyer, buyerLogo } }
+        { method: 'POST', body: { buyer, buyerLogo, crmOpportunityId, dealAmount } }
       )
     },
     async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, currentStage, showPricing,
