@@ -3,28 +3,39 @@
     class="flex justify-center items-center"
     content-class="p-8 bg-white rounded-md w-[600px]"
   >
-    <div class="flex flex-col">
+    <div class="flex flex-col gap-2">
       <div class="flex flex-row items-center mb-3">
         <h3 class="flex-grow">Create a New Buyersphere</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
-      <input v-model="buyer" 
-        ref="buyerElem"
-        class="flex-grow mb-2"
-        placeholder="Buyer Name">
-      <input v-model="buyerLogo" 
-        ref="buyerLogoElem"
-        class="flex-grow mb-4"
-        placeholder="Buyer Logo Url (https://...)">
-      <input v-model="crmOpportunityId" 
-        class="flex-grow mb-2"
-        placeholder="Opportunity ID in CRM">
-      <Money3Component
-        v-model.number="dealAmount"
-        ref="amountPerPeriodElem"
-        class="flex-grow"
-        placeholder="What does the Pricing Tier Cost? (Amount)"
-        v-bind="moneyConfig" />
+      <div>
+        <h3>Buyersphere Name (required)</h3>
+        <input v-model="buyer"
+          ref="buyerElem"
+          class="flex-grow mb-2"
+          placeholder="Buyer Name">
+      </div>
+      <div>
+        <h3>Buyersphere Logo (required)</h3>
+        <input v-model="buyerLogo" 
+          ref="buyerLogoElem"
+          class="flex-grow mb-4"
+          placeholder="Buyer Logo Url (https://...)">
+      </div>
+      <div>
+        <h3>Deal Amount</h3>
+        <Money3Component
+          v-model.number="dealAmount"
+          class="flex-grow"
+          placeholder="What does the Pricing Tier Cost? (Amount)"
+          v-bind="moneyConfig" />
+      </div>
+      <div>
+        <h3>CRM Opportunity ID</h3>
+        <input v-model="crmOpportunityId" 
+          class="flex-grow mb-2"
+          placeholder="Opportunity ID in CRM">
+      </div>
       <SubmitButton 
         class="self-center"
         ready-text="Create Buyersphere"
@@ -88,4 +99,7 @@ watch(submissionState, (newState, _) => {
 </script>
 
 <style lang="postcss" scoped>
+input {
+  @apply w-full
+}
 </style>

@@ -21,7 +21,7 @@ const colorClasses = computed(
 
 <style lang="postcss" scoped>
 .bs-button {
-  @apply cursor-pointer px-2 rounded-md;
+  @apply cursor-pointer px-2 rounded-md whitespace-nowrap	;
 
   &.big {
     @apply py-1 px-6;

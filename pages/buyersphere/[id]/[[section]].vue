@@ -74,7 +74,7 @@
           <h3 class="section-header">👋 People</h3>
           <div class="gray-outline p-3">
             <div class="mb-2 flex flex-row items-center gap-x-4">
-              <div class="w-full flex flex-row justify-between">
+              <div class="w-full flex flex-row justify-between items-center">
                 <p>{{ buyersphere.buyer }} Team</p>
                 <BsButton @click="openBuyerModal">+ Add</BsButton>
               </div>
@@ -83,7 +83,7 @@
           </div>
 
           <div class="gray-outline mt-4 p-3">
-            <div class="w-full flex flex-row justify-between">
+            <div class="w-full flex flex-row justify-between items-center">
               <p>{{ organization.name }} Team</p>
               <BsButton v-if="user.buyersphereRole === 'admin'" 
                 @click="openSellerModal">+ Add</BsButton>

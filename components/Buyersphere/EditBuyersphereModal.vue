@@ -18,6 +18,20 @@
           placeholder="Buyer Logo">
       </div>
       <div class="w-full">
+        <h3>Deal Amount</h3>
+        <Money3Component
+          v-model.number="dealAmount"
+          class="flex-grow"
+          placeholder="What does the Pricing Tier Cost? (Amount)"
+          v-bind="moneyConfig" />
+      </div>
+      <div class="w-full">
+        <h3>CRM Opportunity ID</h3>
+        <input v-model="crmOpportunityId" 
+          class="flex-grow mb-2"
+          placeholder="Opportunity ID in CRM">
+      </div>
+      <div class="w-full">
         <h3>Buyersphere Stage</h3>
         <select v-model="stage"
           class="w-full"
@@ -76,7 +90,18 @@
 import { VueFinalModal } from 'vue-final-modal'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
+import { Money3Component } from 'v-money3';
 
+// TODO this should probably be centralized
+const moneyConfig = {
+  precision: 0,
+  prefix: '',
+  disableNegative: true,
+  thousands: ',',
+  suffix: ''
+}
+
+// TODO this needs vertical scroll
 const props = defineProps({
   buyersphereId: { type: Number, required: true }
 })
@@ -89,6 +114,8 @@ const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
 
 const buyerName = ref(buyersphere.buyer)
 const buyerLogo = ref(buyersphere.buyerLogo)
+const dealAmount = ref(buyersphere.dealAmount)
+const crmOpportunityId = ref(buyersphere.crmOpportunityId)
 const stage = ref(buyersphere.currentStage)
 const qualificationTargetDate = ref(buyersphere.qualificationDate)
 const evaluationTargetDate = ref(buyersphere.evaluationDate)
@@ -100,6 +127,8 @@ const { submissionState, submitFn } = useSubmit(async () => {
     buyersphereId: props.buyersphereId,
     buyer: buyerName.value,
     buyerLogo: buyerLogo.value,
+    dealAmount: dealAmount.value,
+    crmOpportunityId: crmOpportunityId.value,
     currentStage: stage.value,
     qualificationDate: qualificationTargetDate.value,
     evaluationDate: evaluationTargetDate.value,

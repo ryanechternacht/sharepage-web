@@ -61,7 +61,6 @@ const moneyConfig = {
 const search = ref('')
 
 function updateSearch(val) {
-  console.log('updateSearch', val)
   search.value = val
 }
 
@@ -83,7 +82,6 @@ const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = 
 })
 
 function createBuyersphere(oppty) {
-  console.log('createBuyersphere', oppty)
   patchModalOptions({ attrs: {
     dealAmount: oppty.amount,
     buyer: oppty.accountName,
