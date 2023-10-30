@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="h-[50px]" /> <!-- vertical spacer while we're testing -->
+    <div class="flex flex-row-reverse items-center w-[800px] mx-auto">
+      <input
+        class="w-[200px]"
+        v-debounce:500ms="updateSearch"
+        placeholder="Search Opportunity Name" >
+    </div>
     <div class="opportunities mx-auto w-[800px]">
       <div class="header-row">
         <div class="header-cell">Account Name</div>
@@ -48,8 +55,15 @@ const moneyConfig = {
   thousands: ',',
   suffix: ''
 }
+const search = ref('')
 
-const query = {}
+function updateSearch(val) {
+  console.log('updateSearch', val)
+  search.value = val
+}
+
+
+const query = computed(() => ({ name: search.value }))
 const { apiFetch } = useNuxtApp()
 const { data: opportunities, refresh } = await apiFetch('/v0.1/salesforce/opportunities', { 
   query
