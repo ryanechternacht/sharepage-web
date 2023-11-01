@@ -7,14 +7,14 @@
       </div>
       <div class="flex flex-row items-center gap-x-4 mx-auto">
         <NuxtLink to="https://www.thebuyersphere.com">
-          <h3 class="gray">HOME</h3>
+          <h3 class="gray">LEARN MORE</h3>
         </NuxtLink>
-        <NuxtLink to="https://www.thebuyersphere.com/solution">
+        <!-- <NuxtLink to="https://www.thebuyersphere.com/solution">
           <h3 class="gray">SOLUTION</h3>
         </NuxtLink>
         <NuxtLink to="https://www.thebuyersphere.com/about">
           <h3 class="gray">ABOUT</h3>
-        </NuxtLink>
+        </NuxtLink> -->
       </div>
       <div class="flex flex-row items-center gap-x-3">
         <!-- TODO add these login options back if we use this for more than login -->
