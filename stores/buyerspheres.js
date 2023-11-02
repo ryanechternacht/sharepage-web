@@ -23,21 +23,30 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     }
   },
   actions: {
-    async createBuyersphere({ buyer, buyerLogo }) {
+    async createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres`,
-        { method: 'POST', body: { buyer, buyerLogo } }
+        { method: 'POST', body: { buyer, buyerLogo, crmOpportunityId, dealAmount } }
       )
     },
-    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, currentStage, showPricing,
-                                    qualificationDate, evaluationDate, decisionDate }) {
+    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, dealAmount, crmOpportunityId, 
+      currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate }) {
       const { apiFetch } = useNuxtApp()
       const { data, error } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { buyer, buyerLogo, currentStage, showPricing,
-                                   qualificationDate, evaluationDate, decisionDate } }
-      )
+        { method: 'PATCH', body: { 
+          buyer,
+          buyerLogo,
+          dealAmount,
+          crmOpportunityId,
+          currentStage,
+          showPricing,
+          qualificationDate,
+          evaluationDate,
+          decisionDate
+        } 
+      })
 
       const b = this.buyerspheres[buyersphereId].content
       b.currentStage = data.value.currentStage
@@ -47,6 +56,8 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       b.qualificationDate = data.value.qualificationDate
       b.evaluationDate = data.value.evaluationDate
       b.decisionDate = data.value.decisionDate
+      b.dealAmount = data.value.dealAmount
+      b.crmOpportunityId = data.value.crmOpportunityId
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()

@@ -12,6 +12,9 @@
           <NuxtLink to="/setup">
             <h4>Setup</h4>
           </NuxtLink>
+          <NuxtLink v-if="featureFlags.salesforce" to="/salesforce">
+            <h4>Salesforce</h4>
+          </NuxtLink>
         </template>
 
         <div class="flex-grow" />
@@ -32,6 +35,8 @@ const usersStore = useUsersStore()
 const { getMeCached } = storeToRefs(usersStore)
 
 const user = await getMeCached.value()
+
+const { featureFlags } = useAppConfig()
 </script>
 
 <style lang="postcss" scoped>

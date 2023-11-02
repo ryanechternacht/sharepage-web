@@ -7,4 +7,7 @@ export default defineAppConfig({
   heap: {
     id: 3969496045,
   },
+  featureFlags: {
+    salesforce: false,
+  },
 })
