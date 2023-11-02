@@ -1,23 +1,30 @@
 <template>
   <div>
     <div class="h-[50px]" /> <!-- vertical spacer while we're testing -->
-    <div class="flex flex-row-reverse items-center w-[800px] mx-auto justify-between">
-      <input
-        class="w-[200px]"
-        v-debounce:500ms="updateSearch"
-        placeholder="Search Opportunity Name">
-
+    <div class="flex flex-row items-center w-[800px] mx-auto">
       <div class="login-box"
         :class="{'need-to-login': error}">
         <a href="http://stark.api.buyersphere-local.com/v0.1/auth/salesforce">
-        Login to SF
-      </a>
+          Login to SF
+        </a>
       </div>
+
+      <div class="flex-grow" />
+
+      <input id="onlyMine"
+        type="checkbox"
+        v-model="onlyMine">
+      <label for="onlyMine" class="ml-2 h3">Only Mine?</label>
+      <input
+        class="w-[200px] ml-2"
+        v-debounce:500ms="updateSearch"
+        placeholder="Search Opportunity Name">
     </div>
     <div class="opportunities mx-auto w-[800px]">
       <div class="header-row">
         <div class="header-cell">Account Name</div>
         <div class="header-cell">Opportunity Name</div>
+        <div class="header-cell">Owner</div>
         <div class="header-cell">Amount</div>
         <div class="header-cell"></div>
       </div>
@@ -34,6 +41,9 @@
             <div class="font-bold">{{ oppty.name }}</div>
             <div class="tag gray-italic">{{ oppty.id }}</div>
           </div>
+        </div>
+        <div class="grid-cell">
+          <div class="font-bold">{{ oppty.ownerName }}</div>
         </div>
         <div class="grid-cell">
           <div class="font-bold">${{ format(oppty.amount, moneyConfig) }}</div>
@@ -71,17 +81,25 @@ const moneyConfig = {
   thousands: ',',
   suffix: ''
 }
+
 const search = ref('')
 
 function updateSearch(val) {
   search.value = val
 }
 
+const onlyMine = ref(true)
 
-const query = computed(() => ({ name: search.value }))
+const query = computed(() => { 
+  const val = { name: search.value } 
+  if (onlyMine.value) {
+    val['only-mine'] = true
+  }
+  return val
+})
 const { apiFetch } = useNuxtApp()
 const { data: opportunities, refresh, error } = await apiFetch('/v0.1/salesforce/opportunities', { 
-  query
+  query,
 })
 
 const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
@@ -116,7 +134,7 @@ function createBuyersphere(oppty) {
 
 .opportunities {
   @apply grid;
-  grid-template-columns: 1fr 1fr auto 140px;
+  grid-template-columns: 1fr 1fr auto auto 140px;
 
   .header-row {
     @apply contents;
