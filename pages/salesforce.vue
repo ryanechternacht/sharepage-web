@@ -1,11 +1,18 @@
 <template>
   <div>
     <div class="h-[50px]" /> <!-- vertical spacer while we're testing -->
-    <div class="flex flex-row-reverse items-center w-[800px] mx-auto">
+    <div class="flex flex-row-reverse items-center w-[800px] mx-auto justify-between">
       <input
         class="w-[200px]"
         v-debounce:500ms="updateSearch"
-        placeholder="Search Opportunity Name" >
+        placeholder="Search Opportunity Name">
+
+      <div class="login-box"
+        :class="{'need-to-login': error}">
+        <a href="http://stark.api.buyersphere-local.com/v0.1/auth/salesforce">
+        Login to SF
+      </a>
+      </div>
     </div>
     <div class="opportunities mx-auto w-[800px]">
       <div class="header-row">
@@ -51,6 +58,12 @@ import { format } from 'v-money3';
 import { useModal } from 'vue-final-modal'
 import AddBuyersphereModal from '@/components/AddBuyersphereModal'
 
+
+const { featureFlags } = useAppConfig()
+if (!featureFlags.salesforce) {
+  await navigateTo('/')
+}
+
 const moneyConfig = {
   precision: 0,
   prefix: '',
@@ -67,7 +80,7 @@ function updateSearch(val) {
 
 const query = computed(() => ({ name: search.value }))
 const { apiFetch } = useNuxtApp()
-const { data: opportunities, refresh } = await apiFetch('/v0.1/salesforce/opportunities', { 
+const { data: opportunities, refresh, error } = await apiFetch('/v0.1/salesforce/opportunities', { 
   query
 })
 
@@ -93,6 +106,14 @@ function createBuyersphere(oppty) {
 </script>
 
 <style lang="postcss" scoped>
+.login-box {
+  @apply border border-gray-light rounded-md p-1;
+
+  &.need-to-login {
+    @apply border-0 bg-teal-primary text-white;
+  }
+}
+
 .opportunities {
   @apply grid;
   grid-template-columns: 1fr 1fr auto 140px;

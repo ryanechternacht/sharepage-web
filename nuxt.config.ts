@@ -19,15 +19,6 @@ export default defineNuxtConfig({
     transpile: ["@vuepic/vue-datepicker"],
   },
 
-  runtimeConfig: {
-    public: {
-      // set in .env
-      stytchBaseUrl: '',
-      stytchPublicToken: '',
-      stytchRedirectUrl: '',
-    }
-  },
-
   dayjs: {
     plugins: ['isSameOrAfter', 'duration', 'advancedFormat', 'utc']
   },
