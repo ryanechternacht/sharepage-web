@@ -8,6 +8,6 @@ export default defineAppConfig({
     id: 3326826010,
   },
   featureFlags: {
-    salesforce: false,
+    salesforce: true,
   },
 })
