@@ -1,3 +1,7 @@
+<template>
+  <div>This shouldn't be seen!</div>
+</template>
+
 <script setup>
 import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'

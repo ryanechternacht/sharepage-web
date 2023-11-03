@@ -11,6 +11,10 @@
 
       <div class="flex-grow" />
 
+      <div class="gray-italic">{{ pending ? "Loading" : "" }}</div>
+
+      <div class="flex-grow" />
+
       <input id="onlyMine"
         type="checkbox"
         v-model="onlyMine">
@@ -98,7 +102,7 @@ const query = computed(() => {
   return val
 })
 const { apiFetch } = useNuxtApp()
-const { data: opportunities, refresh, error } = await apiFetch('/v0.1/salesforce/opportunities', { 
+const { data: opportunities, refresh, error, pending } = await apiFetch('/v0.1/salesforce/opportunities', { 
   query,
 })
 
