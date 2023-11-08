@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-button"
+  <div class="bs-button center-xy"
     :class="[{ big }, colorClasses]">
     <slot />
   </div>

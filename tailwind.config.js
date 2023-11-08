@@ -14,7 +14,7 @@ module.exports = {
         primary: '#0A2960',
         jewel: '#0C3F89',
         bright: '#205BC3',
-        lpastelight: '#c7dbf9',
+        pastel: '#c7dbf9',
         background: '#e7ebfd',
       },
       black: '#040404',

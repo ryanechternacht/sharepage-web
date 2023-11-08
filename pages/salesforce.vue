@@ -24,43 +24,32 @@
         v-debounce:500ms="updateSearch"
         placeholder="Search Opportunity Name">
     </div>
-    <div class="opportunities mx-auto w-[800px]">
-      <div class="header-row">
-        <div class="header-cell">Account Name</div>
-        <div class="header-cell">Opportunity Name</div>
-        <div class="header-cell">Owner</div>
-        <div class="header-cell">Amount</div>
-        <div class="header-cell"></div>
-      </div>
-      <div v-for="oppty in opportunities"
-        class="grid-row">
-        <div class="grid-cell">
-          <div class="flex flex-col items-start">
-            <div class="font-bold">{{ oppty.accountName }}</div>
-            <div class="tag gray-italic">{{ oppty.accountId }}</div>
+
+    <div class="mx-auto w-[800px] flex flex-col gap-2">
+      <div v-for="g in oppsGrouped"
+        class="border border-gray-light rounded-md p-4 border-l-[10px]">
+        <div class="flex flex-row items-center gap-5 mb-3">
+          <img :src="g.logo" class="w-[1.5rem] max-h-6">
+          <h3 class="w-[15rem] truncate">{{ g.accountName }}</h3>
+          <!-- TODO wrong owner? -->
+          <Tag width="8.875rem" height="24px">{{ g.opportunities[0].ownerName }}</Tag>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div v-for="o in g.opportunities"
+            class="flex flex-row ml-10 gap-4">
+            <div>{{ o.buyersphereId ? "🪐" : "⭐️" }}</div>
+            <div class="w-[15rem] truncate">{{ o.name }}</div>
+            <Tag color="blue" width="5rem">{{ formatDate(o.closeDate) }}</Tag>
+            <Tag color="teal" width="3rem">{{ format(o.amount / 1000, thousands) }}</Tag>
+            <!-- <Tag color="yellow">DIVISON?</Tag> -->
+            <div class="ml-auto">
+              <BsButton v-if="o.buyersphereId"
+                class="w-[4.25rem]">View</BsButton>
+              <BsButton v-else
+                class="w-[4.25rem]">+ Create</BsButton>
+            </div>
           </div>
-        </div>
-        <div class="grid-cell">
-          <div class="flex flex-col items-start">
-            <div class="font-bold">{{ oppty.name }}</div>
-            <div class="tag gray-italic">{{ oppty.id }}</div>
-          </div>
-        </div>
-        <div class="grid-cell">
-          <div class="font-bold">{{ oppty.ownerName }}</div>
-        </div>
-        <div class="grid-cell">
-          <div class="font-bold">${{ format(oppty.amount, moneyConfig) }}</div>
-        </div>
-        <div class="grid-cell">
-          <NuxtLink v-if="oppty.buyersphereId" 
-            :to="`/buyersphere/${oppty.buyersphereId}`"
-            class="italic underline text-teal-primary">
-            Go To Buyersphere
-          </NuxtLink>
-          <BsButton v-else class="hidden create-button"
-            color="teal"
-            @click="createBuyersphere(oppty)">Create Buyershere</BsButton>
         </div>
       </div>
     </div>
@@ -71,6 +60,9 @@
 import { format } from 'v-money3';
 import { useModal } from 'vue-final-modal'
 import AddBuyersphereModal from '@/components/AddBuyersphereModal'
+import lodash_pkg from 'lodash';
+const { groupBy, map } = lodash_pkg;
+
 
 
 const { featureFlags } = useAppConfig()
@@ -78,12 +70,17 @@ if (!featureFlags.salesforce) {
   await navigateTo('/')
 }
 
-const moneyConfig = {
+const thousands = {
   precision: 0,
-  prefix: '',
+  prefix: '$',
   disableNegative: true,
   thousands: ',',
-  suffix: ''
+  suffix: 'k'
+}
+
+const dayjs = useDayjs()
+function formatDate(date) {
+  return dayjs(date).format('MMM D YYYY')
 }
 
 const search = ref('')
@@ -94,7 +91,7 @@ function updateSearch(val) {
 
 const onlyMine = ref(true)
 
-const query = computed(() => { 
+const query = computed(() => {
   const val = { name: search.value } 
   if (onlyMine.value) {
     val['only-mine'] = true
@@ -105,6 +102,21 @@ const { apiFetch } = useNuxtApp()
 const { data: opportunities, refresh, error, pending } = await apiFetch('/v0.1/salesforce/opportunities', { 
   query,
 })
+
+const oppsGrouped = computed(() =>
+  map(
+    groupBy(
+      opportunities.value, 
+      'accountId'
+    ),
+    (v, k) => ({
+      accountId: k,
+      accountName: v[0].accountName,
+      logo: v[0].logo,
+      opportunities: v,
+    })
+  )
+)
 
 const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
   component: AddBuyersphereModal,
