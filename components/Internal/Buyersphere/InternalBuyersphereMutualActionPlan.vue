@@ -150,7 +150,7 @@ function editItem(item) {
 }
 
 .group-header {
-  @apply p-1 flex flex-row gap-2 items-center mx-auto rounded-md mt-[-1.5rem]
+  @apply px-2 py-1 flex flex-row gap-2 items-center mx-auto rounded-md mt-[-1.5rem]
 }
 
 .white-box {

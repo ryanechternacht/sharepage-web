@@ -76,7 +76,8 @@ async function updateQuestion ({ id, resolved }) {
 
 <style lang="postcss" scoped>
 .collaboration-item {
-  @apply flex flex-row items-center gap-4 bg-white px-4 py-2 cursor-pointer;
+  @apply flex flex-row items-center gap-4 bg-white px-4 py-2 cursor-pointer
+    hover:shadow-md;
 
   &:hover .resolve-button{
     @apply block;
