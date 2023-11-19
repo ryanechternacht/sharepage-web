@@ -51,8 +51,6 @@
 </template>
 
 <script setup>
-import lodash_pkg from 'lodash';
-const { cloneDeep } = lodash_pkg;
 import { usePricingStore } from '@/stores/pricing'
 import { storeToRefs } from 'pinia';
 import { format } from 'v-money3';
