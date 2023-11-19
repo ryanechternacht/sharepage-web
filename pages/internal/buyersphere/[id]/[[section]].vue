@@ -1,6 +1,7 @@
 <template>
   <div class="page-layout">
-    <div class="page-top">
+    <div class="page-top"
+      :class="{ 'grayscale-top': !isActive }">
       <TopNav class="col-span-2"/>
       <div class="flex flex-col gap-4 pl-8 pb-5">
         <div class="flex flex-row items-center gap-2">
@@ -27,11 +28,25 @@
         </div>
       </div>
       <div class="flex flex-col items-end mr-8 mb-4">
-        <div class="tag text-gray-mid">By {{ formatDate(buyersphere.decisionDate) }}</div>
+        <div class="tag text-gray-mid">By {{ formatDate(nextStageDate) }}</div>
         <h3>Current Stage: {{ capitalize(buyersphere.currentStage) }}</h3>
         <div class="mt-2 flex flex-row gap-4">
-          <Tag2 color="teal" :use-dot="true">Next Stage</Tag2>
-          <Tag2 color="orange" :use-dot="true">Put on Hold</Tag2>
+          <template v-if="buyersphere.status === 'active'">
+            <Tag2 color="teal" v-if="buyersphere.currentStage != 'adoption'"
+              use-dot
+              button
+              @click="advanceStage">Next Stage</Tag2>
+            <Tag2 color="orange" 
+              use-dot
+              button
+              @click="putOnHold">Put on Hold</Tag2>
+          </template>
+          <Tag2 v-else
+            color="teal"
+            use-dot
+            button
+            class="reactivate-button"
+            @click="reactiatve">Reactivate</Tag2>
         </div>
       </div>
     </div>
@@ -87,73 +102,22 @@ const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [buyersphere, conversations, organization] = await Promise.all([
+const [buyersphere, organization] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
 ])
+
+const isActive = computed(() => buyersphere.status === 'active')
 
 const dayjs = useDayjs()
 function formatDate(date) {
   return dayjs(date).format('MMMM Do')
 }
-
-const completedItemsGrouped = computed(() => 
-  orderBy(
-    map(
-      groupBy(
-        filter(conversations, c => c.resolved),
-        'dueDate'
-      ),
-      (v, k) => { return { date: k, items: v} }
-    ),
-    ['date'],
-    ['desc']
-  )
-)
-
-var nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
-
-const activeItemsGrouped = computed(() => 
-  orderBy(
-    map(
-      groupBy(
-        filter(conversations, c => !c.resolved && new Date(c.dueDate) < nextWeek),
-        'dueDate'
-      ),
-      (v, k) => { return { date: k, items: v} }
-    ),
-    ['date'],
-    ['asc']
-  )
-)
-
-const upcomingItemsGrouped = computed(() => 
-  orderBy(
-    map(
-      groupBy(
-        filter(conversations, c => !c.resolved && new Date(c.dueDate) >= nextWeek),
-        'dueDate'
-      ),
-      (v, k) => { return { date: k, items: v} }
-    ),
-    ['date'],
-    ['asc']
-  )
-)
-
-function getGroupCount(group) {
-  return reduce(group, (acc, { items }) => acc + items.length, 0) || "-";
-}
-
-const completedItemCount = computed(() => getGroupCount(completedItemsGrouped.value))
-const activeItemCount = computed(() => getGroupCount(activeItemsGrouped.value))
-const upcomingItemsCount = computed(() => getGroupCount(upcomingItemsGrouped.value))
 
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'introduction')
@@ -162,6 +126,47 @@ function makeInternalBuyersphereLink(section) {
   return section === 'introduction'
     ? `/internal/buyersphere/${route.params.id}`
     : `/internal/buyersphere/${route.params.id}/${section}`
+}
+
+const nextStageDate = computed(
+  () => ({
+    'qualification': buyersphere.qualificationDate,
+    'evaluation': buyersphere.evaluationDate,
+    'decision': buyersphere.decisionDate,
+  }[buyersphere.currentStage]))
+
+function advanceStage() {
+  const nextStage = {
+    'qualification': 'evaluation',
+    'evaluation': 'decision',
+    'decision': 'adoption'
+  }[buyersphere.currentStage]
+
+  const answer = confirm(`Are you sure you'd like to proceed to the ${capitalize(nextStage)} stage?`)
+
+  if (answer) {
+    buyersphereStore.advanceStage({ buyersphereId, stage: nextStage})
+  }
+}
+
+function updateStage(stage) {
+  const answer = confirm(``)
+}
+
+function putOnHold() {
+  const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
+
+  if (answer) {
+    buyersphereStore.saveStatus({ buyersphereId, status: "on-hold" })
+  }
+}
+
+function reactiatve() {
+  const answer = confirm(`Are you sure you want to reactive the buying process?`)
+  
+  if (answer) {
+    buyersphereStore.saveStatus({ buyersphereId, status: "active" })
+  }
 }
 </script>
 
@@ -182,6 +187,11 @@ function makeInternalBuyersphereLink(section) {
   background-image: url("/svg/logo-background.svg"), 
     linear-gradient(to right, #ecf9f8, #e7ebfd); /* teal-background, blue-background */
   grid-area: top;
+
+  &.grayscale-top {
+    background-image: url("/svg/logo-background.svg"), 
+      linear-gradient(to right, #e7e7e7, #f5f5f5); /* above colors, after a 100% grayscale */
+  }
 }
 
 .white-box {

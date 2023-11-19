@@ -1,7 +1,7 @@
 <template>
   <div 
     :style="{ width, height }"
-    :class="[bgColor]"
+    :class="[bgColor, { 'cursor-pointer': button }]"
     class="center-xy rounded-md px-2 py-[2px]">
     <div class="tag flex flex-row items-center" :class="[textColor]">
       <div v-if="useDot" 
@@ -15,9 +15,10 @@
 <script setup>
 const { color } = defineProps({ 
   color: { type: String, required: true }, 
-  width: String, 
+  button: Boolean,
   height: String,
-  useDot: Boolean
+  useDot: Boolean,
+  width: String, 
 })
 
 // This crap is because I couldn't get the tailwind purger to not purge these classes
