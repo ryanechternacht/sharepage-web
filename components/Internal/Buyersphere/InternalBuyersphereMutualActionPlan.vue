@@ -8,10 +8,12 @@
       </div>
       <template v-for="g in activeItemsGrouped">
         <div class="mx-auto tag gray-italic">{{ g.date }}</div>
-        <InternalCollaborationItem
+        <InternalBuyersphereMutualActionPlanItem
           v-for="i in g.items"
           :buyersphere-id="buyersphereId"
-          :item="i" />
+          :item="i"
+          :resolved-state-when-clicked="true"
+          @edit-item="editItem(i)" />
       </template>
     </div>
     <div class="item-group">
@@ -22,10 +24,12 @@
       </div>
       <template v-for="g in upcomingItemsGrouped">
         <div class="mx-auto tag gray-italic">{{ g.date }}</div>
-        <InternalCollaborationItem
+        <InternalBuyersphereMutualActionPlanItem
           v-for="i in g.items"
           :buyersphere-id="buyersphereId"
-          :item="i" />
+          :item="i"
+          :resolved-state-when-clicked="true"
+          @edit-item="editItem(i)" />
       </template>
     </div>
     <div class="item-group">
@@ -36,10 +40,12 @@
       </div>
       <template v-for="g in completedItemsGrouped">
         <div class="mx-auto tag gray-italic">{{ g.date }}</div>
-        <InternalCollaborationItem
+        <InternalBuyersphereMutualActionPlanItem
           v-for="i in g.items"
           :buyersphere-id="buyersphereId"
-          :item="i" />
+          :item="i"
+          :resolved-state-when-clicked="false"
+          @edit-item="editItem(i)" />
       </template>
     </div>
   </div>
@@ -50,7 +56,9 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { capitalize, concat, filter, find, groupBy, map, orderBy, reduce } = lodash_pkg;
+const { filter, groupBy, map, orderBy, reduce } = lodash_pkg;
+import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -119,6 +127,20 @@ const completedItemCount = computed(() => getGroupCount(completedItemsGrouped.va
 const activeItemCount = computed(() => getGroupCount(activeItemsGrouped.value))
 const upcomingItemsCount = computed(() => getGroupCount(upcomingItemsGrouped.value))
 
+const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
+  component: EditCollaborationItemModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeEditModal ()
+    }
+  }
+})
+
+function editItem(item) {
+  patchModalOptions({ attrs: { item }})
+  openEditModal()
+}
 </script>
 
 <style scoped lang="postcss">
