@@ -9,7 +9,7 @@
             size="medium"
             class="mr-2" />
           <h3 class="text-gray-darker">{{ buyersphere.buyer }}</h3>
-          <div class="white-box inline-flex text-[.625rem]">
+          <div class="white-box inline-flex">
             <img src="/svg/person.svg"> &nbsp;
             {{ buyersphere.buyerTeam.length }}
           </div>
@@ -20,7 +20,7 @@
             size="medium"
             class="mr-2" />
           <h3 class="text-gray-darker">{{ organization.name }}</h3>
-          <div class="white-box inline-flex text-[.625rem]">
+          <div class="white-box inline-flex">
             <img src="/svg/person.svg"> &nbsp;
             {{ buyersphere.sellerTeam.length }}
           </div>
@@ -50,43 +50,10 @@
         </div>
       </div>
     </div>
-    <div class="page-left">
-      <div class="p-2 flex flex-col gap-1 bg-gray-lightest border border-gray-lighter rounded-md">
-        <NuxtLink :to="makeInternalBuyersphereLink('map')"
-          class="page-link">🤔 &nbsp; MAP</NuxtLink>
-        <hr>
-        <NuxtLink :to="makeInternalBuyersphereLink('introduction')"
-          class="page-link">👋 &nbsp; Introduction</NuxtLink>
-        <hr>
-        <NuxtLink :to="makeInternalBuyersphereLink('personas')"
-          class="page-link">🥸 &nbsp; Personas</NuxtLink>
-        <NuxtLink :to="makeInternalBuyersphereLink('solution')"
-          class="page-link">🚀 &nbsp; Solution</NuxtLink>
-        <NuxtLink :to="makeInternalBuyersphereLink('features')"
-          class="page-link">🤖 &nbsp; Features</NuxtLink>
-        <NuxtLink v-if="buyersphere.showPricing"
-          :to="makeInternalBuyersphereLink('pricing')"
-          class="page-link">💵 &nbsp; Pricing</NuxtLink>
-        <hr>
-        <NuxtLink :to="makeInternalBuyersphereLink('notes')"
-          class="page-link">📒 &nbsp; Notes</NuxtLink>
-        <NuxtLink :to="makeInternalBuyersphereLink('resources')"
-          class="page-link">📓 &nbsp; Resources</NuxtLink>
-      </div>
-    </div>
-    <div class="page-center">
-      <InternalBuyersphereMutualActionPlan v-if="mainSection === 'map'" />
-      <BuyersphereOverview v-if="mainSection === 'introduction'" />
-      <InternalBuyerspherePersonas v-if="mainSection === 'personas'" />
-      <InternalBuyersphereSolution v-if="mainSection === 'solution'" />
-      <BuyersphereFeatures v-if="mainSection === 'features'" />
-      <BuyerspherePricing v-if="mainSection === 'pricing'"
-        :buyersphere="buyersphere" />
-      <BuyersphereNotes v-if="mainSection === 'notes'"
-        :notes="buyersphere.notes" />
-      <BuyersphereResources v-if="mainSection === 'resources'"
-        :resources="buyersphere.resources" />
-    </div>
+    <!-- These return both the left and center columns -->
+    <InternalBuyersphereMap v-if="mainSection === 'map'" />
+    <InternalBuyersphereProfile v-else-if="mainSection === 'intro'" />
+
     <div class="page-right">right</div>
   </div>
 </template>
@@ -120,13 +87,7 @@ function formatDate(date) {
 }
 
 const mainSection = computed(
-  () => route.params.section ? route.params.section : 'introduction')
-
-function makeInternalBuyersphereLink(section) {
-  return section === 'introduction'
-    ? `/internal/buyersphere/${route.params.id}`
-    : `/internal/buyersphere/${route.params.id}/${section}`
-}
+  () => route.params.section ? route.params.section : 'map')
 
 const nextStageDate = computed(
   () => ({
@@ -198,25 +159,8 @@ function reactiatve() {
   @apply p-1 px-2 bg-white rounded-md text-gray-mid;
 }
 
-.page-left {
-  @apply px-6;
-  grid-area: left;
-
-  hr {
-    @apply text-gray-lighter;
-  }
-}
-
-.page-link {
-  @apply py-1 cursor-pointer;
-
-  &:hover {
-    @apply bg-gray-lighter rounded-md;
-  }
-}
-
-.page-center {
-  grid-area: center;
+.page-dynamic {
+  grid-area: dynamic;
 }
 
 .page-right {
