@@ -25,7 +25,7 @@
           <Tag color="gray" 
             height=".75rem" 
             width="5rem">
-            {{ formatDate(note.createdat) }}
+            {{ formatDate(note.createdAt) }}
           </Tag>
         </div>
       </div>

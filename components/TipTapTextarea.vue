@@ -6,7 +6,7 @@
        to the .ProseMirror -->
   <editor-content 
     :editor="editor"
-    class="editor p-2 body gray border border-gray-lighter rounded-md" />
+    class="editor p-2 body bg-white gray border border-gray-lighter rounded-md" />
 </template>
 
 <script setup>
