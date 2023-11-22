@@ -33,7 +33,7 @@
     </div>
   </div>
   
-  <div class="page-center" v-scroll-spy>
+  <div class="page-center mb-20" v-scroll-spy>
     <div id="introduction"
       class="item-group" 
     >
@@ -113,19 +113,16 @@
       <div class="gray-italic mb-1">Which pricing model best fits your needs?</div>
       <div class="flex flex-col gap-4 mb-4">
         <div v-for="pt in pricingTiers" 
-          class="four-tile-grid">
-          <Tag2 color="blue" class="mx-auto">{{ pt.title }}</Tag2>
+          class="pricing-tier"
+          :class="{'selected-pricing-tier': pt.id === buyersphere.pricingTierId}"
+          @click="updatePricingTierId(pt.id)">
+          <Tag2 :color="pt.id === buyersphere.pricingTierId ? 'dark-blue': 'blue'" 
+            class="mx-auto">{{ pt.title }}</Tag2>
           <h3>Best for {{ pt.bestFor }}</h3>
           <h3 class="mx-auto">
             {{ pt.periodType === 'other'
               ? pt.amountOther
               : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
-            <!-- <div v-if="">
-              {{ }}
-            </div>
-            <div v-else>
-              ${{  }}/{{  }}
-            </div> -->
           </h3>
           <div class="gray inline-html" v-html="pt.description" />
         </div>
@@ -224,6 +221,18 @@ function formatDate(date) {
   return dayjs(date).format('MMMM Do')
 }
 
+// is this worth doing for snappier UX? (probably)
+const myFeatures = ref(buyersphere.featuresAnswer)
+
+function saveFeatureInterest (featureId, answer) {
+  myFeatures.value.interests[featureId] = answer
+  buyersphereStore.saveFeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })
+}
+
+function updatePricingTierId (tierId) {
+  buyersphereStore.savePricingTierId({ buyersphereId, pricingTierId: tierId })
+}
+
 // function makeInternalBuyersphereLink(section) {
 //   return section === 'map'
 //     ? `/internal/buyersphere/${route.params.id}`
@@ -314,5 +323,14 @@ hr {
   @apply px-6 py-4 bg-white border border-gray-lighter grid items-center gap-x-3 gap-y-1;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
+}
+
+.pricing-tier {
+  @apply four-tile-grid;
+  @apply hover:bg-gray-lightest cursor-pointer;
+
+  &.selected-pricing-tier {
+    @apply bg-blue-background;
+  }
 }
 </style>

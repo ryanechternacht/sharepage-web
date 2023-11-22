@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-const { color } = defineProps({ 
+const props = defineProps({ 
   color: { type: String, required: true }, 
   button: Boolean,
   height: String,
@@ -26,36 +26,39 @@ const bgColor = computed(() => {
   return {
     'teal': 'bg-teal-background',
     'blue': 'bg-blue-background',
+    'dark-blue': 'bg-blue-bright',
     'green': 'bg-green-background',
     'purple': 'bg-purple-background',
     'orange': 'bg-orange-background',
     'red': 'bg-red-background',
     'yellow': 'bg-yellow-background'
-  }[color]
+  }[props.color]
 })
 
 const dotColor = computed(() => {
   return {
     'teal': 'bg-teal-bright',
     'blue': 'bg-blue-bright',
+    'dark-blue': 'bg-white',
     'green': 'bg-green-bright',
     'purple': 'bg-purple-bright',
     'orange': 'bg-orange-bright',
     'red': 'bg-red-bright',
     'yellow': 'bg-yellow-bright'
-  }[color]
+  }[props.color]
 })
 
 const textColor = computed(() => {
   return {
     'teal': 'text-teal-bright',
     'blue': 'text-blue-bright',
+    'dark-blue': 'text-white',
     'green': 'text-green-bright',
     'purple': 'text-purple-bright',
     'orange': 'text-orange-jewel', // INTENTIONAL
     'red': 'text-red-bright',
     'yellow': 'text-yellow-bright'
-  }[color]
+  }[props.color]
 })
 </script>
 
