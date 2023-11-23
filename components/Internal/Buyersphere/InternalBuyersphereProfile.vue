@@ -6,53 +6,46 @@
 
       <!-- The nested div is so scrollspy works correclty with the hrs -->
       <div>
-        <div @click="navigateTo('#introduction')"
-          class="page-link">👋 &nbsp; Introduction</div>
-      </div>
-      <div>
         <hr>
-        <div @click="navigateTo('#decision-criteria')"
-        class="page-link">💊 &nbsp; Decision Criteria</div>
+        <div @click="navigateTo('#objectives')"
+        class="page-link">🏆 &nbsp; Objectives</div>
       </div>
       <div>
-        <div @click="navigateTo('#solution-scope')"
-          class="page-link">🎯 &nbsp; Solution Scope</div>
+        <div @click="navigateTo('#milestones')"
+          class="page-link">🏎️ &nbsp; Milestones</div>
+      </div>
+      <div>
+        <div @click="navigateTo('#features')"
+          class="page-link">🤖 &nbsp; Features</div>
       </div>
       <div>
         <div @click="navigateTo('#constraints')"
           class="page-link">🧩 &nbsp; Constraints</div>
       </div>
       <div>
+        <div @click="navigateTo('#pricing')"
+          class="page-link">💵 &nbsp; Pricing</div>
+      </div>
+      <div>
+        <div @click="navigateTo('#pricing')"
+          class="page-link">🎉 &nbsp; Success Criteria</div>
+      </div>
+      <!-- <div>
         <div @click="navigateTo('#notes')"
           class="page-link">📒 &nbsp; Notes</div>
       </div>
       <div>
         <div @click="navigateTo('#resources')"
           class="page-link">📓 &nbsp; Resources</div>
-      </div>
+      </div> -->
     </div>
   </div>
   
   <div class="page-center mb-20" v-scroll-spy>
-    <div id="introduction"
-      class="item-group" 
-    >
-      <div class="group-header">👋 &nbsp; Introduction</div>
-      <div class="section">
-        <h3>🦄 A Message from Mave at Johnson & Johnson</h3>
-        <div class="inline-html bg-white" v-html="buyersphere.introMessage" />
-      </div>
-    </div>
-    <div id="decision-criteria"
-      class="item-group" 
-    >
-      <div class="group-header">💊 &nbsp; Decision Criteria</div>
-      <div class="gray-italic">Describe the pain points you're looking to resolve</div>
-      <TipTapTextarea v-model="problemToSolve"
-        placeholder="Pain points to resolve"
-        class="w-full mb-4" />
-
-      <div class="gray-italic mb-1">The big problems we solve</div>
+    <div id="objectives"
+      class="item-group">
+      <div class="group-header">🏆 &nbsp; Objectives</div>
+      <h4>These are the core objectives we solve</h4>
       <div class="items-list">
         <template v-for="pp in painPoints"
           class="items-list-row">
@@ -62,18 +55,23 @@
           <div class="inline-html" v-html="pp.description" />
         </template>
       </div>
-    </div>
-    
-    <div id="solution-scope"
-      class="item-group" 
-    >
-      <div class="group-header">🎯 &nbsp; Solution Scope</div>
-      <div class="gray-italic">What are your goals?</div>
+
+      <h4>Which ones are most important to you? Are there any not covered above?</h4>
       <TipTapTextarea v-model="problemToSolve"
         placeholder="Pain points to resolve"
         class="w-full mb-4" />
+    </div>
 
-      <div class="gray-italic mb-1">Let us know what features are important to you</div>
+    <div id="milestones"
+      class="item-group">
+      <div class="group-header">🏎️ &nbsp; Milestones</div>
+      <h4>What are the key milestone dates:</h4>
+      <div>TODO</div>
+    </div>
+    
+    <div id="features"
+      class="item-group">
+      <h4>Let us know what features are important to you</h4>
       <div class="flex flex-col gap-4">
         <div v-for="(f, i) in features" 
           class="four-tile-grid">
@@ -102,15 +100,18 @@
     </div>
    
     <div id="constraints"
-      class="item-group" 
-    >
+      class="item-group">
       <div class="group-header">🧩 &nbsp; Constraints</div>
-      <div class="gray-italic">What are your constraints?</div>
+      <h4>What are your constraints?</h4>
       <TipTapTextarea v-model="problemToSolve"
         placeholder="Key constraints to buying"
         class="w-full mb-4" />
+    </div>
 
-      <div class="gray-italic mb-1">Which pricing model best fits your needs?</div>
+    <div id="pricing"
+      class="item-group">
+      <div class="group-header">💵 &nbsp; Pricing</div>
+      <h4>Which pricing model best fits your needs?</h4>
       <div class="flex flex-col gap-4 mb-4">
         <div v-for="pt in pricingTiers" 
           class="pricing-tier"
@@ -127,15 +128,20 @@
           <div class="gray inline-html" v-html="pt.description" />
         </div>
       </div>
-      <div class="gray-italic">What other tools are you using / want to keep using?</div>
+    </div>
+
+    <div id="success-criteria"
+      class="item-group">
+      <div class="group-header">🎉 &nbsp; Success Criteria</div>
+
+      <h4>Select any criteria that are relevant for you</h4>
       <TipTapTextarea v-model="problemToSolve"
-        placeholder="Other tools we need to be aware of"
-        class="w-full" />
+        placeholder="Pain points to resolve"
+        class="w-full mb-4" />
     </div>
     
-    <div id="notes"
-      class="item-group" 
-    >
+    <!-- <div id="notes"
+      class="item-group">
       <div class="group-header">📒 &nbsp; Notes</div>
 
       <div class="document-list">
@@ -163,7 +169,7 @@
           <div class="gray-italic text-right">{{ formatDate(r.createdAt) }}</div>
         </template>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -270,19 +276,19 @@ hr {
 .item-group {
   @apply p-8 bg-gray-lightest border border-gray-lighter rounded-md
     flex flex-col mt-4;
+
+  h4 {
+    @apply mb-1 mt-4 px-8 w-full text-center;
+  }
 }
 
 .group-header {
   @apply p-2 flex flex-row gap-2 items-center mx-auto rounded-md 
-    mt-[-2.875rem] /*-46px*/ mb-5 bg-white border border-gray-lighter;
+    mt-[-2.875rem] /*-46px*/ mb-1 bg-white border border-gray-lighter;
 }
 
 .section {
   @apply p-4 bg-white border border-gray-lighter;
-
-  h3 {
-    @apply mb-1;
-  }
 }
 
 .items-list {

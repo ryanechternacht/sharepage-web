@@ -21,6 +21,11 @@
     /* line-height: 1.1875rem; 19px */
   }
 
+  h4, .h4 {
+    @apply font-sans text-black italic;
+    font-size: .75rem; /* 12px */
+  }
+
   p, div, span, .body {
     @apply font-sans font-medium text-gray-dark;
     font-size: .75rem; /* 12px */
