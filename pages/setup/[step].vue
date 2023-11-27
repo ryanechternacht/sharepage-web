@@ -49,7 +49,7 @@
           :class="{'step-box-complete': hasUsers}">
           Users
         </NuxtLink>
-        <div class="w-full border border-gray-dark absolute" />
+        <div class="w-full border border-gray-body absolute" />
       </div>
     </div>
 
@@ -125,7 +125,7 @@ const hasUsers = users.length > 1
 
 <style lang="postcss" scoped>
 .step-box {
-  @apply w-[6rem] h-[3.75rem] rounded-md bg-gray-lighter z-[1]
+  @apply w-[6rem] h-[3.75rem] rounded-md bg-cream-highlight z-[1]
     center-xy text-center p-1;
   @apply h3;
 }

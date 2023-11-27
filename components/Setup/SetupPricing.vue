@@ -61,7 +61,7 @@
       </div>
       <SubmitButton
         class="mt-2 w-[10rem] h-[2.5rem]"
-        :class="{'bg-gray-light': pricingTiers.length >= 4}"
+        :class="{'bg-gray-hover-active': pricingTiers.length >= 4}"
         :disabled="pricingTiers.length >= 4"
         :submission-state="submissionState" 
         :ready-text="pricingTiers.length < 4 ? 'Add Pricing Tier' : 'Only 4 Allowed'"

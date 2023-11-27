@@ -23,8 +23,8 @@ const clicked = () => {
 // and the classes were getting purged by tailwind
 const variantClass = computed(
   () => ({
-    'gray': 'hover:bg-gray-lighter hover:text-blue-jewel',
-    '': 'hover:bg-gray-lighter hover:text-white'
+    'gray': 'hover:bg-cream-highlight hover:text-green-primary',
+    '': 'hover:bg-cream-highlight hover:text-white'
   }[props.variant ?? ''])
 )
 
@@ -32,8 +32,8 @@ const selectedClass = computed(
   () => {
     if (props.selected) {
       return {
-        'gray': 'bg-gray-lighter',
-        '': 'bg-gray-lighter'
+        'gray': 'bg-cream-highlight',
+        '': 'bg-cream-highlight'
       }[props.variant ?? '']
     } else {
       return ''

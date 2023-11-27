@@ -14,14 +14,12 @@ const { color } = defineProps({ color: String, width: String, height: String })
 
 const bgColor = computed(() => {
   return {
-    'teal': 'bg-teal-pastel',
-    'blue': 'bg-blue-pastel',
-    'green': 'bg-green-pastel',
-    'purple': 'bg-purple-pastel',
-    'orange': 'bg-orange-pastel',
-    'red': 'bg-red-pastel',
-    'gray': 'bg-gray-lighter',
-    'yellow': 'bg-yellow-pastel'
+    'teal': 'bg-green-primary',
+    'blue': 'bg-blue-primary',
+    'purple': 'bg-purple-secondary',
+    'orange': 'bg-orange-secondary',
+    'red': 'bg-red-secondary',
+    'gray': 'bg-cream-highlight',
   }[color ?? 'gray']
 })
 </script>

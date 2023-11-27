@@ -1,7 +1,7 @@
 <template>
   <div class="collaboration-item"
     @click="emit('edit-item')">
-    <div class="p-0.5 text-base border border-gray-lighter rounded-md">
+    <div class="p-0.5 text-base border border-cream-highlight rounded-md">
       {{ icon }}
     </div>
     <div class="flex-grow inline-html" v-html="item.message"/>
@@ -93,7 +93,7 @@ const emit = defineEmits(['edit-item'])
 }
 
 .resolve-button {
-  @apply w-6 px-1 py-2 border border-gray-lighter rounded-md cursor-pointer;
+  @apply w-6 px-1 py-2 border border-cream-highlight rounded-md cursor-pointer;
 }
 
 .avatar {

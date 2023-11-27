@@ -8,7 +8,7 @@
           <Logo :src="buyersphere.buyerLogo"
             size="medium"
             class="mr-2" />
-          <h3 class="text-gray-darker">{{ buyersphere.buyer }}</h3>
+          <h3 class="text-gray-headline">{{ buyersphere.buyer }}</h3>
           <div class="white-box inline-flex">
             <img src="/svg/person.svg"> &nbsp;
             {{ buyersphere.buyerTeam.length }}
@@ -19,7 +19,7 @@
           <Logo :src="organization.logo"
             size="medium"
             class="mr-2" />
-          <h3 class="text-gray-darker">{{ organization.name }}</h3>
+          <h3 class="text-gray-headline">{{ organization.name }}</h3>
           <div class="white-box inline-flex">
             <img src="/svg/person.svg"> &nbsp;
             {{ buyersphere.sellerTeam.length }}
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="flex flex-col items-end mr-8 mb-4">
-        <div class="tag text-gray-mid">By {{ formatDate(nextStageDate) }}</div>
+        <div class="tag text-gray-subtext">By {{ formatDate(nextStageDate) }}</div>
         <h3>Current Stage: {{ capitalize(buyersphere.currentStage) }}</h3>
         <div class="mt-2 flex flex-row gap-4">
           <template v-if="buyersphere.status === 'active'">
@@ -142,11 +142,11 @@ function reactiatve() {
 }
 
 .page-top {
-  /* @apply bg-gradient-to-r from-teal-background to-blue-background; */
+  /* @apply bg-gradient-to-r from-green-background to-blue-background; */
   @apply bg-center bg-no-repeat grid grid-cols-2 gap-y-4;
   grid-template-rows: auto auto;
   background-image: url("/svg/logo-background.svg"), 
-    linear-gradient(to right, #ecf9f8, #e7ebfd); /* teal-background, blue-background */
+    linear-gradient(to right, #ecf9f8, #e7ebfd); /* green-background, blue-background */
   grid-area: top;
 
   &.grayscale-top {
@@ -156,7 +156,7 @@ function reactiatve() {
 }
 
 .white-box {
-  @apply p-1 px-2 bg-white rounded-md text-gray-mid;
+  @apply p-1 px-2 bg-white rounded-md text-gray-subtext;
 }
 
 .page-dynamic {

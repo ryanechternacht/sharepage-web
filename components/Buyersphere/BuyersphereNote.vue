@@ -46,7 +46,7 @@
         class="note-bottom"/>
       <div v-else-if="viewing"
         v-html="note.body" 
-        class="inline-html note-bottom rounded-md bg-gray-lighter p-1" />
+        class="inline-html note-bottom rounded-md bg-cream-highlight p-1" />
     </div>
 
     <!-- TODO get these to show/hide on hover -->
@@ -109,7 +109,7 @@ function deleteNote () {
 
 <style lang="postcss" scoped>
 .note {
-  @apply grid border border-gray-light rounded-md p-2;
+  @apply grid border border-gray-hover-active rounded-md p-2;
   grid-template-columns: auto 1fr auto;
   grid-template-areas:
     "icon mid-higher view-button"

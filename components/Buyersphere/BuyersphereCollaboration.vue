@@ -42,7 +42,7 @@
       </div>
       <div class="collaboration-box">
         <h3 class="self-center">🔥 Active</h3>
-        <div class="py-1 px-4 border border-gray-lighter rounded-md mx-auto mt-[-.5rem]">Next 7 days</div>
+        <div class="py-1 px-4 border border-cream-highlight rounded-md mx-auto mt-[-.5rem]">Next 7 days</div>
 
         <template v-for="g in activeItemsGrouped">
           <div class="date-header ">{{ formatDate(g.date) }}</div>
@@ -231,7 +231,7 @@ function formatDate(date) {
 
 <style lang="postcss" scoped>
 .collaboration-box {
-  @apply flex flex-col w-full border border-gray-lighter rounded-md
+  @apply flex flex-col w-full border border-cream-highlight rounded-md
     px-4 py-2 gap-2
 }
 

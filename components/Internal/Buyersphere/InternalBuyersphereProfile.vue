@@ -1,45 +1,52 @@
 <template>
   <div class="page-left">
-    <div class="sticky top-[2rem] p-2 flex flex-col gap-1 bg-gray-lightest border border-gray-lighter rounded-md"
-      v-scroll-spy-active
-      v-scroll-spy-link>
+    <div class="sticky top-[2rem] p-2 flex flex-col gap-1">
+      <div>Timeline</div>
+      <div>People</div>
+      <div>Decision Criteria</div>
+      <div class="flex flex-col gap-1"
+        v-scroll-spy-active
+        v-scroll-spy-link>
 
-      <!-- The nested div is so scrollspy works correclty with the hrs -->
-      <div>
-        <hr>
-        <div @click="navigateTo('#objectives')"
-        class="page-link">🏆 &nbsp; Objectives</div>
+        <!-- The nested div is so scrollspy works correclty with the hrs -->
+        <div>
+          <hr>
+          <div @click="navigateTo('#objectives')"
+          class="page-link">🏆 &nbsp; Objectives</div>
+        </div>
+        <div>
+          <div @click="navigateTo('#milestones')"
+            class="page-link">🏎️ &nbsp; Milestones</div>
+        </div>
+        <div>
+          <div @click="navigateTo('#features')"
+            class="page-link">🤖 &nbsp; Features</div>
+        </div>
+        <div>
+          <div @click="navigateTo('#constraints')"
+            class="page-link">🧩 &nbsp; Constraints</div>
+        </div>
+        <div>
+          <div @click="navigateTo('#pricing')"
+            class="page-link">💵 &nbsp; Pricing</div>
+        </div>
+        <div>
+          <div @click="navigateTo('#pricing')"
+            class="page-link">🎉 &nbsp; Success Criteria</div>
+        </div>
+        <!-- <div>
+          <div @click="navigateTo('#notes')"
+            class="page-link">📒 &nbsp; Notes</div>
+        </div>
+        <div>
+          <div @click="navigateTo('#resources')"
+            class="page-link">📓 &nbsp; Resources</div>
+        </div> -->
       </div>
-      <div>
-        <div @click="navigateTo('#milestones')"
-          class="page-link">🏎️ &nbsp; Milestones</div>
-      </div>
-      <div>
-        <div @click="navigateTo('#features')"
-          class="page-link">🤖 &nbsp; Features</div>
-      </div>
-      <div>
-        <div @click="navigateTo('#constraints')"
-          class="page-link">🧩 &nbsp; Constraints</div>
-      </div>
-      <div>
-        <div @click="navigateTo('#pricing')"
-          class="page-link">💵 &nbsp; Pricing</div>
-      </div>
-      <div>
-        <div @click="navigateTo('#pricing')"
-          class="page-link">🎉 &nbsp; Success Criteria</div>
-      </div>
-      <!-- <div>
-        <div @click="navigateTo('#notes')"
-          class="page-link">📒 &nbsp; Notes</div>
-      </div>
-      <div>
-        <div @click="navigateTo('#resources')"
-          class="page-link">📓 &nbsp; Resources</div>
-      </div> -->
+      <div>Resources</div>
     </div>
   </div>
+
   
   <div class="page-center mb-20" v-scroll-spy>
     <div id="objectives"
@@ -66,12 +73,36 @@
       class="item-group">
       <div class="group-header">🏎️ &nbsp; Milestones</div>
       <h4>What are the key milestone dates:</h4>
-      <div>TODO</div>
+      <div class="document-list">
+        <div>
+          <Tag2 color="blue">{{ dealTiming?.qualifiedDays }} days</Tag2>
+        </div>
+        <div>Qualification</div>
+        <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
+
+        <div>
+          <Tag2 color="blue">{{ dealTiming?.evaluationDays }} days</Tag2>
+        </div>
+        <div>Evaluation</div>
+        <div class="gray">By {{ formatDate(buyersphere.evaluationDate) }}</div>
+
+        <div>
+          <Tag2 color="blue">{{ dealTiming?.decisionDays }} days</Tag2>
+        </div>
+        <div>Decision</div>
+        <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
+
+        <div>
+          <Tag2 color="blue">{{ dealTiming?.adoptionDays }} days</Tag2>
+        </div>
+        <div>Adoption</div>
+        <div class="gray">By {{ formatDate(buyersphere.adoptionDate) }}</div>
+      </div>
     </div>
     
     <div id="features"
       class="item-group">
-      <h4>Let us know what features are important to you</h4>
+      <h4>Let us know which features are important to you</h4>
       <div class="flex flex-col gap-4">
         <div v-for="(f, i) in features" 
           class="four-tile-grid">
@@ -102,7 +133,7 @@
     <div id="constraints"
       class="item-group">
       <div class="group-header">🧩 &nbsp; Constraints</div>
-      <h4>What are your constraints?</h4>
+      <h4>Are there any constraints on your end we should know about?</h4>
       <TipTapTextarea v-model="problemToSolve"
         placeholder="Key constraints to buying"
         class="w-full mb-4" />
@@ -134,7 +165,7 @@
       class="item-group">
       <div class="group-header">🎉 &nbsp; Success Criteria</div>
 
-      <h4>Select any criteria that are relevant for you</h4>
+      <h4>How will we know if this product is right for you?</h4>
       <TipTapTextarea v-model="problemToSolve"
         placeholder="Pain points to resolve"
         class="w-full mb-4" />
@@ -179,8 +210,9 @@ import { usePainPointsStore } from '@/stores/pain-points'
 import { useFeaturesStore } from '@/stores/features'
 import { useResourcesStore } from '@/stores/resources'
 import { usePricingStore } from '@/stores/pricing'
+import { useDealTimingStore } from '@/stores/deal-timing'
 import { storeToRefs } from 'pinia'
-import { format } from 'v-money3';
+import { format } from 'v-money3'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -200,12 +232,16 @@ const { getResourcesCached } = storeToRefs(resourcesStore)
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
-const [buyersphere, painPoints, features, resources, { pricingTiers }] = await Promise.all([
+const dealTimingStore = useDealTimingStore()
+const { getDealTimingCached } = storeToRefs(dealTimingStore)
+
+const [buyersphere, painPoints, features, resources, { pricingTiers }, dealTiming] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getPainPointsCached.value(),
   getFeaturesCached.value(),
   getResourcesCached.value(),
   getPricingCached.value(),
+  getDealTimingCached.value(),
 ])
 
 const periodMap = {
@@ -253,7 +289,7 @@ function updatePricingTierId (tierId) {
 }
 
 hr {
-    @apply text-gray-lighter mt-1;
+    @apply text-cream-highlight mt-1;
   }
 
 .page-center {
@@ -265,16 +301,16 @@ hr {
   @apply py-1 cursor-pointer;
 
   &:hover {
-    @apply bg-gray-lighter rounded-md;
+    @apply bg-cream-highlight rounded-md;
   }
 }
 
 .active .page-link {
-  @apply bg-teal-primary rounded-md mx-[-.5rem] px-2 text-white;
+  @apply bg-green-primary rounded-md mx-[-.5rem] px-2 text-white;
 }
 
 .item-group {
-  @apply p-8 bg-gray-lightest border border-gray-lighter rounded-md
+  @apply p-8 bg-cream-background border border-cream-highlight rounded-md
     flex flex-col mt-4;
 
   h4 {
@@ -284,11 +320,11 @@ hr {
 
 .group-header {
   @apply p-2 flex flex-row gap-2 items-center mx-auto rounded-md 
-    mt-[-2.875rem] /*-46px*/ mb-1 bg-white border border-gray-lighter;
+    mt-[-2.875rem] /*-46px*/ mb-1 bg-white border border-cream-highlight;
 }
 
 .section {
-  @apply p-4 bg-white border border-gray-lighter;
+  @apply p-4 bg-white border border-cream-highlight;
 }
 
 .items-list {
@@ -296,7 +332,7 @@ hr {
   grid-template-columns: auto 1fr;
 
   > * {
-    @apply px-3 py-2 bg-white border-gray-lighter border-y;
+    @apply px-3 py-2 bg-white border-cream-highlight border-y;
   }
 
   > *:nth-child(2n + 1) {
@@ -313,7 +349,7 @@ hr {
   grid-template-columns: auto 1fr 150px;
 
   > * {
-    @apply px-3 py-2 bg-white border-gray-lighter border-y;
+    @apply px-3 py-2 bg-white border-cream-highlight border-y;
   }
 
   > *:nth-child(3n + 1) {
@@ -326,14 +362,14 @@ hr {
 }
 
 .four-tile-grid {
-  @apply px-6 py-4 bg-white border border-gray-lighter grid items-center gap-x-3 gap-y-1;
+  @apply px-6 py-4 bg-white border border-cream-highlight grid items-center gap-x-3 gap-y-1;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
 }
 
 .pricing-tier {
   @apply four-tile-grid;
-  @apply hover:bg-gray-lightest cursor-pointer;
+  @apply hover:bg-cream-background cursor-pointer;
 
   &.selected-pricing-tier {
     @apply bg-blue-background;

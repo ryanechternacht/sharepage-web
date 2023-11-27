@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col gap-6">
     <div class="item-group">
-      <div class="group-header bg-blue-pastel">
+      <div class="group-header bg-blue-primary">
         <img src="/svg/hourglass-blue.svg">
-        <span class="text-blue-bright">Active</span>
+        <span class="text-blue-primary">Active</span>
         <div class="white-box">{{ activeItemCount }}</div>
       </div>
       <template v-for="g in activeItemsGrouped">
@@ -17,9 +17,9 @@
       </template>
     </div>
     <div class="item-group">
-      <div class="group-header bg-yellow-pastel">
+      <div class="group-header">
         <img src="/svg/clock-yellow.svg" class="">
-        <span class="text-orange-jewel">Upcoming</span>
+        <span class="text-orange-secondary">Upcoming</span>
         <div class="white-box">{{ upcomingItemsCount }}</div>
       </div>
       <template v-for="g in upcomingItemsGrouped">
@@ -33,9 +33,9 @@
       </template>
     </div>
     <div class="item-group">
-      <div class="group-header bg-green-pastel">
+      <div class="group-header bg-green-background">
         <img src="/svg/checkmark-green.svg" class="">
-        <span class="text-teal-bright">Completed</span>
+        <span class="text-green-primary">Completed</span>
         <div class="white-box">{{ completedItemCount }}</div>
       </div>
       <template v-for="g in completedItemsGrouped">
@@ -145,7 +145,7 @@ function editItem(item) {
 
 <style scoped lang="postcss">
 .item-group {
-  @apply p-2 bg-gray-lightest border border-gray-lighter rounded-md
+  @apply p-2 bg-cream-background border border-cream-highlight rounded-md
     flex flex-col gap-2 mt-4;
 }
 
@@ -154,6 +154,6 @@ function editItem(item) {
 }
 
 .white-box {
-  @apply p-1 px-2 bg-white rounded-md text-gray-mid;
+  @apply p-1 px-2 bg-white rounded-md text-gray-subtext;
 }
 </style>

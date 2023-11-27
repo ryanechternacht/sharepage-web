@@ -42,7 +42,7 @@
       </div>
       <div v-else
         class="flex flex-col items-center rounded-md w-[6.5rem] h-full justify-between py-1 z-[1]"
-        :class="{'bg-gray-lighter': currentStageNumber < s.stageNumber,
+        :class="{'bg-cream-highlight': currentStageNumber < s.stageNumber,
                  'bg-green-background': currentStageNumber > s.stageNumber}">
         
         <div v-if="currentStageNumber < s.stageNumber" 
@@ -54,7 +54,7 @@
         <div v-else>&nbsp;</div>
       </div>
     </template>
-    <div class="w-full border border-gray-dark absolute" />
+    <div class="w-full border border-gray-body absolute" />
   </div>
 </template>
 

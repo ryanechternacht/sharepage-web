@@ -29,7 +29,7 @@
     </div>
     <div class="mt-6 flex flex-row gap-x-6 w-full px-[2.25rem]">
       <div v-for="pt in pricingTiers"
-        class="flex flex-col justify-around justify-items-center bg-gray-lighter rounded-md flex-1 h-[100px] cursor-pointer p-1"
+        class="flex flex-col justify-around justify-items-center bg-cream-highlight rounded-md flex-1 h-[100px] cursor-pointer p-1"
         :class="{'selected-pricing-tier': pt.id === buyersphere.pricingTierId}"
         @click="updatePricingTier(pt.id)">
         <h3 class="text-center">{{ pt.title }}</h3>
@@ -88,7 +88,7 @@ function updatePricingTier (tierId) {
 
 <style lang="postcss" scoped>
 .selected-can-pay {
-  @apply bg-teal-primary;
+  @apply bg-green-primary;
 
   :deep(.tag) {
     @apply text-white;
@@ -96,36 +96,36 @@ function updatePricingTier (tierId) {
 }
 
 .another-can-pay-selected {
-  @apply bg-gray-lighter;
+  @apply bg-cream-highlight;
 }
 
 .not-selected-can-pay-selected-green {
-  @apply bg-gray-lighter;
+  @apply bg-cream-highlight;
 
   &:hover {
-    @apply bg-green-pastel;
+    @apply bg-green-background;
   }
 }
 
 .not-selected-can-pay-selected-orange {
-  @apply bg-gray-lighter;
+  @apply bg-cream-highlight;
 
   &:hover {
-    @apply bg-orange-pastel;
+    @apply bg-orange-secondary;
   }
 }
 
 .not-selected-can-pay-selected-red {
-  @apply bg-gray-lighter;
+  @apply bg-cream-highlight;
 
   &:hover {
-    @apply bg-red-pastel;
+    @apply bg-red-secondary;
   }
 }
 
 
 .selected-pricing-tier {
-  @apply bg-teal-primary;
+  @apply bg-green-primary;
 
   h3 {
     @apply text-white;

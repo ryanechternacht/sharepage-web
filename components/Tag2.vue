@@ -24,40 +24,34 @@ const props = defineProps({
 // This crap is because I couldn't get the tailwind purger to not purge these classes
 const bgColor = computed(() => {
   return {
-    'teal': 'bg-teal-background',
+    'teal': 'bg-green-background',
     'blue': 'bg-blue-background',
-    'dark-blue': 'bg-blue-bright',
-    'green': 'bg-green-background',
+    'dark-blue': 'bg-blue-primary',
     'purple': 'bg-purple-background',
     'orange': 'bg-orange-background',
     'red': 'bg-red-background',
-    'yellow': 'bg-yellow-background'
   }[props.color]
 })
 
 const dotColor = computed(() => {
   return {
-    'teal': 'bg-teal-bright',
-    'blue': 'bg-blue-bright',
+    'teal': 'bg-green-primary',
+    'blue': 'bg-blue-primary',
     'dark-blue': 'bg-white',
-    'green': 'bg-green-bright',
-    'purple': 'bg-purple-bright',
-    'orange': 'bg-orange-bright',
-    'red': 'bg-red-bright',
-    'yellow': 'bg-yellow-bright'
+    'purple': 'bg-purple-secondary',
+    'orange': 'bg-orange-secondary',
+    'red': 'bg-red-secondary',
   }[props.color]
 })
 
 const textColor = computed(() => {
   return {
-    'teal': 'text-teal-bright',
-    'blue': 'text-blue-bright',
+    'teal': 'text-green-primary',
+    'blue': 'text-blue-primary',
     'dark-blue': 'text-white',
-    'green': 'text-green-bright',
-    'purple': 'text-purple-bright',
-    'orange': 'text-orange-jewel', // INTENTIONAL
-    'red': 'text-red-bright',
-    'yellow': 'text-yellow-bright'
+    'purple': 'text-purple-secondary',
+    'orange': 'text-orange-secondary',
+    'red': 'text-red-secondary',
   }[props.color]
 })
 </script>

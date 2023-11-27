@@ -4,19 +4,19 @@
 
 @layer base {
   h1, .h1 {
-    @apply font-rajdhani font-bold text-gray-dark;
+    @apply font-rajdhani font-bold text-gray-body;
     font-size: 2rem; /* 32px */
     /* line-height: 2.5rem; 38px */
   }
 
   h2, .h2 {
-    @apply font-sans font-semibold text-gray-dark;
+    @apply font-sans font-bold text-gray-body;
     font-size: 1.5rem; /* 24px */
     /* line-height: 1.8125rem; 29px */
   }
 
   h3, .h3 {
-    @apply font-sans font-semibold text-gray-dark;
+    @apply font-sans font-semibold text-gray-body;
     font-size: 1rem; /* 16px */
     /* line-height: 1.1875rem; 19px */
   }
@@ -27,13 +27,13 @@
   }
 
   p, div, span, .body {
-    @apply font-sans font-medium text-gray-dark;
+    @apply font-sans font-medium text-gray-body;
     font-size: .75rem; /* 12px */
     /* line-height: .9375rem; 15px */
   }
 
   .tag {
-    @apply font-sans font-medium text-gray-dark;
+    @apply font-sans font-medium text-gray-body;
     font-size: .625rem; /* 10px */
     /* line-height: .75rem; 12px */
   }
@@ -43,23 +43,23 @@
   }
 
   .gray {
-    @apply text-gray-mid;
+    @apply text-gray-subtext;
 
     * {
-      @apply text-gray-mid;
+      @apply text-gray-subtext;
     }
   }
 
   .gray-italic {
-    @apply text-gray-mid italic;
+    @apply text-gray-subtext italic;
 
     * {
-      @apply text-gray-mid;
+      @apply text-gray-subtext;
     }
   }
 
   input, select {
-    @apply p-2 body border border-gray-lighter rounded-md;
+    @apply p-2 body border border-cream-highlight rounded-md;
     @apply gray;
 
     &:focus-visible {

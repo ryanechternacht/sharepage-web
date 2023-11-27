@@ -3,58 +3,41 @@ module.exports = {
   theme: {
     colors: {
       // New colors
-      teal: {
-        primary: '#03837C',
-        jewel: '#083F3F',
-        bright: '#08C4B2',
-        pastel: '#ccf1ea',
-        background: '#ecf9f8'
+      green: {
+        primary: '#08C4B2',
+        background: '#ECF9F8',
       },
       blue: {
-        primary: '#0A2960',
-        jewel: '#0C3F89',
-        bright: '#205BC3',
-        pastel: '#c7dbf9',
+        primary: '#205BC3',
         background: '#e7ebfd',
       },
       black: '#040404',
-      green: {
-        darker: '#1F605D',
-        jewel: '#006B40',
-        bright: '#59CB59',
-        pastel: '#ebf9eb',
-        background: '#ecf9f8',
-      },
       purple: {
-        jewel: '#6C2277',
-        bright: '#AC44A8',
-        pastel: '#d8d7f9',
-        background: '#e7ebfd',
+        secondary: '#AC44A8',
+        background: '#F8F4FF',
       },
       red: {
-        jewel: '#931847',
-        bright: '#CE3665',
-        pastel: '#fcdccc',
-        background: '#f8ecec',
+        secondary: '#CE3665',
+        background: '#F8ECEC',
       },
       orange: {
-        jewel: '#DD9903',
-        bright: '#FFBC00',
-        pastel: '#fdefcd',
-        background: '#fff9e5',
+        secondary: '#DD9903',
+        background: '#FFF9E5',
+      },
+      cream: {
+        background: '#FBFBFB',
+        highlight: '#F3F4F4'
       },
       gray: {
-        lightest: '#FaFaFa',
-        lighter: '#F3F4F4',
-        light: '#DEE1E1',
-        mid: '#515E5F',
-        dark: '#364141',
-        darker: '#273333',
+        // NEW
+        headline: '#273333',
+        body: '#364141',
+        subtext: '#515E5F',
+        border: '#E8E9ED',
+        hover: '#F3F3F5',
+        'hover-active': '#DEE1E1'
       },
-      white: '#fff',
-      yellow: {
-        pastel: '#FFF7E7',
-      },
+      white: '#fff'
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],

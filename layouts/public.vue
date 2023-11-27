@@ -31,7 +31,7 @@
 
 <style lang="postcss" scoped>
 .button {
-  @apply p-2 rounded-md bg-teal-primary body text-center;
+  @apply p-2 rounded-md bg-green-primary body text-center;
   @apply font-bold text-white;
 }
 </style>

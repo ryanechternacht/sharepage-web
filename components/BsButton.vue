@@ -13,8 +13,8 @@ const props = defineProps({
 
 const colorClasses = computed(
   () => ({
-    'none': 'border border-gray-light',
-    'teal': 'bg-teal-primary text-white'
+    'none': 'border border-gray-hover-active',
+    'teal': 'bg-green-primary text-white'
   }[props.color ?? 'none'])
 )
 </script>

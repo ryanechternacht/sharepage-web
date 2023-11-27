@@ -26,7 +26,7 @@
         class="gray inline-html"
         v-html="buyersphere.introMessage" />
       <div v-else
-        class="p-2 bg-gray-lighter w-max rounded-md">
+        class="p-2 bg-cream-highlight w-max rounded-md">
         <h3>Write a personal Introduction</h3>
         <BsButton 
           big

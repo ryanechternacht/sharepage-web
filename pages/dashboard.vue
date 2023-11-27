@@ -128,7 +128,7 @@ function coalescePricingAnswer (pricingTierId) {
 function pricingColor (pricingTierId) {
   const tier = find(pricingTiers, pt => pt.id === pricingTierId)
 
-  return tier ? "yellow" : "gray"
+  return tier ? "orange" : "gray"
 }
 
 const dayjs = useDayjs()
@@ -185,7 +185,7 @@ const { open: openBuyersphereModal, close: closeBuyersphereModal } = useModal({
     &:hover {
       @apply cursor-pointer;
       .grid-cell {
-        @apply bg-gray-lighter;
+        @apply bg-cream-highlight;
       }
     }
   }

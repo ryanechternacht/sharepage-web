@@ -4,7 +4,7 @@
     content-class="flex flex-col p-4 bg-white dark:bg-black rounded border border-gray-100 dark:border-gray-800"
     @update:model-value="val => emit('update:modelValue', val)"
   >
-    <div class="p-2 border border-teal-primary bg-white">
+    <div class="p-2 border border-green-primary bg-white">
       hello, world
     </div>
   </VueFinalModal>

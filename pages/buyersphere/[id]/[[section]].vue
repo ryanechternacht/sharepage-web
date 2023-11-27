@@ -3,7 +3,7 @@
     <!-- TODO add this back in? -->
     <!-- <NuxtLoadingIndicator /> -->
     <div class="min-h-screen">
-      <div class="bg-teal-background">
+      <div class="bg-green-background">
         <TopNav />
         <div class="grid-row pb-3">
           <!-- row 1 col 1 -->
@@ -55,7 +55,7 @@
             :class="{ grayscale: !isActive }">
             <div class="flex-grow flex flex-row justify-between items-center">
               <h3>{{ actionDate.stage }}</h3>
-              <h3 :class="[actionDate.isOverdue ? 'text-red-jewel' : 'text-green-darker']">
+              <h3 :class="[actionDate.isOverdue ? 'text-red-jewel' : 'text-green-primary']">
                 {{ actionDate.date }}
               </h3>
             </div>
@@ -301,7 +301,7 @@ section {
 }
 
 .gray-outline {
-  @apply rounded-md border border-gray-lighter;
+  @apply rounded-md border border-cream-highlight;
 }
 
 .section-header {
@@ -325,12 +325,8 @@ section {
 }
 
 .tag.selected {
-  @apply border-b border-gray-dark pb-0.5;
+  @apply border-b border-gray-body pb-0.5;
 }
-
-/* .router-link-active {
-  @apply bg-green-jewel rounded-full text-white px-2 py-[1px];
-} */
 
 .white-background {
   @apply bg-white;
