@@ -30,6 +30,7 @@ const bgColor = computed(() => {
     'purple': 'bg-purple-background',
     'orange': 'bg-orange-background',
     'red': 'bg-red-background',
+    'gray': 'bg-gray-border',
   }[props.color]
 })
 
@@ -52,6 +53,7 @@ const textColor = computed(() => {
     'purple': 'text-purple-secondary',
     'orange': 'text-orange-secondary',
     'red': 'text-red-secondary',
+    'gray': 'text-gray-mid'
   }[props.color]
 })
 </script>

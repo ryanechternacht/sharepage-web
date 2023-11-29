@@ -50,17 +50,16 @@
   
   <div class="page-center mb-20" v-scroll-spy>
     <div id="objectives"
-      class="item-group">
-      <div class="group-header">🏆 &nbsp; Objectives</div>
-      <h4>These are the core objectives we solve</h4>
-      <div class="items-list">
-        <template v-for="pp in painPoints"
-          class="items-list-row">
-          <div class="flex flex-">
-            <Tag2 color="blue" class="mx-auto">{{ pp.title }}</Tag2>
-          </div>
-          <div class="inline-html" v-html="pp.description" />
-        </template>
+      class="section">
+      <div class="group-header">Objectives</div>
+      <h4>These are the core problems we solve</h4>
+      <div class="item-list">
+        <div v-for="pp in painPoints"
+          class="item-list-row">
+          <img src="/svg/gift-tag.svg">
+          <Tag2 color="blue">{{ pp.title }}</Tag2>
+          <div class="inline-html tag" v-html="pp.description" />
+        </div>
       </div>
 
       <h4>Which ones are most important to you? Are there any not covered above?</h4>
@@ -70,60 +69,64 @@
     </div>
 
     <div id="milestones"
-      class="item-group">
-      <div class="group-header">🏎️ &nbsp; Milestones</div>
+      class="section">
+      <div class="group-header">Milestones</div>
       <h4>What are the key milestone dates:</h4>
-      <div class="document-list">
-        <div>
+      <div class="item-list">
+        <div class="item-list-row">
+          <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.qualifiedDays }} days</Tag2>
+          <div>Qualification</div>
+          <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
         </div>
-        <div>Qualification</div>
-        <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
-
-        <div>
+        <div class="item-list-row">
+          <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.evaluationDays }} days</Tag2>
+          <div>Evaluation</div>
+          <div class="gray">By {{ formatDate(buyersphere.evaluationDate) }}</div>
         </div>
-        <div>Evaluation</div>
-        <div class="gray">By {{ formatDate(buyersphere.evaluationDate) }}</div>
-
-        <div>
+        <div class="item-list-row">
+          <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.decisionDays }} days</Tag2>
+          <div>Decision</div>
+          <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
         </div>
-        <div>Decision</div>
-        <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
-
-        <div>
+        <div class="item-list-row">
+          <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.adoptionDays }} days</Tag2>
+          <div>Adoption</div>
+          <div class="gray">By {{ formatDate(buyersphere.adoptionDate) }}</div>
         </div>
-        <div>Adoption</div>
-        <div class="gray">By {{ formatDate(buyersphere.adoptionDate) }}</div>
       </div>
     </div>
     
     <div id="features"
-      class="item-group">
+      class="section">
       <h4>Let us know which features are important to you</h4>
       <div class="flex flex-col gap-4">
-        <div v-for="(f, i) in features" 
+        <div v-for="(f, i) in features"
           class="four-tile-grid">
-          <Tag2 color="blue" class="mx-auto">Feature #{{ i + 1 }}</Tag2>
+          <div><!-- empty --></div>
           <h3>{{ f.title }}</h3>
-          <div class="justify-center">
-            <PButton
-              variant="gray"
-              size="medium"
-              :selected="myFeatures?.interests[f.id] === 'yes'"
-              @click="saveFeatureInterest(f.id, 'yes')">✅</PButton>
-            <PButton
-              variant="gray"
-              size="medium"
-              :selected="myFeatures?.interests[f.id] === 'maybe'"
-              @click="saveFeatureInterest(f.id, 'maybe')">🚧</PButton>
-            <PButton
-              variant="gray"
-              size="medium"
-              :selected="myFeatures?.interests[f.id] === 'no'"
-              @click="saveFeatureInterest(f.id, 'no')">⛔</PButton>
+          <div class="justify-center flex flex-row items-center gap-2">
+            <div class="feature-button feature-button-yes"
+              :class="{'selected': myFeatures?.interests[f.id] === 'yes'}"
+              @click="saveFeatureInterest(f.id, 'yes')">
+              <img v-if="myFeatures?.interests[f.id] === 'yes'" src="/svg/checkmark-green.svg">
+              <img v-else src="/svg/checkmark.svg">
+            </div>
+            <div class="feature-button feature-button-maybe"
+              :class="{'selected': myFeatures?.interests[f.id] === 'maybe'}"
+              @click="saveFeatureInterest(f.id, 'maybe')">
+              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/caution-yellow.svg">
+              <img v-else src="/svg/caution.svg">
+            </div>
+            <div class="feature-button feature-button-no"
+              :class="{'selected': myFeatures?.interests[f.id] === 'no'}"
+              @click="saveFeatureInterest(f.id, 'no')">
+              <img v-if="myFeatures?.interests[f.id] === 'no'" src="/svg/do-not-enter-red.svg">
+              <img v-else src="/svg/do-not-enter.svg">
+            </div>
           </div>
           <div class="gray inline-html" v-html="f.description" />
         </div>
@@ -131,8 +134,8 @@
     </div>
    
     <div id="constraints"
-      class="item-group">
-      <div class="group-header">🧩 &nbsp; Constraints</div>
+      class="section">
+      <div class="group-header">Constraints</div>
       <h4>Are there any constraints on your end we should know about?</h4>
       <TipTapTextarea v-model="problemToSolve"
         placeholder="Key constraints to buying"
@@ -140,29 +143,35 @@
     </div>
 
     <div id="pricing"
-      class="item-group">
-      <div class="group-header">💵 &nbsp; Pricing</div>
-      <h4>Which pricing model best fits your needs?</h4>
-      <div class="flex flex-col gap-4 mb-4">
-        <div v-for="pt in pricingTiers" 
-          class="pricing-tier"
-          :class="{'selected-pricing-tier': pt.id === buyersphere.pricingTierId}"
+      class="section">
+      <div class="group-header">Pricing</div>
+      <h4>Select the most appropriate tier?</h4>
+      <div class="pricing-tier-list">
+        <div v-for="pt in pricingTiers"
+          class="contents"
+          :class="{'selected': pt.id === buyersphere.pricingTierId}"
           @click="updatePricingTierId(pt.id)">
-          <Tag2 :color="pt.id === buyersphere.pricingTierId ? 'dark-blue': 'blue'" 
-            class="mx-auto">{{ pt.title }}</Tag2>
+          <img src="/svg/package.svg">
+          <div class="tag text-center leading-[1.3125rem]">{{ pt.title }}</div>
           <h3>Best for {{ pt.bestFor }}</h3>
-          <h3 class="mx-auto">
+          <div><!-- empty --></div>
+          <div v-if="pt.id === buyersphere.pricingTierId"
+            class="tag center-xy text-blue-primary h-full">
+            {{ pt.periodType === 'other'
+              ? pt.amountOther
+              : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
+          <Tag2 v-else color="gray">
             {{ pt.periodType === 'other'
               ? pt.amountOther
               : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
-          </h3>
+          </Tag2>
           <div class="gray inline-html" v-html="pt.description" />
         </div>
       </div>
     </div>
 
     <div id="success-criteria"
-      class="item-group">
+      class="section">
       <div class="group-header">🎉 &nbsp; Success Criteria</div>
 
       <h4>How will we know if this product is right for you?</h4>
@@ -172,7 +181,7 @@
     </div>
     
     <!-- <div id="notes"
-      class="item-group">
+      class="section">
       <div class="group-header">📒 &nbsp; Notes</div>
 
       <div class="document-list">
@@ -189,7 +198,7 @@
     </div>
    
     <div id="resources"
-      class="item-group" 
+      class="section" 
     >
       <div class="group-header">📓 &nbsp; Resources</div>
       <div class="document-list">
@@ -289,8 +298,8 @@ function updatePricingTierId (tierId) {
 }
 
 hr {
-    @apply text-cream-highlight mt-1;
-  }
+  @apply text-cream-highlight mt-1;
+}
 
 .page-center {
   @apply flex flex-col gap-20;
@@ -309,42 +318,66 @@ hr {
   @apply bg-green-primary rounded-md mx-[-.5rem] px-2 text-white;
 }
 
-.item-group {
-  @apply p-8 bg-cream-background border border-cream-highlight rounded-md
-    flex flex-col mt-4;
+.item-list {
+  @apply flex flex-col gap-4;
 
-  h4 {
-    @apply mb-1 mt-4 px-8 w-full text-center;
+  .item-list-row {
+    @apply flex flex-row items-center gap-2;
   }
 }
 
-.group-header {
-  @apply p-2 flex flex-row gap-2 items-center mx-auto rounded-md 
-    mt-[-2.875rem] /*-46px*/ mb-1 bg-white border border-cream-highlight;
-}
+.feature-button {
+  @apply p-2 rounded-md border border-gray-border cursor-pointer;
 
-.section {
-  @apply p-4 bg-white border border-cream-highlight;
-}
-
-.items-list {
-  @apply grid gap-y-2;
-  grid-template-columns: auto 1fr;
-
-  > * {
-    @apply px-3 py-2 bg-white border-cream-highlight border-y;
-  }
-
-  > *:nth-child(2n + 1) {
-    @apply rounded-l-md border-l;
-  }
-
-  > *:nth-child(2n + 2) {
-    @apply rounded-r-md border-r;
+  &::before,
+  &:hover::before {
+    @apply absolute mt-[-2rem] tag
   }
 }
 
-.document-list {
+.feature-button-yes {
+  &:hover::before {
+    @apply [content:"Yes"] ml-[-.25rem];
+  }
+
+  &.selected {
+    @apply bg-green-background;
+
+    &::before {
+      @apply [content:"Yes"] ml-[-.25rem];
+    }
+  }
+}
+
+.feature-button-maybe {
+  &:hover::before {
+    @apply [content:"Maybe"] ml-[-.75rem];
+  }
+
+  &.selected {
+    @apply bg-orange-background;
+
+    &::before {
+      @apply [content:"Maybe"] ml-[-.75rem];
+    }
+  }
+}
+
+.feature-button-no {
+  &:hover::before {
+    @apply [content:"No"];
+  }
+
+  &.selected {
+    @apply bg-red-background;
+
+    &::before {
+      @apply [content:"No"];
+    }
+  }
+}
+
+/* .document-list {
   @apply grid gap-y-2 items-center;
   grid-template-columns: auto 1fr 150px;
 
@@ -359,20 +392,44 @@ hr {
   > *:nth-child(3n + 3) {
     @apply rounded-r-md border-r;
   }
-}
+} */
 
 .four-tile-grid {
-  @apply px-6 py-4 bg-white border border-cream-highlight grid items-center gap-x-3 gap-y-1;
+  @apply bg-white grid items-center gap-x-4 gap-y-1;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
 }
 
-.pricing-tier {
-  @apply four-tile-grid;
-  @apply hover:bg-cream-background cursor-pointer;
+.pricing-tier-list {
+  @apply grid cursor-pointer gap-y-1 gap-x-3 items-center;
+  grid-template-columns: auto auto 1fr;
 
-  &.selected-pricing-tier {
-    @apply bg-blue-background;
+  > div > *:nth-child(6n + 1),
+  > div > *:nth-child(6n + 2),
+  > div > *:nth-child(6n + 3) {
+    @apply pt-1;
+  }
+
+  > div > *:nth-child(6n + 4),
+  > div > *:nth-child(6n + 5),
+  > div > *:nth-child(6n + 6) {
+    @apply pb-1;
+  }
+
+  .selected {
+    > *:nth-child(6n + 2) {
+      @apply bg-blue-background mr-[-.75rem] pr-[.75rem] mb-[-.25rem] pb-[.25rem] 
+        rounded-tl-md;
+    }
+    > *:nth-child(6n + 3) {
+      @apply bg-blue-background mb-[-.25rem] pb-[.25rem] rounded-tr-md;
+    }
+    > *:nth-child(6n + 5) {
+      @apply bg-blue-background mr-[-.75rem] pr-[.75rem] rounded-bl-md;
+    }
+    > *:nth-child(6n + 6) {
+      @apply bg-blue-background rounded-br-md;
+    }
   }
 }
 </style>

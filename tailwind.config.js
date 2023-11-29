@@ -29,7 +29,6 @@ module.exports = {
         highlight: '#F3F4F4'
       },
       gray: {
-        // NEW
         headline: '#273333',
         body: '#364141',
         subtext: '#515E5F',

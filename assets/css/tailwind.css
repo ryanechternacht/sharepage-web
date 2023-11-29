@@ -11,31 +11,28 @@
 
   h2, .h2 {
     @apply font-sans font-bold text-gray-body;
-    font-size: 1.5rem; /* 24px */
+    font-size: 1rem; /* 16px */
     /* line-height: 1.8125rem; 29px */
   }
 
-  h3, .h3 {
+  h3, .h3, .body-header {
     @apply font-sans font-semibold text-gray-body;
-    font-size: 1rem; /* 16px */
-    /* line-height: 1.1875rem; 19px */
+    font-size: .875rem; /* 14px */
   }
 
-  h4, .h4 {
-    @apply font-sans text-black italic;
+  h4, .h4, .tag-header {
+    @apply font-sans font-medium text-gray-body;
     font-size: .75rem; /* 12px */
   }
 
   p, div, span, .body {
-    @apply font-sans font-medium text-gray-body;
-    font-size: .75rem; /* 12px */
-    /* line-height: .9375rem; 15px */
+    @apply font-sans font-normal text-gray-body;
+    font-size: .875rem; /* 14px */
   }
 
   .tag {
-    @apply font-sans font-medium text-gray-body;
-    font-size: .625rem; /* 10px */
-    /* line-height: .75rem; 12px */
+    @apply font-sans font-normal text-gray-subtext;
+    font-size: .75rem; /* 12px */
   }
 
   .dark {
@@ -93,5 +90,19 @@
   
   .center-xy {
     @apply flex flex-row items-center justify-center;
+  }
+
+  .section {
+    @apply p-4 border border-gray-border rounded-md flex flex-col mt-4;
+  
+    h4 {
+      @apply mb-2 mt-4;
+    }
+
+    .group-header {
+      @apply h2;
+      @apply p-2 flex flex-row gap-2 items-center mx-auto rounded-md 
+        mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white border border-gray-border;
+    }
   }
 }
