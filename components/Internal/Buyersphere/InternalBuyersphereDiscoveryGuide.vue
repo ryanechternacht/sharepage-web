@@ -1,53 +1,32 @@
 <template>
-  <div class="page-left">
-    <div class="sticky top-[2rem] p-2 flex flex-col gap-1">
-      <div>Timeline</div>
-      <div>People</div>
-      <div>Decision Criteria</div>
-      <div class="flex flex-col gap-1"
-        v-scroll-spy-active
-        v-scroll-spy-link>
-
-        <!-- The nested div is so scrollspy works correclty with the hrs -->
-        <div>
-          <hr>
-          <div @click="navigateTo('#objectives')"
-          class="page-link">🏆 &nbsp; Objectives</div>
-        </div>
-        <div>
-          <div @click="navigateTo('#milestones')"
-            class="page-link">🏎️ &nbsp; Milestones</div>
-        </div>
-        <div>
-          <div @click="navigateTo('#features')"
-            class="page-link">🤖 &nbsp; Features</div>
-        </div>
-        <div>
-          <div @click="navigateTo('#constraints')"
-            class="page-link">🧩 &nbsp; Constraints</div>
-        </div>
-        <div>
-          <div @click="navigateTo('#pricing')"
-            class="page-link">💵 &nbsp; Pricing</div>
-        </div>
-        <div>
-          <div @click="navigateTo('#pricing')"
-            class="page-link">🎉 &nbsp; Success Criteria</div>
-        </div>
-        <!-- <div>
-          <div @click="navigateTo('#notes')"
-            class="page-link">📒 &nbsp; Notes</div>
-        </div>
-        <div>
-          <div @click="navigateTo('#resources')"
-            class="page-link">📓 &nbsp; Resources</div>
-        </div> -->
+  <div class="[grid-area:left]">
+    <div class="sticky top-[2rem] py-2 px-12">
+      <h3 class="page-link">Discovery Guide</h3>
+      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
+        <h4 @click="navigateTo('#objectives')"
+          class="in-page-link">Objectives</h4>
+        <h4 @click="navigateTo('#milestones')"
+          class="in-page-link">Milestones</h4>
+        <h4 @click="navigateTo('#features')"
+          class="in-page-link">Features</h4>
+        <h4 @click="navigateTo('#constraints')"
+          class="in-page-link">Constraints</h4>
+        <h4 @click="navigateTo('#pricing')"
+          class="in-page-link">Pricing</h4>
+        <h4 @click="navigateTo('#success-criteria')"
+          class="in-page-link">Success Criteria</h4>
       </div>
-      <div>Resources</div>
+      <div class="page-link"
+        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
+      <div class="page-link"
+        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
+      <div class="page-link"
+        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/assets`)">Assets</div>
+      <div class="page-link"
+        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/notes`)">Notes</div>
     </div>
   </div>
 
-  
   <div class="page-center mb-20" v-scroll-spy>
     <div id="objectives"
       class="section">
@@ -156,7 +135,7 @@
           <h3>Best for {{ pt.bestFor }}</h3>
           <div><!-- empty --></div>
           <div v-if="pt.id === buyersphere.pricingTierId"
-            class="tag center-xy text-blue-primary h-full">
+            class="tag center-xy text-blue-primary h-full py-[2px]">
             {{ pt.periodType === 'other'
               ? pt.amountOther
               : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
@@ -292,9 +271,20 @@ function updatePricingTierId (tierId) {
 </script>
 
 <style lang="postcss" scoped>
-.page-left {
-  @apply px-6;
-  grid-area: left;
+.page-link {
+  @apply mb-4 cursor-pointer;
+}
+.in-page-link {
+  @apply py-2 pl-6 cursor-pointer rounded-md flex flex-row items-center;
+
+  &.active {
+    @apply bg-gray-hover pl-[.375rem];
+
+    &::before {
+      @apply h-[.875rem] mr-1;
+      content: url('/svg/compass.svg');
+    }
+  }
 }
 
 hr {
@@ -304,18 +294,6 @@ hr {
 .page-center {
   @apply flex flex-col gap-20;
   grid-area: center;
-}
-
-.page-link {
-  @apply py-1 cursor-pointer;
-
-  &:hover {
-    @apply bg-cream-highlight rounded-md;
-  }
-}
-
-.active .page-link {
-  @apply bg-green-primary rounded-md mx-[-.5rem] px-2 text-white;
 }
 
 .item-list {

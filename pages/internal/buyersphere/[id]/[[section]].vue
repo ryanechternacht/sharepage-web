@@ -51,10 +51,13 @@
       </div>
     </div>
     <!-- These return both the left and center columns -->
-    <InternalBuyersphereMap v-if="mainSection === 'map'" />
-    <InternalBuyersphereProfile v-else-if="mainSection === 'intro'" />
+    <InternalBuyersphereDiscoveryGuide v-if="mainSection === 'decision-guide'" />
+    <InternalBuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
+    <InternalBuyersphereTeam v-else-if="mainSection === 'team'" />
+    <InternalBuyersphereAssets v-else-if="mainSection === 'assets'" />
+    <InternalBuyersphereNotes v-else-if="mainSection === 'notes'" />
 
-    <div class="page-right">right</div>
+    <div class="page-right">right {{ mainSection}}</div>
   </div>
 </template>
 
@@ -87,7 +90,7 @@ function formatDate(date) {
 }
 
 const mainSection = computed(
-  () => route.params.section ? route.params.section : 'map')
+  () => route.params.section ? route.params.section : 'decision-guide')
 
 const nextStageDate = computed(
   () => ({
@@ -135,7 +138,7 @@ function reactiatve() {
 .page-layout {
   @apply grid gap-y-8;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 200px 1fr 200px;
+  grid-template-columns: 300px 1fr 300px;
   grid-template-areas:
     "top  top    top"
     "left center right";

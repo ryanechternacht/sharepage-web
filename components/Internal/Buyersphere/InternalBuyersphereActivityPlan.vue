@@ -1,6 +1,6 @@
 <template>
   <div class="page-left">left</div>
-  <div class="page-center">map</div>
+  <div class="page-center">activity plan</div>
 </template>
 
 <style lang="postcss" scoped>
