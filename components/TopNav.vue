@@ -1,19 +1,23 @@
 <template>
   <div class="sticky">
-      <div class="flex flex-row items-center p-8 h-12 gap-x-4">
-        <NuxtLink class="flex flex-row items-center" to="/" active-class="dont-match">
-          <img src="/logo.svg">
-          <h3>Buyersphere</h3>
+      <div class="flex flex-row items-center gap-6">
+        <NuxtLink to="/" class="link">
+          <img src="/svg/logo-gradient.svg">
+          <span>Home</span>
         </NuxtLink>
         <template v-if="user.buyersphereRole === 'admin'">
-          <NuxtLink to="/dashboard">
-            <h4>Dashboard</h4>
+          <!-- TOOD point these to the correct routes and style them when active -->
+          <NuxtLink to="/dashboard" class="link">
+            <img src="/svg/inbox.svg">
+            <span>Activities</span>
           </NuxtLink>
-          <NuxtLink to="/setup">
-            <h4>Setup</h4>
+          <NuxtLink to="/dashboard" class="link">
+            <img src="/svg/target.svg">
+           <span>Accounts</span>
           </NuxtLink>
-          <NuxtLink v-if="featureFlags.salesforce" to="/salesforce">
-            <h4>Salesforce</h4>
+          <NuxtLink to="/dashboard" class="link">
+            <img src="/svg/dollar-sign.svg">
+            <span>Opportunities</span>
           </NuxtLink>
         </template>
 
@@ -40,4 +44,7 @@ const { featureFlags } = useAppConfig()
 </script>
 
 <style lang="postcss" scoped>
+.link {
+  @apply flex flex-row items-center gap-1;
+}
 </style>

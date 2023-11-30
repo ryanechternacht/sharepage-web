@@ -3,7 +3,17 @@
     <div class="page-top"
       :class="{ 'grayscale-top': !isActive }">
       <TopNav class="col-span-2"/>
-      <div class="flex flex-col gap-4 pl-8 pb-5">
+      <div class="mt-8 flex flex-row items-center justify-center gap-2">
+        <img :src="buyersphere.buyerLogo" class="h-[1.25rem]">
+        <h3>{{ buyersphere.buyer }}</h3>
+      </div>
+      <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
+        <h1>Our</h1>
+        <h1 class="bg-purple-secondary text-white rounded-md px-1 py-[1px]">
+          {{ mainSection.replace('-', ' ') }}
+        </h1>
+      </div>
+      <!-- <div class="flex flex-col gap-4 pl-8 pb-5">
         <div class="flex flex-row items-center gap-2">
           <Logo :src="buyersphere.buyerLogo"
             size="medium"
@@ -48,7 +58,7 @@
             class="reactivate-button"
             @click="reactiatve">Reactivate</Tag2>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- These return both the left and center columns -->
     <InternalBuyersphereDiscoveryGuide v-if="mainSection === 'decision-guide'" />
@@ -195,16 +205,11 @@ function reactiatve() {
 }
 
 .page-top {
-  /* @apply bg-gradient-to-r from-green-background to-blue-background; */
-  @apply bg-center bg-no-repeat grid grid-cols-2 gap-y-4;
-  grid-template-rows: auto auto;
-  background-image: url("/svg/logo-background.svg"), 
-    linear-gradient(to right, #ecf9f8, #e7ebfd); /* green-background, blue-background */
+  @apply bg-purple-background px-10 py-6;
   grid-area: top;
 
   &.grayscale-top {
-    background-image: url("/svg/logo-background.svg"), 
-      linear-gradient(to right, #e7e7e7, #f5f5f5); /* above colors, after a 100% grayscale */
+    @apply bg-gray-border;
   }
 }
 
