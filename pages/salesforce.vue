@@ -166,7 +166,7 @@ function createBuyersphere(oppty) {
     @apply p-2 flex flex-row items-center;
   }
     &:hover .grid-cell {
-      @apply bg-cream-highlight;
+      @apply bg-gray-hover;
 
       .create-button {
         @apply block;

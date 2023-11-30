@@ -185,7 +185,7 @@ const { open: openBuyersphereModal, close: closeBuyersphereModal } = useModal({
     &:hover {
       @apply cursor-pointer;
       .grid-cell {
-        @apply bg-cream-highlight;
+        @apply bg-gray-hover;
       }
     }
   }

@@ -93,6 +93,6 @@ async function updateQuestion ({ id, resolved }) {
 }
 
 .resolve-button {
-  @apply py-[.375rem] px-.5 rounded-md hover:bg-cream-highlight;
+  @apply py-[.375rem] px-.5 rounded-md hover:bg-gray-hover;
 }
 </style>

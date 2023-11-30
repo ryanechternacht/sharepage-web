@@ -57,7 +57,9 @@
     <InternalBuyersphereAssets v-else-if="mainSection === 'assets'" />
     <InternalBuyersphereNotes v-else-if="mainSection === 'notes'" />
 
-    <div class="page-right">right {{ mainSection}}</div>
+    <div class="[grid-area:right]">
+      
+    </div>
   </div>
 </template>
 
@@ -164,9 +166,5 @@ function reactiatve() {
 
 .page-dynamic {
   grid-area: dynamic;
-}
-
-.page-right {
-  grid-area: right;
 }
 </style>

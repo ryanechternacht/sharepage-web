@@ -301,7 +301,7 @@ section {
 }
 
 .gray-outline {
-  @apply rounded-md border border-cream-highlight;
+  @apply rounded-md border border-gray-hover;
 }
 
 .section-header {

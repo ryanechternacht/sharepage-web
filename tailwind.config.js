@@ -24,10 +24,6 @@ module.exports = {
         secondary: '#DD9903',
         background: '#FFF9E5',
       },
-      cream: {
-        background: '#FBFBFB',
-        highlight: '#F3F4F4'
-      },
       gray: {
         headline: '#273333',
         body: '#364141',

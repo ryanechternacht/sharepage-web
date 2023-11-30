@@ -10,7 +10,7 @@
       </div>
       <div class="flex flex-col gap-y-2">
         <div v-for="u in users"
-          class="flex flex-row justify-between items-center hover:bg-cream-highlight p-1 rounded-md">
+          class="flex flex-row justify-between items-center hover:bg-gray-hover p-1 rounded-md">
           <PersonRow :person="u" class="flex-grow" />
           <div>
             <BsButton v-if="!isInBuyersphere(u)"

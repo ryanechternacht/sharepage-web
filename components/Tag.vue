@@ -19,7 +19,7 @@ const bgColor = computed(() => {
     'purple': 'bg-purple-secondary',
     'orange': 'bg-orange-secondary',
     'red': 'bg-red-secondary',
-    'gray': 'bg-cream-highlight',
+    'gray': 'bg-gray-hover',
   }[color ?? 'gray']
 })
 </script>

@@ -145,7 +145,7 @@ function editItem(item) {
 
 <style scoped lang="postcss">
 .item-group {
-  @apply p-2 bg-cream-background border border-cream-highlight rounded-md
+  @apply p-2 bg-gray-hover border border-gray-border rounded-md
     flex flex-col gap-2 mt-4;
 }
 

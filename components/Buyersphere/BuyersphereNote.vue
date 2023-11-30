@@ -46,7 +46,7 @@
         class="note-bottom"/>
       <div v-else-if="viewing"
         v-html="note.body" 
-        class="inline-html note-bottom rounded-md bg-cream-highlight p-1" />
+        class="inline-html note-bottom rounded-md bg-gray-hover p-1" />
     </div>
 
     <!-- TODO get these to show/hide on hover -->

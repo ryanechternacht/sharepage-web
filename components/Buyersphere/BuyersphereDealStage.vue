@@ -42,7 +42,7 @@
       </div>
       <div v-else
         class="flex flex-col items-center rounded-md w-[6.5rem] h-full justify-between py-1 z-[1]"
-        :class="{'bg-cream-highlight': currentStageNumber < s.stageNumber,
+        :class="{'bg-gray-hover': currentStageNumber < s.stageNumber,
                  'bg-green-background': currentStageNumber > s.stageNumber}">
         
         <div v-if="currentStageNumber < s.stageNumber" 

@@ -290,7 +290,7 @@ function updatePricingTierId (tierId) {
 }
 
 hr {
-  @apply text-cream-highlight mt-1;
+  @apply text-gray-hover mt-1;
 }
 
 .page-center {
@@ -362,7 +362,7 @@ hr {
   grid-template-columns: auto 1fr 150px;
 
   > * {
-    @apply px-3 py-2 bg-white border-cream-highlight border-y;
+    @apply px-3 py-2 bg-white border-gray-hover border-y;
   }
 
   > *:nth-child(3n + 1) {

@@ -125,7 +125,7 @@ const hasUsers = users.length > 1
 
 <style lang="postcss" scoped>
 .step-box {
-  @apply w-[6rem] h-[3.75rem] rounded-md bg-cream-highlight z-[1]
+  @apply w-[6rem] h-[3.75rem] rounded-md bg-gray-hover z-[1]
     center-xy text-center p-1;
   @apply h3;
 }

@@ -29,7 +29,7 @@
     </div>
     <div class="mt-6 flex flex-row gap-x-6 w-full px-[2.25rem]">
       <div v-for="pt in pricingTiers"
-        class="flex flex-col justify-around justify-items-center bg-cream-highlight rounded-md flex-1 h-[100px] cursor-pointer p-1"
+        class="flex flex-col justify-around justify-items-center bg-gray-hover rounded-md flex-1 h-[100px] cursor-pointer p-1"
         :class="{'selected-pricing-tier': pt.id === buyersphere.pricingTierId}"
         @click="updatePricingTier(pt.id)">
         <h3 class="text-center">{{ pt.title }}</h3>
@@ -96,11 +96,11 @@ function updatePricingTier (tierId) {
 }
 
 .another-can-pay-selected {
-  @apply bg-cream-highlight;
+  @apply bg-gray-hover;
 }
 
 .not-selected-can-pay-selected-green {
-  @apply bg-cream-highlight;
+  @apply bg-gray-hover;
 
   &:hover {
     @apply bg-green-background;
@@ -108,7 +108,7 @@ function updatePricingTier (tierId) {
 }
 
 .not-selected-can-pay-selected-orange {
-  @apply bg-cream-highlight;
+  @apply bg-gray-hover;
 
   &:hover {
     @apply bg-orange-secondary;
@@ -116,7 +116,7 @@ function updatePricingTier (tierId) {
 }
 
 .not-selected-can-pay-selected-red {
-  @apply bg-cream-highlight;
+  @apply bg-gray-hover;
 
   &:hover {
     @apply bg-red-secondary;
