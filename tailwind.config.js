@@ -32,7 +32,7 @@ module.exports = {
         headline: '#273333',
         body: '#364141',
         subtext: '#515E5F',
-        border: '#E8E9ED',
+        border: '#F8F8FA',
         hover: '#F3F3F5',
         'hover-active': '#DEE1E1'
       },

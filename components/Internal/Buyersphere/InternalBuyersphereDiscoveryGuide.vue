@@ -43,7 +43,7 @@
 
       <h4>Which ones are most important to you? Are there any not covered above?</h4>
       <TipTapTextarea v-model="problemToSolve"
-        placeholder="Pain points to resolve"
+        placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
         class="w-full mb-4" />
     </div>
 
@@ -131,19 +131,21 @@
           :class="{'selected': pt.id === buyersphere.pricingTierId}"
           @click="updatePricingTierId(pt.id)">
           <img src="/svg/package.svg">
-          <div class="tag text-center leading-[1.3125rem]">{{ pt.title }}</div>
-          <h3>Best for {{ pt.bestFor }}</h3>
+          <div>
+            <div v-if="pt.id === buyersphere.pricingTierId"
+              class="tag center-xy text-blue-primary h-full py-[2px] px-2">
+              {{ pt.periodType === 'other'
+                ? pt.amountOther
+                : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
+            <Tag2 v-else color="gray">
+              {{ pt.periodType === 'other'
+                ? pt.amountOther
+                : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
+            </Tag2>
+          </div>
+          <h3 class="leading-[1.375rem]">{{ pt.title }}</h3>
           <div><!-- empty --></div>
-          <div v-if="pt.id === buyersphere.pricingTierId"
-            class="tag center-xy text-blue-primary h-full py-[2px]">
-            {{ pt.periodType === 'other'
-              ? pt.amountOther
-              : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
-          <Tag2 v-else color="gray">
-            {{ pt.periodType === 'other'
-              ? pt.amountOther
-              : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
-          </Tag2>
+          <div class="h-full"><!-- empty --></div>
           <div class="gray inline-html" v-html="pt.description" />
         </div>
       </div>
