@@ -36,7 +36,7 @@
         <div v-for="pp in painPoints"
           class="item-list-row">
           <img src="/svg/gift-tag.svg">
-          <Tag2 color="blue">{{ pp.title }}</Tag2>
+          <Tag2 class="whitespace-nowrap" color="blue">{{ pp.title }}</Tag2>
           <div class="inline-html tag" v-html="pp.description" />
         </div>
       </div>
@@ -55,26 +55,26 @@
         <div class="item-list-row">
           <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.qualifiedDays }} days</Tag2>
-          <div>Qualification</div>
-          <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
+          <div class="flex-grow">Qualification</div>
+          <div class="tag">By {{ formatDate(buyersphere.decisionDate) }}</div>
         </div>
         <div class="item-list-row">
           <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.evaluationDays }} days</Tag2>
-          <div>Evaluation</div>
-          <div class="gray">By {{ formatDate(buyersphere.evaluationDate) }}</div>
+          <div class="flex-grow">Evaluation</div>
+          <div class="tag">By {{ formatDate(buyersphere.evaluationDate) }}</div>
         </div>
         <div class="item-list-row">
           <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.decisionDays }} days</Tag2>
-          <div>Decision</div>
-          <div class="gray">By {{ formatDate(buyersphere.decisionDate) }}</div>
+          <div class="flex-grow">Decision</div>
+          <div class="tag">By {{ formatDate(buyersphere.decisionDate) }}</div>
         </div>
         <div class="item-list-row">
           <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.adoptionDays }} days</Tag2>
-          <div>Adoption</div>
-          <div class="gray">By {{ formatDate(buyersphere.adoptionDate) }}</div>
+          <div class="flex-grow">Adoption</div>
+          <div class="tag">By {{ formatDate(buyersphere.adoptionDate) }}</div>
         </div>
       </div>
     </div>
@@ -250,7 +250,7 @@ const moneyConfig = {
 
 const dayjs = useDayjs()
 function formatDate(date) {
-  return dayjs(date).format('MMMM Do')
+  return dayjs(date).format('MMM Do')
 }
 
 // is this worth doing for snappier UX? (probably)
