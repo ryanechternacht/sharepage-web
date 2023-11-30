@@ -58,7 +58,55 @@
     <InternalBuyersphereNotes v-else-if="mainSection === 'notes'" />
 
     <div class="[grid-area:right]">
-      
+      <div class="sticky top-[2rem] py-2 px-12">
+        <div class="flex flex-col gap-3 items-end">
+          <h3>Milestones</h3>
+          <div class="milestone"
+            :class="{selected: buyersphere.currentStage === 'qualification'}">
+            <h4 class="milestone-step">Qualification</h4>
+            <div class="milestone-date">{{ formatDate(buyersphere.qualificationDate) }}</div>
+            <div class="milestone-icon">
+              <img v-if="buyersphere.currentStage === 'qualification'" 
+                src="/svg/award.svg">
+              <img v-else src="/svg/checkmark.svg">
+            </div>
+          </div>
+          <div class="milestone"
+            :class="{selected: buyersphere.currentStage === 'evaluation'}">
+            <h4 class="milestone-step">Evaluation</h4>
+            <div class="milestone-date">{{ formatDate(buyersphere.evaluationDate) }}</div>
+            <div class="milestone-icon">
+              <img v-if="buyersphere.currentStage === 'qualification'" 
+                src="/svg/award-light.svg">
+              <img v-else-if="buyersphere.currentStage === 'evaluation'" 
+                src="/svg/award.svg">
+              <img v-else src="/svg/checkmark.svg">
+            </div>
+          </div>
+          <div class="milestone"
+            :class="{selected: buyersphere.currentStage === 'decision'}">
+            <h4 class="milestone-step">Decision</h4>
+            <div class="milestone-date">{{ formatDate(buyersphere.decisionDate) }}</div>
+            <div class="milestone-icon">
+              <img v-if="buyersphere.currentStage === 'decision'" 
+                src="/svg/award.svg">
+              <img v-else-if="buyersphere.currentStage === 'adoption'" 
+                src="/svg/checkmark.svg">
+              <img v-else src="/svg/award-light.svg">
+            </div>
+          </div>
+          <div class="milestone"
+            :class="{selected: buyersphere.currentStage === 'adoption'}">
+            <h4 class="milestone-step">Adoption</h4>
+            <div class="milestone-date">{{ formatDate(buyersphere.adoptionDate) }}</div>
+            <div class="milestone-icon">
+              <img v-if="buyersphere.currentStage === 'adoption'" 
+                src="/svg/award.svg">
+              <img v-else src="/svg/award-light.svg">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,7 +116,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { capitalize, concat, filter, find, groupBy, map, orderBy, reduce } = lodash_pkg;
+const { capitalize } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -164,7 +212,26 @@ function reactiatve() {
   @apply p-1 px-2 bg-white rounded-md text-gray-subtext;
 }
 
-.page-dynamic {
-  grid-area: dynamic;
+.milestone {
+  @apply grid;
+  grid-template-areas: 
+    "step icon"
+    "date icon";
+  
+  &.selected {
+    @apply bg-gray-hover rounded-md mr-[-.25rem] pr-1;
+  }
+
+  .milestone-step {
+    @apply [grid-area:step] text-right px-2;
+  }
+
+  .milestone-date {
+    @apply [grid-area:date] text-right tag px-2;
+  }
+
+  .milestone-icon {
+    @apply [grid-area:icon] self-center px-1 w-[1.375rem];
+  }
 }
 </style>

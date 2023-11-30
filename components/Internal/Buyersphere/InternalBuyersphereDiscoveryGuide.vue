@@ -56,7 +56,7 @@
           <img src="/svg/calendar.svg">
           <Tag2 color="blue">{{ dealTiming?.qualifiedDays }} days</Tag2>
           <div class="flex-grow">Qualification</div>
-          <div class="tag">By {{ formatDate(buyersphere.decisionDate) }}</div>
+          <div class="tag">By {{ formatDate(buyersphere.qualificationDate) }}</div>
         </div>
         <div class="item-list-row">
           <img src="/svg/calendar.svg">
