@@ -1,4 +1,11 @@
 <template>
+  <div class="[grid-area:left-header]">
+    <!-- TODO share button -->
+  </div>
+
+  <div class="[grid-area:center-header]">
+  </div>
+
   <div class="[grid-area:left]">
     <div class="sticky top-[2rem] py-2 px-12">
       <h3 class="page-link">Discovery Guide</h3>
@@ -20,10 +27,10 @@
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <div class="page-link"
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
-      <div class="page-link"
+      <!-- <div class="page-link"
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/assets`)">Assets</div>
       <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/notes`)">Notes</div>
+        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/notes`)">Notes</div> -->
     </div>
   </div>
 
@@ -42,7 +49,7 @@
       </div>
 
       <h4>Which ones are most important to you? Are there any not covered above?</h4>
-      <TipTapTextarea v-model="problemToSolve"
+      <TipTapTextarea v-model="objectives"
         placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
         class="w-full mb-4" />
     </div>
@@ -116,7 +123,7 @@
       class="section">
       <div class="group-header">Constraints</div>
       <h4>Are there any constraints on your end we should know about?</h4>
-      <TipTapTextarea v-model="problemToSolve"
+      <TipTapTextarea v-model="keyConstraints"
         placeholder="Key constraints to buying"
         class="w-full mb-4" />
     </div>
@@ -156,7 +163,7 @@
       <div class="group-header">🎉 &nbsp; Success Criteria</div>
 
       <h4>How will we know if this product is right for you?</h4>
-      <TipTapTextarea v-model="problemToSolve"
+      <TipTapTextarea v-model="successCriteria"
         placeholder="Pain points to resolve"
         class="w-full mb-4" />
     </div>
@@ -264,6 +271,10 @@ function saveFeatureInterest (featureId, answer) {
 function updatePricingTierId (tierId) {
   buyersphereStore.savePricingTierId({ buyersphereId, pricingTierId: tierId })
 }
+
+const keyConstraints = ref('')
+const objectives = ref('')
+const successCriteria = ref('')
 
 // function makeInternalBuyersphereLink(section) {
 //   return section === 'map'

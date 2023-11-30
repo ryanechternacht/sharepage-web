@@ -28,7 +28,7 @@ module.exports = {
         headline: '#273333',
         body: '#364141',
         subtext: '#515E5F',
-        border: '#F8F8FA',
+        border: '#E8E9ED',
         hover: '#F3F3F5',
         'hover-active': '#DEE1E1'
       },

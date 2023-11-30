@@ -39,8 +39,6 @@ const usersStore = useUsersStore()
 const { getMeCached } = storeToRefs(usersStore)
 
 const user = await getMeCached.value()
-
-const { featureFlags } = useAppConfig()
 </script>
 
 <style lang="postcss" scoped>

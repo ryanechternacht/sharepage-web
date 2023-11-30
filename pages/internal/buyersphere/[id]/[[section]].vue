@@ -56,16 +56,27 @@
             use-dot
             button
             class="reactivate-button"
-            @click="reactiatve">Reactivate</Tag2>
+            @click="reactivate">Reactivate</Tag2>
         </div>
       </div> -->
     </div>
     <!-- These return both the left and center columns -->
-    <InternalBuyersphereDiscoveryGuide v-if="mainSection === 'decision-guide'" />
+    <InternalBuyersphereDecisionGuide v-if="mainSection === 'decision-guide'" />
     <InternalBuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
     <InternalBuyersphereTeam v-else-if="mainSection === 'team'" />
     <InternalBuyersphereAssets v-else-if="mainSection === 'assets'" />
     <InternalBuyersphereNotes v-else-if="mainSection === 'notes'" />
+
+    <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
+      <BsButton v-if="buyersphere.status === 'active'" @click="putOnHold">
+        <img src="/svg/pause.svg" class="mr-2">
+        <h3>Put on Hold</h3>
+      </BsButton>
+      <BsButton v-else @click="reactivate">
+        <img src="/svg/edit.svg" class="mr-2">
+        <h3>Reactivate</h3>
+      </BsButton>
+    </div>
 
     <div class="[grid-area:right]">
       <div class="sticky top-[2rem] py-2 px-12">
@@ -185,7 +196,7 @@ function putOnHold() {
   }
 }
 
-function reactiatve() {
+function reactivate() {
   const answer = confirm(`Are you sure you want to reactive the buying process?`)
   
   if (answer) {
@@ -196,12 +207,13 @@ function reactiatve() {
 
 <style lang="postcss" scoped>
 .page-layout {
-  @apply grid gap-y-8;
+  @apply grid gap-y-4;
   grid-template-rows: auto 1fr;
   grid-template-columns: 300px 1fr 300px;
   grid-template-areas:
-    "top  top    top"
-    "left center right";
+    "top         top           top"
+    "left-header center-header right-header"
+    "left        center        right";
 }
 
 .page-top {
