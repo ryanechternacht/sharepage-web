@@ -24,7 +24,13 @@ export default defineNuxtConfig({
   },
 
   dayjs: {
-    plugins: ['isSameOrAfter', 'duration', 'advancedFormat', 'utc']
+    plugins: [
+      'advancedFormat', 
+      'duration', 
+      'isSameOrAfter', 
+      'RelativeTime',
+      'utc',
+    ]
   },
 
   postcss: {

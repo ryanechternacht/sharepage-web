@@ -60,8 +60,9 @@
         </div>
       </div> -->
     </div>
-    <!-- These return both the left and center columns -->
-    <InternalBuyersphereDecisionGuide v-if="mainSection === 'decision-guide'" />
+
+    <!-- These return the left, center, left-header, and center-header sections -->
+    <InternalBuyersphereDiscoveryGuide v-if="mainSection === 'discovery-guide'" />
     <InternalBuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
     <InternalBuyersphereTeam v-else-if="mainSection === 'team'" />
     <InternalBuyersphereAssets v-else-if="mainSection === 'assets'" />
@@ -69,11 +70,11 @@
 
     <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
       <BsButton v-if="buyersphere.status === 'active'" @click="putOnHold">
-        <img src="/svg/pause.svg" class="mr-2">
+        <img src="/svg/pause--yellow.svg" class="mr-2">
         <h3>Put on Hold</h3>
       </BsButton>
       <BsButton v-else @click="reactivate">
-        <img src="/svg/edit.svg" class="mr-2">
+        <img src="/svg/play--green.svg" class="mr-2">
         <h3>Reactivate</h3>
       </BsButton>
     </div>
@@ -98,7 +99,7 @@
             <div class="milestone-date">{{ formatDate(buyersphere.evaluationDate) }}</div>
             <div class="milestone-icon">
               <img v-if="buyersphere.currentStage === 'qualification'" 
-                src="/svg/award-light.svg">
+                src="/svg/award--light.svg">
               <img v-else-if="buyersphere.currentStage === 'evaluation'" 
                 src="/svg/award.svg">
               <img v-else src="/svg/checkmark.svg">
@@ -113,7 +114,7 @@
                 src="/svg/award.svg">
               <img v-else-if="buyersphere.currentStage === 'adoption'" 
                 src="/svg/checkmark.svg">
-              <img v-else src="/svg/award-light.svg">
+              <img v-else src="/svg/award--light.svg">
             </div>
           </div>
           <div class="milestone"
@@ -123,7 +124,7 @@
             <div class="milestone-icon">
               <img v-if="buyersphere.currentStage === 'adoption'" 
                 src="/svg/award.svg">
-              <img v-else src="/svg/award-light.svg">
+              <img v-else src="/svg/award--light.svg">
             </div>
           </div>
         </div>
@@ -161,7 +162,7 @@ function formatDate(date) {
 }
 
 const mainSection = computed(
-  () => route.params.section ? route.params.section : 'decision-guide')
+  () => route.params.section ? route.params.section : 'discovery-guide')
 
 const nextStageDate = computed(
   () => ({

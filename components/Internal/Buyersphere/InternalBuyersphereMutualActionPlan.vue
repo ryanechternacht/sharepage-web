@@ -89,7 +89,7 @@ const completedItemsGrouped = computed(() =>
   )
 )
 
-var nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+const nextWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
 const activeItemsGrouped = computed(() => 
   orderBy(

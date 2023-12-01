@@ -98,19 +98,19 @@
             <div class="feature-button feature-button-yes"
               :class="{'selected': myFeatures?.interests[f.id] === 'yes'}"
               @click="saveFeatureInterest(f.id, 'yes')">
-              <img v-if="myFeatures?.interests[f.id] === 'yes'" src="/svg/checkmark-green.svg">
+              <img v-if="myFeatures?.interests[f.id] === 'yes'" src="/svg/checkmark--green.svg">
               <img v-else src="/svg/checkmark.svg">
             </div>
             <div class="feature-button feature-button-maybe"
               :class="{'selected': myFeatures?.interests[f.id] === 'maybe'}"
               @click="saveFeatureInterest(f.id, 'maybe')">
-              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/caution-yellow.svg">
+              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/caution--yellow.svg">
               <img v-else src="/svg/caution.svg">
             </div>
             <div class="feature-button feature-button-no"
               :class="{'selected': myFeatures?.interests[f.id] === 'no'}"
               @click="saveFeatureInterest(f.id, 'no')">
-              <img v-if="myFeatures?.interests[f.id] === 'no'" src="/svg/do-not-enter-red.svg">
+              <img v-if="myFeatures?.interests[f.id] === 'no'" src="/svg/do-not-enter--red.svg">
               <img v-else src="/svg/do-not-enter.svg">
             </div>
           </div>
@@ -205,7 +205,6 @@
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { useFeaturesStore } from '@/stores/features'
-import { useResourcesStore } from '@/stores/resources'
 import { usePricingStore } from '@/stores/pricing'
 import { useDealTimingStore } from '@/stores/deal-timing'
 import { storeToRefs } from 'pinia'
@@ -223,20 +222,16 @@ const { getPainPointsCached } = storeToRefs(painPointsStore)
 const featuresStore = useFeaturesStore()
 const { getFeaturesCached } = storeToRefs(featuresStore)
 
-const resourcesStore = useResourcesStore()
-const { getResourcesCached } = storeToRefs(resourcesStore)
-
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
 const dealTimingStore = useDealTimingStore()
 const { getDealTimingCached } = storeToRefs(dealTimingStore)
 
-const [buyersphere, painPoints, features, resources, { pricingTiers }, dealTiming] = await Promise.all([
+const [buyersphere, painPoints, features, { pricingTiers }, dealTiming] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getPainPointsCached.value(),
   getFeaturesCached.value(),
-  getResourcesCached.value(),
   getPricingCached.value(),
   getDealTimingCached.value(),
 ])
@@ -287,6 +282,7 @@ const successCriteria = ref('')
 .page-link {
   @apply mb-4 cursor-pointer;
 }
+
 .in-page-link {
   @apply py-2 pl-6 cursor-pointer rounded-md flex flex-row items-center;
 
@@ -298,10 +294,6 @@ const successCriteria = ref('')
       content: url('/svg/compass.svg');
     }
   }
-}
-
-hr {
-  @apply text-gray-hover mt-1;
 }
 
 .page-center {
