@@ -27,14 +27,20 @@
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <div class="page-link"
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
-      <!-- <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/assets`)">Assets</div>
-      <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/notes`)">Notes</div> -->
     </div>
   </div>
 
   <div class="page-center mb-20" v-scroll-spy>
+    <div id="success-criteria"
+      class="section">
+      <div class="group-header">🎉 &nbsp; Success Criteria</div>
+
+      <h4>How will we know if this product is right for you?</h4>
+      <TipTapTextarea v-model="successCriteria"
+        placeholder="Pain points to resolve"
+        class="w-full mb-4" />
+    </div>
+    
     <div id="objectives"
       class="section">
       <div class="group-header">Objectives</div>
@@ -54,40 +60,9 @@
         class="w-full mb-4" />
     </div>
 
-    <div id="milestones"
-      class="section">
-      <div class="group-header">Milestones</div>
-      <h4>What are the key milestone dates:</h4>
-      <div class="item-list">
-        <div class="item-list-row">
-          <img src="/svg/calendar.svg">
-          <Tag2 color="blue">{{ dealTiming?.qualifiedDays }} days</Tag2>
-          <div class="flex-grow">Qualification</div>
-          <div class="tag">By {{ formatDate(buyersphere.qualificationDate) }}</div>
-        </div>
-        <div class="item-list-row">
-          <img src="/svg/calendar.svg">
-          <Tag2 color="blue">{{ dealTiming?.evaluationDays }} days</Tag2>
-          <div class="flex-grow">Evaluation</div>
-          <div class="tag">By {{ formatDate(buyersphere.evaluationDate) }}</div>
-        </div>
-        <div class="item-list-row">
-          <img src="/svg/calendar.svg">
-          <Tag2 color="blue">{{ dealTiming?.decisionDays }} days</Tag2>
-          <div class="flex-grow">Decision</div>
-          <div class="tag">By {{ formatDate(buyersphere.decisionDate) }}</div>
-        </div>
-        <div class="item-list-row">
-          <img src="/svg/calendar.svg">
-          <Tag2 color="blue">{{ dealTiming?.adoptionDays }} days</Tag2>
-          <div class="flex-grow">Adoption</div>
-          <div class="tag">By {{ formatDate(buyersphere.adoptionDate) }}</div>
-        </div>
-      </div>
-    </div>
-    
     <div id="features"
       class="section">
+      <div class="group-header">Features</div>
       <h4>Let us know which features are important to you</h4>
       <div class="flex flex-col gap-4">
         <div v-for="(f, i) in features"
@@ -104,8 +79,8 @@
             <div class="feature-button feature-button-maybe"
               :class="{'selected': myFeatures?.interests[f.id] === 'maybe'}"
               @click="saveFeatureInterest(f.id, 'maybe')">
-              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/no-entry-sign--yellow.svg">
-              <img v-else src="/svg/no-entry-sign.svg">
+              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/circle-dash--yellow.svg">
+              <img v-else src="/svg/circle-dash.svg">
             </div>
             <div class="feature-button feature-button-no"
               :class="{'selected': myFeatures?.interests[f.id] === 'no'}"
@@ -117,15 +92,6 @@
           <div class="gray inline-html" v-html="f.description" />
         </div>
       </div>
-    </div>
-   
-    <div id="constraints"
-      class="section">
-      <div class="group-header">Constraints</div>
-      <h4>Are there any constraints on your end we should know about?</h4>
-      <TipTapTextarea v-model="keyConstraints"
-        placeholder="Key constraints to buying"
-        class="w-full mb-4" />
     </div>
 
     <div id="pricing"
@@ -158,46 +124,29 @@
       </div>
     </div>
 
-    <div id="success-criteria"
+    <div id="constraints"
       class="section">
-      <div class="group-header">🎉 &nbsp; Success Criteria</div>
-
-      <h4>How will we know if this product is right for you?</h4>
-      <TipTapTextarea v-model="successCriteria"
-        placeholder="Pain points to resolve"
+      <div class="group-header">Constraints</div>
+      <h4>Are there any constraints on your end we should know about?</h4>
+      <TipTapTextarea v-model="keyConstraints"
+        placeholder="Key constraints to buying"
         class="w-full mb-4" />
     </div>
-    
-    <!-- <div id="notes"
-      class="section">
-      <div class="group-header">📒 &nbsp; Notes</div>
 
-      <div class="document-list">
-        <template v-for="n in buyersphere.notes"
-          class="items-list-row">
-          <div>📒</div>
-          <div>{{ n.title }}</div>
-          <div class="flex flex-row items-center gap-2 justify-end">
-            <div class="gray-italic">{{ formatDate(n.createdAt) }}</div>
-            <UserAvatar :user="n.author" />
-          </div>
-        </template>
+    <div id="milestones"
+      class="section">
+      <div class="group-header">Milestones</div>
+      <h4>What are the key milestone dates:</h4>
+      <div class="item-list">
+        <div v-for="m in milestones" 
+          class="item-list-row">
+          <img src="/svg/calendar.svg">
+          <Tag2 color="blue">{{ toDate(m.dueDate) }}</Tag2>
+          <div class="flex-grow">{{ m.message }}</div>
+          <div class="tag">By {{ formatDate(m.dueDate) }}</div>
+        </div>
       </div>
     </div>
-   
-    <div id="resources"
-      class="section" 
-    >
-      <div class="group-header">📓 &nbsp; Resources</div>
-      <div class="document-list">
-        <template v-for="r in resources"
-          class="items-list-row">
-          <div>📓</div>
-          <div>{{ r.title }}</div>
-          <div class="gray-italic text-right">{{ formatDate(r.createdAt) }}</div>
-        </template>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -206,15 +155,16 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { useFeaturesStore } from '@/stores/features'
 import { usePricingStore } from '@/stores/pricing'
-import { useDealTimingStore } from '@/stores/deal-timing'
 import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
+import lodash_pkg from 'lodash';
+const { filter, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
@@ -225,15 +175,12 @@ const { getFeaturesCached } = storeToRefs(featuresStore)
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
-const dealTimingStore = useDealTimingStore()
-const { getDealTimingCached } = storeToRefs(dealTimingStore)
-
-const [buyersphere, painPoints, features, { pricingTiers }, dealTiming] = await Promise.all([
+const [buyersphere, conversations, painPoints, features, { pricingTiers }] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
+  getBuyersphereConversationsByIdCached.value(buyersphereId),
   getPainPointsCached.value(),
   getFeaturesCached.value(),
   getPricingCached.value(),
-  getDealTimingCached.value(),
 ])
 
 const periodMap = {
@@ -276,6 +223,21 @@ const successCriteria = ref('')
 //     ? `/internal/buyersphere/${route.params.id}`
 //     : `/internal/buyersphere/${route.params.id}/${section}`
 // }
+
+// TODO do we need to filter this?
+const milestones = computed(() => 
+  orderBy(
+    filter(conversations, c => c.collaborationType === 'milestone'),
+    ['dueDate'],
+    ['asc']
+  ))
+
+// TODO why didn't $dayjs form inlined in template work?
+const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
+function toDate (date) {
+  const days = dayjs(date).diff(todayDayJs, 'days')
+  return `${days} ${days === 1 ? 'day' : 'days'}`
+}
 </script>
 
 <style lang="postcss" scoped>

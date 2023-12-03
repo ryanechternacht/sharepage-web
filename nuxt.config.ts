@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       'advancedFormat', 
       'duration', 
       'isSameOrAfter', 
-      'RelativeTime',
+      'relativeTime',
       'utc',
     ]
   },

@@ -83,47 +83,14 @@
       <div class="sticky top-[2rem] py-2 px-12">
         <div class="flex flex-col gap-3 items-end">
           <h3>Milestones</h3>
-          <div class="milestone"
-            :class="{selected: buyersphere.currentStage === 'qualification'}">
-            <h4 class="milestone-step">Qualification</h4>
-            <div class="milestone-date">{{ formatDate(buyersphere.qualificationDate) }}</div>
+          <div v-for="m in milestones"
+            class="milestone"
+            :class="{selected: nextMilestone.id === m.id}">
+            <h4 class="milestone-step">{{ m.message }}</h4>
+            <div class="milestone-date">{{ formatDate(m.dueDate) }}</div>
             <div class="milestone-icon">
-              <img v-if="buyersphere.currentStage === 'qualification'" 
-                src="/svg/award.svg">
-              <img v-else src="/svg/checkmark.svg">
-            </div>
-          </div>
-          <div class="milestone"
-            :class="{selected: buyersphere.currentStage === 'evaluation'}">
-            <h4 class="milestone-step">Evaluation</h4>
-            <div class="milestone-date">{{ formatDate(buyersphere.evaluationDate) }}</div>
-            <div class="milestone-icon">
-              <img v-if="buyersphere.currentStage === 'qualification'" 
-                src="/svg/award--light.svg">
-              <img v-else-if="buyersphere.currentStage === 'evaluation'" 
-                src="/svg/award.svg">
-              <img v-else src="/svg/checkmark.svg">
-            </div>
-          </div>
-          <div class="milestone"
-            :class="{selected: buyersphere.currentStage === 'decision'}">
-            <h4 class="milestone-step">Decision</h4>
-            <div class="milestone-date">{{ formatDate(buyersphere.decisionDate) }}</div>
-            <div class="milestone-icon">
-              <img v-if="buyersphere.currentStage === 'decision'" 
-                src="/svg/award.svg">
-              <img v-else-if="buyersphere.currentStage === 'adoption'" 
-                src="/svg/checkmark.svg">
-              <img v-else src="/svg/award--light.svg">
-            </div>
-          </div>
-          <div class="milestone"
-            :class="{selected: buyersphere.currentStage === 'adoption'}">
-            <h4 class="milestone-step">Adoption</h4>
-            <div class="milestone-date">{{ formatDate(buyersphere.adoptionDate) }}</div>
-            <div class="milestone-icon">
-              <img v-if="buyersphere.currentStage === 'adoption'" 
-                src="/svg/award.svg">
+              <img v-if="m.resolved" src="/svg/checkmark.svg">
+              <img v-else-if="nextMilestone.id === m.id" src="/svg/award.svg">
               <img v-else src="/svg/award--light.svg">
             </div>
           </div>
@@ -138,19 +105,20 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { capitalize } = lodash_pkg;
+const { capitalize, filter, find, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [buyersphere, organization] = await Promise.all([
+const [buyersphere, conversations, organization] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
+  getBuyersphereConversationsByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
 ])
 
@@ -204,6 +172,15 @@ function reactivate() {
     buyersphereStore.saveStatus({ buyersphereId, status: "active" })
   }
 }
+
+const milestones = computed(() => 
+  orderBy(
+    filter(conversations, c => c.collaborationType === 'milestone'),
+    ['dueDate'],
+    ['asc']
+  ))
+
+const nextMilestone = computed(() => find(milestones.value, m => !m.resolved))
 </script>
 
 <style lang="postcss" scoped>

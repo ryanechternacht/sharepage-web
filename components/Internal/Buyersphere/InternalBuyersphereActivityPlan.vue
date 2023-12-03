@@ -34,10 +34,6 @@
       </div>
       <div class="page-link"
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
-      <!-- <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/assets`)">Assets</div>
-      <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/notes`)">Notes</div> -->
     </div>
   </div>
 
@@ -78,6 +74,11 @@
       :items="completedItems"
       header="Completed"
       @update:item="editItem" />
+
+
+    <h2 class="mx-auto p-2 rounded-md bg-purple-background text-purple-secondary">
+      Est Finish: {{ lastItem.dueDate }}
+    </h2>
   </div>
 </template>
 
@@ -85,7 +86,7 @@
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
+const { filter, last, orderBy } = lodash_pkg;
 import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
@@ -106,37 +107,6 @@ const today = todayDayJs.toDate()
 const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
-
-function prettyFormatDateFromToday(date) {
-  const d = dayjs(date)
-  const daysApart = d.diff(todayDayJs, 'days')
-
-  const dateFormat = 'MMM Do'
-
-  if (daysApart < -7) {
-    return d.format(dateFormat)
-  } else if (daysApart < -1) {
-    return `${-daysApart} days ago`
-  } else if (daysApart === -1) {
-    return "Yesterday"
-  } else if (daysApart === 0) {
-    return "Today"
-  } else if (daysApart === 1) {
-    return "Tomorrow"
-  } else if (daysApart < 7) {
-    return `in ${daysApart} days`
-  } else {
-    return d.format(dateFormat)
-  }
-}
-
-const iconMap = {
-  task: '/svg/checkmark.svg',
-  question: '/svg/speech-bubble.svg',
-  comment: '/svg/caution-sign.svg',
-  milestone: '/svg/award.svg',
-  meeting: '/svg/calendar.svg'
-}
 
 const overdueItems = computed(() =>
   orderBy(
@@ -195,6 +165,16 @@ const completedItems = computed(() =>
   )
 )
 
+const lastItem = computed(() =>
+  last(
+    orderBy(
+      filter(conversations, c => !c.resolved),
+      ['dueDate'],
+      ['asc']
+    )
+  )
+)
+
 const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
   component: EditCollaborationItemModal,
   attrs: {
@@ -206,7 +186,6 @@ const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOpti
 })
 
 function editItem({ item }) {
-  console.log('edit', item)
   patchModalOptions({ attrs: { item }})
   openEditModal()
 }
