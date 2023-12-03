@@ -102,10 +102,9 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { capitalize, filter, find, orderBy } = lodash_pkg;
+const { filter, find, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -113,10 +112,7 @@ const buyersphereId = parseInt(route.params.id)
 const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
-const organizationStore = useOrganizationStore()
-const { getOrganizationCached } = storeToRefs(organizationStore)
-
-const [buyersphere, conversations, organization] = await Promise.all([
+const [buyersphere, conversations] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
@@ -131,31 +127,6 @@ function formatDate(date) {
 
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'discovery-guide')
-
-const nextStageDate = computed(
-  () => ({
-    'qualification': buyersphere.qualificationDate,
-    'evaluation': buyersphere.evaluationDate,
-    'decision': buyersphere.decisionDate,
-  }[buyersphere.currentStage]))
-
-function advanceStage() {
-  const nextStage = {
-    'qualification': 'evaluation',
-    'evaluation': 'decision',
-    'decision': 'adoption'
-  }[buyersphere.currentStage]
-
-  const answer = confirm(`Are you sure you'd like to proceed to the ${capitalize(nextStage)} stage?`)
-
-  if (answer) {
-    buyersphereStore.advanceStage({ buyersphereId, stage: nextStage})
-  }
-}
-
-function updateStage(stage) {
-  const answer = confirm(``)
-}
 
 function putOnHold() {
   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
