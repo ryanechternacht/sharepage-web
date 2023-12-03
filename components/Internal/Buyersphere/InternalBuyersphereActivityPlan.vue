@@ -42,160 +42,61 @@
   </div>
 
   <div class="page-center mb-20" v-scroll-spy>
-    <div v-if="overdueItems.length" 
+    <InternalBuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"
-      class="section">
-      <div class="group-header">Overdue</div>
-      <div class="item-list">
-        <div v-for="item in overdueItems"
-          class="item-list-row">
-          <img src="/svg/checkmark.svg">
-          <div class="inline-html" v-html="item.message" />
-          <div class="flex-grow" />
-          <div class="logos">
-            <div class="tag text-red-secondary">{{ prettyFormatDateFromToday(item.dueDate) }}</div>
-            <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-            <Logo v-if="item.assignedTeam === 'buyer'"
-                :src="buyersphere.buyerLogo" />
-            <Logo v-else
-              :src="organization.logo" />
-          </div>
-        </div>
-      </div>
-    </div>
+      :items="overdueItems"
+      overdue
+      header="Overdue"
+      @update:item="editItem" />
 
-    <div v-if="next7DaysItems.length"
+    <InternalBuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
-      class="section">
-      <div class="group-header">Next 7 Days</div>
-      <div class="item-list">
-        <div v-for="item in next7DaysItems"
-          class="item-list-row">
-          <img src="/svg/checkmark.svg">
-          <div class="inline-html" v-html="item.message" />
-          <div class="flex-grow" />
-          <div class="logos">
-            <div class="tag">{{ prettyFormatDateFromToday(item.dueDate) }}</div>
-            <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-            <Logo v-if="item.assignedTeam === 'buyer'"
-                :src="buyersphere.buyerLogo" />
-            <Logo v-else
-              :src="organization.logo" />
-          </div>
-        </div>
-      </div>
-    </div>
+      :items="next7DaysItems"
+      header="Next 7 Days"
+      @update:item="editItem" />
 
-    <div v-if="next30DaysItems.length"
+    <InternalBuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
-      class="section">
-      <div class="group-header">Next 30 Days</div>
-      <div class="item-list">
-        <div v-for="item in next30DaysItems"
-          class="item-list-row">
-          <img src="/svg/checkmark.svg">
-          <div class="inline-html" v-html="item.message" />
-          <div class="flex-grow" />
-          <div class="logos">
-            <div class="tag">{{ prettyFormatDateFromToday(item.dueDate) }}</div>
-            <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-            <Logo v-if="item.assignedTeam === 'buyer'"
-                :src="buyersphere.buyerLogo" />
-            <Logo v-else
-              :src="organization.logo" />
-          </div>
-        </div>
-      </div>
-    </div>
+      :items="next30DaysItems"
+      header="Next 30 Days"
+      @update:item="editItem" />
 
-    <div v-if="next90DaysItems.length"
+    <InternalBuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
-      class="section">
-      <div class="group-header">Next 90 Days</div>
-      <div class="item-list">
-        <div v-for="item in next90DaysItems"
-          class="item-list-row">
-          <img src="/svg/checkmark.svg">
-          <div class="inline-html" v-html="item.message" />
-          <div class="flex-grow" />
-          <div class="logos">
-            <div class="tag">{{ prettyFormatDateFromToday(item.dueDate) }}</div>
-            <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-            <Logo v-if="item.assignedTeam === 'buyer'"
-                :src="buyersphere.buyerLogo" />
-            <Logo v-else
-              :src="organization.logo" />
-          </div>
-        </div>
-      </div>
-    </div>
+      :items="next90DaysItems"
+      header="Next 90 Days"
+      @update:item="editItem" />
 
-    <div v-if="beyondItems.length"
+    <InternalBuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
-      class="section">
-      <div class="group-header">Beyond</div>
-      <div class="item-list">
-        <div v-for="item in beyondItems"
-          class="item-list-row">
-          <img src="/svg/checkmark.svg">
-          <div class="inline-html" v-html="item.message" />
-          <div class="flex-grow" />
-          <div class="logos">
-            <div class="tag">{{ prettyFormatDateFromToday(item.dueDate) }}</div>
-            <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-            <Logo v-if="item.assignedTeam === 'buyer'"
-                :src="buyersphere.buyerLogo" />
-            <Logo v-else
-              :src="organization.logo" />
-          </div>
-        </div>
-      </div>
-    </div>
+      :items="beyondItems"
+      header="Beyond"
+      @update:item="editItem" />
 
-    <div v-if="completedItems"
+    <InternalBuyersphereActivityPlanSection v-if="completedItems.length"
       id="completed"
-      class="section">
-      <div class="group-header">Completed</div>
-      <div class="item-list">
-        <div v-for="item in completedItems"
-          class="item-list-row">
-          <img src="/svg/checkmark.svg">
-          <div class="inline-html" v-html="item.message" />
-          <div class="flex-grow" />
-          <div class="logos">
-            <div class="tag">{{ prettyFormatDateFromToday(item.dueDate) }}</div>
-            <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-            <Logo v-if="item.assignedTeam === 'buyer'"
-                :src="buyersphere.buyerLogo" />
-            <Logo v-else
-              :src="organization.logo" />
-          </div>
-        </div>
-      </div>
-    </div>
+      :items="completedItems"
+      header="Completed"
+      @update:item="editItem" />
   </div>
 </template>
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
+import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
-const organizationStore = useOrganizationStore()
-const { getOrganizationCached } = storeToRefs(organizationStore)
-
-const [buyersphere, conversations, organization] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+const [conversations] = await Promise.all([
   getBuyersphereConversationsByIdCached.value(buyersphereId),
-  getOrganizationCached.value(),
 ])
 
 const dayjs = useDayjs()
@@ -208,12 +109,7 @@ const next90Days = todayDayJs.add(90, 'day').toDate()
 
 function prettyFormatDateFromToday(date) {
   const d = dayjs(date)
-  console.log(d)
   const daysApart = d.diff(todayDayJs, 'days')
-
-  console.log(d, todayDayJs, daysApart)
-
-  console.log(date, today, new Date(date), new Date(date) < today, d < todayDayJs)
 
   const dateFormat = 'MMM Do'
 
@@ -232,6 +128,14 @@ function prettyFormatDateFromToday(date) {
   } else {
     return d.format(dateFormat)
   }
+}
+
+const iconMap = {
+  task: '/svg/checkmark.svg',
+  question: '/svg/speech-bubble.svg',
+  comment: '/svg/caution-sign.svg',
+  milestone: '/svg/award.svg',
+  meeting: '/svg/calendar.svg'
 }
 
 const overdueItems = computed(() =>
@@ -290,6 +194,22 @@ const completedItems = computed(() =>
     ['asc']
   )
 )
+
+const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
+  component: EditCollaborationItemModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeEditModal ()
+    }
+  }
+})
+
+function editItem({ item }) {
+  console.log('edit', item)
+  patchModalOptions({ attrs: { item }})
+  openEditModal()
+}
 </script>
 
 <style lang="postcss" scoped>

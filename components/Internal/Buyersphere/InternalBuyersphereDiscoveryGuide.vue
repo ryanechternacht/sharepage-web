@@ -104,8 +104,8 @@
             <div class="feature-button feature-button-maybe"
               :class="{'selected': myFeatures?.interests[f.id] === 'maybe'}"
               @click="saveFeatureInterest(f.id, 'maybe')">
-              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/caution--yellow.svg">
-              <img v-else src="/svg/caution.svg">
+              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/no-entry-sign--yellow.svg">
+              <img v-else src="/svg/no-entry-sign.svg">
             </div>
             <div class="feature-button feature-button-no"
               :class="{'selected': myFeatures?.interests[f.id] === 'no'}"

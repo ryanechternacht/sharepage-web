@@ -208,7 +208,7 @@ async function checkReady () {
   }
 }
 
-const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
+const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions } = useModal({
   component: EditCollaborationItemModal,
   attrs: {
     buyersphereId,
