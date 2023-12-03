@@ -19,6 +19,7 @@
           <option value="meeting">Meeting</option>
           <option value="question">Question</option>
           <option value="task">Task</option>
+          <option value="milestone">Milestone</option>
         </select>
       </div>
       <div class="w-full">

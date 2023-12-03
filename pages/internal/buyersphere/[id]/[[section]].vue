@@ -115,7 +115,6 @@ const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = stor
 const [buyersphere, conversations] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
-  getOrganizationCached.value(),
 ])
 
 const isActive = computed(() => buyersphere.status === 'active')
