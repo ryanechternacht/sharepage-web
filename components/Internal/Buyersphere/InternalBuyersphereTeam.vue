@@ -4,6 +4,15 @@
   </div>
 
   <div class="[grid-area:center-header]">
+    <div class="flex flex-row items-center gap-2">
+      <div class="flex-grow" />
+      <BsButton @click="openBuyerModal">
+        <img src="/svg/new-thing.svg" class="mr-2"> New Buyer
+      </BsButton>
+      <BsButton @click="openSellerModal">
+        <img src="/svg/new-thing.svg" class="mr-2"> New Seller
+      </BsButton>
+    </div>
   </div>
 
   <div class="[grid-area:left]">
@@ -52,6 +61,9 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, orderBy, concat } = lodash_pkg;
+import BuyersphereAddBuyerModal from '@/components/Buyersphere/AddBuyerModal'
+import BuyersphereAddSellerModal from '@/components/Buyersphere/AddSellerModal'
+import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -67,7 +79,30 @@ const [buyersphere, organization] = await Promise.all([
   getOrganizationCached.value()
 ])
 
+// TODO separate user groups
 const users = computed(() => concat(buyersphere.sellerTeam, buyersphere.buyerTeam))
+
+// TODO refactor these into 1 modal
+const { open: openBuyerModal, close: closeBuyerModal } = useModal({
+  component: BuyersphereAddBuyerModal,
+  attrs: {
+    buyer: buyersphere.buyer,
+    buyersphereId,
+    onClose () {
+      closeBuyerModal()
+    }
+  }
+})
+
+const { open: openSellerModal, close: closeSellerModal } = useModal({
+  component: BuyersphereAddSellerModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeSellerModal()
+    }
+  }
+})
 </script>
 
 <style lang="postcss" scoped>
@@ -89,7 +124,7 @@ const users = computed(() => concat(buyersphere.sellerTeam, buyersphere.buyerTea
 }
 
 .page-center {
-  @apply flex flex-col gap-20;
+  @apply flex flex-col gap-16;
   grid-area: center;
 }
 

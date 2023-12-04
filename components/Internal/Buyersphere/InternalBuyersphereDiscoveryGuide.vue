@@ -264,7 +264,7 @@ function toDate (date) {
 }
 
 .page-center {
-  @apply flex flex-col gap-20;
+  @apply flex flex-col gap-16;
   grid-area: center;
 }
 
