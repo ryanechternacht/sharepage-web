@@ -141,9 +141,14 @@
         <div v-for="m in milestones" 
           class="item-list-row">
           <img src="/svg/calendar.svg">
-          <Tag2 color="blue">{{ toDate(m.dueDate) }}</Tag2>
+          <Tag2 v-if="m.resolved" 
+            color="gray"
+            class="w-[4.75rem]">Complete</Tag2>
+          <Tag2 v-else 
+            color="blue"
+            class="w-[4.75rem]">{{ toDate(m.dueDate) }}</Tag2>
           <div class="flex-grow">{{ m.message }}</div>
-          <div class="tag">By {{ formatDate(m.dueDate) }}</div>
+          <div v-if="!m.resolved" class="tag">By {{ formatDate(m.dueDate) }}</div>
         </div>
       </div>
     </div>
@@ -321,23 +326,6 @@ function toDate (date) {
     }
   }
 }
-
-/* .document-list {
-  @apply grid gap-y-2 items-center;
-  grid-template-columns: auto 1fr 150px;
-
-  > * {
-    @apply px-3 py-2 bg-white border-gray-hover border-y;
-  }
-
-  > *:nth-child(3n + 1) {
-    @apply rounded-l-md border-l;
-  }
-
-  > *:nth-child(3n + 3) {
-    @apply rounded-r-md border-r;
-  }
-} */
 
 .four-tile-grid {
   @apply bg-white grid items-center gap-x-4 gap-y-1;
