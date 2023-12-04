@@ -10,7 +10,7 @@
     <div class="sticky top-[2rem] py-2 px-12">
       <div class="page-link"
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
-        <h3 class="page-link">Activity Plan</h3>
+      <h3 class="page-link">Activity Plan</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <!-- TODO grey these that are done -->
         <h4 v-if="overdueItems.length" 
@@ -216,22 +216,5 @@ function editItem({ item }) {
 .page-center {
   @apply flex flex-col gap-20;
   grid-area: center;
-}
-
-.item-list {
-  @apply mt-[2rem] flex flex-col gap-4;
-
-  .item-list-row {
-    @apply w-full flex flex-row items-center gap-2;
-
-    &:hover {
-      @apply cursor-pointer bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
-      width: calc(100% + 2rem);
-    }
-
-    .logos {
-      @apply w-[9.5rem] flex flex-row items-center gap-1 justify-end;
-    }
-  }
 }
 </style>

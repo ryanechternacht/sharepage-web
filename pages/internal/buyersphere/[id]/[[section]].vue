@@ -97,6 +97,8 @@
         </div>
       </div>
     </div>
+
+    <div class="[grid-area:footer] h-20" />
   </div>
 </template>
 
@@ -161,7 +163,8 @@ const nextMilestone = computed(() => find(milestones.value, m => !m.resolved))
   grid-template-areas:
     "top         top           top"
     "left-header center-header right-header"
-    "left        center        right";
+    "left        center        right"
+    "footer      footer        footer";
 }
 
 .page-top {

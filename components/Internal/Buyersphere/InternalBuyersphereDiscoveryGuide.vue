@@ -30,10 +30,10 @@
     </div>
   </div>
 
-  <div class="page-center mb-20" v-scroll-spy>
+  <div class="page-center" v-scroll-spy>
     <div id="success-criteria"
       class="section">
-      <div class="group-header">🎉 &nbsp; Success Criteria</div>
+      <div class="group-header">Success Criteria</div>
 
       <h4>How will we know if this product is right for you?</h4>
       <TipTapTextarea v-model="successCriteria"
