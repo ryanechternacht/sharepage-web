@@ -1,34 +1,32 @@
 <template>
-  <div class="sticky">
-      <div class="flex flex-row items-center gap-6">
-        <NuxtLink to="/" class="link">
-          <img src="/svg/logo-gradient.svg">
-          <span>Home</span>
-        </NuxtLink>
-        <template v-if="user.buyersphereRole === 'admin'">
-          <!-- TOOD point these to the correct routes and style them when active -->
-          <NuxtLink to="/dashboard/activities" class="link">
-            <img src="/svg/inbox.svg">
-            <span>Activities</span>
-          </NuxtLink>
-          <NuxtLink to="/dashboard/accounts" class="link">
-            <img src="/svg/target.svg">
-           <span>Accounts</span>
-          </NuxtLink>
-          <NuxtLink to="/dashboard/opportunities" class="link">
-            <img src="/svg/dollar-sign.svg">
-            <span>Opportunities</span>
-          </NuxtLink>
-        </template>
+  <div class="flex flex-row items-center gap-6 w-full px-10 py-6">
+    <NuxtLink to="/" class="link">
+      <img src="/svg/logo-gradient.svg">
+      <span>Home</span>
+    </NuxtLink>
+    <template v-if="user.buyersphereRole === 'admin'">
+      <!-- TOOD point these to the correct routes and style them when active -->
+      <NuxtLink to="/dashboard/activities" class="link">
+        <img src="/svg/inbox.svg">
+        <span>Activities</span>
+      </NuxtLink>
+      <NuxtLink to="/dashboard/accounts" class="link">
+        <img src="/svg/target.svg">
+        <span>Accounts</span>
+      </NuxtLink>
+      <NuxtLink to="/dashboard/opportunities" class="link">
+        <img src="/svg/dollar-sign.svg">
+        <span>Opportunities</span>
+      </NuxtLink>
+    </template>
 
-        <div class="flex-grow" />
+    <div class="flex-grow" />
 
-        <div class="flex flex-row-reverse items-center gap-x-2 min-w-[200px]">
-          <UserAvatar :user="user" size="large" />
-          <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
-        </div>
-      </div>
+    <div class="flex flex-row-reverse items-center gap-x-2 min-w-[200px]">
+      <UserAvatar :user="user" size="large" />
+      <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
     </div>
+  </div>
 </template>
 
 <script setup>

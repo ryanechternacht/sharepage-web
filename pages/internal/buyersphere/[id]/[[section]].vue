@@ -1,104 +1,106 @@
 <template>
-  <div class="page-layout">
-    <div class="page-top"
-      :class="{ 'grayscale-top': !isActive }">
-      <TopNav class="col-span-2"/>
-      <div class="mt-8 flex flex-row items-center justify-center gap-2">
-        <img :src="buyersphere.buyerLogo" class="h-[1.25rem]">
-        <h3>{{ buyersphere.buyer }}</h3>
-      </div>
-      <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
-        <h1>Our</h1>
-        <h1 class="bg-purple-secondary text-white rounded-md px-1 py-[1px]">
-          {{ mainSection.replace('-', ' ') }}
-        </h1>
-      </div>
-      <!-- <div class="flex flex-col gap-4 pl-8 pb-5">
-        <div class="flex flex-row items-center gap-2">
-          <Logo :src="buyersphere.buyerLogo"
-            size="medium"
-            class="mr-2" />
-          <h3 class="text-gray-headline">{{ buyersphere.buyer }}</h3>
-          <div class="white-box inline-flex">
-            <img src="/svg/person.svg"> &nbsp;
-            {{ buyersphere.buyerTeam.length }}
-          </div>
-          <div class="white-box">+</div>
+  <div>
+    <TopNav />
+    <div class="page-layout">
+      <div class="page-top"
+        :class="{ 'grayscale-top': !isActive }">
+        <div class="mt-8 flex flex-row items-center justify-center gap-2">
+          <img :src="buyersphere.buyerLogo" class="h-[1.25rem]">
+          <h3>{{ buyersphere.buyer }}</h3>
         </div>
-        <div class="flex flex-row items-center gap-2">
-          <Logo :src="organization.logo"
-            size="medium"
-            class="mr-2" />
-          <h3 class="text-gray-headline">{{ organization.name }}</h3>
-          <div class="white-box inline-flex">
-            <img src="/svg/person.svg"> &nbsp;
-            {{ buyersphere.sellerTeam.length }}
-          </div>
-          <div class="white-box">+</div>
+        <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
+          <h1>Our</h1>
+          <h1 class="bg-purple-secondary text-white rounded-md px-1 py-[1px]">
+            {{ mainSection.replace('-', ' ') }}
+          </h1>
         </div>
-      </div>
-      <div class="flex flex-col items-end mr-8 mb-4">
-        <div class="tag text-gray-subtext">By {{ formatDate(nextStageDate) }}</div>
-        <h3>Current Stage: {{ capitalize(buyersphere.currentStage) }}</h3>
-        <div class="mt-2 flex flex-row gap-4">
-          <template v-if="buyersphere.status === 'active'">
-            <Tag2 color="teal" v-if="buyersphere.currentStage != 'adoption'"
+        <!-- <div class="flex flex-col gap-4 pl-8 pb-5">
+          <div class="flex flex-row items-center gap-2">
+            <Logo :src="buyersphere.buyerLogo"
+              size="medium"
+              class="mr-2" />
+            <h3 class="text-gray-headline">{{ buyersphere.buyer }}</h3>
+            <div class="white-box inline-flex">
+              <img src="/svg/person.svg"> &nbsp;
+              {{ buyersphere.buyerTeam.length }}
+            </div>
+            <div class="white-box">+</div>
+          </div>
+          <div class="flex flex-row items-center gap-2">
+            <Logo :src="organization.logo"
+              size="medium"
+              class="mr-2" />
+            <h3 class="text-gray-headline">{{ organization.name }}</h3>
+            <div class="white-box inline-flex">
+              <img src="/svg/person.svg"> &nbsp;
+              {{ buyersphere.sellerTeam.length }}
+            </div>
+            <div class="white-box">+</div>
+          </div>
+        </div>
+        <div class="flex flex-col items-end mr-8 mb-4">
+          <div class="tag text-gray-subtext">By {{ formatDate(nextStageDate) }}</div>
+          <h3>Current Stage: {{ capitalize(buyersphere.currentStage) }}</h3>
+          <div class="mt-2 flex flex-row gap-4">
+            <template v-if="buyersphere.status === 'active'">
+              <Tag2 color="teal" v-if="buyersphere.currentStage != 'adoption'"
+                use-dot
+                button
+                @click="advanceStage">Next Stage</Tag2>
+              <Tag2 color="orange" 
+                use-dot
+                button
+                @click="putOnHold">Put on Hold</Tag2>
+            </template>
+            <Tag2 v-else
+              color="teal"
               use-dot
               button
-              @click="advanceStage">Next Stage</Tag2>
-            <Tag2 color="orange" 
-              use-dot
-              button
-              @click="putOnHold">Put on Hold</Tag2>
-          </template>
-          <Tag2 v-else
-            color="teal"
-            use-dot
-            button
-            class="reactivate-button"
-            @click="reactivate">Reactivate</Tag2>
-        </div>
-      </div> -->
-    </div>
+              class="reactivate-button"
+              @click="reactivate">Reactivate</Tag2>
+          </div>
+        </div> -->
+      </div>
 
-    <!-- These return the left, center, left-header, and center-header sections -->
-    <InternalBuyersphereDiscoveryGuide v-if="mainSection === 'discovery-guide'" />
-    <InternalBuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
-    <InternalBuyersphereTeam v-else-if="mainSection === 'team'" />
-    <InternalBuyersphereAssets v-else-if="mainSection === 'assets'" />
-    <InternalBuyersphereNotes v-else-if="mainSection === 'notes'" />
+      <!-- These return the left, center, left-header, and center-header sections -->
+      <InternalBuyersphereDiscoveryGuide v-if="mainSection === 'discovery-guide'" />
+      <InternalBuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
+      <InternalBuyersphereTeam v-else-if="mainSection === 'team'" />
+      <InternalBuyersphereAssets v-else-if="mainSection === 'assets'" />
+      <InternalBuyersphereNotes v-else-if="mainSection === 'notes'" />
 
-    <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
-      <BsButton v-if="buyersphere.status === 'active'" @click="putOnHold">
-        <img src="/svg/pause--yellow.svg" class="mr-2">
-        <h3>Put on Hold</h3>
-      </BsButton>
-      <BsButton v-else @click="reactivate">
-        <img src="/svg/play--green.svg" class="mr-2">
-        <h3>Reactivate</h3>
-      </BsButton>
-    </div>
+      <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
+        <BsButton v-if="buyersphere.status === 'active'" @click="putOnHold">
+          <img src="/svg/pause--yellow.svg" class="mr-2">
+          <h3>Put on Hold</h3>
+        </BsButton>
+        <BsButton v-else @click="reactivate">
+          <img src="/svg/play--green.svg" class="mr-2">
+          <h3>Reactivate</h3>
+        </BsButton>
+      </div>
 
-    <div class="[grid-area:right]">
-      <div class="sticky top-[2rem] py-2 px-12">
-        <div class="flex flex-col gap-3 items-end">
-          <h3>Milestones</h3>
-          <div v-for="m in milestones"
-            class="milestone"
-            :class="{selected: nextMilestone.id === m.id}">
-            <h4 class="milestone-step">{{ m.message }}</h4>
-            <div class="milestone-date">{{ formatDate(m.dueDate) }}</div>
-            <div class="milestone-icon">
-              <img v-if="m.resolved" src="/svg/checkmark.svg">
-              <img v-else-if="nextMilestone.id === m.id" src="/svg/award.svg">
-              <img v-else src="/svg/award--light.svg">
+      <div class="[grid-area:right]">
+        <div class="sticky top-[2rem] py-2 px-12">
+          <div class="flex flex-col gap-3 items-end">
+            <h3>Milestones</h3>
+            <div v-for="m in milestones"
+              class="milestone"
+              :class="{selected: nextMilestone.id === m.id}">
+              <h4 class="milestone-step">{{ m.message }}</h4>
+              <div class="milestone-date">{{ formatDate(m.dueDate) }}</div>
+              <div class="milestone-icon">
+                <img v-if="m.resolved" src="/svg/checkmark.svg">
+                <img v-else-if="nextMilestone.id === m.id" src="/svg/award.svg">
+                <img v-else src="/svg/award--light.svg">
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="[grid-area:footer] h-20" />
+      <div class="[grid-area:footer] h-20" />
+    </div>
   </div>
 </template>
 
@@ -170,7 +172,7 @@ const nextMilestone = computed(() => find(milestones.value, m => !m.resolved))
 }
 
 .page-top {
-  @apply bg-purple-background px-10 py-6;
+  @apply bg-purple-background px-10;
   grid-area: top;
 
   &.grayscale-top {
