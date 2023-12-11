@@ -32,7 +32,7 @@
           class="in-page-link">Completed</h4>
       </div>
       <div class="page-link"
-        @click="navigateTo(`/dashboard/${buyersphereId}/accounts`)">Accounts</div>
+        @click="navigateTo(`/dashboard/accounts`)">Accounts</div>
       <!-- <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div> -->
     </div>
@@ -175,27 +175,6 @@ const lastItem = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-.page-link {
-  @apply mb-4 cursor-pointer;
-}
-
-.in-page-link {
-  @apply py-2 pl-6 cursor-pointer rounded-md flex flex-row items-center;
-
-  &.active {
-    @apply bg-gray-hover pl-[.375rem];
-
-    &::before {
-      @apply h-[.875rem] mr-1;
-      content: url('/svg/compass.svg');
-    }
-  }
-
-  &.inactive {
-    @apply text-gray-hover-active cursor-default;
-  }
-}
-
 .page-center {
   @apply flex flex-col gap-16;
   grid-area: center;
