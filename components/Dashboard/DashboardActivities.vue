@@ -1,16 +1,15 @@
 <template>
-  <div class="[grid-area:left-header]">
-    <!-- TODO share button -->
+<div class="[grid-area:left-header]">
+    left-header
   </div>
 
   <div class="[grid-area:center-header]">
+    center-header
   </div>
 
   <div class="[grid-area:left]">
     <div class="sticky top-[2rem] py-2 px-12">
-      <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
-      <h3 class="page-link">Activity Plan</h3>
+      <h3 class="page-link">Activities</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <!-- TODO grey these that are done -->
         <h4 v-if="overdueItems.length" 
@@ -33,11 +32,13 @@
           class="in-page-link">Completed</h4>
       </div>
       <div class="page-link"
+        @click="navigateTo(`/new-dashboard/${buyersphereId}/activity-plan`)">Activity Plan</div>
+      <div class="page-link"
         @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
     </div>
   </div>
 
-  <div class="page-center mb-20" v-scroll-spy>
+  <div class="page-center" v-scroll-spy>
     <InternalBuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"
       :items="overdueItems"
@@ -74,11 +75,6 @@
       :items="completedItems"
       header="Completed"
       @update:item="editItem" />
-
-
-    <h2 class="mx-auto p-2 rounded-md bg-purple-background text-purple-secondary">
-      Est Finish: {{ lastItem.dueDate }}
-    </h2>
   </div>
 </template>
 
@@ -86,21 +82,21 @@
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, last, orderBy } = lodash_pkg;
-import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
-import { useModal } from 'vue-final-modal'
+const { filter, find, orderBy } = lodash_pkg;
 
-const route = useRoute()
-const buyersphereId = parseInt(route.params.id)
+
+// TODO we'll need a route for "all" activities across deals
+// not sure how we'll want to filter that yet...
+const buyersphereId = 1
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
-const [conversations] = await Promise.all([
+const [buyersphere, conversations] = await Promise.all([
+  getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
 ])
 
-console.log(conversations)
 
 const dayjs = useDayjs()
 
@@ -174,23 +170,8 @@ const lastItem = computed(() =>
       ['dueDate'],
       ['asc']
     )
-  ) || {}
+  )
 )
-
-const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
-  component: EditCollaborationItemModal,
-  attrs: {
-    buyersphereId,
-    onClose () {
-      closeEditModal ()
-    }
-  }
-})
-
-function editItem({ item }) {
-  patchModalOptions({ attrs: { item }})
-  openEditModal()
-}
 </script>
 
 <style lang="postcss" scoped>

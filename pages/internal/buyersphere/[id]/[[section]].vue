@@ -145,6 +145,8 @@ function reactivate() {
   }
 }
 
+// TODO we may want a way to get these directly, without having to filter
+// all activities
 const milestones = computed(() => 
   orderBy(
     filter(conversations, c => c.collaborationType === 'milestone'),

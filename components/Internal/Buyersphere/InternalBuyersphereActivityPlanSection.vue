@@ -15,7 +15,7 @@
           </div>
           <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
           <Logo v-if="item.assignedTeam === 'buyer'"
-              :src="buyersphere.buyerLogo" />
+              :src="item.buyer.logo" />
           <Logo v-else
             :src="organization.logo" />
         </div>
@@ -25,21 +25,13 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
-
-const route = useRoute()
-const buyersphereId = parseInt(route.params.id)
-
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [buyersphere, organization] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+const [organization] = await Promise.all([
   getOrganizationCached.value(),
 ])
 
