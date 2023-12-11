@@ -25,6 +25,12 @@
       <div v-scroll-spy-active v-scroll-spy-link 
         class="mt-[-.75rem] mb-[.75rem]">
         <h4 
+          @click="navigateTo('#buyer')"
+          class="in-page-link">{{ buyersphere.buyer }}</h4>
+        <h4 
+          @click="navigateTo('#seller')"
+          class="in-page-link">{{ organization.name }}</h4>
+        <!-- <h4 
           @click="navigateTo('#leadership')"
           class="in-page-link">Leadership</h4>
         <h4 
@@ -32,13 +38,13 @@
           class="in-page-link">Primary Team</h4>
         <h4 
           @click="navigateTo('#auxiliary-team')"
-          class="in-page-link">Auxiliary Team</h4>
+          class="in-page-link">Auxiliary Team</h4> -->
       </div>
     </div>
   </div>
 
   <div class="page-center" v-scroll-spy>
-    <BuyersphereTeamSection
+    <!-- <BuyersphereTeamSection
       id="leadership"
       :users="users"
       header="Leadership" />
@@ -51,7 +57,17 @@
     <BuyersphereTeamSection
       id="auxiliary-team"
       :users="users"
-      header="Auxiliary Team" />
+      header="Auxiliary Team" /> -->
+    
+    <BuyersphereTeamSection
+      id="buyer"
+      :users="buyersphere.buyerTeam"
+      :header="buyersphere.buyer" />
+
+    <BuyersphereTeamSection
+      id="seller"
+      :users="buyersphere.sellerTeam"
+      :header="organization.name" />
   </div>
 </template>
 
@@ -80,7 +96,7 @@ const [buyersphere, organization] = await Promise.all([
 ])
 
 // TODO separate user groups
-const users = computed(() => concat(buyersphere.sellerTeam, buyersphere.buyerTeam))
+// const users = computed(() => concat(buyersphere.sellerTeam, buyersphere.buyerTeam))
 
 // TODO refactor these into 1 modal
 const { open: openBuyerModal, close: closeBuyerModal } = useModal({
