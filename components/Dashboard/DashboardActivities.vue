@@ -32,45 +32,45 @@
           class="in-page-link">Completed</h4>
       </div>
       <div class="page-link"
-        @click="navigateTo(`/new-dashboard/${buyersphereId}/accounts`)">Accounts</div>
+        @click="navigateTo(`/dashboard/${buyersphereId}/accounts`)">Accounts</div>
       <!-- <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/insights`)">Insights</div> -->
+        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div> -->
     </div>
   </div>
 
   <div class="page-center" v-scroll-spy>
-    <InternalBuyersphereActivityPlanSection v-if="overdueItems.length"
+    <BuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"
       :items="overdueItems"
       overdue
       header="Overdue"
       @update:item="editItem" />
 
-    <InternalBuyersphereActivityPlanSection v-if="next7DaysItems.length"
+    <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
       :items="next7DaysItems"
       header="Next 7 Days"
       @update:item="editItem" />
 
-    <InternalBuyersphereActivityPlanSection v-if="next30DaysItems.length"
+    <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
       :items="next30DaysItems"
       header="Next 30 Days"
       @update:item="editItem" />
 
-    <InternalBuyersphereActivityPlanSection v-if="next90DaysItems.length"
+    <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
       :items="next90DaysItems"
       header="Next 90 Days"
       @update:item="editItem" />
 
-    <InternalBuyersphereActivityPlanSection v-if="beyondItems.length"
+    <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
       :items="beyondItems"
       header="Beyond"
       @update:item="editItem" />
 
-    <InternalBuyersphereActivityPlanSection v-if="completedItems.length"
+    <BuyersphereActivityPlanSection v-if="completedItems.length"
       id="completed"
       :items="completedItems"
       header="Completed"

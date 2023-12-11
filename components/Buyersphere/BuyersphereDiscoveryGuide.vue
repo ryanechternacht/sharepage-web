@@ -24,9 +24,9 @@
           class="in-page-link">Success Criteria</h4>
       </div>
       <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
+        @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
+        @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
     </div>
   </div>
 
@@ -222,12 +222,6 @@ function updatePricingTierId (tierId) {
 const keyConstraints = ref('')
 const objectives = ref('')
 const successCriteria = ref('')
-
-// function makeInternalBuyersphereLink(section) {
-//   return section === 'map'
-//     ? `/internal/buyersphere/${route.params.id}`
-//     : `/internal/buyersphere/${route.params.id}/${section}`
-// }
 
 // TODO do we need to filter this?
 const milestones = computed(() => 

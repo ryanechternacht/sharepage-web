@@ -8,7 +8,7 @@
       </div>
       <template v-for="g in activeItemsGrouped">
         <div class="mx-auto tag gray-italic">{{ g.date }}</div>
-        <InternalBuyersphereMutualActionPlanItem
+        <BuyersphereMutualActionPlanItem
           v-for="i in g.items"
           :buyersphere-id="buyersphereId"
           :item="i"
@@ -24,7 +24,7 @@
       </div>
       <template v-for="g in upcomingItemsGrouped">
         <div class="mx-auto tag gray-italic">{{ g.date }}</div>
-        <InternalBuyersphereMutualActionPlanItem
+        <BuyersphereMutualActionPlanItem
           v-for="i in g.items"
           :buyersphere-id="buyersphereId"
           :item="i"
@@ -40,7 +40,7 @@
       </div>
       <template v-for="g in completedItemsGrouped">
         <div class="mx-auto tag gray-italic">{{ g.date }}</div>
-        <InternalBuyersphereMutualActionPlanItem
+        <BuyersphereMutualActionPlanItem
           v-for="i in g.items"
           :buyersphere-id="buyersphereId"
           :item="i"

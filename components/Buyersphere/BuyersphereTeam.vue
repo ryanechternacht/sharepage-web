@@ -18,9 +18,9 @@
   <div class="[grid-area:left]">
     <div class="sticky top-[2rem] py-2 px-12">
       <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
+        @click="navigateTo(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
       <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
+        @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <h3 class="page-link">Team</h3>
       <div v-scroll-spy-active v-scroll-spy-link 
         class="mt-[-.75rem] mb-[.75rem]">
@@ -38,17 +38,17 @@
   </div>
 
   <div class="page-center" v-scroll-spy>
-    <InternalBuyersphereTeamSection
+    <BuyersphereTeamSection
       id="leadership"
       :users="users"
       header="Leadership" />
 
-    <InternalBuyersphereTeamSection
+    <BuyersphereTeamSection
       id="primary-team"
       :users="users"
       header="Primary Team" />
 
-    <InternalBuyersphereTeamSection
+    <BuyersphereTeamSection
       id="auxiliary-team"
       :users="users"
       header="Auxiliary Team" />
