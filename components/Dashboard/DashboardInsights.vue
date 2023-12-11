@@ -12,7 +12,7 @@
     </div>
   
     <div class="page-center" v-scroll-spy>
-      opportunities!
+      insights!
     </div>
   </template>
   

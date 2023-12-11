@@ -4,8 +4,6 @@
     <div class="page-layout">
       <div class="page-top">
         <div class="mt-8 flex flex-row items-center justify-center gap-2">
-          <!-- <img :src="buyersphere.buyerLogo" class="h-[1.25rem]"> -->
-          <!-- <h3>{{ buyersphere.buyer }}</h3> -->
         </div>
         <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
           <h1>My <!-- TODO this could be "john's"--></h1> 
@@ -16,17 +14,17 @@
       </div>
 
       <div class="[grid-area:right-header]">
-        right-header
+        <!-- right-header -->
       </div>
 
       <div class="[grid-area:right]">
-        right-sidebar
+        <!-- right-sidebar -->
       </div>
 
       <!-- These return the left, center, left-header, and center-header sections -->
       <DashboardActivities v-if="mainSection === 'activities'" />
       <DashboardAccounts v-if="mainSection === 'accounts'" />
-      <DashboardOpportunities v-if="mainSection === 'opportunities'" />
+      <DashboardInsights v-if="mainSection === 'insights'" />
 
       <div class="[grid-area:footer] h-20" />
     </div>

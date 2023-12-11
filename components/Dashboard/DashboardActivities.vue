@@ -1,10 +1,10 @@
 <template>
 <div class="[grid-area:left-header]">
-    left-header
+    <!-- left-header -->
   </div>
 
   <div class="[grid-area:center-header]">
-    center-header
+    <!-- center-header -->
   </div>
 
   <div class="[grid-area:left]">
@@ -32,9 +32,9 @@
           class="in-page-link">Completed</h4>
       </div>
       <div class="page-link"
-        @click="navigateTo(`/new-dashboard/${buyersphereId}/activity-plan`)">Activity Plan</div>
-      <div class="page-link"
-        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/team`)">Team</div>
+        @click="navigateTo(`/new-dashboard/${buyersphereId}/accounts`)">Accounts</div>
+      <!-- <div class="page-link"
+        @click="navigateTo(`/internal/buyersphere/${buyersphereId}/insights`)">Insights</div> -->
     </div>
   </div>
 
