@@ -66,9 +66,15 @@ export const useUsersStore = defineStore('users', {
         }
       })
 
-      // this.users.content.push(data.value)
       const i = findIndex(this.users.content, u => u.id === id)
-      this.users.content[i] = data.value
+      if (i >= 0) {
+        this.users.content[i] = data.value
+      }
+      if (this.me.id === id) {
+        this.me.firstName = data.value.firstName
+        this.me.lastName = data.value.lastName
+        this.me.displayRole = data.value.displayRole
+      }
     },
   }
 })
