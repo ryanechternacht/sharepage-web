@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import lodash_pkg from 'lodash';
+const { findIndex } = lodash_pkg;
 
 // Unlike most caches, `me` dosn't use a time based refresh (because
 // this data changes so infrequently). It can still be force 
@@ -52,6 +54,21 @@ export const useUsersStore = defineStore('users', {
           generateAt: dayjs().toJSON()
         }
       }
-    }
+    },
+    async updateUser({ id, firstName, lastName, displayRole }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/users/${id}`, {
+        method: "PATCH",
+        body: {
+          firstName,
+          lastName,
+          displayRole
+        }
+      })
+
+      // this.users.content.push(data.value)
+      const i = findIndex(this.users.content, u => u.id === id)
+      this.users.content[i] = data.value
+    },
   }
 })

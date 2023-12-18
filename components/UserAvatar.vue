@@ -5,7 +5,7 @@
     :src="user.image">
   <div v-else 
     :class="[ sizeClass ]"
-    class="bg-green-primary rounded-full center-xy h-8">
+    class="bg-blue-primary rounded-full center-xy h-8">
     <h3 class="dark mx-auto">{{ user.firstName[0] }}</h3>
   </div>
 </template>

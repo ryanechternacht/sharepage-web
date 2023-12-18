@@ -100,8 +100,6 @@ const [conversations] = await Promise.all([
   getBuyersphereConversationsByIdCached.value(buyersphereId),
 ])
 
-console.log(conversations)
-
 const dayjs = useDayjs()
 
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))

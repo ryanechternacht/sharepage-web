@@ -104,6 +104,10 @@
       @apply p-2 flex flex-row gap-2 items-center mx-auto rounded-md 
         mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white border border-gray-border;
     }
+
+    .section-add-button {
+      @apply mx-auto mt-4 mb-[-2rem] bg-white;
+    }
   }
 
   .page-link {

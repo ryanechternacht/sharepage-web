@@ -44,7 +44,7 @@ const mainSection = computed(
 .page-layout {
   @apply grid gap-y-4;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 300px 1fr 300px;
+  grid-template-columns: 250px 1fr 250px;
   grid-template-areas:
     "top         top           top"
     "left-header center-header right-header"

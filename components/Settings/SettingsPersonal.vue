@@ -19,7 +19,9 @@
     </div>
   </div>
 
-  <div class="[grid-area:center]">
-    profile
+  <div class="[grid-area:center]" v-scroll-spy>
   </div>
 </template>
+
+<script setup>
+</script>

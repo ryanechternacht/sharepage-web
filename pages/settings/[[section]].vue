@@ -17,6 +17,10 @@
       <SettingsTimelineTemplate v-else-if="mainSection === 'timeline-template'" />
       <SettingsAssetsTemplate v-else-if="mainSection === 'assets-template'" />
 
+      <div class="[grid-area:right]">
+        <!-- intentionally blank -->
+      </div>
+
       <div class="[grid-area:footer] h-20" />
     </div>
   </div>
@@ -36,11 +40,12 @@ const mainSection = computed(() => route.params.section || 'personal')
 .page-layout {
   @apply grid gap-y-4;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 250px 1fr 250px;
   grid-template-areas:
-    "top    top"
-    "left   center"
-    "footer footer";
+    "top         top           top"
+    "left-header center-header right-header"
+    "left        center        right"
+    "footer      footer        footer";
 }
 
 .page-top {
