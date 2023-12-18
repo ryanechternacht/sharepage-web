@@ -25,6 +25,11 @@
     <div class="flex flex-row-reverse items-center gap-x-2 min-w-[200px]">
       <UserAvatar :user="user" size="large" />
       <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
+      <NuxtLink v-if="user.buyersphereRole === 'admin'"
+        to="/settings">
+        <!-- TODO should probably be an icon -->
+        Settings
+      </NuxtLink>
     </div>
   </div>
 </template>
