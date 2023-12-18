@@ -24,9 +24,9 @@
         placeholder="Role">
       <SubmitButton 
         class="self-center"
-        ready-text="Create User"
-        submitting-text="Creating"
-        error-text="Creation Failed"
+        :ready-text="readyText"
+        :submitting-text="submittingText"
+        :error-text="errorText"
         :submission-state="submissionState"
         :disabled="needsMoreInput"
         @click="submitFn" />
@@ -46,6 +46,10 @@ const { user } = defineProps({
 const emit = defineEmits(['close'])
 
 const usersStore = useUsersStore()
+
+const readyText = computed(() => user ? "Update User" : "Create User")
+const submittingText = computed(() => user ? "Updating" : "Creating")
+const errorText = computed(() => user ? "Update Failed" : "Creation Failed")
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   if (user) {
