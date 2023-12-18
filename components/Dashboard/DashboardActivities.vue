@@ -8,7 +8,7 @@
   </div>
 
   <div class="[grid-area:left]">
-    <div class="sticky top-[2rem] py-2 px-12">
+    <div class="left-sidebar">
       <h3 class="page-link">Activities</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <!-- TODO grey these that are done -->

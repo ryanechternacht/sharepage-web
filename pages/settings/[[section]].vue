@@ -6,20 +6,16 @@
         <div class="mt-8 flex flex-row items-center justify-center gap-2">
         </div>
         <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
-          <h1>My <!-- TODO this could be "john's"--></h1> 
-          <h1 class="bg-purple-secondary text-white rounded-md px-1 py-[1px]">
-            {{ mainSection.replace('-', ' ') }}
-          </h1>
+          <h1>{{ startCase(mainSection) }} Settings</h1>
         </div>
       </div>
 
       <!-- These return the left, center, left-header, and center-header sections -->
       <SettingsPersonal v-if="mainSection === 'personal'" />
-      <SettingsGlobal v-else-if="mainSection === 'global'" />
-      <SettingsTeam v-else-if="mainSection === 'team'" />
-      <SettingsActivityPlan v-else-if="mainSection === 'activity-plan'" />
-      <SettingsDiscoveryGuide v-else-if="mainSection === 'discovery-guide'" />
-      <SettingsResources v-else-if="mainSection === 'resources'" />
+      <SettingsAdmin v-else-if="mainSection === 'admin'" />
+      <SettingsGuideTemplate v-else-if="mainSection === 'guide-template'" />
+      <SettingsTimelineTemplate v-else-if="mainSection === 'timeline-template'" />
+      <SettingsAssetsTemplate v-else-if="mainSection === 'assets-template'" />
 
       <div class="[grid-area:footer] h-20" />
     </div>
@@ -27,6 +23,8 @@
 </template>
 
 <script setup>
+import lodash_pkg from 'lodash';
+const { startCase } = lodash_pkg;
 
 const route = useRoute()
 const mainSection = computed(() => route.params.section || 'personal')

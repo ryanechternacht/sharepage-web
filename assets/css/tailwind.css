@@ -126,4 +126,12 @@
       @apply text-gray-hover-active cursor-default;
     }
   }
+
+  .left-sidebar {
+    @apply sticky top-[2rem] py-2 pl-12 pr-6;
+  }
+
+  .right-sidebar {
+    @apply sticky top-[2rem] py-2 pr-12 pl-6
+  }
 }

@@ -7,7 +7,7 @@
   </div>
 
   <div class="[grid-area:left]">
-    <div class="sticky top-[2rem] py-2 px-12">
+    <div class="left-sidebar">
       <h3 class="page-link">Discovery Guide</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <h4 @click="navigateTo('#objectives')"

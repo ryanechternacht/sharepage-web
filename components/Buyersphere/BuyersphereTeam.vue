@@ -16,7 +16,7 @@
   </div>
 
   <div class="[grid-area:left]">
-    <div class="sticky top-[2rem] py-2 px-12">
+    <div class="left-sidebar">
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
       <div class="page-link"

@@ -8,7 +8,7 @@
   </div>
 
   <div class="[grid-area:left]">
-    <div class="sticky top-[2rem] py-2 px-12">
+    <div class="left-sidebar">
       <div class="page-link"
         @click="navigateTo(`/dashboard/activities`)">Activities</div>
       <h3 class="page-link">Accounts</h3>
