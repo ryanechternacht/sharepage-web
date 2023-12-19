@@ -38,6 +38,9 @@
   <div class="page-center" v-scroll-spy>
     <div class="section">
       <div class="group-header">Accounts</div>
+      <div class="item-count">
+        {{ buyerspheres.length === 1 ? '1 account' : `${buyerspheres.length} accounts`}}
+      </div>
       <div class="mt-[2rem] flex flex-col gap-4">
         <div v-for="bs in buyerspheres"
           class="item-list-row"

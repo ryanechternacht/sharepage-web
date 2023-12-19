@@ -2,7 +2,7 @@
   <div class="section">
     <div class="group-header">{{ header }}</div>
     <div class="item-count">
-      {{ items.length === 1 ? '1 item' : `${items.length} items`}}
+      {{ items.length === 1 ? '1 activity' : `${items.length} activities`}}
     </div>
     <div class="mt-[2rem] flex flex-col gap-4">
       <div v-for="item in items"
