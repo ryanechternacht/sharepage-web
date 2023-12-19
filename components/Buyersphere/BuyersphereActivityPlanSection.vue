@@ -8,7 +8,11 @@
       <div v-for="item in items"
         class="item-list-row"
         @click="emit('update:item', { item })">
-        <img :src="iconMap[item.collaborationType]">
+        <img :src="iconMap[item.collaborationType]"
+          class="w-[1rem] h-[1rem]">
+        <Tag2 class="w-[4.75rem]" color="gray">
+          {{ capitalize(item.collaborationType) }}
+        </Tag2>
         <div class="inline-html" v-html="item.message" />
         <div class="flex-grow" />
         <div class="w-[9.5rem] flex flex-row items-center gap-1 justify-end">
@@ -30,6 +34,8 @@
 <script setup>
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
+import lodash_pkg from 'lodash';
+const { capitalize } = lodash_pkg;
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
