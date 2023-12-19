@@ -75,6 +75,8 @@
       :items="completedItems"
       header="Completed"
       @update:item="editItem" />
+      
+    <div class="vertical-bar" />
   </div>
 </template>
 
@@ -175,8 +177,4 @@ const lastItem = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-.page-center {
-  @apply flex flex-col gap-16;
-  grid-area: center;
-}
 </style>

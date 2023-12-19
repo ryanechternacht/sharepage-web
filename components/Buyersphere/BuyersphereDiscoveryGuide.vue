@@ -152,6 +152,8 @@
         </div>
       </div>
     </div>
+    
+    <div class="vertical-bar" />
   </div>
 </template>
 
@@ -240,11 +242,6 @@ function toDate (date) {
 </script>
 
 <style lang="postcss" scoped>
-.page-center {
-  @apply flex flex-col gap-16;
-  grid-area: center;
-}
-
 .item-list {
   @apply flex flex-col gap-4;
 

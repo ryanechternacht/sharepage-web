@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="page-center mb-20" v-scroll-spy>
+  <div class="page-center" v-scroll-spy>
     <BuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"
       :items="overdueItems"
@@ -79,6 +79,8 @@
     <h2 class="mx-auto p-2 rounded-md bg-purple-background text-purple-secondary">
       Est Finish: {{ lastItem.dueDate }}
     </h2>
+
+    <div class="vertical-bar" />
   </div>
 </template>
 
@@ -192,8 +194,4 @@ function editItem({ item }) {
 </script>
 
 <style lang="postcss" scoped>
-.page-center {
-  @apply flex flex-col gap-16;
-  grid-area: center;
-}
 </style>

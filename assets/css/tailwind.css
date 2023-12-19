@@ -92,8 +92,13 @@
     @apply flex flex-row items-center justify-center;
   }
 
+  .page-center {
+    @apply flex flex-col gap-16 relative;
+    grid-area: center;
+  }
+
   .section {
-    @apply p-4 border border-gray-border rounded-md flex flex-col mt-4;
+    @apply p-4 mt-4 border border-gray-border rounded-md flex flex-col bg-white;
   
     h4 {
       @apply mb-2 mt-4;
@@ -108,6 +113,13 @@
     .section-add-button {
       @apply mx-auto mt-4 mb-[-2rem] bg-white;
     }
+  }
+
+  /* could this be auto-added with something like :last-child:after ? */
+  .vertical-bar {
+    @apply z-[-1] mx-auto border border-gray-border absolute self-center
+      my-4;
+    height: calc(100% - 2rem);
   }
 
   .page-link {

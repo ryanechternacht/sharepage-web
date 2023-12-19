@@ -68,6 +68,8 @@
       id="seller"
       :users="buyersphere.sellerTeam"
       :header="organization.name" />
+    
+      <div class="vertical-bar" />
   </div>
 </template>
 
@@ -122,11 +124,6 @@ const { open: openSellerModal, close: closeSellerModal } = useModal({
 </script>
 
 <style lang="postcss" scoped>
-.page-center {
-  @apply flex flex-col gap-16;
-  grid-area: center;
-}
-
 .item-list-row {
   @apply w-full flex flex-row items-center gap-2;
 
