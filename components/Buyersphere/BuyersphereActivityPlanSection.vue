@@ -1,6 +1,9 @@
 <template>
   <div class="section">
     <div class="group-header">{{ header }}</div>
+    <div class="item-count">
+      {{ items.length === 1 ? '1 item' : `${items.length} items`}}
+    </div>
     <div class="mt-[2rem] flex flex-col gap-4">
       <div v-for="item in items"
         class="item-list-row"

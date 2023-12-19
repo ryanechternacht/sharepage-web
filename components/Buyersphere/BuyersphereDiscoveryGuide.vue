@@ -34,7 +34,7 @@
     <div id="success-criteria"
       class="section">
       <div class="group-header">Success Criteria</div>
-
+      
       <h4>How will we know if this product is right for you?</h4>
       <TipTapTextarea v-model="successCriteria"
         placeholder="Pain points to resolve"
@@ -152,7 +152,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="vertical-bar" />
   </div>
 </template>
