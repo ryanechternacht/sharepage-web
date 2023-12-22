@@ -15,23 +15,34 @@
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
       <h3 class="page-link">Insights</h3>
-      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 class="in-page-link"
-          @click="navigateTo('#buyer-activity')">Buyer Activity</h4>
+      <div v-scroll-spy-active v-scroll-spy-link
+        class="mt-[-.75rem] mb-[.75rem]">
+        <h4 v-if="last7DaysItems.length" 
+          @click="navigateTo('#last-7-days')"
+          class="in-page-link">Last 7 Days</h4>
+        <h4 v-if="last30DaysItems.length" 
+          @click="navigateTo('#last-30-days')"
+          class="in-page-link">Last 30 Days</h4>
+        <h4 v-if="olderItems.length" 
+          @click="navigateTo('#older')"
+          class="in-page-link">Older</h4>
       </div>
     </div>
   </div>
 
   <div class="page-center" v-scroll-spy>
     <BuyersphereInsightsSection 
+      id="last-7-days"
       :items="last7DaysItems"
       header="Last 7 Days" />
 
     <BuyersphereInsightsSection 
+      id="last-30-days"
       :items="last30DaysItems"
       header="Last 30 Days" />
 
     <BuyersphereInsightsSection 
+      id="older"
       :items="olderItems"
       header="Older" />
 
@@ -43,7 +54,7 @@
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, last, orderBy } = lodash_pkg;
+const { filter, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)

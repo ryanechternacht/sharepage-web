@@ -14,10 +14,10 @@
         <img src="/svg/target.svg">
         <span>Accounts</span>
       </NuxtLink>
-      <!-- <NuxtLink to="/dashboard/insights" class="link">
+      <NuxtLink to="/dashboard/insights" class="link">
         <img src="/svg/lightning-bolt.svg">
         <span>Insights</span>
-      </NuxtLink> -->
+      </NuxtLink>
     </template>
 
     <div class="flex-grow" />

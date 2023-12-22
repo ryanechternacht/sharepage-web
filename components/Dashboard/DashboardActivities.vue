@@ -1,17 +1,14 @@
 <template>
-<div class="[grid-area:left-header]">
-    <!-- left-header -->
+  <div class="[grid-area:left-header]">
   </div>
 
   <div class="[grid-area:center-header]">
-    <!-- center-header -->
   </div>
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <h3 class="page-link">Activities</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <!-- TODO grey these that are done -->
         <h4 v-if="overdueItems.length" 
           @click="navigateTo('#overdue')"
           class="in-page-link">Overdue</h4>
@@ -33,8 +30,8 @@
       </div>
       <div class="page-link"
         @click="navigateTo(`/dashboard/accounts`)">Accounts</div>
-      <!-- <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div> -->
+      <div class="page-link"
+        @click="navigateTo(`/dashboard/insights`)">Insights</div>
     </div>
   </div>
 

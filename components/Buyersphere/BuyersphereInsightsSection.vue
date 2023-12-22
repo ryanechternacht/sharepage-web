@@ -8,15 +8,21 @@
       <div v-for="item in items"
         class="item-list-row"
         @click="emit('update:item', { item })">
-        <img :src="activityMap[item.activity].icon"
+        <img :src="activityMap[item.activity]?.icon"
           class="w-[1rem] h-[1rem]">
-        <div>{{ activityMap[item.activity].label }}</div>
+        <div>{{ activityMap[item.activity]?.label }}</div>
         
         <div class="flex-grow" />
+
         <UserAvatar :user="item.user" />
         <div class="ml-[-.5rem] min-w-[8rem]">{{ item.user.firstName}} {{ item.user.lastName }}</div>
-        
-        <div class="tag">
+
+        <template v-if="showAccount">
+          <Logo :src="item.buyersphere.buyerLogo" />
+          <div class="ml-[-.5rem] min-w-[8rem]">{{ item.buyersphere.buyer }}</div>
+        </template>
+
+        <div class="tag min-w-[3rem]">
           {{ prettyFormatDateFromToday(item.createdAt) }}
         </div>
       </div>
@@ -28,6 +34,7 @@
 const props = defineProps({ 
   items: { type: Array, required: true },
   header: { type: String, required: true },
+  showAccount: { type: Boolean, default: false },
 })
 
 const dayjs = useDayjs()
@@ -50,7 +57,7 @@ function prettyFormatDateFromToday(date) {
 }
 
 const activityMap = {
-  login: { icon: '/svg/eye.svg', label: 'Opened the Buyersphere' }
+  'site-activity': { icon: '/svg/eye.svg', label: 'Opened the Buyersphere' }
 }
 </script>
 

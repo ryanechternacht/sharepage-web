@@ -32,6 +32,8 @@
           @click="navigateTo('#completed')"
           class="in-page-link">Completed</h4>
       </div> -->
+      <div class="page-link"
+        @click="navigateTo(`/dashboard/insights`)">Insights</div>
     </div>
   </div>
 

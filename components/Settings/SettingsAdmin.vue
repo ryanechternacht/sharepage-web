@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="[grid-area:center]">
+  <div class="[grid-area:center]" v-scroll-spy>
     <div id="team"
       class="section">
       <div class="group-header">Team Members</div>
