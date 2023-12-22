@@ -6,7 +6,8 @@
        to the .ProseMirror -->
   <editor-content 
     :editor="editor"
-    class="editor p-2 body bg-gray-hover border border-gray-border rounded-md" />
+    read-only
+    class="editor p-2 body bg-[#fafafa] border border-gray-border rounded-md" />
 </template>
 
 <script setup>
@@ -17,12 +18,14 @@ import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-
 const props = defineProps({ 
   modelValue: { type: String, required: true },
   placeholder: { type: String, default: '' },
-  minHeight: { type: String, default: "40px" }
+  minHeight: { type: String, default: "40px" },
+  readonly: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-const editor = useEditor({ 
+const editor = useEditor({
+  editable: !props.readonly,
   content: props.modelValue,
   extensions: [
     StarterKit,

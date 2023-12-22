@@ -127,7 +127,7 @@ const completedItemCount = computed(() => getGroupCount(completedItemsGrouped.va
 const activeItemCount = computed(() => getGroupCount(activeItemsGrouped.value))
 const upcomingItemsCount = computed(() => getGroupCount(upcomingItemsGrouped.value))
 
-const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
+const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions } = useModal({
   component: EditCollaborationItemModal,
   attrs: {
     buyersphereId,
