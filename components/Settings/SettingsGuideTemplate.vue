@@ -36,17 +36,18 @@
       <div class="group-header">Objectives</div>
       <h4>These are the core problems we solve</h4>
       <div class="item-list">
-        <div v-for="pp in painPoints"
+        <div v-for="objective in painPoints"
           class="item-list-row">
           <img src="/svg/gift-tag.svg">
-          <Tag2 class="whitespace-nowrap" color="blue">{{ pp.title }}</Tag2>
-          <div class="inline-html tag" v-html="pp.description" />
+          <Tag2 class="whitespace-nowrap" color="blue">{{ objective.title }}</Tag2>
+          <div class="inline-html tag" v-html="objective.description" />
           <div class="flex-grow" />
           <BsButton class="show-on-row-hover"
-            @click="editObjective({ objective: pp })">
+            @click="editObjective({ objective })">
             <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
           </BsButton>
-          <BsButton class="show-on-row-hover">
+          <BsButton class="show-on-row-hover"
+            @click="deleteObjective({ objective })">
             <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
           </BsButton>
         </div>
@@ -149,6 +150,14 @@ function addObjective () {
 function editObjective ({ objective }) {
   patchObjectiveModalOptions({ attrs: { objective } })
   openObjectiveModal()
+}
+
+function deleteObjective({ objective }) {
+  const c = confirm("Are you sure you want to delete")
+
+  if (c) {
+    painPointsStore.deletePainPoint({ painPoint: objective})
+  }
 }
 
 </script>
