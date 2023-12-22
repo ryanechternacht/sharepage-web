@@ -66,6 +66,7 @@
       <BuyersphereDiscoveryGuide v-if="mainSection === 'discovery-guide'" />
       <BuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
       <BuyersphereTeam v-else-if="mainSection === 'team'" />
+      <BuyersphereInsights v-else-if="mainSection === 'insights'" />
       <BuyersphereAssets v-else-if="mainSection === 'assets'" />
       <BuyersphereNotes v-else-if="mainSection === 'notes'" />
 

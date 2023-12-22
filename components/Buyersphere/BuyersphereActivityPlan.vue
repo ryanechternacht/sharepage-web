@@ -34,6 +34,10 @@
       </div>
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
+      <!-- Should this check be standardized onto the store? -->
+      <div v-if="isSeller"
+        class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
     </div>
   </div>
 
@@ -86,6 +90,7 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, last, orderBy } = lodash_pkg;
@@ -98,8 +103,12 @@ const buyersphereId = parseInt(route.params.id)
 const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
-const [conversations] = await Promise.all([
+const usersStore = useUsersStore()
+const { isUserSeller } = storeToRefs(usersStore)
+
+const [conversations, isSeller] = await Promise.all([
   getBuyersphereConversationsByIdCached.value(buyersphereId),
+  isUserSeller.value(),
 ])
 
 const dayjs = useDayjs()

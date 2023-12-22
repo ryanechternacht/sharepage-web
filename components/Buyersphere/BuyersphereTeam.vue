@@ -40,6 +40,9 @@
           @click="navigateTo('#auxiliary-team')"
           class="in-page-link">Auxiliary Team</h4> -->
       </div>
+      <div v-if="isSeller"
+        class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
     </div>
   </div>
 
@@ -69,13 +72,14 @@
       :users="buyersphere.sellerTeam"
       :header="organization.name" />
     
-      <div class="vertical-bar" />
+    <div class="vertical-bar" />
   </div>
 </template>
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
+import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, orderBy, concat } = lodash_pkg;
@@ -92,9 +96,13 @@ const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [buyersphere, organization] = await Promise.all([
+const usersStore = useUsersStore()
+const { isUserSeller } = storeToRefs(usersStore)
+
+const [buyersphere, organization, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getOrganizationCached.value()
+  getOrganizationCached.value(),
+  isUserSeller.value(),
 ])
 
 // TODO separate user groups

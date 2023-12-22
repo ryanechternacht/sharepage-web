@@ -21,6 +21,10 @@ export const useUsersStore = defineStore('users', {
     getUsersCached: (state) => async () => {
       await state.fetchUsers()
       return state.users.content
+    },
+    isUserSeller: (state) => async () => {
+      await state.fetchMe()
+      return state.me.buyersphereRole === 'admin'
     }
   },
   actions: {

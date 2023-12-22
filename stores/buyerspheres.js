@@ -9,8 +9,9 @@ function is10MinutesOld(jsonTimestamp) {
 
 export const useBuyerspheresStore = defineStore('buyerspheres', {
   state: () => ({ 
-    buyerspheres: {}, 
-    conversations: {}
+    buyerspheres: {},
+    conversations: {},
+    buyerActivity: {},
   }),
   getters: {
     getBuyersphereByIdCached: (state) => async (buyersphereId) => {
@@ -20,12 +21,16 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     getBuyersphereConversationsByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphereConversations({ buyersphereId })
       return state.conversations[buyersphereId]?.content
+    },
+    getBuyersphereBuyerActivityByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchBuyersphereBuyerActivity({ buyersphereId })
+      return state.buyerActivity[buyersphereId]?.content
     }
   },
   actions: {
     async createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
+      await apiFetch(
         `/v0.1/buyerspheres`,
         { method: 'POST', body: { buyer, buyerLogo, crmOpportunityId, dealAmount } }
       )
@@ -33,7 +38,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, dealAmount, crmOpportunityId, 
       currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate }) {
       const { apiFetch } = useNuxtApp()
-      const { data, error } = await apiFetch(
+      const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
         { method: 'PATCH', body: { 
           buyer,
@@ -157,6 +162,21 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       {
         const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/conversations`)
         this.conversations[buyersphereId] = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async fetchBuyersphereBuyerActivity({ buyersphereId, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.buyerActivity[buyersphereId]?.content
+          || forceRefresh
+          || is10MinutesOld(this.buyerActivity[buyersphereId]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/buyer-activity`)
+        this.buyerActivity[buyersphereId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }

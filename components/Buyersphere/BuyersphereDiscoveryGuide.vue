@@ -27,7 +27,10 @@
         @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
-    </div>
+      <div v-if="isSeller"
+        class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
+      </div>
   </div>
 
   <div class="page-center" v-scroll-spy>
@@ -162,6 +165,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { useFeaturesStore } from '@/stores/features'
 import { usePricingStore } from '@/stores/pricing'
+import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
@@ -182,12 +186,16 @@ const { getFeaturesCached } = storeToRefs(featuresStore)
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
-const [buyersphere, conversations, painPoints, features, { pricingTiers }] = await Promise.all([
+const usersStore = useUsersStore()
+const { isUserSeller } = storeToRefs(usersStore)
+
+const [buyersphere, conversations, painPoints, features, { pricingTiers }, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
   getPainPointsCached.value(),
   getFeaturesCached.value(),
   getPricingCached.value(),
+  isUserSeller.value(),
 ])
 
 const periodMap = {
