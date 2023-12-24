@@ -10,18 +10,18 @@
     <div class="left-sidebar">
       <h3 class="page-link">Discovery Guide</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 @click="navigateTo('#objectives')"
-          class="in-page-link">Objectives</h4>
-        <h4 @click="navigateTo('#milestones')"
-          class="in-page-link">Milestones</h4>
-        <h4 @click="navigateTo('#features')"
-          class="in-page-link">Features</h4>
-        <h4 @click="navigateTo('#constraints')"
-          class="in-page-link">Constraints</h4>
-        <h4 @click="navigateTo('#pricing')"
-          class="in-page-link">Pricing</h4>
         <h4 @click="navigateTo('#success-criteria')"
           class="in-page-link">Success Criteria</h4>
+        <h4 @click="navigateTo('#objectives')"
+          class="in-page-link">Objectives</h4>
+        <h4 @click="navigateTo('#features')"
+          class="in-page-link">Features</h4>
+        <h4 @click="navigateTo('#pricing')"
+          class="in-page-link">Pricing</h4>
+        <h4 @click="navigateTo('#constraints')"
+          class="in-page-link">Constraints</h4>
+        <h4 @click="navigateTo('#milestones')"
+          class="in-page-link">Milestones</h4>
       </div>
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
@@ -69,7 +69,7 @@
       <h4>Let us know which features are important to you</h4>
       <div class="flex flex-col gap-4">
         <div v-for="(f, i) in features"
-          class="four-tile-grid">
+          class="feature-list">
           <div><!-- empty --></div>
           <h3>{{ f.title }}</h3>
           <div class="justify-center flex flex-row items-center gap-2">
@@ -309,7 +309,7 @@ function toDate (date) {
   }
 }
 
-.four-tile-grid {
+.feature-list {
   @apply bg-white grid items-center gap-x-4 gap-y-1;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;

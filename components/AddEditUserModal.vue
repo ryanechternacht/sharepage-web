@@ -30,7 +30,6 @@
         :submission-state="submissionState"
         :disabled="needsMoreInput"
         @click="submitFn" />
-        {{ error }}
     </div>
   </VueFinalModal>
 </template>

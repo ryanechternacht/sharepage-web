@@ -7,7 +7,7 @@
   <editor-content 
     :editor="editor"
     read-only
-    class="editor p-2 body bg-[#fafafa] border border-gray-border rounded-md" />
+    class="editor p-2 body bg-white border border-gray-border rounded-md" />
 </template>
 
 <script setup>
