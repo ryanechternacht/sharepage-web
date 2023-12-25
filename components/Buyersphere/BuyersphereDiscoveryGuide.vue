@@ -100,7 +100,7 @@
     <div id="pricing"
       class="section">
       <div class="group-header">Pricing</div>
-      <h4>Select the most appropriate tier?</h4>
+      <h4>Select the most appropriate tier</h4>
       <div class="pricing-tier-list">
         <div v-for="pt in pricingTiers"
           class="contents"
@@ -319,12 +319,12 @@ function toDate (date) {
   @apply grid cursor-pointer gap-y-1 gap-x-3 items-center;
   grid-template-columns: auto auto 1fr;
 
+  /* vertical gap between sections */
   > div > *:nth-child(6n + 1),
   > div > *:nth-child(6n + 2),
   > div > *:nth-child(6n + 3) {
     @apply pt-1;
   }
-
   > div > *:nth-child(6n + 4),
   > div > *:nth-child(6n + 5),
   > div > *:nth-child(6n + 6) {

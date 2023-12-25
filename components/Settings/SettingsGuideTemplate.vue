@@ -82,7 +82,17 @@
           class="feature-list">
           <div><!-- empty --></div>
           <h3>{{ feature.title }}</h3>
-          <div class="col-span-2"><!-- empty--></div>
+          <div class="row-span-2 h-full flex flex-row items-center gap-2">
+            <!-- buttons are both rows far right column -->
+            <BsButton class="show-on-row-hover"
+              @click="editFeature({ feature })">
+              <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
+            </BsButton>
+            <BsButton class="show-on-row-hover"
+              @click="deleteFeature({ feature })">
+              <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
+            </BsButton>
+          </div>
           <div class="justify-center flex flex-row items-center gap-2">
             <div class="feature-button">
               <img src="/svg/checkmark.svg">
@@ -95,14 +105,6 @@
             </div>
           </div>
           <div class="gray inline-html" v-html="feature.description" />
-          <BsButton class="show-on-row-hover"
-            @click="editFeature({ feature })">
-            <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
-          </BsButton>
-          <BsButton class="show-on-row-hover"
-            @click="deleteFeature({ feature })">
-            <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
-          </BsButton>
         </div>
         <BsButton class="mx-auto"
           @click="addFeature">
@@ -110,6 +112,45 @@
           <div class="tag">Add</div>
         </BsButton>
       </div>
+    </div>
+
+    <div id="pricing"
+      class="section">
+      <div class="group-header">Pricing</div>
+      <h4>Select the most appropriate tier</h4>
+      <div class="pricing-tier-list">
+        <div v-for="pricingTier in pricingTiers"
+          class="pricing-row">
+          <img src="/svg/package.svg">
+          <div>
+            <Tag2 color="gray">
+              {{ pricingTier.periodType === 'other'
+              ? pricingTier.amountOther
+              : `$${format(pricingTier.amountPerPeriod, moneyConfig)}/${periodMap[pricingTier.periodType]}` }}
+            </Tag2>
+          </div>
+          <h3 class="leading-[1.375rem]">{{ pricingTier.title }}</h3>
+          <div class="row-span-2 h-full flex flex-row items-center gap-2">
+            <!-- buttons are both rows far right column -->
+            <BsButton class="show-on-row-hover"
+              @click="editPricingTier({ pricingTier })">
+              <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
+            </BsButton>
+            <BsButton class="show-on-row-hover"
+              @click="deletePricingTier({ pricingTier })">
+              <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
+            </BsButton>
+          </div>
+          <div><!-- empty --></div>
+          <div class="h-full"><!-- empty --></div>
+          <div class="gray inline-html" v-html="pricingTier.description" />
+        </div>
+      </div>
+      <BsButton class="mx-auto"
+        @click="addPricingTier">
+        <img src="/svg/new-thing.svg" class="mr-2">
+        <div class="tag">Add</div>
+      </BsButton>
     </div>
 
     <div class="vertical-bar" />
@@ -128,6 +169,7 @@ import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
 import AddEditObjectiveModal from '@/components/Settings/AddEditObjectiveModal.vue';
 import AddEditFeatureModal from '@/components/Settings/AddEditFeatureModal.vue';
+import AddEditPricingTierModal from '@/components/Settings/AddEditPricingTierModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
@@ -238,6 +280,36 @@ function deleteFeature({ feature }) {
   }
 }
 
+const { 
+  open: openPricingTierModal,
+  close: closePricingTierModal,
+  patchOptions: patchPricingTierModalOptions,
+} = useModal({
+  component: AddEditPricingTierModal,
+  attrs: {
+    onClose () {
+      closePricingTierModal ()
+    }
+  }
+})
+
+function addPricingTier () {
+  patchPricingTierModalOptions({ attrs: { pricingTier: {} } })
+  openPricingTierModal()
+}
+
+function editPricingTier ({ pricingTier }) {
+  patchPricingTierModalOptions({ attrs: { pricingTier } })
+  openPricingTierModal()
+}
+
+function deletePricingTier({ pricingTier }) {
+  const c = confirm("Are you sure you want to delete")
+
+  if (c) {
+    pricingStore.deletePricingTier({ pricingTier })
+  }
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -250,7 +322,7 @@ function deleteFeature({ feature }) {
 
     &:hover {
       @apply bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
-      width: calc(100% + 2rem);
+        width: calc(100% + 2rem);
 
       > .show-on-row-hover {
         @apply block;
@@ -265,20 +337,54 @@ function deleteFeature({ feature }) {
 
 .feature-button {
   @apply p-2 rounded-md border border-gray-border;
-
-  &::before,
-  &:hover::before {
-    @apply absolute mt-[-2rem] tag
-  }
 }
 
 .feature-list {
   @apply bg-white grid items-center gap-x-4 gap-y-1;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   grid-template-rows: auto auto;
 
-  &:hover .show-on-row-hover {
-    @apply block;
+  &:hover {
+    @apply bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
+      width: calc(100% + 2rem);
+  
+    .show-on-row-hover {
+      @apply block;
+    }
+  }
+
+  .show-on-row-hover {
+    @apply hidden;
+  }
+}
+
+.pricing-tier-list {
+  @apply grid items-center;
+  grid-template-columns: auto auto 1fr 5rem;
+
+  /* extra vertical gap between sections */
+  > div > *:nth-child(6n + 1),
+  > div > *:nth-child(6n + 2),
+  > div > *:nth-child(6n + 3) {
+    @apply pt-[.375rem];
+  }
+  > div > *:nth-child(6n + 4),
+  > div > *:nth-child(6n + 5),
+  > div > *:nth-child(6n + 6) {
+    @apply pb-[.375rem];
+  }
+
+  .pricing-row {
+    @apply contents;
+
+    > * {
+      /* simluate gap-x-3 and gap-y-1 on the grid */
+      @apply px-[.375rem] py-[.125rem]
+    }
+
+    &:hover .show-on-row-hover {
+      @apply block;
+    }
   }
 
   .show-on-row-hover {

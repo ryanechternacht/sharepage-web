@@ -19,9 +19,9 @@
         :ready-text="`${editMode ? 'Edit' : 'Add'} Objective`"
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Objective`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
-        :readonly="needsMoreInput"
+        :disabled="needsMoreInput"
         :submission-state="submissionState"
-        @click="submitFn" />
+        @click="submitFn" /> 
     </div>
   </VueFinalModal>
 </template>
@@ -59,7 +59,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   emit('close')
 })
 
-const needsMoreInput = computed(() => !title || !description)
+const needsMoreInput = computed(() => !title.value || !description.value)
 </script>
 
 <style lang="postcss" scoped>

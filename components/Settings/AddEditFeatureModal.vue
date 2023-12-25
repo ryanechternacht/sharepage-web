@@ -20,7 +20,7 @@
         :ready-text="`${editMode ? 'Edit' : 'Add'} Feature`"
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Feature`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
-        :readonly="needsMoreInput"
+        :disabled="needsMoreInput"
         :submission-state="submissionState"
         @click="submitFn" />
     </div>
@@ -60,7 +60,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   emit('close')
 })
 
-const needsMoreInput = computed(() => !title || !description)
+const needsMoreInput = computed(() => !title.value || !description.value)
 </script>
 
 <style lang="postcss" scoped>
