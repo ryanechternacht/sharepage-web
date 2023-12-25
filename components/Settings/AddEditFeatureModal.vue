@@ -5,7 +5,7 @@
   >
     <div class="flex flex-col w-[36rem]">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">{{ feature?.id ? "Edit" : "Add" }} Feature</h3>
+        <h3 class="flex-grow">{{ editMode ? "Edit" : "Add" }} Feature</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <input v-model="title"
@@ -17,9 +17,9 @@
         class="w-full mb-4" />
       <SubmitButton
         class="self-center"
-        ready-text="Add Feature"
-        submitting-text="Adding Feature"
-        error-text="Adding Failed"
+        :ready-text="`${editMode ? 'Edit' : 'Add'} Feature`"
+        :submitting-text="`${editMode ? 'Editing' : 'Adding'} Feature`"
+        :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :readonly="needsMoreInput"
         :submission-state="submissionState"
         @click="submitFn" />
@@ -34,6 +34,8 @@ import { useFeaturesStore } from '@/stores/features'
 const props = defineProps({
   feature: { type: Object, default: {} }
 })
+
+const editMode = ref(!!props.feature.id)
 
 const emit = defineEmits(['close'])
 

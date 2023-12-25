@@ -95,18 +95,14 @@
             </div>
           </div>
           <div class="gray inline-html" v-html="feature.description" />
-          <div>
-            <BsButton class="show-on-row-hover"
-              @click="editFeature({ feature })">
-              <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
-            </BsButton>
-          </div>
-          <div>
-            <BsButton class="show-on-row-hover"
-              @click="deleteFeature({ feature })">
-              <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
-            </BsButton>
-          </div>
+          <BsButton class="show-on-row-hover"
+            @click="editFeature({ feature })">
+            <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
+          </BsButton>
+          <BsButton class="show-on-row-hover"
+            @click="deleteFeature({ feature })">
+            <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
+          </BsButton>
         </div>
         <BsButton class="mx-auto"
           @click="addFeature">

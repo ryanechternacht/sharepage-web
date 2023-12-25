@@ -5,7 +5,7 @@
   >
     <div class="flex flex-col w-[36rem]">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">{{ objective?.id ? "Edit" : "Add" }} Objective</h3>
+        <h3 class="flex-grow">{{ editMode ? "Edit" : "Add" }} Objective</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <input v-model="title" 
@@ -16,9 +16,9 @@
         placeholder="Pain Point One Line Description">
       <SubmitButton 
         class="self-center"
-        ready-text="Add Objective"
-        submitting-text="Adding Objective"
-        error-text="Adding Failed"
+        :ready-text="`${editMode ? 'Edit' : 'Add'} Objective`"
+        :submitting-text="`${editMode ? 'Editing' : 'Adding'} Objective`"
+        :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :readonly="needsMoreInput"
         :submission-state="submissionState"
         @click="submitFn" />
@@ -33,6 +33,8 @@ import { usePainPointsStore } from '@/stores/pain-points'
 const props = defineProps({
   objective: { type: Object, default: {} }
 })
+
+const editMode = ref(!!props.objective.id)
 
 const emit = defineEmits(['close'])
 
