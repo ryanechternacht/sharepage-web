@@ -26,7 +26,8 @@
       <UserAvatar :user="user" size="large" />
       <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
       <NuxtLink v-if="user.buyersphereRole === 'admin'"
-        to="/settings">
+        to="/settings"
+        class="mr-2">
         <!-- TODO should probably be an icon -->
         Settings
       </NuxtLink>
