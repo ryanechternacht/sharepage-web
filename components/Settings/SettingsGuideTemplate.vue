@@ -153,6 +153,16 @@
       </BsButton>
     </div>
 
+    <div id="constraints"
+      class="section">
+      <div class="group-header">Constraints</div>
+      <h4>Are there any constraints on your end we should know about?</h4>
+      <TipTapTextarea
+        modelValue="To be filled out by the buyer"
+        readonly
+        class="w-full mb-4" />
+    </div>
+
     <div class="vertical-bar" />
   </div>
 </template>
