@@ -27,38 +27,41 @@
     </div>
   </div>
 
-  <div class="[grid-area:center]">
-    {{ items }}
+  <div class="[grid-area:center-header] flex flex-row-reverse items-center">
+    <BsButton @click="createItem">
+      <img src="/svg/new-thing.svg" class="mr-2">
+      <p>Add</p>
+    </BsButton>
+  </div>
 
-    <BuyersphereActivityPlanSection
-      id="remove-me!"
-      :items="items"
-      header="All items"
-      @update:item="editItem" />
-
-    <!-- <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
+  <div class="page-center">
+    <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
+      is-template
       :items="next7DaysItems"
       header="Next 7 Days"
       @update:item="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
+      is-template
       :items="next30DaysItems"
       header="Next 30 Days"
       @update:item="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
+      is-template
       :items="next90DaysItems"
       header="Next 90 Days"
       @update:item="editItem" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
+      is-template
       :items="beyondItems"
       header="Beyond"
-      @update:item="editItem" /> -->
+      @update:item="editItem" />
 
     <div class="vertical-bar" />
   </div>
@@ -69,7 +72,7 @@ import { useActivityTemplateStore } from '@/stores/activity-template'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, last, orderBy } = lodash_pkg;
-import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import AddEditActivityTemplateModal from '@/components/Settings/AddEditActivityTemplateModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const activityTemplateStore = useActivityTemplateStore()
@@ -79,16 +82,10 @@ const [items] = await Promise.all([
   getActivityTemplateCached.value(),
 ])
 
-const dayjs = useDayjs()
-const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
-const next7Days = todayDayJs.add(7, 'day').toDate()
-const next30Days = todayDayJs.add(30, 'day').toDate()
-const next90Days = todayDayJs.add(90, 'day').toDate()
-
 const next7DaysItems = computed(() =>
   orderBy(
     filter(items, 
-      i => dayjs(i.dueDate) < next7Days),
+      i => i.dueDateDays <= 7),
     ['dueDate'],
     ['asc']
   )
@@ -97,8 +94,8 @@ const next7DaysItems = computed(() =>
 const next30DaysItems = computed(() =>
   orderBy(
     filter(items, 
-      i => dayjs(i.dueDate) >= next7Days
-        && dayjs(i.dueDate) < next30Days),
+      i => i.dueDateDays > 7
+        && i.dueDateDays <= 30),
     ['dueDate'],
     ['asc']
   )
@@ -107,8 +104,8 @@ const next30DaysItems = computed(() =>
 const next90DaysItems = computed(() =>
   orderBy(
     filter(items, 
-      i => dayjs(i.dueDate) >= next30Days
-        && dayjs(i.dueDate) < next90Days),
+      i => i.dueDateDays > 30
+        && i.dueDateDays <= 90),
     ['dueDate'],
     ['asc']
   )
@@ -116,14 +113,14 @@ const next90DaysItems = computed(() =>
 
 const beyondItems = computed(() =>
   orderBy(
-    filter(items, i => dayjs(i.dueDate) >= next90Days),
+    filter(items, i => i.dueDateDays > 90),
     ['dueDate'],
     ['asc']
   )
 )
 
 const { open, close, patchOptions } = useModal({
-  component: EditCollaborationItemModal,
+  component: AddEditActivityTemplateModal,
   attrs: {
     onClose () {
       close ()
@@ -131,8 +128,13 @@ const { open, close, patchOptions } = useModal({
   }
 })
 
+function createItem() {
+  patchOptions({ attrs: { item: {} } })
+  open()
+}
+
 function editItem({ item }) {
-  // patchOptions({ attrs: { item }})
+  patchOptions({ attrs: { item }})
   open()
 }
 

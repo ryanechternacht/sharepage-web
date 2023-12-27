@@ -4,6 +4,7 @@
   </div>
 
   <div class="[grid-area:center-header]">
+    <!-- TODO new item button! -->
   </div>
 
   <div class="[grid-area:left]">

@@ -16,15 +16,23 @@
         <div class="inline-html" v-html="item.message" />
         <div class="flex-grow" />
         <div class="w-[9.5rem] flex flex-row items-center gap-1 justify-end">
-          <div class="tag"
+          <div v-if="isTemplate">
+            {{ item.dueDateDays === 1 
+              ? `${item.dueDateDays} day` 
+              : `${item.dueDateDays} days`}} out
+          </div>
+          <div v-else
             :class="{'text-red-secondary': overdue}">
             {{ prettyFormatDateFromToday(item.dueDate) }}
           </div>
           <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-          <Logo v-if="item.assignedTeam === 'buyer'"
-              :src="item.buyer.logo" />
-          <Logo v-else
+          <Logo v-if="item.assignedTeam === 'seller'"
             :src="organization.logo" />
+          <div v-else-if="isTemplate" class="template-buyer-logo">
+            <img src="/svg/briefcase.svg">
+          </div>
+          <Logo v-else
+            :src="item.buyer.logo" />
         </div>
       </div>
     </div>
@@ -48,6 +56,7 @@ const props = defineProps({
   items: { type: Array, required: true },
   overdue: { type: Boolean, default: false },
   header: { type: String, required: true },
+  isTemplate: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['update:item'])
@@ -94,5 +103,10 @@ const iconMap = {
     @apply cursor-pointer bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
     width: calc(100% + 2rem);
   }
+}
+
+.template-buyer-logo {
+  @apply w-[1.5rem] h-[1.5rem] max-w-[1.5rem] max-h-[1.5rem]
+    center-xy bg-gray-border rounded-md;
 }
 </style>
