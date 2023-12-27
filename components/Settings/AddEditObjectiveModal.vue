@@ -18,6 +18,7 @@
         class="self-center"
         :ready-text="`${editMode ? 'Edit' : 'Add'} Objective`"
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Objective`"
+        :submitted-text="`Objective ${editMode ? 'Edited' : 'Added'}`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :disabled="needsMoreInput"
         :submission-state="submissionState"
@@ -44,7 +45,7 @@ const title = ref(props.objective?.title)
 const description = ref(props.objective?.description)
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  if (props.objective?.id) {
+  if (editMode.value) {
     await store.updatePainPoint({ painPoint: {
       ...props.objective,
       title: title.value,

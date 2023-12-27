@@ -19,6 +19,7 @@
         class="self-center"
         :ready-text="`${editMode ? 'Edit' : 'Add'} Feature`"
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Feature`"
+        :submitted-text="`Feature ${editMode ? 'Edited' : 'Added'}`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :disabled="needsMoreInput"
         :submission-state="submissionState"
@@ -45,7 +46,7 @@ const title = ref(props.feature?.title)
 const description = ref(props.feature?.description)
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  if (props.feature?.id) {
+  if (editMode.value) {
     await store.updateFeature({ feature: {
       ...props.feature,
       title: title.value,

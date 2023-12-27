@@ -38,6 +38,7 @@
         class="self-center mt-2"
         :ready-text="`${editMode ? 'Edit' : 'Add'} Pricing Tier`"
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Pricing Tier`"
+        :submitted-text="`Pricing Tier ${editMode ? 'Edited' : 'Added'}`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :disabled="needsMoreInput"
         :submission-state="submissionState"
@@ -77,7 +78,7 @@ const periodType = ref(props.pricingTier?.periodType)
 const description = ref(props.pricingTier?.description)
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  if (props.pricingTier?.id) {
+  if (editMode.value) {
     await store.updatePricingTier({ pricingTier: {
       ...props.pricingTier,
       title: title.value,
