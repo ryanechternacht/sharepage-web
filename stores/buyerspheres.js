@@ -25,7 +25,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     getBuyersphereBuyerActivityByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphereBuyerActivity({ buyersphereId })
       return state.buyerActivity[buyersphereId]?.content
-    }
+    },
   },
   actions: {
     async createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount }) {
@@ -293,5 +293,5 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       
       this.buyerspheres[buyersphereId].content.sellerTeam = data.value
     },
-  }
+  },
 })

@@ -13,7 +13,7 @@ export const useFeaturesStore = defineStore('features', {
     getFeaturesCached: (state) => async () => {
       await state.fetchFeatures()
       return state.features.content
-    }
+    },
   },
   actions: {
     async createFeature({ feature }) {
@@ -56,6 +56,6 @@ export const useFeaturesStore = defineStore('features', {
 
       const i = findIndex(this.features.content, f => f.id === feature.id)
       this.features.content[i] = data.value
-    }
-  }
+    },
+  },
 })

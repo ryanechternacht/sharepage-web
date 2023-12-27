@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import lodash_pkg from 'lodash';
 
 function is10MinutesOld(jsonTimestamp) {
   const dayjs = useDayjs()
