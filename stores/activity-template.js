@@ -18,7 +18,6 @@ export const useActivityTemplateStore = defineStore('activity-template', {
   actions: {
     async createActivityTemplateItem({ activityTemplateItem }) {
       const { apiFetch } = useNuxtApp()
-      const dayjs = useDayjs()
       const { data } = await apiFetch('/v0.1/conversation-template/item', {
         method: 'POST',
         body: activityTemplateItem
@@ -40,12 +39,11 @@ export const useActivityTemplateStore = defineStore('activity-template', {
         }
       }
     },
-    async updateActivityTemplateItem({ id, dueDateDays, message, assignedTo,
-      assignedTeam, collaborationType }) {
+    async updateActivityTemplateItem({ id, dueDateDays, message, assignedTeam, collaborationType }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(`/v0.1/conversation-template/item/${id}`, {
         method: 'PATCH',
-        body: { dueDateDays, message, assignedTo, assignedTeam, collaborationType }
+        body: { dueDateDays, message, assignedTeam, collaborationType }
       })
 
       const ct = find(this.items.content, ct => ct.id === id)
@@ -54,9 +52,6 @@ export const useActivityTemplateStore = defineStore('activity-template', {
       }
       if (data.value.message !== undefined) {
         ct.message = data.value.message
-      }
-      if (data.value.assignedTo !== undefined) {
-        ct.assignedTo = data.value.assignedTo
       }
       if (data.value.assignedTeam !== undefined) {
         ct.assignedTeam = data.value.assignedTeam
