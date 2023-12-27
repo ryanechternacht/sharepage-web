@@ -33,7 +33,7 @@ export const useActivityTemplateStore = defineStore('activity-template', {
       if (!this.items.content
           || forceRefresh
           || is10MinutesOld(this.items.generatedAt)) {
-        const { data } = await apiFetch('/v0.1/convesation-template')
+        const { data } = await apiFetch('/v0.1/conversation-template')
         this.items = {
           content: data.value,
           generatedAt: dayjs().toJSON()
