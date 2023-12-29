@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="[grid-area:center]" v-scroll-spy>
+  <div class="[grid-area:center] page-center" v-scroll-spy>
     <div id="profile"
       class="section">
       <div class="group-header">Profile</div>
