@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="page-center" v-scroll-spy>
+  <div class="[grid-area:center] page-center" v-scroll-spy>
     <div id="success-criteria"
       class="section">
       <div class="group-header">Success Criteria</div>

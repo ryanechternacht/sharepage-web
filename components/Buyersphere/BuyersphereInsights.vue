@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <div class="page-center" v-scroll-spy>
+  <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereInsightsSection 
       id="last-7-days"
       :items="last7DaysItems"

@@ -70,7 +70,7 @@
       <BuyersphereAssets v-else-if="mainSection === 'assets'" />
       <BuyersphereNotes v-else-if="mainSection === 'notes'" />
 
-      <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
+      <!-- <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
         <BsButton v-if="buyersphere.status === 'active'" @click="putOnHold">
           <img src="/svg/pause--yellow.svg" class="mr-2">
           <h3>Put on Hold</h3>
@@ -79,9 +79,9 @@
           <img src="/svg/play--green.svg" class="mr-2">
           <h3>Reactivate</h3>
         </BsButton>
-      </div>
+      </div> -->
 
-      <div class="[grid-area:right]">
+      <!-- <div class="[grid-area:right]">
         <div class="right-sidebar">
           <div class="flex flex-col gap-3 items-end">
             <h3>Milestones</h3>
@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="[grid-area:footer] h-20" />
     </div>
@@ -161,17 +161,6 @@ const nextMilestone = computed(() => find(milestones.value, m => !m.resolved))
 </script>
 
 <style lang="postcss" scoped>
-.page-layout {
-  @apply grid gap-y-4;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 250px 1fr 250px;
-  grid-template-areas:
-    "top         top           top"
-    "left-header center-header right-header"
-    "left        center        right"
-    "footer      footer        footer";
-}
-
 .page-top {
   @apply bg-purple-background px-10;
   grid-area: top;

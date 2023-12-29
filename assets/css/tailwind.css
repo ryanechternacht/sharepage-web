@@ -92,9 +92,20 @@
     @apply flex flex-row items-center justify-center;
   }
 
+  /* LAYOUT */
+  .page-layout {
+    @apply grid gap-y-4;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 220px 1fr;
+    grid-template-areas:
+      "top         top           top"
+      "left-header center-header right-header"
+      "left        center        right"
+      "footer      footer        footer";
+  }
+
   .page-center {
-    @apply flex flex-col gap-16 relative;
-    grid-area: center;
+    @apply flex flex-col gap-16 relative pl-3 pr-12;
   }
 
   .section {
@@ -106,17 +117,18 @@
 
     .group-header {
       @apply h2;
-      @apply p-2 flex flex-row gap-2 items-center mx-auto rounded-md 
-        mt-[-2.25rem] /*-36px*/ mb-[-.75rem] bg-white border border-gray-border;
+      @apply p-2 flex flex-row gap-2 items-center mr-auto rounded-md 
+        mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white;
+    }
+
+    /* This needs to be created under the group header for the margin to be correct */
+    .item-count {
+      @apply bg-white tag-header p-2 ml-auto mb-[-1rem];
+      margin-top: calc(-1.25rem - 1px);
     }
 
     .section-add-button {
       @apply mx-auto mt-4 mb-[-2rem] bg-white;
-    }
-
-    .item-count {
-      @apply bg-white tag-header absolute p-2 right-4;
-      margin-top: calc(-2rem - 1px);
     }
   }
 
@@ -149,10 +161,6 @@
   }
 
   .left-sidebar {
-    @apply sticky top-[2rem] py-2 pl-12 pr-6;
-  }
-
-  .right-sidebar {
-    @apply sticky top-[2rem] py-2 pr-12 pl-6
+    @apply sticky top-[2rem] py-2 pl-12 pr-3;
   }
 }

@@ -34,7 +34,7 @@
     </BsButton>
   </div>
 
-  <div class="page-center" v-scroll-spy>
+  <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
       is-template

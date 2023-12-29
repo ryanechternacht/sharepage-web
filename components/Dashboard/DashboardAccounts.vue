@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="page-center" v-scroll-spy>
+  <div class="[grid-area:center] page-center" v-scroll-spy>
     <div class="section">
       <div class="group-header">Accounts</div>
       <div class="item-count">
