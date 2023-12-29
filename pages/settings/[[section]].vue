@@ -37,17 +37,6 @@ const mainSection = computed(() => route.params.section || 'personal')
 </script>
 
 <style lang="postcss" scoped>
-.page-layout {
-  @apply grid gap-y-4;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: 250px 1fr 250px;
-  grid-template-areas:
-    "top         top           top"
-    "left-header center-header right-header"
-    "left        center        right"
-    "footer      footer        footer";
-}
-
 .page-top {
   @apply bg-gray-hover px-10;
   grid-area: top;

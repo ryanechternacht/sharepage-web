@@ -27,11 +27,13 @@
     </div>
   </div>
 
-  <div class="[grid-area:center-header] flex flex-row-reverse items-center">
-    <BsButton @click="createItem">
-      <img src="/svg/new-thing.svg" class="mr-2">
-      <p>Add</p>
-    </BsButton>
+  <div class="[grid-area:center-header] center-header">
+    <div class="flex flex-row-reverse items-center">
+      <BsButton @click="createItem">
+        <img src="/svg/new-thing.svg" class="mr-2">
+        <p>Add</p>
+      </BsButton>
+    </div>
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>

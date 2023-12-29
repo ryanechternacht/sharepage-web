@@ -1,9 +1,9 @@
 <template>
-  <div class="[grid-area:left-header]">
+  <div class="[grid-area:left-header] left-header">
     <!-- TODO share button -->
   </div>
 
-  <div class="[grid-area:center-header]">
+  <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row items-center gap-2">
       <div class="flex-grow" />
       <BsButton @click="openBuyerModal">

@@ -104,6 +104,14 @@
       "footer      footer        footer";
   }
 
+  .left-header {
+    @apply pl-12 pr-3;
+  }
+
+  .center-header {
+    @apply pl-3 pr-12;
+  }
+
   .page-center {
     @apply flex flex-col gap-16 relative pl-3 pr-12;
   }

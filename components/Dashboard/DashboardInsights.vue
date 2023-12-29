@@ -1,8 +1,8 @@
 <template>
-  <div class="[grid-area:left-header]">
+  <div class="[grid-area:left-header] left-header">
   </div>
 
-  <div class="[grid-area:center-header]">
+  <div class="[grid-area:center-header] center-header">
   </div>
 
   <div class="[grid-area:left]">

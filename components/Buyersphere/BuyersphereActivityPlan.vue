@@ -1,9 +1,9 @@
 <template>
-  <div class="[grid-area:left-header]">
+  <div class="[grid-area:left-header] left-header">
     <!-- TODO share button -->
   </div>
 
-  <div class="[grid-area:center-header]">
+  <div class="[grid-area:center-header] center-header">
     <!-- TODO new item button! -->
   </div>
 
