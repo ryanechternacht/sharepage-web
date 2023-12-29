@@ -24,9 +24,6 @@
         <h4 v-if="beyondItems.length" 
           @click="navigateTo('#beyond')"
           class="in-page-link">Beyond</h4>
-        <h4 v-if="completedItems.length" 
-          @click="navigateTo('#completed')"
-          class="in-page-link">Completed</h4>
       </div>
       <div class="page-link"
         @click="navigateTo(`/dashboard/accounts`)">Accounts</div>
@@ -67,18 +64,12 @@
       header="Beyond"
       @update:item="editItem" />
 
-    <BuyersphereActivityPlanSection v-if="completedItems.length"
-      id="completed"
-      :items="completedItems"
-      header="Completed"
-      @update:item="editItem" />
-      
     <div class="vertical-bar" />
   </div>
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useActivitiesStore } from '@/stores/activities'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy } = lodash_pkg;
@@ -86,16 +77,12 @@ const { filter, find, orderBy } = lodash_pkg;
 
 // TODO we'll need a route for "all" activities across deals
 // not sure how we'll want to filter that yet...
-const buyersphereId = 1
+const buyersphereStore = useActivitiesStore()
+const { getActivitiesForOrganization } = storeToRefs(buyersphereStore)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
-
-const [buyersphere, conversations] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId),
+const [activities] = await Promise.all([
+getActivitiesForOrganization.value(),
 ])
-
 
 const dayjs = useDayjs()
 
@@ -107,7 +94,7 @@ const next90Days = todayDayJs.add(90, 'day').toDate()
 
 const overdueItems = computed(() =>
   orderBy(
-    filter(conversations, c => !c.resolved && dayjs(c.dueDate) < todayDayJs),
+    filter(activities, a => dayjs(a.dueDate) < todayDayJs),
     ['dueDate'],
     ['asc']
   )
@@ -115,10 +102,9 @@ const overdueItems = computed(() =>
 
 const next7DaysItems = computed(() =>
   orderBy(
-    filter(conversations, 
-      c => !c.resolved 
-        && dayjs(c.dueDate) >= today
-        && dayjs(c.dueDate) < next7Days),
+    filter(activities, 
+      a => dayjs(a.dueDate) >= today
+        && dayjs(a.dueDate) < next7Days),
     ['dueDate'],
     ['asc']
   )
@@ -126,10 +112,9 @@ const next7DaysItems = computed(() =>
 
 const next30DaysItems = computed(() =>
   orderBy(
-    filter(conversations, 
-      c => !c.resolved 
-        && dayjs(c.dueDate) >= next7Days
-        && dayjs(c.dueDate) < next30Days),
+    filter(activities, 
+      a => dayjs(a.dueDate) >= next7Days
+        && dayjs(a.dueDate) < next30Days),
     ['dueDate'],
     ['asc']
   )
@@ -137,10 +122,9 @@ const next30DaysItems = computed(() =>
 
 const next90DaysItems = computed(() =>
   orderBy(
-    filter(conversations, 
-      c => !c.resolved 
-        && dayjs(c.dueDate) >= next30Days
-        && dayjs(c.dueDate) < next90Days),
+    filter(activities, 
+      a => dayjs(a.dueDate) >= next30Days
+        && dayjs(a.dueDate) < next90Days),
     ['dueDate'],
     ['asc']
   )
@@ -148,27 +132,9 @@ const next90DaysItems = computed(() =>
 
 const beyondItems = computed(() =>
   orderBy(
-    filter(conversations, c => !c.resolved && dayjs(c.dueDate) >= next90Days),
+    filter(activities, a => dayjs(a.dueDate) >= next90Days),
     ['dueDate'],
     ['asc']
-  )
-)
-
-const completedItems = computed(() =>
-  orderBy(
-    filter(conversations, c => c.resolved),
-    ['dueDate'],
-    ['asc']
-  )
-)
-
-const lastItem = computed(() =>
-  last(
-    orderBy(
-      filter(conversations, c => !c.resolved),
-      ['dueDate'],
-      ['asc']
-    )
   )
 )
 </script>
