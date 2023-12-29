@@ -13,14 +13,6 @@
         </div>
       </div>
 
-      <div class="[grid-area:right-header]">
-        <!-- right-header -->
-      </div>
-
-      <div class="[grid-area:right]">
-        <!-- right-sidebar -->
-      </div>
-
       <!-- These return the left, center, left-header, and center-header sections -->
       <DashboardActivities v-if="mainSection === 'activities'" />
       <DashboardAccounts v-if="mainSection === 'accounts'" />

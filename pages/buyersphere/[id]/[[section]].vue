@@ -70,36 +70,6 @@
       <BuyersphereAssets v-else-if="mainSection === 'assets'" />
       <BuyersphereNotes v-else-if="mainSection === 'notes'" />
 
-      <!-- <div class="[grid-area:right-header] flex flex-row items-center justify-end w-full px-12">
-        <BsButton v-if="buyersphere.status === 'active'" @click="putOnHold">
-          <img src="/svg/pause--yellow.svg" class="mr-2">
-          <h3>Put on Hold</h3>
-        </BsButton>
-        <BsButton v-else @click="reactivate">
-          <img src="/svg/play--green.svg" class="mr-2">
-          <h3>Reactivate</h3>
-        </BsButton>
-      </div> -->
-
-      <!-- <div class="[grid-area:right]">
-        <div class="right-sidebar">
-          <div class="flex flex-col gap-3 items-end">
-            <h3>Milestones</h3>
-            <div v-for="m in milestones"
-              class="milestone"
-              :class="{selected: nextMilestone.id === m.id}">
-              <h4 class="milestone-step">{{ m.message }}</h4>
-              <div class="milestone-date">{{ formatDate(m.dueDate) }}</div>
-              <div class="milestone-icon">
-                <img v-if="m.resolved" src="/svg/checkmark.svg">
-                <img v-else-if="nextMilestone.id === m.id" src="/svg/award.svg">
-                <img v-else src="/svg/award--light.svg">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <div class="[grid-area:footer] h-20" />
     </div>
   </div>

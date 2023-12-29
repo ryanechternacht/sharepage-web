@@ -98,10 +98,10 @@
     grid-template-rows: auto 1fr;
     grid-template-columns: 220px 1fr;
     grid-template-areas:
-      "top         top           top"
-      "left-header center-header right-header"
-      "left        center        right"
-      "footer      footer        footer";
+      "top         top"
+      "left-header center-header"
+      "left        center"
+      "footer      footer";
   }
 
   .left-header {

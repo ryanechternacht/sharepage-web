@@ -17,10 +17,6 @@
       <SettingsTimelineTemplate v-else-if="mainSection === 'timeline-template'" />
       <SettingsAssetsTemplate v-else-if="mainSection === 'assets-template'" />
 
-      <div class="[grid-area:right]">
-        <!-- intentionally blank -->
-      </div>
-
       <div class="[grid-area:footer] h-20" />
     </div>
   </div>
