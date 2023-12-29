@@ -2,15 +2,11 @@
   <div>
     <TopNav />
     <div class="page-layout">
-      <div class="page-top">
-        <div class="mt-8 flex flex-row items-center justify-center gap-2">
-        </div>
-        <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
-          <h1>My <!-- TODO this could be "john's"--></h1> 
-          <h1 class="bg-purple-secondary text-white rounded-md px-1 py-[1px]">
-            {{ mainSection.replace('-', ' ') }}
-          </h1>
-        </div>
+      <div class="[grid-area:top] page-top"
+        :class="{'bg-green-background': mainSection === 'activities',
+                 'bg-blue-background': mainSection === 'accounts',
+                 'bg-purple-background': mainSection === 'insights',}">
+        <h1>{{ capitalize(mainSection) }}</h1>
       </div>
 
       <!-- These return the left, center, left-header, and center-header sections -->
@@ -24,7 +20,8 @@
 </template>
 
 <script setup>
-// TODO which is the default page?
+import lodash_pkg from 'lodash';
+const { capitalize } = lodash_pkg;
 
 const route = useRoute()
 
@@ -33,12 +30,4 @@ const mainSection = computed(
 </script>
 
 <style lang="postcss" scoped>
-.page-top {
-  @apply bg-purple-background px-10;
-  grid-area: top;
-
-  &.grayscale-top {
-    @apply bg-gray-border;
-  }
-}
 </style>

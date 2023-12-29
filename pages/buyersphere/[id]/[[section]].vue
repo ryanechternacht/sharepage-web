@@ -2,17 +2,12 @@
   <div>
     <TopNav />
     <div class="page-layout">
-      <div class="page-top"
+      <div class="[grid-area:top] page-top bg-purple-background"
         :class="{ 'grayscale-top': !isActive }">
-        <div class="mt-8 flex flex-row items-center justify-center gap-2">
-          <img :src="buyersphere.buyerLogo" class="h-[1.25rem]">
-          <h3>{{ buyersphere.buyer }}</h3>
-        </div>
-        <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
-          <h1>Our</h1>
-          <h1 class="bg-purple-secondary text-white rounded-md px-1 py-[1px]">
-            {{ mainSection.replace('-', ' ') }}
-          </h1>
+        <div class="flex flex-row items-center gap-2">
+          <Logo v-if="buyersphere.buyerLogo" 
+            :src="buyersphere.buyerLogo" />
+          <h1>{{ buyersphere.buyer }}</h1>
         </div>
         <!-- <div class="flex flex-col gap-4 pl-8 pb-5">
           <div class="flex flex-row items-center gap-2">
@@ -131,13 +126,8 @@ const nextMilestone = computed(() => find(milestones.value, m => !m.resolved))
 </script>
 
 <style lang="postcss" scoped>
-.page-top {
-  @apply bg-purple-background px-10;
-  grid-area: top;
-
-  &.grayscale-top {
-    @apply bg-gray-border;
-  }
+.page-top.grayscale-top {
+  @apply bg-gray-border;
 }
 
 .white-box {

@@ -9,7 +9,7 @@ module.exports = {
       },
       blue: {
         primary: '#205BC3',
-        background: '#e7ebfd',
+        background: '#E7EBFD',
       },
       black: '#040404',
       purple: {
@@ -32,7 +32,7 @@ module.exports = {
         hover: '#F3F3F5',
         'hover-active': '#DEE1E1'
       },
-      white: '#fff'
+      white: '#FFF'
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],

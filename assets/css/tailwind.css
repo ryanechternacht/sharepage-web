@@ -104,6 +104,10 @@
       "footer      footer";
   }
 
+  .page-top {
+    @apply px-10 h-[7.5rem] center-xy;
+  }
+
   .left-header {
     @apply pl-12 pr-3;
   }

@@ -2,12 +2,8 @@
   <div>
     <TopNav />
     <div class="page-layout">
-      <div class="page-top">
-        <div class="mt-8 flex flex-row items-center justify-center gap-2">
-        </div>
-        <div class="mt-8 mb-10 flex flex-row items-center justify-center gap-1 leading-none">
-          <h1>{{ startCase(mainSection) }} Settings</h1>
-        </div>
+      <div class="[grid-area:top] page-top bg-gray-hover">
+        <h1>{{ startCase(mainSection) }} Settings</h1>
       </div>
 
       <!-- These return the left, center, left-header, and center-header sections -->
@@ -33,8 +29,4 @@ const mainSection = computed(() => route.params.section || 'personal')
 </script>
 
 <style lang="postcss" scoped>
-.page-top {
-  @apply bg-gray-hover px-10;
-  grid-area: top;
-}
 </style>
