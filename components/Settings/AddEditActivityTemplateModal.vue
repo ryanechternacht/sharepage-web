@@ -1,9 +1,8 @@
 <template>
   <VueFinalModal
     class="flex justify-center items-center"
-    content-class="p-4 bg-white rounded-md"
-  >
-    <div class="w-[36rem] flex flex-col items-center gap-4">
+    content-class="p-4 bg-white rounded-md">
+    <div class="w-[36rem] flex flex-col items-center gap-2">
       <h1>{{ editMode ? "Edit" : "Add" }} Action Item</h1>
       <div class="w-full">
         <h3>What needs to be done</h3>
@@ -44,8 +43,8 @@
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Action Item`"
         :submitted-text="`Action Item ${editMode ? 'Edited' : 'Added'}`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
+        :disabled="needsMoreInput"
         @click="submitFn" />
-        {{ error }}
     </div>
   </VueFinalModal>
 </template>
@@ -101,6 +100,9 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     })
   }
 })
+
+const needsMoreInput = computed(() => 
+  !message.value || !dueDateDays.value || !collaborationType.value || !assignedTeam.value)
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {

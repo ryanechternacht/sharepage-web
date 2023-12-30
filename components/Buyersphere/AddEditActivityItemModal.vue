@@ -1,10 +1,9 @@
 <template>
   <VueFinalModal
     class="flex justify-center items-center"
-    content-class="p-4 bg-white rounded-md"
-  >
-    <div class="flex flex-col items-center gap-4">
-      <h1>Edit Action Item</h1>
+    content-class="p-4 bg-white rounded-md">
+    <div class="w-[36rem] flex flex-col items-center gap-2">
+      <h1>{{ editMode ? "Edit" : "Add" }} Action Item</h1>
       <div class="w-full">
         <h3>What needs to be done</h3>
         <TipTapTextarea
@@ -48,9 +47,11 @@
       <SubmitButton
         class="mx-20 h-[2.5rem]"
         :submission-state="submissionState" 
-        ready-text="Save Action Item"
-        submitting-text="Saving Action Item"
-        submitted-text="Action Item Saved"
+        :ready-text="`${editMode ? 'Edit' : 'Add'} Action Item`"
+        :submitting-text="`${editMode ? 'Editing' : 'Adding'} Action Item`"
+        :submitted-text="`Action Item ${editMode ? 'Edited' : 'Added'}`"
+        :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
+        :disabled="needsMoreInput"
         @click="submitFn" />
     </div>
   </VueFinalModal>
@@ -66,9 +67,11 @@ import lodash_pkg from 'lodash';
 const { capitalize, concat, find } = lodash_pkg;
 
 const props = defineProps({
-  item: { type: Object, required: true },
+  item: { type: Object, default: {} },
   buyersphereId: { type: Number, required: true }
 })
+
+const editMode = ref(!!props.item?.id)
 
 const emit = defineEmits(['close'])
 
@@ -101,29 +104,43 @@ const allBuyersphereUsers = computed(
     buyersphere.sellerTeam ?? [])
 )
 
-const resolved = ref(props.item.resolved)
-const message = ref(props.item.message)
-const dueDate = ref(props.item.dueDate)
+const resolved = ref(props.item?.resolved)
+const message = ref(props.item?.message)
+const dueDate = ref(props.item?.dueDate)
 const assignedToId = ref(props.item.assignedTo?.id ??
   (props.item.assignedTeam === "buyer" ? -1 : -2))
-const collaborationType = ref(props.item.collaborationType)
+const collaborationType = ref(props.item?.collaborationType)
 
 const assignedTeam = computed(
   () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
 )
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  buyersphereStore.updateConversation({ 
-    buyersphereId: props.buyersphereId,
-    conversationId: props.item.id,
-    resolved: resolved.value,
-    message: message.value,
-    assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-    dueDate: dueDate.value,
-    assignedTeam: assignedTeam.value,
-    collaborationType: collaborationType.value
-  })
+  if (editMode.value) {
+    buyersphereStore.updateConversation({ 
+      buyersphereId: props.buyersphereId,
+      conversationId: props.item.id,
+      resolved: resolved.value,
+      dueDate: dueDate.value,
+      message: message.value,
+      assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+      assignedTeam: assignedTeam.value,
+      collaborationType: collaborationType.value,
+    })
+  } else {
+    buyersphereStore.startConversation({ 
+      buyersphereId: props.buyersphereId,
+      message: message.value,
+      dueDate: dueDate.value,
+      assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+      assignedTeam: assignedTeam.value,
+      collaborationType: collaborationType.value
+    })
+  }
 })
+
+const needsMoreInput = computed(() => 
+  !message.value || !dueDate.value || !collaborationType.value || !assignedToId.value)
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {

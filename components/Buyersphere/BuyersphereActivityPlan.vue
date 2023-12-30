@@ -4,7 +4,9 @@
   </div>
 
   <div class="[grid-area:center-header] center-header">
-    <!-- TODO new item button! -->
+    <div class="flex flex-row-reverse items-center">
+      <NewButton @click="addItem" />
+    </div>
   </div>
 
   <div class="[grid-area:left]">
@@ -95,7 +97,7 @@ import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, last, orderBy } = lodash_pkg;
-import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
@@ -187,19 +189,24 @@ const lastItem = computed(() =>
   ) || {}
 )
 
-const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions, options } = useModal({
-  component: EditCollaborationItemModal,
+const { open, close, patchOptions } = useModal({
+  component: AddEditActivityItemModal,
   attrs: {
     buyersphereId,
     onClose () {
-      closeEditModal ()
+      close ()
     }
   }
 })
 
 function editItem({ item }) {
-  patchModalOptions({ attrs: { item }})
-  openEditModal()
+  patchOptions({ attrs: { item }})
+  open()
+}
+
+function addItem() {
+  patchOptions({ attrs: { item: {} }})
+  open()
 }
 </script>
 

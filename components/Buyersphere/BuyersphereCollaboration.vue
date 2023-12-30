@@ -87,7 +87,7 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { concat, filter, find, groupBy, map, orderBy } = lodash_pkg;
-import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
@@ -209,7 +209,7 @@ async function checkReady () {
 }
 
 const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions } = useModal({
-  component: EditCollaborationItemModal,
+  component: AddEditActivityItemModal,
   attrs: {
     buyersphereId,
     onClose () {

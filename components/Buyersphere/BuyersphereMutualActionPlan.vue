@@ -57,7 +57,7 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, groupBy, map, orderBy, reduce } = lodash_pkg;
-import EditCollaborationItemModal from '@/components/Buyersphere/EditCollaborationItemModal.vue';
+import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
@@ -128,7 +128,7 @@ const activeItemCount = computed(() => getGroupCount(activeItemsGrouped.value))
 const upcomingItemsCount = computed(() => getGroupCount(upcomingItemsGrouped.value))
 
 const { open: openEditModal, close: closeEditModal, patchOptions: patchModalOptions } = useModal({
-  component: EditCollaborationItemModal,
+  component: AddEditActivityItemModal,
   attrs: {
     buyersphereId,
     onClose () {
