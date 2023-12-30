@@ -59,11 +59,8 @@
             <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
           </BsButton>
         </div>
-        <BsButton class="mx-auto"
-          @click="addObjective">
-          <img src="/svg/new-thing.svg" class="mr-2">
-          <div class="tag">Add</div>
-        </BsButton>
+        <NewButton class="mx-auto"
+          @click="addObjective" />
       </div>
 
       <h4>Which ones are most important to you? Are there any not covered above?</h4>
@@ -106,11 +103,8 @@
           </div>
           <div class="gray inline-html" v-html="feature.description" />
         </div>
-        <BsButton class="mx-auto"
-          @click="addFeature">
-          <img src="/svg/new-thing.svg" class="mr-2">
-          <div class="tag">Add</div>
-        </BsButton>
+        <NewButton class="mx-auto"
+          @click="addFeature" />
       </div>
     </div>
 
@@ -146,11 +140,8 @@
           <div class="gray inline-html" v-html="pricingTier.description" />
         </div>
       </div>
-      <BsButton class="mx-auto"
-        @click="addPricingTier">
-        <img src="/svg/new-thing.svg" class="mr-2">
-        <div class="tag">Add</div>
-      </BsButton>
+      <NewButton class="mx-auto"
+        @click="addPricingTier" />
     </div>
 
     <div id="constraints"

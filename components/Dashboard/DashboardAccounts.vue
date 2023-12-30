@@ -5,9 +5,7 @@
 
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row-reverse items-center">
-      <BsButton @click="open">
-        <img src="/svg/new-thing.svg" class="mr-2"> New Account
-      </BsButton>
+      <NewButton @click="open" />
     </div>
   </div>
 

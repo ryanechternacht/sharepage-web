@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-button center-xy"
+  <div class="bs-button center-xy hover:bg-gray-hover"
     :class="[{ big }, colorClasses]">
     <slot />
   </div>
