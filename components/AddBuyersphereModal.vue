@@ -1,24 +1,22 @@
 <template>
   <VueFinalModal
     class="flex justify-center items-center"
-    content-class="p-8 bg-white rounded-md w-[600px]"
+    content-class="p-4 bg-white rounded-md"
   >
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 w-[36rem]">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">Create a New Buyersphere</h3>
+        <h3 class="flex-grow">Create a New Account</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <div>
-        <h3>Buyersphere Name (required)</h3>
+        <h3>Account Name (required)</h3>
         <input v-model="buyer"
-          ref="buyerElem"
           class="flex-grow mb-2"
           placeholder="Buyer Name">
       </div>
       <div>
-        <h3>Buyersphere Logo (required)</h3>
+        <h3>Account Logo (required)</h3>
         <input v-model="buyerLogo" 
-          ref="buyerLogoElem"
           class="flex-grow mb-4"
           placeholder="Buyer Logo Url (https://...)">
       </div>
@@ -27,7 +25,6 @@
         <Money3Component
           v-model.number="dealAmount"
           class="flex-grow"
-          placeholder="What does the Pricing Tier Cost? (Amount)"
           v-bind="moneyConfig" />
       </div>
       <div>
@@ -38,11 +35,13 @@
       </div>
       <SubmitButton 
         class="self-center"
-        ready-text="Create Buyersphere"
-        submitting-text="Creating"
-        error-text="Invite Failed"
+        ready-text="Create Account"
+        submitting-text="Creating Account"
+        submitted-text="Account Created"
+        error-text="Account Creation Failed"
         :submission-state="submissionState"
-        @click="invite" />
+        :disabled="needsMoreInput"
+        @click="submitFn" />
     </div>
   </VueFinalModal>
 </template>
@@ -60,7 +59,7 @@ const props = defineProps({
 
 const moneyConfig = {
   precision: 0,
-  prefix: '',
+  prefix: '$ ',
   disableNegative: true,
   thousands: ',',
   suffix: ''
@@ -70,26 +69,16 @@ const emit = defineEmits(['close'])
 
 const store = useBuyerspheresStore()
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   await store.createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount })
 })
 
 const buyer = ref(props.buyer)
-const buyerElem = ref(null)
 const buyerLogo = ref('')
-const buyerLogoElem = ref(null)
 const crmOpportunityId = ref(props.crmOpportunityId)
 const dealAmount = ref(props.dealAmount)
 
-function invite () {
-  if (!buyer.value) {
-    buyerElem.value.focus()
-  } else if (!buyerLogo.value) {
-    buyerLogoElem.focus()
-  } else {
-    submitFn()
-  }
-}
+const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value)
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {
