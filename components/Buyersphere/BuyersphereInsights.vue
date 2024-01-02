@@ -1,6 +1,8 @@
 <template>
   <div class="[grid-area:left-header] left-header">
-    <!-- TODO share button -->
+    <div class="flex flex-row items-center">
+      <CopyToClipboardButton />
+    </div>
   </div>
 
   <div class="[grid-area:center-header] center-header">

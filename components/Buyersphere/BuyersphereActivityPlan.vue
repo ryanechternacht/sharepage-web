@@ -1,11 +1,13 @@
 <template>
   <div class="[grid-area:left-header] left-header">
-    <!-- TODO share button -->
+    <div class="flex flex-row items-center">
+      <CopyToClipboardButton />
+    </div>
   </div>
 
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton show-text @click="addItem" />
+      <NewButton @click="addItem" />
     </div>
   </div>
 

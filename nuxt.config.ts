@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt', 
     '@nuxtjs/google-fonts',
     'dayjs-nuxt',
+    'floating-vue/nuxt',
   ],
 
   build: {

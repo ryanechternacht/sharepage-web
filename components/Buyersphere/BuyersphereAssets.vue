@@ -1,7 +1,13 @@
 <template>
+  <div class="[grid-area:left-header] left-header">
+    <div class="flex flex-row items-center">
+      <CopyToClipboardButton />
+    </div>
+  </div>
+
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton show-text @click="addAsset" />
+      <NewButton @click="addAsset" />
     </div>
   </div>
 

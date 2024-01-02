@@ -60,7 +60,6 @@
           </BsButton>
         </div>
         <NewButton class="mx-auto"
-          show-text
           @click="addObjective" />
       </div>
 
@@ -105,7 +104,6 @@
           <div class="gray inline-html" v-html="feature.description" />
         </div>
         <NewButton class="mx-auto"
-          show-text
           @click="addFeature" />
       </div>
     </div>
@@ -143,7 +141,6 @@
         </div>
       </div>
       <NewButton class="mx-auto"
-        show-text
         @click="addPricingTier" />
     </div>
 
@@ -162,25 +159,15 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { useFeaturesStore } from '@/stores/features'
 import { usePricingStore } from '@/stores/pricing'
-import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
-import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
 import AddEditObjectiveModal from '@/components/Settings/AddEditObjectiveModal.vue';
 import AddEditFeatureModal from '@/components/Settings/AddEditFeatureModal.vue';
 import AddEditPricingTierModal from '@/components/Settings/AddEditPricingTierModal.vue';
 import { useModal } from 'vue-final-modal'
-
-const route = useRoute()
-const buyersphereId = parseInt(route.params.id)
-
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
 
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
@@ -191,16 +178,10 @@ const { getFeaturesCached } = storeToRefs(featuresStore)
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
-const usersStore = useUsersStore()
-const { isUserSeller } = storeToRefs(usersStore)
-
-const [buyersphere, conversations, painPoints, features, { pricingTiers }, isSeller] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId),
+const [painPoints, features, { pricingTiers }] = await Promise.all([
   getPainPointsCached.value(),
   getFeaturesCached.value(),
   getPricingCached.value(),
-  isUserSeller.value(),
 ])
 
 const periodMap = {
@@ -215,11 +196,6 @@ const moneyConfig = {
   disableNegative: true,
   thousands: ',',
   suffix: ''
-}
-
-const dayjs = useDayjs()
-function formatDate(date) {
-  return dayjs(date).format('MMM Do')
 }
 
 const { 
