@@ -33,10 +33,7 @@
       <div class="group-header">Success Criteria</div>
       
       <h4>How will we know if this product is right for you?</h4>
-      <TipTapTextarea 
-        modelValue="To be filled out by the buyer"
-        readonly
-        class="w-full mb-4" />
+      <TipTapTextarea is-demo class="w-full mb-4" />
     </div>
 
     <div id="objectives"
@@ -64,10 +61,7 @@
       </div>
 
       <h4>Which ones are most important to you? Are there any not covered above?</h4>
-      <TipTapTextarea
-        modelValue="To be filled out by the buyer"
-        readonly
-        class="w-full mb-4" />
+      <TipTapTextarea is-demo class="w-full mb-4" />
     </div>
 
     <div id="features"
@@ -148,10 +142,7 @@
       class="section">
       <div class="group-header">Constraints</div>
       <h4>Are there any constraints on your end we should know about?</h4>
-      <TipTapTextarea
-        modelValue="To be filled out by the buyer"
-        readonly
-        class="w-full mb-4" />
+      <TipTapTextarea is-demo class="w-full mb-4" />
     </div>
 
     <div class="vertical-bar" />

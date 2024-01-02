@@ -6,8 +6,8 @@
        to the .ProseMirror -->
   <editor-content 
     :editor="editor"
-    read-only
-    class="editor p-2 body bg-white border border-gray-border rounded-md" />
+    class="editor p-2 body border border-gray-border rounded-md"
+    :class="[isDemo ? 'bg-gray-hover' : 'bg-white']" />
 </template>
 
 <script setup>
@@ -19,14 +19,15 @@ const props = defineProps({
   modelValue: { type: String, required: true },
   placeholder: { type: String, default: '' },
   minHeight: { type: String, default: "40px" },
-  readonly: { type: Boolean, default: false }
+  readonly: { type: Boolean, default: false },
+  isDemo: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['update:modelValue'])
 
 const editor = useEditor({
-  editable: !props.readonly,
-  content: props.modelValue,
+  editable: !(props.readonly || props.isDemo),
+  content: props.isDemo ? '<i>To be filled in by the buyer</i>' : props.modelValue,
   extensions: [
     StarterKit,
     Placeholder.configure({
