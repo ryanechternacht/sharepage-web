@@ -2,54 +2,69 @@
   <div class="section">
     <div class="group-header">{{ header }}</div>
     <div class="item-count">
-      {{ items.length === 1 ? '1 activity' : `${items.length} activities`}}
+      {{ activities.length === 1 ? '1 activity' : `${activities.length} activities`}}
     </div>
     <div class="mt-[2rem] flex flex-col gap-4">
-      <div v-for="item in items"
+      <div v-for="activity in activities"
         class="item-list-row"
-        @click="emit('update:item', { item })">
-        <img :src="iconMap[item.collaborationType]"
+        @click="emit('click:activity', { activity })">
+        <img :src="iconMap[activity.collaborationType]"
           class="w-[1rem] h-[1rem]">
         
           <Tag2 class="w-[4.75rem]" color="gray">
-          {{ capitalize(item.collaborationType) }}
+          {{ capitalize(activity.collaborationType) }}
         </Tag2>
         
-        <div class="inline-html main-content" v-html="item.message" />
+        <div class="inline-html main-content" v-html="activity.message" />
 
-        <template v-if="item.assignedTo" >
-          <UserAvatar :user="item.assignedTo" />
+        <template v-if="activity.assignedTo">
+          <UserAvatar :user="activity.assignedTo" />
           <div class="ml-[-.5rem] min-w-[8rem]">
-            {{ item.assignedTo.firstName}} {{ item.assignedTo.lastName }}
+            {{ activity.assignedTo.firstName}} {{ activity.assignedTo.lastName }}
           </div>
         </template>
+        <template v-else-if="isGlobalList">
+          <!-- If global, but unassigned, still show assigned team -->
+          <template v-if="activity.assignedTeam === 'seller'">
+            <Logo :src="organization.logo" />
+            <div class="ml-[-.5rem] min-w-[8rem]">{{ organization.name }}</div>
+          </template>
+          <template v-else>
+            <Logo :src="activity.buyer.logo" />
+            <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
+          </template>
+        </template>
 
-        <template v-if="item.assignedTeam === 'seller'">
+
+        <template v-if="isGlobalList">
+          <!-- if global list, always show the buyersphere for the deal -->
+          <Logo :src="activity.buyer.logo" />
+          <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
+        </template>
+        <template v-else-if="activity.assignedTeam === 'seller'">
           <Logo :src="organization.logo" />
           <div class="ml-[-.5rem] min-w-[8rem]">{{ organization.name }}</div>
         </template>
-        
         <template v-else-if="isTemplate">
           <div class="template-buyer-logo">
             <img src="/svg/briefcase.svg">
           </div>
           <div class="ml-[-.5rem] min-w-[8rem]">Buying Company</div>
         </template>
-
         <template v-else>
-          <Logo :src="item.buyer.logo" />
-          <div class="ml-[-.5rem] min-w-[8rem]">{{ item.buyer.name }}</div>
+          <Logo :src="activity.buyer.logo" />
+          <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
         </template>
 
         <div class="min-w-[5rem]">
           <div v-if="isTemplate">
-            {{ item.dueDateDays === 1 
-              ? `${item.dueDateDays} day` 
-              : `${item.dueDateDays} days`}} out
+            {{ activity.dueDateDays === 1 
+              ? `${activity.dueDateDays} day` 
+              : `${activity.dueDateDays} days`}} out
           </div>
           <div v-else
             :class="{'text-red-secondary': overdue}">
-            {{ prettyFormatDateFromToday(item.dueDate) }}
+            {{ prettyFormatDateFromToday(activity.dueDate) }}
           </div>
         </div>
       </div>
@@ -71,13 +86,14 @@ const [organization] = await Promise.all([
 ])
 
 const props = defineProps({ 
-  items: { type: Array, required: true },
+  activities: { type: Array, required: true },
   overdue: { type: Boolean, default: false },
   header: { type: String, required: true },
-  isTemplate: { type: Boolean, default: false }
+  isTemplate: { type: Boolean, default: false },
+  isGlobalList: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['update:item'])
+const emit = defineEmits(['click:activity'])
 
 const dayjs = useDayjs()
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))

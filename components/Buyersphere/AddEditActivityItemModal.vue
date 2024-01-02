@@ -67,11 +67,11 @@ import lodash_pkg from 'lodash';
 const { capitalize, concat, find } = lodash_pkg;
 
 const props = defineProps({
-  item: { type: Object, default: {} },
+  activity: { type: Object, default: {} },
   buyersphereId: { type: Number, required: true }
 })
 
-const editMode = ref(!!props.item?.id)
+const editMode = ref(!!props.activity?.id)
 
 const emit = defineEmits(['close'])
 
@@ -104,12 +104,12 @@ const allBuyersphereUsers = computed(
     buyersphere.sellerTeam ?? [])
 )
 
-const resolved = ref(props.item?.resolved)
-const message = ref(props.item?.message)
-const dueDate = ref(props.item?.dueDate)
-const assignedToId = ref(props.item.assignedTo?.id ??
-  (props.item.assignedTeam === "buyer" ? -1 : -2))
-const collaborationType = ref(props.item?.collaborationType)
+const resolved = ref(props.activity?.resolved)
+const message = ref(props.activity?.message)
+const dueDate = ref(props.activity?.dueDate)
+const assignedToId = ref(props.activity?.assignedTo?.id ??
+  (props.activity?.assignedTeam === "buyer" ? -1 : -2))
+const collaborationType = ref(props.activity?.collaborationType)
 
 const assignedTeam = computed(
   () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
@@ -119,7 +119,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     buyersphereStore.updateConversation({ 
       buyersphereId: props.buyersphereId,
-      conversationId: props.item.id,
+      conversationId: props.activity.id,
       resolved: resolved.value,
       dueDate: dueDate.value,
       message: message.value,

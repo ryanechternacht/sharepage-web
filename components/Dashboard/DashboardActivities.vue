@@ -35,34 +35,39 @@
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"
-      :items="overdueItems"
+      is-global-list
       overdue
+      :activities="overdueItems"
       header="Overdue"
-      @update:item="editItem" />
+      @click:activity="goToItem" />
 
     <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
-      :items="next7DaysItems"
+      is-global-list
+      :activities="next7DaysItems"
       header="Next 7 Days"
-      @update:item="editItem" />
+      @click:activity="goToItem" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
-      :items="next30DaysItems"
+      is-global-list
+      :activities="next30DaysItems"
       header="Next 30 Days"
-      @update:item="editItem" />
+      @click:activity="goToItem" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
-      :items="next90DaysItems"
+      is-global-list
+      :activities="next90DaysItems"
       header="Next 90 Days"
-      @update:item="editItem" />
+      @click:activity="goToItem" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
-      :items="beyondItems"
+      is-global-list
+      :activities="beyondItems"
       header="Beyond"
-      @update:item="editItem" />
+      @click:activity="goToItem" />
 
     <div class="vertical-bar" />
   </div>
@@ -72,7 +77,7 @@
 import { useActivitiesStore } from '@/stores/activities'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, find, orderBy } = lodash_pkg;
+const { filter, orderBy } = lodash_pkg;
 
 
 // TODO we'll need a route for "all" activities across deals
@@ -81,7 +86,7 @@ const buyersphereStore = useActivitiesStore()
 const { getActivitiesForOrganization } = storeToRefs(buyersphereStore)
 
 const [activities] = await Promise.all([
-getActivitiesForOrganization.value(),
+  getActivitiesForOrganization.value(),
 ])
 
 const dayjs = useDayjs()
@@ -137,6 +142,10 @@ const beyondItems = computed(() =>
     ['asc']
   )
 )
+
+function goToItem({ activity }) {
+  navigateTo(`/buyersphere/${activity.buyersphereId}/activity-plan`)
+}
 </script>
 
 <style lang="postcss" scoped>

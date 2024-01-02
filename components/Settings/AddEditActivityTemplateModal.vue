@@ -55,14 +55,12 @@ import { VueFinalModal } from 'vue-final-modal'
 import { useOrganizationStore } from '@/stores/organization'
 import { useActivityTemplateStore } from '@/stores/activity-template'
 import { storeToRefs } from 'pinia'
-import lodash_pkg from 'lodash';
-const { capitalize, concat, find } = lodash_pkg;
 
 const props = defineProps({
-  item: { type: Object, default: {} },
+  activity: { type: Object, default: {} },
 })
 
-const editMode = ref(!!props.item?.id)
+const editMode = ref(!!props.activity?.id)
 
 const emit = defineEmits(['close'])
 
@@ -75,15 +73,15 @@ const [organization] = await Promise.all([
   getOrganizationCached.value()
 ])
 
-const message = ref(props.item?.message)
-const dueDateDays = ref(props.item?.dueDateDays)
-const collaborationType = ref(props.item?.collaborationType)
-const assignedTeam = ref(props.item?.assignedTeam)
+const message = ref(props.activity?.message)
+const dueDateDays = ref(props.activity?.dueDateDays)
+const collaborationType = ref(props.activity?.collaborationType)
+const assignedTeam = ref(props.activity?.assignedTeam)
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
     activityTemplateStore.updateActivityTemplateItem({ 
-      id: props.item?.id,
+      id: props.activity?.id,
       message: message.value,
       dueDateDays: dueDateDays.value,
       assignedTeam: assignedTeam.value,

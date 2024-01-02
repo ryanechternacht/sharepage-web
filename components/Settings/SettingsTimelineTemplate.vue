@@ -40,30 +40,30 @@
     <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
       is-template
-      :items="next7DaysItems"
+      :activities="next7DaysItems"
       header="Next 7 Days"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
       is-template
-      :items="next30DaysItems"
+      :activities="next30DaysItems"
       header="Next 30 Days"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
       is-template
-      :items="next90DaysItems"
+      :activities="next90DaysItems"
       header="Next 90 Days"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
       is-template
-      :items="beyondItems"
+      :activities="beyondItems"
       header="Beyond"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <div class="vertical-bar" />
   </div>
@@ -88,7 +88,7 @@ const next7DaysItems = computed(() =>
   orderBy(
     filter(items, 
       i => i.dueDateDays <= 7),
-    ['dueDate'],
+    ['dueDateDays'],
     ['asc']
   )
 )
@@ -98,7 +98,7 @@ const next30DaysItems = computed(() =>
     filter(items, 
       i => i.dueDateDays > 7
         && i.dueDateDays <= 30),
-    ['dueDate'],
+    ['dueDateDays'],
     ['asc']
   )
 )
@@ -108,7 +108,7 @@ const next90DaysItems = computed(() =>
     filter(items, 
       i => i.dueDateDays > 30
         && i.dueDateDays <= 90),
-    ['dueDate'],
+    ['dueDateDays'],
     ['asc']
   )
 )
@@ -116,7 +116,7 @@ const next90DaysItems = computed(() =>
 const beyondItems = computed(() =>
   orderBy(
     filter(items, i => i.dueDateDays > 90),
-    ['dueDate'],
+    ['dueDateDays'],
     ['asc']
   )
 )
@@ -131,12 +131,12 @@ const { open, close, patchOptions } = useModal({
 })
 
 function createItem() {
-  patchOptions({ attrs: { item: {} } })
+  patchOptions({ attrs: { activity: {} } })
   open()
 }
 
-function editItem({ item }) {
-  patchOptions({ attrs: { item }})
+function editItem({ activity }) {
+  patchOptions({ attrs: { activity }})
   open()
 }
 

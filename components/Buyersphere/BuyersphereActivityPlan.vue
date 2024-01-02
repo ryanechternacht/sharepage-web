@@ -50,40 +50,40 @@
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"
-      :items="overdueItems"
+      :activities="overdueItems"
       overdue
       header="Overdue"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
-      :items="next7DaysItems"
+      :activities="next7DaysItems"
       header="Next 7 Days"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
-      :items="next30DaysItems"
+      :activities="next30DaysItems"
       header="Next 30 Days"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
-      :items="next90DaysItems"
+      :activities="next90DaysItems"
       header="Next 90 Days"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
-      :items="beyondItems"
+      :activities="beyondItems"
       header="Beyond"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
     <BuyersphereActivityPlanSection v-if="completedItems.length"
       id="completed"
-      :items="completedItems"
+      :activities="completedItems"
       header="Completed"
-      @update:item="editItem" />
+      @click:activity="editItem" />
 
 
     <h2 class="mx-auto p-2 rounded-md bg-purple-background text-purple-secondary">
@@ -202,13 +202,13 @@ const { open, close, patchOptions } = useModal({
   }
 })
 
-function editItem({ item }) {
-  patchOptions({ attrs: { item }})
+function editItem({ activity }) {
+  patchOptions({ attrs: { activity }})
   open()
 }
 
 function addItem() {
-  patchOptions({ attrs: { item: {} }})
+  patchOptions({ attrs: { activity: {} }})
   open()
 }
 </script>
