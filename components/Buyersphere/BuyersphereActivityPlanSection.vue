@@ -10,12 +10,38 @@
         @click="emit('update:item', { item })">
         <img :src="iconMap[item.collaborationType]"
           class="w-[1rem] h-[1rem]">
-        <Tag2 class="w-[4.75rem]" color="gray">
+        
+          <Tag2 class="w-[4.75rem]" color="gray">
           {{ capitalize(item.collaborationType) }}
         </Tag2>
-        <div class="inline-html" v-html="item.message" />
-        <div class="flex-grow" />
-        <div class="w-[9.5rem] flex flex-row items-center gap-1 justify-end">
+        
+        <div class="inline-html main-content" v-html="item.message" />
+
+        <template v-if="item.assignedTo" >
+          <UserAvatar :user="item.assignedTo" />
+          <div class="ml-[-.5rem] min-w-[8rem]">
+            {{ item.assignedTo.firstName}} {{ item.assignedTo.lastName }}
+          </div>
+        </template>
+
+        <template v-if="item.assignedTeam === 'seller'">
+          <Logo :src="organization.logo" />
+          <div class="ml-[-.5rem] min-w-[8rem]">{{ organization.name }}</div>
+        </template>
+        
+        <template v-else-if="isTemplate">
+          <div class="template-buyer-logo">
+            <img src="/svg/briefcase.svg">
+          </div>
+          <div class="ml-[-.5rem] min-w-[8rem]">Buying Company</div>
+        </template>
+
+        <template v-else>
+          <Logo :src="item.buyer.logo" />
+          <div class="ml-[-.5rem] min-w-[8rem]">{{ item.buyer.name }}</div>
+        </template>
+
+        <div class="min-w-[5rem]">
           <div v-if="isTemplate">
             {{ item.dueDateDays === 1 
               ? `${item.dueDateDays} day` 
@@ -25,14 +51,6 @@
             :class="{'text-red-secondary': overdue}">
             {{ prettyFormatDateFromToday(item.dueDate) }}
           </div>
-          <UserAvatar v-if="item.assignedTo" :user="item.assignedTo" />
-          <Logo v-if="item.assignedTeam === 'seller'"
-            :src="organization.logo" />
-          <div v-else-if="isTemplate" class="template-buyer-logo">
-            <img src="/svg/briefcase.svg">
-          </div>
-          <Logo v-else
-            :src="item.buyer.logo" />
         </div>
       </div>
     </div>
@@ -97,11 +115,18 @@ const iconMap = {
 
 <style lang="postcss" scoped>
 .item-list-row {
-  @apply w-full flex flex-row items-center gap-2;
+  @apply w-full flex flex-row items-center gap-4;
 
   &:hover {
     @apply cursor-pointer bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
     width: calc(100% + 2rem);
+  }
+  * {
+    @apply shrink-0;
+  }
+
+  .main-content {
+    @apply shrink grow;
   }
 }
 
