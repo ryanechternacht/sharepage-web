@@ -23,7 +23,7 @@
       </div>
       <div class="w-full">
         <h3>Due Date</h3>
-        <vue-date-picker 
+        <vue-date-picker
           v-model="dueDate"
           :auto-apply="true"
           model-type="yyyy-MM-dd"

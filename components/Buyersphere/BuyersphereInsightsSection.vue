@@ -6,8 +6,7 @@
     </div>
     <div class="mt-[2rem] flex flex-col gap-4">
       <div v-for="item in items"
-        class="item-list-row"
-        @click="emit('update:item', { item })">
+        class="item-list-row">
         <img :src="activityMap[item.activity]?.icon"
           class="w-[1rem] h-[1rem]">
         <div>{{ activityMap[item.activity]?.label }}</div>

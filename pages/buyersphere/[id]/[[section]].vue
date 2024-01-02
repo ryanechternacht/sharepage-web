@@ -63,7 +63,7 @@
       <BuyersphereTeam v-else-if="mainSection === 'team'" />
       <BuyersphereInsights v-else-if="mainSection === 'insights'" />
       <BuyersphereAssets v-else-if="mainSection === 'assets'" />
-      <BuyersphereNotes v-else-if="mainSection === 'notes'" />
+      <!-- <BuyersphereNotes v-else-if="mainSection === 'notes'" /> -->
 
       <div class="[grid-area:footer] h-20" />
     </div>

@@ -1,8 +1,8 @@
 <template>
   <BsButton :color="color">
     <div v-if="showText"
-      class="mr-2 tag-header">New</div> 
-    <img src="/svg/new-thing.svg">
+      class="tag mr-2">Edit</div> 
+    <img src="/svg/pencil.svg">
   </BsButton>
 </template>
 

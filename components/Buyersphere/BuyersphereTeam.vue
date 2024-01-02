@@ -40,6 +40,8 @@
           @click="navigateTo('#auxiliary-team')"
           class="in-page-link">Auxiliary Team</h4> -->
       </div>
+      <div class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
       <div v-if="isSeller"
         class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>

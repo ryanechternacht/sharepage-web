@@ -5,7 +5,7 @@
 
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton @click="open" />
+      <NewButton show-text @click="open" />
     </div>
   </div>
 

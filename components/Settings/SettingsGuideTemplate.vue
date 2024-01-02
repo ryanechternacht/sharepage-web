@@ -60,6 +60,7 @@
           </BsButton>
         </div>
         <NewButton class="mx-auto"
+          show-text
           @click="addObjective" />
       </div>
 
@@ -104,6 +105,7 @@
           <div class="gray inline-html" v-html="feature.description" />
         </div>
         <NewButton class="mx-auto"
+          show-text
           @click="addFeature" />
       </div>
     </div>
@@ -141,6 +143,7 @@
         </div>
       </div>
       <NewButton class="mx-auto"
+        show-text
         @click="addPricingTier" />
     </div>
 

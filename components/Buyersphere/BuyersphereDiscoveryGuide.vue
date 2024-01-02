@@ -27,6 +27,8 @@
         @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
+        <div class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
       <div v-if="isSeller"
         class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>

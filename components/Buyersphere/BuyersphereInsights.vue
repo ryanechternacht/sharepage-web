@@ -14,6 +14,8 @@
         @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
+      <div class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
       <h3 class="page-link">Insights</h3>
       <div v-scroll-spy-active v-scroll-spy-link
         class="mt-[-.75rem] mb-[.75rem]">

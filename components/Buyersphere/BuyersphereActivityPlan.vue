@@ -5,7 +5,7 @@
 
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton @click="addItem" />
+      <NewButton show-text @click="addItem" />
     </div>
   </div>
 
@@ -37,11 +37,12 @@
       </div>
       <div class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
-      <!-- Should this check be standardized onto the store? -->
+      <div class="page-link"
+        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
       <div v-if="isSeller"
         class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
-    </div>
+      </div>
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>

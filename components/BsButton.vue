@@ -1,5 +1,5 @@
 <template>
-  <div class="bs-button center-xy hover:bg-gray-hover"
+  <div class="bs-button center-xy"
     :class="[{ big }, colorClasses]">
     <slot />
   </div>
@@ -13,8 +13,9 @@ const props = defineProps({
 
 const colorClasses = computed(
   () => ({
-    'none': 'border border-gray-hover-active',
-    'teal': 'bg-green-primary text-white'
+    'none': 'border border-gray-hover-active bg-white hover:bg-gray-hover',
+    'teal': 'bg-green-primary text-white',
+    'blue': 'bg-blue-primary text-white',
   }[props.color ?? 'none'])
 )
 </script>
