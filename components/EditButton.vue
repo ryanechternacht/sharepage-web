@@ -1,8 +1,8 @@
 <template>
-  <BsButton :color="color">
+  <BsButton id="btn" :color="color" hover-color="blue">
     <div v-if="showText"
       class="tag mr-2">Edit</div> 
-    <img src="/svg/pencil.svg">
+    <div id="pencil" />
   </BsButton>
 </template>
 
@@ -12,3 +12,17 @@ const props = defineProps({
   showText: { type: Boolean, default: false }
 })
 </script>
+
+<style lang="postcss" scoped>
+#pencil {
+  mask: url(/svg/pencil.svg);
+
+  @apply bg-gray-body;
+  width: 14px;
+  height: 14px;
+}
+
+#btn:hover #pencil {
+  @apply bg-white;
+}
+</style>

@@ -1,8 +1,8 @@
 <template>
-  <BsButton :color="color">
+  <BsButton id="btn" :color="color" hover-color="red">
     <div v-if="showText"
       class="tag mr-2">Delete</div> 
-    <img src="/svg/trash-can.svg">
+    <div id="trash-can" />
   </BsButton>
 </template>
 
@@ -12,3 +12,17 @@ const props = defineProps({
   showText: { type: Boolean, default: false }
 })
 </script>
+
+<style lang="postcss" scoped>
+#trash-can {
+  mask: url(/svg/trash-can.svg);
+
+  @apply bg-gray-body;
+  width: 14px;
+  height: 14px;
+}
+
+#btn:hover #trash-can {
+  @apply bg-white;
+}
+</style>

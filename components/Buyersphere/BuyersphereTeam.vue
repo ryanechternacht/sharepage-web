@@ -8,12 +8,8 @@
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row items-center gap-2">
       <div class="flex-grow" />
-      <BsButton @click="openBuyerModal">
-        <img src="/svg/new-thing.svg" class="mr-2"> New Buyer
-      </BsButton>
-      <BsButton @click="openSellerModal">
-        <img src="/svg/new-thing.svg" class="mr-2"> New Seller
-      </BsButton>
+      <NewButton @click="openBuyerModal" text="New Buyer" />
+      <NewButton @click="openSellerModal" text="New Seller" />
     </div>
   </div>
 

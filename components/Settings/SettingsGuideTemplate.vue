@@ -45,16 +45,9 @@
           class="item-list-row">
           <img src="/svg/gift-tag.svg">
           <Tag2 class="whitespace-nowrap" color="blue">{{ objective.title }}</Tag2>
-          <div class="inline-html tag" v-html="objective.description" />
-          <div class="flex-grow" />
-          <BsButton class="show-on-row-hover"
-            @click="editObjective({ objective })">
-            <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
-          </BsButton>
-          <BsButton class="show-on-row-hover"
-            @click="deleteObjective({ objective })">
-            <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
-          </BsButton>
+          <div class="inline-html tag main-content" v-html="objective.description" />
+          <DeleteButton class="show-on-row-hover" @click="deleteObjective" />
+          <EditButton class="show-on-row-hover" @click="editObjective" />
         </div>
         <NewButton class="mx-auto"
           @click="addObjective" />
@@ -75,14 +68,10 @@
           <h3>{{ feature.title }}</h3>
           <div class="row-span-2 h-full flex flex-row items-center gap-2">
             <!-- buttons are both rows far right column -->
-            <BsButton class="show-on-row-hover"
-              @click="editFeature({ feature })">
-              <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
-            </BsButton>
-            <BsButton class="show-on-row-hover"
-              @click="deleteFeature({ feature })">
-              <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
-            </BsButton>
+            <DeleteButton class="show-on-row-hover" 
+              @click="deleteFeature({ feature })" />
+            <EditButton class="show-on-row-hover" 
+              @click="editFeature({ feature })" />
           </div>
           <div class="justify-center flex flex-row items-center gap-2">
             <div class="feature-button">
@@ -97,7 +86,7 @@
           </div>
           <div class="gray inline-html" v-html="feature.description" />
         </div>
-        <NewButton class="mx-auto"
+        <NewButton class="section-add-button"
           @click="addFeature" />
       </div>
     </div>
@@ -120,21 +109,17 @@
           <h3 class="leading-[1.375rem]">{{ pricingTier.title }}</h3>
           <div class="row-span-2 h-full flex flex-row items-center gap-2">
             <!-- buttons are both rows far right column -->
-            <BsButton class="show-on-row-hover"
-              @click="editPricingTier({ pricingTier })">
-              <img src="/svg/edit.svg" class="min-w-[1rem] h-[1rem]">
-            </BsButton>
-            <BsButton class="show-on-row-hover"
-              @click="deletePricingTier({ pricingTier })">
-              <img src="/svg/trash.svg" class="min-w-[1rem] h-[1rem]">
-            </BsButton>
+            <DeleteButton class="show-on-row-hover" 
+              @click="deletePricingTier({ pricingTier })" />
+            <EditButton class="show-on-row-hover" 
+              @click="editPricingTier({ pricingTier })" />
           </div>
           <div><!-- empty --></div>
           <div class="h-full"><!-- empty --></div>
           <div class="gray inline-html" v-html="pricingTier.description" />
         </div>
       </div>
-      <NewButton class="mx-auto"
+      <NewButton class="section-add-button"
         @click="addPricingTier" />
     </div>
 
@@ -291,6 +276,14 @@ function deletePricingTier({ pricingTier }) {
     @apply flex flex-row items-center gap-2;
     min-height: calc(1.5rem + 2px);
 
+    * {
+      @apply shrink-0;
+    }
+
+    .main-content {
+      @apply shrink grow;
+    }
+
     &:hover {
       @apply bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
         width: calc(100% + 2rem);
@@ -302,6 +295,12 @@ function deletePricingTier({ pricingTier }) {
 
     .show-on-row-hover {
       @apply hidden;
+    }
+
+    /* ensures 2rem height even when no buttons are showing */
+    &::after {
+      @apply h-[2rem] ml-[-.5rem];
+      content: '';
     }
   }
 }

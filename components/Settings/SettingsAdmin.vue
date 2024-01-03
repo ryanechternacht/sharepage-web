@@ -35,10 +35,7 @@
       </div>
 
       <div class="section-add-button">
-        <BsButton @click="createUser">
-          <img src="/svg/new-thing.svg" class="mr-2">
-          <p>Add</p>
-        </BsButton>
+        <NewButton @click="createUser" />
       </div>
     </div>
   </div>

@@ -137,6 +137,7 @@ const iconMap = {
     @apply cursor-pointer bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
     width: calc(100% + 2rem);
   }
+  
   * {
     @apply shrink-0;
   }
