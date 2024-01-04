@@ -39,28 +39,32 @@
       is-template
       :activities="next7DaysItems"
       header="Next 7 Days"
-      @click:activity="editItem" />
+      @update:activity="editActivityTemplate"
+      @delete:activity="deleteActivityTemplate" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
       is-template
       :activities="next30DaysItems"
       header="Next 30 Days"
-      @click:activity="editItem" />
+      @update:activity="editActivityTemplate"
+      @delete:activity="deleteActivityTemplate" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
       is-template
       :activities="next90DaysItems"
       header="Next 90 Days"
-      @click:activity="editItem" />
+      @update:activity="editActivityTemplate"
+      @delete:activity="deleteActivityTemplate" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
       is-template
       :activities="beyondItems"
       header="Beyond"
-      @click:activity="editItem" />
+      @update:activity="editActivityTemplate"
+      @delete:activity="deleteActivityTemplate" />
 
     <div class="vertical-bar" />
   </div>
@@ -132,9 +136,17 @@ function createItem() {
   open()
 }
 
-function editItem({ activity }) {
+function editActivityTemplate({ activity }) {
   patchOptions({ attrs: { activity }})
   open()
+}
+
+function deleteActivityTemplate({ activity }) {
+  const c = confirm(`Are you sure you want to delete this action item`)
+
+  if (c) {
+    activityTemplateStore.deleteActivityTemplate({ id: activity.id })
+  }
 }
 
 </script>

@@ -60,5 +60,14 @@ export const useActivityTemplateStore = defineStore('activity-template', {
         ct.collaborationType = data.value.collaborationType
       }
     },
+    async deleteActivityTemplateItem({ id }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/conversation-template/item/${id}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.items.content, ct => ct.id === id)
+    }
   },
 })

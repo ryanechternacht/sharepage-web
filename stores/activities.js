@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import lodash_pkg from 'lodash';
-const { find, findIndex, remove } = lodash_pkg;
+const { remove } = lodash_pkg;
+import { useBuyerspheresStore } from './buyerspheres';
 
 function is10MinutesOld(jsonTimestamp) {
   const dayjs = useDayjs()
@@ -26,12 +27,22 @@ export const useActivitiesStore = defineStore('activities', {
           || forceRefresh
           || is10MinutesOld(this.activities.generatedAt)) {
         const { data } = await apiFetch('/v0.1/activities')
-        console.log('activities', data.value)
         this.activities = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
+    async resolveActivity ({ activity, resolved }) {
+      const buyersphereStore = useBuyerspheresStore()
+
+      buyersphereStore.updateConversation({
+        buyersphereId: activity.buyersphereId,
+        conversationId: activity.id,
+        resolved,
+      })
+
+      remove(this.activities.content, a => a.id === activity.id)
+    }
   },
 })

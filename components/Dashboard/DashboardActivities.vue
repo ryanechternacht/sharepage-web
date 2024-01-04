@@ -39,35 +39,40 @@
       overdue
       :activities="overdueItems"
       header="Overdue"
-      @click:activity="goToItem" />
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
       is-global-list
       :activities="next7DaysItems"
       header="Next 7 Days"
-      @click:activity="goToItem" />
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
       is-global-list
       :activities="next30DaysItems"
       header="Next 30 Days"
-      @click:activity="goToItem" />
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
       is-global-list
       :activities="next90DaysItems"
       header="Next 90 Days"
-      @click:activity="goToItem" />
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
       is-global-list
       :activities="beyondItems"
       header="Beyond"
-      @click:activity="goToItem" />
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <div class="vertical-bar" />
   </div>
@@ -80,10 +85,8 @@ import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
 
 
-// TODO we'll need a route for "all" activities across deals
-// not sure how we'll want to filter that yet...
-const buyersphereStore = useActivitiesStore()
-const { getActivitiesForOrganization } = storeToRefs(buyersphereStore)
+const activitiesStore = useActivitiesStore()
+const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
 
 const [activities] = await Promise.all([
   getActivitiesForOrganization.value(),
@@ -143,8 +146,12 @@ const beyondItems = computed(() =>
   )
 )
 
-function goToItem({ activity }) {
+function goToActivity({ activity }) {
   navigateTo(`/buyersphere/${activity.buyersphereId}/activity-plan`)
+}
+
+function resolveActivity({ activity, resolved }) {
+  activitiesStore.resolveActivity({ activity, resolved })
 }
 </script>
 

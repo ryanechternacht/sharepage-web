@@ -7,7 +7,7 @@
 
   <div class="[grid-area:center-header] center-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton @click="addItem" />
+      <NewButton @click="addActivity" />
     </div>
   </div>
 
@@ -53,37 +53,49 @@
       :activities="overdueItems"
       overdue
       header="Overdue"
-      @click:activity="editItem" />
+      @update:activity="editActivity"
+      @delete:activity="deleteActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
       id="next-7-days"
       :activities="next7DaysItems"
       header="Next 7 Days"
-      @click:activity="editItem" />
+      @update:activity="editActivity"
+      @delete:activity="deleteActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
       id="next-30-days"
       :activities="next30DaysItems"
       header="Next 30 Days"
-      @click:activity="editItem" />
+      @update:activity="editActivity"
+      @delete:activity="deleteActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
       id="next-90-days"
       :activities="next90DaysItems"
       header="Next 90 Days"
-      @click:activity="editItem" />
+      @update:activity="editActivity"
+      @delete:activity="deleteActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="beyondItems.length"
       id="beyond"
       :activities="beyondItems"
       header="Beyond"
-      @click:activity="editItem" />
+      @update:activity="editActivity"
+      @delete:activity="deleteActivity"
+      @resolve:activity="resolveActivity" />
 
     <BuyersphereActivityPlanSection v-if="completedItems.length"
       id="completed"
       :activities="completedItems"
       header="Completed"
-      @click:activity="editItem" />
+      @update:activity="editActivity"
+      @delete:activity="deleteActivity"
+      @resolve:activity="resolveActivity" />
 
 
     <h2 class="mx-auto p-2 rounded-md bg-purple-background text-purple-secondary">
@@ -106,8 +118,8 @@ import { useModal } from 'vue-final-modal'
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
+const buyerspheresStore = useBuyerspheresStore()
+const { getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
 
 const usersStore = useUsersStore()
 const { isUserSeller } = storeToRefs(usersStore)
@@ -202,14 +214,31 @@ const { open, close, patchOptions } = useModal({
   }
 })
 
-function editItem({ activity }) {
+function addActivity() {
+  patchOptions({ attrs: { activity: {} }})
+  open()
+}
+
+function editActivity({ activity }) {
   patchOptions({ attrs: { activity }})
   open()
 }
 
-function addItem() {
-  patchOptions({ attrs: { activity: {} }})
-  open()
+function deleteActivity({ activity }) {
+  console.log(activity)
+  const c = confirm(`Are you sure you want to delete this action item`)
+
+  if (c) {
+    buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
+  }
+}
+
+function resolveActivity({ activity, resolved }) {
+  buyerspheresStore.updateConversation({ 
+    buyersphereId: buyersphereId,
+    conversationId: activity.id,
+    resolved: resolved,
+  })
 }
 </script>
 

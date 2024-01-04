@@ -7,11 +7,23 @@
     <div class="mt-[2rem] flex flex-col gap-4">
       <div v-for="activity in activities"
         class="item-list-row"
+        :class="{'cursor-pointer': isGlobalList}"
         @click="emit('click:activity', { activity })">
         <img :src="iconMap[activity.collaborationType]"
-          class="w-[1rem] h-[1rem]">
+          class="w-[1rem] h-[1rem]"
+          :class="{'hide-on-row-hover': !isTemplate}">
+        <div v-if="!isTemplate" 
+          class="show-on-row-hover">
+          <img v-if="activity.resolved"
+            src="/svg/checkmark--green.svg"
+            class="cursor-pointer"
+            @click.stop="emit('resolve:activity', { activity, resolved: false })">
+          <div v-else
+            class="circle"
+            @click.stop="emit('resolve:activity', { activity, resolved: true })" />
+        </div>
         
-          <Tag2 class="w-[4.75rem]" color="gray">
+        <Tag2 class="w-[4.75rem]" color="gray">
           {{ capitalize(activity.collaborationType) }}
         </Tag2>
         
@@ -67,6 +79,13 @@
             {{ prettyFormatDateFromToday(activity.dueDate) }}
           </div>
         </div>
+
+        <DeleteButton v-if="!isGlobalList"
+          class="show-on-row-hover"
+          @click.stop="emit('delete:activity', { activity })" />
+        <EditButton v-if="!isGlobalList"
+          class="show-on-row-hover"
+          @click.stop="emit('update:activity', { activity })" />
       </div>
     </div>
   </div>
@@ -93,7 +112,12 @@ const props = defineProps({
   isGlobalList: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['click:activity'])
+const emit = defineEmits([
+  'click:activity',
+  'update:activity',
+  'delete:activity',
+  'resolve:activity',
+])
 
 const dayjs = useDayjs()
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
@@ -134,8 +158,16 @@ const iconMap = {
   @apply w-full flex flex-row items-center gap-4;
 
   &:hover {
-    @apply cursor-pointer bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
+    @apply bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
     width: calc(100% + 2rem);
+
+    .show-on-row-hover {
+      @apply [display:inherit];
+    }
+
+    .hide-on-row-hover {
+      @apply hidden;
+    }
   }
   
   * {
@@ -147,8 +179,16 @@ const iconMap = {
   }
 }
 
+.show-on-row-hover {
+  @apply hidden;
+}
+
 .template-buyer-logo {
   @apply w-[1.5rem] h-[1.5rem] max-w-[1.5rem] max-h-[1.5rem]
     center-xy bg-gray-border rounded-md;
+}
+
+.circle {
+  @apply rounded-full w-[1rem] h-[1rem] border border-gray-subtext cursor-pointer;
 }
 </style>

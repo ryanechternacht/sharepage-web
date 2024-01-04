@@ -197,25 +197,36 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
         { method: 'PATCH', body: { resolved, dueDate, message, assignedTo, assignedTeam, collaborationType }}
       )
-      const c = find(this.conversations[buyersphereId].content, c => c.id === conversationId)
-      if (data.value.resolved !== undefined) {
-        c.resolved = data.value.resolved
+      const c = find(this.conversations[buyersphereId]?.content, c => c.id === conversationId)
+      if (c) {
+        if (data.value.resolved !== undefined) {
+          c.resolved = data.value.resolved
+        }
+        if (data.value.dueDate !== undefined) {
+          c.dueDate = data.value.dueDate
+        }
+        if (data.value.message !== undefined) {
+          c.message = data.value.message
+        }
+        if (data.value.assignedTo !== undefined) {
+          c.assignedTo = data.value.assignedTo
+        }
+        if (data.value.assignedTeam !== undefined) {
+          c.assignedTeam = data.value.assignedTeam
+        }
+        if (data.value.collaborationType !== undefined) {
+          c.collaborationType = data.value.collaborationType
+        }
       }
-      if (data.value.dueDate !== undefined) {
-        c.dueDate = data.value.dueDate
-      }
-      if (data.value.message !== undefined) {
-        c.message = data.value.message
-      }
-      if (data.value.assignedTo !== undefined) {
-        c.assignedTo = data.value.assignedTo
-      }
-      if (data.value.assignedTeam !== undefined) {
-        c.assignedTeam = data.value.assignedTeam
-      }
-      if (data.value.collaborationType !== undefined) {
-        c.collaborationType = data.value.collaborationType
-      }
+    },
+    async deleteConversation({ buyersphereId, conversationId }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.conversations[buyersphereId].content, c => c.id === conversationId)
     },
     async createResource({ buyersphereId, title, link }) {
       const { apiFetch } = useNuxtApp()

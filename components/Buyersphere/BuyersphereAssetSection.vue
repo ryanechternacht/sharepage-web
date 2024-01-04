@@ -21,10 +21,10 @@
 
         <DeleteButton v-if="isSeller" 
           class="show-on-row-hover"
-          @click.prevent="emit('delete:asset', { asset })" />
+          @click.stop="emit('delete:asset', { asset })" />
         <EditButton v-if="isSeller" 
           class="show-on-row-hover"
-          @click.prevent="emit('update:asset', { asset })" />
+          @click.stop="emit('update:asset', { asset })" />
       </a>
     </div>
   </div>
