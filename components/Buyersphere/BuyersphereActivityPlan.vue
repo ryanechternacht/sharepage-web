@@ -146,30 +146,30 @@ const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
 const filterOptions = ['Anyone', 'Me', 'Us', 'Them']
-const currentFilter = ref('All')
+const currentFilter = ref('Anyone')
 
 function updateFilter ({ option }) {
   currentFilter.value = option
 }
 
 const filteredActivities = computed(() => {
-  if (currentFilter.value === 'All') {
+  if (currentFilter.value === 'Anyone') {
     return conversations
-  } else if (currentFilter.value === 'Mine') {
+  } else if (currentFilter.value === 'Me') {
     return orderBy(
       filter(conversations, 
         a => a.assignedTo?.id === me.id),
       ['dueDate'],
       ['asc']
     )
-  } else if (currentFilter.value === 'Ours') {
+  } else if (currentFilter.value === 'Us') {
     return orderBy(
       filter(conversations, 
         a => a.assignedTeam === me.team),
       ['dueDate'],
       ['asc']
     )
-  } else if (currentFilter.value === 'Theirs') {
+  } else if (currentFilter.value === 'Them') {
     return orderBy(
       filter(conversations, 
         a => a.assignedTeam !== me.team),

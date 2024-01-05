@@ -1,4 +1,11 @@
 <template>
+  <div class="[grid-area:center-header] center-header">
+    <BsButtonGroup 
+      :options="filterOptions"
+      header="Assigned To"
+      @update:option="updateFilter" />
+  </div>
+
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <h3 class="page-link">Activities</h3>
@@ -74,16 +81,20 @@
 
 <script setup>
 import { useActivitiesStore } from '@/stores/activities'
+import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
 
-
 const activitiesStore = useActivitiesStore()
 const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
 
-const [activities] = await Promise.all([
+const usersStore = useUsersStore()
+const { getMeCached } = storeToRefs(usersStore)
+
+const [activities, me] = await Promise.all([
   getActivitiesForOrganization.value(),
+  getMeCached.value(),
 ])
 
 const dayjs = useDayjs()
@@ -94,9 +105,45 @@ const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
+const filterOptions = ['Anyone', 'Me', 'Us', 'Them']
+const currentFilter = ref('Anyone')
+
+function updateFilter ({ option }) {
+  currentFilter.value = option
+}
+
+const filteredActivities = computed(() => {
+  if (currentFilter.value === 'Anyone') {
+    return activities
+  } else if (currentFilter.value === 'Me') {
+    return orderBy(
+      filter(activities, 
+        a => a.assignedTo?.id === me.id),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Us') {
+    return orderBy(
+      filter(activities, 
+        a => a.assignedTeam === me.team),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Them') {
+    return orderBy(
+      filter(activities, 
+        a => a.assignedTeam !== me.team),
+      ['dueDate'],
+      ['asc']
+    )
+  } else {
+    return []
+  }
+})
+
 const overdueItems = computed(() =>
   orderBy(
-    filter(activities, a => dayjs(a.dueDate) < todayDayJs),
+    filter(filteredActivities.value, a => dayjs(a.dueDate) < todayDayJs),
     ['dueDate'],
     ['asc']
   )
@@ -104,7 +151,7 @@ const overdueItems = computed(() =>
 
 const next7DaysItems = computed(() =>
   orderBy(
-    filter(activities, 
+    filter(filteredActivities.value, 
       a => dayjs(a.dueDate) >= today
         && dayjs(a.dueDate) < next7Days),
     ['dueDate'],
@@ -114,7 +161,7 @@ const next7DaysItems = computed(() =>
 
 const next30DaysItems = computed(() =>
   orderBy(
-    filter(activities, 
+    filter(filteredActivities.value, 
       a => dayjs(a.dueDate) >= next7Days
         && dayjs(a.dueDate) < next30Days),
     ['dueDate'],
@@ -124,7 +171,7 @@ const next30DaysItems = computed(() =>
 
 const next90DaysItems = computed(() =>
   orderBy(
-    filter(activities, 
+    filter(filteredActivities.value, 
       a => dayjs(a.dueDate) >= next30Days
         && dayjs(a.dueDate) < next90Days),
     ['dueDate'],
@@ -134,7 +181,7 @@ const next90DaysItems = computed(() =>
 
 const beyondItems = computed(() =>
   orderBy(
-    filter(activities, a => dayjs(a.dueDate) >= next90Days),
+    filter(filteredActivities.value, a => dayjs(a.dueDate) >= next90Days),
     ['dueDate'],
     ['asc']
   )

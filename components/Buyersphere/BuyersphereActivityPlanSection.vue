@@ -68,7 +68,8 @@
           <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
         </template>
 
-        <div class="min-w-[5rem] hide-on-row-hover">
+        <div class="min-w-[5rem]"
+          :class="{'hide-on-row-hover': !isGlobalList}">
           <div v-if="isTemplate">
             {{ activity.dueDateDays === 1 
               ? `${activity.dueDateDays} day` 
