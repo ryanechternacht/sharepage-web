@@ -1,4 +1,11 @@
 <template>
+  <div class="[grid-area:center-header] center-header">
+    <BsButtonGroup 
+      :options="filterOptions"
+      header="Assigned To"
+      @update:option="updateFilter" />
+  </div>
+
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <div class="page-link"
@@ -74,7 +81,7 @@
 import { useActivityTemplateStore } from '@/stores/activity-template'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, last, orderBy } = lodash_pkg;
+const { filter, orderBy } = lodash_pkg;
 import AddEditActivityTemplateModal from '@/components/Settings/AddEditActivityTemplateModal.vue';
 import { useModal } from 'vue-final-modal'
 
@@ -85,9 +92,38 @@ const [items] = await Promise.all([
   getActivityTemplateCached.value(),
 ])
 
+const filterOptions = ['Anyone', 'Us', 'Them']
+const currentFilter = ref('Anyone')
+
+function updateFilter ({ option }) {
+  currentFilter.value = option
+}
+
+const filteredItems = computed(() => {
+  if (currentFilter.value === 'Anyone') {
+    return items
+  } else if (currentFilter.value === 'Us') {
+    return orderBy(
+      filter(items, 
+        a => a.assignedTeam === 'seller'),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Them') {
+    return orderBy(
+      filter(items, 
+        a => a.assignedTeam === 'buyer'),
+      ['dueDate'],
+      ['asc']
+    )
+  } else {
+    return []
+  }
+})
+
 const next7DaysItems = computed(() =>
   orderBy(
-    filter(items, 
+    filter(filteredItems.value, 
       i => i.dueDateDays <= 7),
     ['dueDateDays'],
     ['asc']
@@ -96,7 +132,7 @@ const next7DaysItems = computed(() =>
 
 const next30DaysItems = computed(() =>
   orderBy(
-    filter(items, 
+    filter(filteredItems.value, 
       i => i.dueDateDays > 7
         && i.dueDateDays <= 30),
     ['dueDateDays'],
@@ -106,7 +142,7 @@ const next30DaysItems = computed(() =>
 
 const next90DaysItems = computed(() =>
   orderBy(
-    filter(items, 
+    filter(filteredItems.value, 
       i => i.dueDateDays > 30
         && i.dueDateDays <= 90),
     ['dueDateDays'],
@@ -116,7 +152,7 @@ const next90DaysItems = computed(() =>
 
 const beyondItems = computed(() =>
   orderBy(
-    filter(items, i => i.dueDateDays > 90),
+    filter(filteredItems.value, i => i.dueDateDays > 90),
     ['dueDateDays'],
     ['asc']
   )
