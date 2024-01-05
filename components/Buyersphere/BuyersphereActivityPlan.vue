@@ -1,6 +1,6 @@
 <template>
   <div class="[grid-area:left-header] left-header">
-    <div class="flex flex-row items-center">
+    <div class="h-full flex flex-row items-end">
       <CopyToClipboardButton />
     </div>
   </div>
@@ -8,11 +8,12 @@
   <div class="[grid-area:center-header] center-header">
     <BsButtonGroup 
       :options="filterOptions"
+      header="Assigned To"
       @update:option="updateFilter" />
   </div>
 
   <div class="[grid-area:right-header] right-header">
-    <div class="flex flex-row-reverse items-center">
+    <div class="h-full flex flex-row-reverse items-end">
       <NewButton @click="addActivity" />
     </div>
   </div>
@@ -144,31 +145,31 @@ const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
-const filterOptions = ['Show All', 'Show Mine', 'Show Ours', 'Show Theirs']
-const currentFilter = ref('Show All')
+const filterOptions = ['Anyone', 'Me', 'Us', 'Them']
+const currentFilter = ref('All')
 
 function updateFilter ({ option }) {
   currentFilter.value = option
 }
 
 const filteredActivities = computed(() => {
-  if (currentFilter.value === 'Show All') {
+  if (currentFilter.value === 'All') {
     return conversations
-  } else if (currentFilter.value === 'Show Mine') {
+  } else if (currentFilter.value === 'Mine') {
     return orderBy(
       filter(conversations, 
         a => a.assignedTo?.id === me.id),
       ['dueDate'],
       ['asc']
     )
-  } else if (currentFilter.value === 'Show Ours') {
+  } else if (currentFilter.value === 'Ours') {
     return orderBy(
       filter(conversations, 
         a => a.assignedTeam === me.team),
       ['dueDate'],
       ['asc']
     )
-  } else if (currentFilter.value === 'Show Theirs') {
+  } else if (currentFilter.value === 'Theirs') {
     return orderBy(
       filter(conversations, 
         a => a.assignedTeam !== me.team),

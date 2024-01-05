@@ -1,10 +1,13 @@
 <template>
-  <div class="button-group">
-    <div v-for="option in options"
-      class="button"
-      :class="{ selected: option === mySelectedOption }"
-      @click="selectOption(option)">
-      {{ option }}
+  <div class="flex flex-col items-center">
+    <div class="tag-header mb-1">{{ header }}</div>
+    <div class="button-group">
+      <div v-for="option in options"
+        class="button tag"
+        :class="{ selected: option === mySelectedOption }"
+        @click="selectOption(option)">
+        {{ option }}
+      </div>
     </div>
   </div>
 </template>
@@ -13,6 +16,7 @@
 const props = defineProps({ 
   options: { type: Object, required: true },
   selectedOption: { type: String },
+  header: { type: String }
  })
 
 const emit = defineEmits(['update:option'])
