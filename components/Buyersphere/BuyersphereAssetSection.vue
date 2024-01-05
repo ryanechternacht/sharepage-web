@@ -1,14 +1,15 @@
 <template>
   <div class="section">
-    <div class="group-header">{{ header }}</div>
+    <div class="group-header">{{ header }} {{ isTemplate }}</div>
     <div class="item-count">
       {{ assets.length === 1 ? '1 asset' : `${assets.length} assets`}}
     </div>
     <div class="mt-[2rem] flex flex-col gap-4">
       <a v-for="asset in assets"
-        :href="asset.link"
+        :href="isTemplate ? null : asset.link"
         target="_blank"
-        class="item-list-row">
+        class="item-list-row"
+        :class="{'hover:cursor-pointer': !isTemplate}">
         
         <img src="/svg/book.svg" class="w-[1rem] h-[1rem]">
         <div>{{ asset.title }}</div>
@@ -21,10 +22,10 @@
 
         <DeleteButton v-if="isSeller" 
           class="show-on-row-hover"
-          @click.stop="emit('delete:asset', { asset })" />
+          @click.prevent="emit('delete:asset', { asset })" />
         <EditButton v-if="isSeller" 
           class="show-on-row-hover"
-          @click.stop="emit('update:asset', { asset })" />
+          @click.prevent="emit('update:asset', { asset })" />
       </a>
     </div>
   </div>
@@ -60,7 +61,7 @@ function formatdate (date) {
   @apply w-full flex flex-row items-center gap-2;
 
   &:hover {
-    @apply cursor-pointer bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
+    @apply bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem];
     width: calc(100% + 2rem);
 
     .show-on-row-hover {

@@ -11,8 +11,7 @@
       <input v-model="title"
         class="mb-2"
         placeholder="Asset Title">
-      <TipTapTextarea 
-        v-model="link"
+      <input v-model="link"
         placeholder="Asset Link"
         class="w-full mb-4" />
       <SubmitButton
@@ -48,26 +47,18 @@ const link = ref(props.asset?.link)
 
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
-    await store.updateResource({ feature: {
-      ...props.feature,
+    await store.updateResource({ resource: {
+      ...props.asset,
       title: title.value,
       link: link.value
     } })
   } else {
-    await store.createResource({ feature: {
+    await store.createResource({ resource: {
       title: title.value,
       link: link.value
     } })
   }
   emit('close')
-
-  function createResource({ title, link }) {
-  buyersphereStore.createResource({ buyersphereId, title, link })
-}
-
-function updateResource({ resourceId, title, link }) {
-  buyersphereStore.updateResource({ buyersphereId, resourceId, title, link })
-}
 })
 
 const needsMoreInput = computed(() => !title.value || !link.value)
