@@ -7,7 +7,8 @@
 
   <div class="[grid-area:center-header] center-header">
     <BsButtonGroup 
-      :options="filterOptions" />
+      :options="filterOptions"
+      @update:option="updateFilter" />
   </div>
 
   <div class="[grid-area:right-header] right-header">
@@ -127,10 +128,11 @@ const buyerspheresStore = useBuyerspheresStore()
 const { getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
 
 const usersStore = useUsersStore()
-const { isUserSeller } = storeToRefs(usersStore)
+const { isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const [conversations, isSeller] = await Promise.all([
+const [conversations, me, isSeller] = await Promise.all([
   getBuyersphereConversationsByIdCached.value(buyersphereId),
+  getMeCached.value(),
   isUserSeller.value(),
 ])
 
@@ -142,11 +144,46 @@ const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
-const filterOptions = ['Show All', 'Show Mine', 'Show Ours', 'Show Thiers']
+const filterOptions = ['Show All', 'Show Mine', 'Show Ours', 'Show Theirs']
+const currentFilter = ref('Show All')
+
+function updateFilter ({ option }) {
+  currentFilter.value = option
+}
+
+const filteredActivities = computed(() => {
+  if (currentFilter.value === 'Show All') {
+    return conversations
+  } else if (currentFilter.value === 'Show Mine') {
+    return orderBy(
+      filter(conversations, 
+        a => a.assignedTo?.id === me.id),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Show Ours') {
+    return orderBy(
+      filter(conversations, 
+        a => a.assignedTeam === me.team),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Show Theirs') {
+    return orderBy(
+      filter(conversations, 
+        a => a.assignedTeam !== me.team),
+      ['dueDate'],
+      ['asc']
+    )
+  } else {
+    return []
+  }
+})
 
 const overdueItems = computed(() =>
   orderBy(
-    filter(conversations, c => !c.resolved && dayjs(c.dueDate) < todayDayJs),
+    filter(filteredActivities.value, 
+      a => !a.resolved && dayjs(a.dueDate) < todayDayJs),
     ['dueDate'],
     ['asc']
   )
@@ -154,10 +191,10 @@ const overdueItems = computed(() =>
 
 const next7DaysItems = computed(() =>
   orderBy(
-    filter(conversations, 
-      c => !c.resolved 
-        && dayjs(c.dueDate) >= today
-        && dayjs(c.dueDate) < next7Days),
+    filter(filteredActivities.value, 
+      a => !a.resolved 
+        && dayjs(a.dueDate) >= today
+        && dayjs(a.dueDate) < next7Days),
     ['dueDate'],
     ['asc']
   )
@@ -165,10 +202,10 @@ const next7DaysItems = computed(() =>
 
 const next30DaysItems = computed(() =>
   orderBy(
-    filter(conversations, 
-      c => !c.resolved 
-        && dayjs(c.dueDate) >= next7Days
-        && dayjs(c.dueDate) < next30Days),
+    filter(filteredActivities.value, 
+      a => !a.resolved 
+        && dayjs(a.dueDate) >= next7Days
+        && dayjs(a.dueDate) < next30Days),
     ['dueDate'],
     ['asc']
   )
@@ -176,10 +213,10 @@ const next30DaysItems = computed(() =>
 
 const next90DaysItems = computed(() =>
   orderBy(
-    filter(conversations, 
-      c => !c.resolved 
-        && dayjs(c.dueDate) >= next30Days
-        && dayjs(c.dueDate) < next90Days),
+    filter(filteredActivities.value, 
+      a => !a.resolved 
+        && dayjs(a.dueDate) >= next30Days
+        && dayjs(a.dueDate) < next90Days),
     ['dueDate'],
     ['asc']
   )
@@ -187,7 +224,8 @@ const next90DaysItems = computed(() =>
 
 const beyondItems = computed(() =>
   orderBy(
-    filter(conversations, c => !c.resolved && dayjs(c.dueDate) >= next90Days),
+    filter(filteredActivities.value, 
+      a => !a.resolved && dayjs(a.dueDate) >= next90Days),
     ['dueDate'],
     ['asc']
   )
@@ -195,7 +233,7 @@ const beyondItems = computed(() =>
 
 const completedItems = computed(() =>
   orderBy(
-    filter(conversations, c => c.resolved),
+    filter(filteredActivities.value, a => a.resolved),
     ['dueDate'],
     ['asc']
   )

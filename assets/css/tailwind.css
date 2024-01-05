@@ -150,9 +150,10 @@
 
   /* could this be auto-added with something like :last-child:after ? */
   .vertical-bar {
-    @apply z-[-1] mx-auto border border-gray-border absolute self-center
+    @apply z-[-1] border border-gray-border absolute self-center
       my-4;
     height: calc(100% - 2rem);
+    left: calc(50vw - 220px); /* 220px is the width of the sidebars */
   }
 
   .page-link {
