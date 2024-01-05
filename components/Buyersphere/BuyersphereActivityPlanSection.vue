@@ -15,8 +15,8 @@
         <div v-if="!isTemplate" 
           class="show-on-row-hover">
           <img v-if="activity.resolved"
-            src="/svg/checkmark--green.svg"
-            class="cursor-pointer"
+            src="/svg/reply.svg"
+            class="cursor-pointer w-[1rem] h-[1rem]"
             @click.stop="emit('resolve:activity', { activity, resolved: false })">
           <div v-else
             class="circle"
@@ -68,7 +68,7 @@
           <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
         </template>
 
-        <div class="min-w-[5rem]">
+        <div class="min-w-[5rem] hide-on-row-hover">
           <div v-if="isTemplate">
             {{ activity.dueDateDays === 1 
               ? `${activity.dueDateDays} day` 
