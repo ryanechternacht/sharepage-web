@@ -95,24 +95,28 @@
   /* LAYOUT */
   .page-layout {
     @apply grid gap-y-4;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-columns: 220px 1fr 220px;
     grid-template-areas:
-      "top         top"
-      "left-header center-header"
-      "left        center"
-      "footer      footer";
+      "top         top           top"
+      "left-header center-header right-header"
+      "left        center        center"
+      "footer      footer        footer";
   }
 
   .page-top {
     @apply px-10 h-[7.5rem] center-xy;
   }
 
+  .center-header {
+    @apply mx-auto;
+  }
+
   .left-header {
     @apply pl-12 pr-3;
   }
 
-  .center-header {
+  .right-header {
     @apply pl-3 pr-12;
   }
 

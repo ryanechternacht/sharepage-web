@@ -5,7 +5,7 @@
     </div>
   </div>
 
-  <div class="[grid-area:center-header] center-header">
+  <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row items-center gap-2">
       <div class="flex-grow" />
       <NewButton @click="openBuyerModal" text="New Buyer" />

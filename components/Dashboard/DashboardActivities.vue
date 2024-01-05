@@ -1,10 +1,4 @@
 <template>
-  <div class="[grid-area:left-header] left-header">
-  </div>
-
-  <div class="[grid-area:center-header] center-header">
-  </div>
-
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <h3 class="page-link">Activities</h3>

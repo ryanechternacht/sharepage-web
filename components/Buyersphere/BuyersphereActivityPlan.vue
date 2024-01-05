@@ -6,6 +6,11 @@
   </div>
 
   <div class="[grid-area:center-header] center-header">
+    <BsButtonGroup 
+      :options="filterOptions" />
+  </div>
+
+  <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center">
       <NewButton @click="addActivity" />
     </div>
@@ -137,6 +142,8 @@ const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
+const filterOptions = ['Show All', 'Show Mine', 'Show Ours', 'Show Thiers']
+
 const overdueItems = computed(() =>
   orderBy(
     filter(conversations, c => !c.resolved && dayjs(c.dueDate) < todayDayJs),
@@ -225,7 +232,6 @@ function editActivity({ activity }) {
 }
 
 function deleteActivity({ activity }) {
-  console.log(activity)
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {

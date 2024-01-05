@@ -5,9 +5,6 @@
     </div>
   </div>
 
-  <div class="[grid-area:center-header] center-header">
-  </div>
-
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <div class="page-link"

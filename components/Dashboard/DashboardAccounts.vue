@@ -3,7 +3,7 @@
     <!-- left-header -->
   </div>
 
-  <div class="[grid-area:center-header] center-header">
+  <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center">
       <NewButton @click="open" />
     </div>
