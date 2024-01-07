@@ -144,7 +144,13 @@
     }
 
     .section-add-button {
-      @apply mx-auto mt-4 mb-[-2rem] bg-white;
+      @apply mt-4 mb-[-2rem] bg-white;
+
+      /* midway - left sidebar - btn width - center left margin*/
+      margin-left: calc(50vw - 220px - 3.5rem - .75rem);
+
+      /* midway - btn width - center right margin*/
+      margin-right: calc(50vw - 3.5rem - 3rem);
     }
   }
 

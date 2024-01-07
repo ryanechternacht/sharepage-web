@@ -6,10 +6,11 @@
   </div>
 
   <div class="[grid-area:right-header] right-header">
-    <div class="flex flex-row items-center gap-2">
+    <!-- TODO this is too wide for this part of the page -->
+    <div class="flex flex-row-reverse items-center gap-2">
       <div class="flex-grow" />
-      <NewButton @click="openBuyerModal" text="New Buyer" />
       <NewButton @click="openSellerModal" text="New Seller" />
+      <NewButton @click="openBuyerModal" text="New Buyer" />
     </div>
   </div>
 

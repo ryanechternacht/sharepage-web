@@ -49,7 +49,7 @@
           <DeleteButton class="show-on-row-hover" @click="deleteObjective" />
           <EditButton class="show-on-row-hover" @click="editObjective" />
         </div>
-        <NewButton class="mx-auto"
+        <NewButton class="in-section-button"
           @click="addObjective" />
       </div>
 
@@ -302,6 +302,17 @@ function deletePricingTier({ pricingTier }) {
       @apply h-[2rem] ml-[-.5rem];
       content: '';
     }
+  }
+
+  .in-section-button {
+    /* adapted from .section-add-button in tailwind.css */
+    @apply my-2 bg-white hover:bg-blue-primary;
+
+    /* midway - left sidebar - btn width - center left margin*/
+    margin-left: calc(50vw - 220px - 3.5rem - .75rem);
+
+    /* midway - btn width - center right margin*/
+    margin-right: calc(50vw - 3.5rem - 3rem);
   }
 }
 
