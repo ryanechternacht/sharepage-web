@@ -10,8 +10,6 @@
       </div>
       <input v-model="title" 
         placeholder="Pricing Tier Title">
-      <input v-model="bestFor" 
-        placeholder="Who is this Pricing Tier Best For?">
       <div class="flex flex-row gap-x-4">
         <input v-if="periodType === 'other'"
           v-model="amountOther"
@@ -50,7 +48,7 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 import { usePricingStore } from '@/stores/pricing'
-import { format, Money3Component } from 'v-money3';
+import { Money3Component } from 'v-money3';
 
 const props = defineProps({
   pricingTier: { type: Object, default: {} }
@@ -71,7 +69,6 @@ const emit = defineEmits(['close'])
 const store = usePricingStore();
 
 const title = ref(props.pricingTier?.title)
-const bestFor = ref(props.pricingTier?.bestFor)
 const amountPerPeriod = ref(props.pricingTier?.amountPerPeriod)
 const amountOther = ref(props.pricingTier?.amountOther)
 const periodType = ref(props.pricingTier?.periodType)
@@ -82,7 +79,6 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     await store.updatePricingTier({ pricingTier: {
       ...props.pricingTier,
       title: title.value,
-      bestFor: bestFor.value,
       amountPerPeriod: amountPerPeriod.value,
       amountOther: amountOther.value,
       periodType: periodType.value,
@@ -91,7 +87,6 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   } else {
     await store.createPricingTier({ pricingTier: {
       title: title.value,
-      bestFor: bestFor.value,
       amountPerPeriod: amountPerPeriod.value,
       amountOther: amountOther.value,
       periodType: periodType.value,
@@ -102,7 +97,6 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
 })
 
 const needsMoreInput = computed(() => !title.value 
-  || !bestFor.value
   || !(amountPerPeriod.value || amountOther.value)
   || !periodType.value
   || !description.value)
