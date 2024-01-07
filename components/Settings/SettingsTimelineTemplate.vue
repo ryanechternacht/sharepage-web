@@ -181,7 +181,7 @@ function deleteActivityTemplate({ activity }) {
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
-    activityTemplateStore.deleteActivityTemplate({ id: activity.id })
+    activityTemplateStore.deleteActivityTemplateItem({ id: activity.id })
   }
 }
 
