@@ -14,11 +14,11 @@
       <div class="w-full">
         <h3>Collaboration Type</h3>
         <select v-model="collaborationType">
+          <option value="action">Action</option>
           <option value="comment">Comment</option>
           <option value="meeting">Meeting</option>
-          <option value="question">Question</option>
-          <option value="task">Task</option>
           <option value="milestone">Milestone</option>
+          <option value="question">Question</option>
         </select>
       </div>
       <div class="w-full">

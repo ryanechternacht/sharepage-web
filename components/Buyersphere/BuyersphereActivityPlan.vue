@@ -51,7 +51,7 @@
       <div v-if="isSeller"
         class="page-link"
         @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
-      </div>
+    </div>
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>

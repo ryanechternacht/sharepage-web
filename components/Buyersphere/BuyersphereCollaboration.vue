@@ -11,10 +11,10 @@
         <select v-model="newCollaborationType"
           ref="newCollaborationTypeElem">
           <option disabled hidden value="null">What type of Item?</option>
+          <option value="action">Action</option>
           <option value="comment">Comment</option>
           <option value="meeting">Meeting</option>
           <option value="question">Question</option>
-          <option value="task">Task</option>
         </select>
         <vue-date-picker 
           v-model="newDueDate"

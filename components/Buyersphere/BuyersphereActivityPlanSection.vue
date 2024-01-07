@@ -146,7 +146,7 @@ function prettyFormatDateFromToday(date) {
 }
 
 const iconMap = {
-  task: '/svg/checkmark.svg',
+  action: '/svg/checkmark.svg',
   question: '/svg/speech-bubble.svg',
   comment: '/svg/caution-sign.svg',
   milestone: '/svg/award.svg',

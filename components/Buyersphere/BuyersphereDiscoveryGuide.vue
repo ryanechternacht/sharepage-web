@@ -39,7 +39,7 @@
       class="section">
       <div class="group-header">Success Criteria</div>
       
-      <h4>How will we know if this product is right for you?</h4>
+      <h4>How will you measure success?</h4>
       <TipTapTextarea v-model="successCriteria"
         placeholder="Pain points to resolve"
         class="w-full mb-4" />
@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <h4>Which ones are most important to you? Are there any not covered above?</h4>
+      <h4>Which objectives are most important for you? Are any not covered above?</h4>
       <TipTapTextarea v-model="objectives"
         placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
         class="w-full mb-4" />
@@ -67,7 +67,7 @@
     <div id="features"
       class="section">
       <div class="group-header">Features</div>
-      <h4>Let us know which features are important to you</h4>
+      <h4>Select which features are most/least important to you</h4>
       <div class="flex flex-col gap-4">
         <div v-for="(f, i) in features"
           class="feature-list">
@@ -131,7 +131,7 @@
     <div id="constraints"
       class="section">
       <div class="group-header">Constraints</div>
-      <h4>Are there any constraints on your end we should know about?</h4>
+      <h4>Are there any constraints we should know about?</h4>
       <TipTapTextarea v-model="keyConstraints"
         placeholder="Key constraints to buying"
         class="w-full mb-4" />

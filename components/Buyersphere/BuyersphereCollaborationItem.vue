@@ -52,7 +52,7 @@ const icon = computed(() => {
     return '🗓️'
   }
 
-  else if (props.item.collaborationType === 'task') {
+  else if (props.item.collaborationType === 'action') {
     if (props.item.resolved) {
       return '✅'
     }
