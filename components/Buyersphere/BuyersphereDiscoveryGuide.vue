@@ -151,7 +151,7 @@
           <Tag2 v-else 
             color="blue"
             class="w-[4.75rem]">{{ toDate(m.dueDate) }}</Tag2>
-          <div class="flex-grow">{{ m.message }}</div>
+          <div class="flex-grow gray inline-html" v-html="m.message" />
           <div v-if="!m.resolved" class="tag">By {{ formatDate(m.dueDate) }}</div>
         </div>
       </div>

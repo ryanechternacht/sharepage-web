@@ -105,7 +105,7 @@
       @resolve:activity="resolveActivity" />
 
 
-    <h2 class="mx-auto p-2 rounded-md bg-purple-background text-purple-secondary">
+    <h2 class="estimated-finish">
       Est Finish: {{ lastItem.dueDate }}
     </h2>
 
@@ -288,4 +288,13 @@ function resolveActivity({ activity, resolved }) {
 </script>
 
 <style lang="postcss" scoped>
+.estimated-finish {
+  @apply mx-auto p-2 rounded-md bg-purple-background text-purple-secondary center-xy;
+
+  /* midway - left sidebar - btn width - center left margin*/
+  margin-left: calc(50vw - 220px - 6.5rem - .75rem);
+
+  /* midway - btn width - center right margin*/
+  margin-right: calc(50vw - 6.5rem - 3rem);
+}
 </style>
