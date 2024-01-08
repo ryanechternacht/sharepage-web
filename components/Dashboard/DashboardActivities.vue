@@ -84,7 +84,7 @@ import { useActivitiesStore } from '@/stores/activities'
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
+const { filter, find, orderBy } = lodash_pkg;
 
 const activitiesStore = useActivitiesStore()
 const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
@@ -105,11 +105,16 @@ const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
-const filterOptions = ['Anyone', 'Me', 'Us', 'Them']
+const filterOptions = computed(() => [
+  {text: 'Anyone', active: true},
+  {text: 'Me', active: find(activities, a => a.assignedTo?.id === me.id)},
+  {text: 'Us', active: find(activities, a => a.assignedTeam === me.team)},
+  {text: 'Them', active: find(activities, a => a.assignedTeam !== me.team)},
+])
 const currentFilter = ref('Anyone')
 
 function updateFilter ({ option }) {
-  currentFilter.value = option
+  currentFilter.value = option.text
 }
 
 const filteredActivities = computed(() => {

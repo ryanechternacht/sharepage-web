@@ -81,7 +81,7 @@
 import { useActivityTemplateStore } from '@/stores/activity-template'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
+const { filter, find, orderBy } = lodash_pkg;
 import AddEditActivityTemplateModal from '@/components/Settings/AddEditActivityTemplateModal.vue';
 import { useModal } from 'vue-final-modal'
 
@@ -92,11 +92,15 @@ const [items] = await Promise.all([
   getActivityTemplateCached.value(),
 ])
 
-const filterOptions = ['Anyone', 'Us', 'Them']
+const filterOptions = computed(() => [
+  {text: 'Anyone', active: true},
+  {text: 'Us', active: find(items, a => a.assignedTeam === 'seller')},
+  {text: 'Them', active: find(items, a => a.assignedTeam === 'buyer')},
+])
 const currentFilter = ref('Anyone')
 
 function updateFilter ({ option }) {
-  currentFilter.value = option
+  currentFilter.value = option.text
 }
 
 const filteredItems = computed(() => {
