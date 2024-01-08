@@ -46,8 +46,8 @@
           <img src="/svg/gift-tag.svg">
           <Tag2 class="whitespace-nowrap" color="blue">{{ objective.title }}</Tag2>
           <div class="inline-html tag main-content" v-html="objective.description" />
-          <DeleteButton class="show-on-row-hover" @click="deleteObjective" />
-          <EditButton class="show-on-row-hover" @click="editObjective" />
+          <DeleteButton class="show-on-row-hover" @click="deleteObjective({ objective })" />
+          <EditButton class="show-on-row-hover" @click="editObjective({ objective })" />
         </div>
         <NewButton class="in-section-button"
           @click="addObjective" />
@@ -193,12 +193,13 @@ function addObjective () {
 }
 
 function editObjective ({ objective }) {
+  console.log('objective', objective)
   patchObjectiveModalOptions({ attrs: { objective } })
   openObjectiveModal()
 }
 
 function deleteObjective({ objective }) {
-  const c = confirm("Are you sure you want to delete")
+  const c = confirm(`Are you sure you want to delete "${objective.title}"`)
 
   if (c) {
     painPointsStore.deletePainPoint({ painPoint: objective})
