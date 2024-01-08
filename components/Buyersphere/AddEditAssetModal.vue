@@ -50,14 +50,14 @@ const { submissionState, submitFn } = useSubmit(async () => {
     await store.updateResource({
       buyersphereId: props.buyersphereId, 
       resourceId: props.asset.id,
-      title: title.value,
-      link: link.value,
+      title,
+      link,
     })
   } else {
     await store.createResource({ 
       buyersphereId: props.buyersphereId, 
-      title: title.value,
-      link: link.value,
+      title,
+      link,
    })
   }
   emit('close')

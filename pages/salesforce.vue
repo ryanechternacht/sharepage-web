@@ -58,7 +58,7 @@
 <script setup>
 import { format } from 'v-money3';
 import { useModal } from 'vue-final-modal'
-import AddBuyersphereModal from '@/components/AddBuyersphereModal'
+import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import lodash_pkg from 'lodash';
 const { groupBy, map } = lodash_pkg;
 
@@ -118,7 +118,7 @@ const oppsGrouped = computed(() =>
 )
 
 const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
-  component: AddBuyersphereModal,
+  component: AddEditBuyersphereModal,
   attrs: {
     onClose () {
       closeModal()

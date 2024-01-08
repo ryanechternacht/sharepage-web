@@ -193,7 +193,6 @@ function addObjective () {
 }
 
 function editObjective ({ objective }) {
-  console.log('objective', objective)
   patchObjectiveModalOptions({ attrs: { objective } })
   openObjectiveModal()
 }

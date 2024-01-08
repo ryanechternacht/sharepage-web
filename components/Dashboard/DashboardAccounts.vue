@@ -40,7 +40,7 @@
 
 <script setup>
 import { useModal } from 'vue-final-modal'
-import AddBuyersphereModal from '@/components/AddBuyersphereModal'
+import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 
 const { apiFetch } = useNuxtApp()
 const { data: buyerspheres, refresh } = await apiFetch('/v0.1/buyerspheres', { 
@@ -48,8 +48,9 @@ const { data: buyerspheres, refresh } = await apiFetch('/v0.1/buyerspheres', {
 })
 
 const { open, close } = useModal({
-  component: AddBuyersphereModal,
+  component: AddEditBuyersphereModal,
   attrs: {
+    buyersphere: {},
     onClose () {
       close()
       refresh()

@@ -1,10 +1,4 @@
 <template>
-  <div class="[grid-area:left-header] left-header">
-    <div class="h-full flex flex-row items-end">
-      <CopyToClipboardButton />
-    </div>
-  </div>
-
   <div class="[grid-area:center-header] center-header">
     <BsButtonGroup 
       :options="filterOptions"

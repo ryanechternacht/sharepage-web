@@ -82,18 +82,18 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
     activityTemplateStore.updateActivityTemplateItem({ 
       id: props.activity?.id,
-      message: message.value,
-      dueDateDays: dueDateDays.value,
-      assignedTeam: assignedTeam.value,
-      collaborationType: collaborationType.value,
+      message,
+      dueDateDays,
+      assignedTeam,
+      collaborationType,
     })
   } else {
     activityTemplateStore.createActivityTemplateItem({
       activityTemplateItem: {
-        message: message.value,
-        dueDateDays: dueDateDays.value,
-        assignedTeam: assignedTeam.value,
-        collaborationType: collaborationType.value,
+      message,
+      dueDateDays,
+      assignedTeam,
+      collaborationType,
       }
     })
   }

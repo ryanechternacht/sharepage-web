@@ -49,13 +49,13 @@ const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updateResource({ resource: {
       ...props.asset,
-      title: title.value,
-      link: link.value
+      title,
+      link,
     } })
   } else {
     await store.createResource({ resource: {
-      title: title.value,
-      link: link.value
+      title,
+      link,
     } })
   }
   emit('close')

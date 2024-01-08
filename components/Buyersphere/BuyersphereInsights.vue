@@ -1,10 +1,4 @@
 <template>
-  <div class="[grid-area:left-header] left-header">
-    <div class="flex flex-row items-center">
-      <CopyToClipboardButton />
-    </div>
-  </div>
-
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <div class="page-link"

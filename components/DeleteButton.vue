@@ -1,7 +1,7 @@
 <template>
   <BsButton id="btn" :color="color" hover-color="red">
     <div v-if="showText"
-      class="tag mr-2">Delete</div> 
+      class="body-header mr-2">Delete</div> 
     <div id="trash-can" />
   </BsButton>
 </template>

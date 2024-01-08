@@ -69,7 +69,7 @@ import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, filter, find, sortBy } = lodash_pkg;
 import { useModal } from 'vue-final-modal'
-import AddBuyersphereModal from '@/components/AddBuyersphereModal'
+import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 
 const usersStore = useUsersStore()
 const { getMeCached, getUsersCached } = storeToRefs(usersStore)
@@ -145,7 +145,7 @@ function isOverdue ({ currentStage, qualificationDate, evaluationDate, decisionD
 } 
 
 const { open: openBuyersphereModal, close: closeBuyersphereModal } = useModal({
-  component: AddBuyersphereModal,
+  component: AddEditBuyersphereModal,
   attrs: {
     onClose () {
       closeBuyersphereModal()

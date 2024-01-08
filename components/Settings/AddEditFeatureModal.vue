@@ -36,9 +36,9 @@ const props = defineProps({
   feature: { type: Object, default: {} }
 })
 
-const editMode = ref(!!props.feature.id)
-
 const emit = defineEmits(['close'])
+
+const editMode = ref(!!props.feature.id)
 
 const store = useFeaturesStore();
 
@@ -49,13 +49,13 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
     await store.updateFeature({ feature: {
       ...props.feature,
-      title: title.value,
-      description: description.value
+      title,
+      description,
     } })
   } else {
     await store.createFeature({ feature: {
-      title: title.value,
-      description: description.value
+      title,
+      description,
     } })
   }
   emit('close')

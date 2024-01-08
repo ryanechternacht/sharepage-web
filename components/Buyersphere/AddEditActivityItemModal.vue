@@ -120,21 +120,21 @@ const { submissionState, submitFn } = useSubmit(async () => {
     buyersphereStore.updateConversation({ 
       buyersphereId: props.buyersphereId,
       conversationId: props.activity.id,
-      resolved: resolved.value,
-      dueDate: dueDate.value,
-      message: message.value,
+      resolved,
+      dueDate,
+      message,
       assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-      assignedTeam: assignedTeam.value,
-      collaborationType: collaborationType.value,
+      assignedTeam,
+      collaborationType,
     })
   } else {
     buyersphereStore.startConversation({ 
       buyersphereId: props.buyersphereId,
-      message: message.value,
-      dueDate: dueDate.value,
+      dueDate,
+      message,
       assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-      assignedTeam: assignedTeam.value,
-      collaborationType: collaborationType.value
+      assignedTeam,
+      collaborationType,
     })
   }
 })

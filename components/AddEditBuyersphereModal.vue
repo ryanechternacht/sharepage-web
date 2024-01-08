@@ -5,7 +5,7 @@
   >
     <div class="flex flex-col gap-2 w-[36rem]">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">Create a New Account</h3>
+        <h3 class="flex-grow">{{ editMode ? "Edit this" : "Create a new" }} Account</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <div>
@@ -35,10 +35,10 @@
       </div>
       <SubmitButton 
         class="self-center"
-        ready-text="Create Account"
-        submitting-text="Creating Account"
-        submitted-text="Account Created"
-        error-text="Account Creation Failed"
+        :ready-text="`${editMode ? 'Edit' : 'Add'} Account`"
+        :submitting-text="`${editMode ? 'Editing' : 'Adding'} Account`"
+        :submitted-text="`Account ${editMode ? 'Edited' : 'Added'}`"
+        :error-text="`${editMode ? 'Editing' : 'Adding'} Account`"
         :submission-state="submissionState"
         :disabled="needsMoreInput"
         @click="submitFn" />
@@ -52,9 +52,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { Money3Component } from 'v-money3';
 
 const props = defineProps({
-  buyer: { type: String },
-  dealAmount: { type: Number },
-  crmOpportunityId: { type: String }
+  buyersphere: { type: Object, default: {}},
 })
 
 const moneyConfig = {
@@ -67,24 +65,36 @@ const moneyConfig = {
 
 const emit = defineEmits(['close'])
 
+const editMode = ref(!!props.buyersphere.id)
+
 const store = useBuyerspheresStore()
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await store.createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount })
+  if (editMode.value) {
+    await store.saveBuyersphereSettings({
+      buyersphereId: props.buyersphere.id,
+      buyer,
+      buyerLogo,
+      crmOpportunityId,
+      dealAmount,
+    })
+  } else {
+    await store.createBuyersphere({ 
+      buyer,
+      buyerLogo,
+      crmOpportunityId,
+      dealAmount,
+    })
+  }
+  emit('close')
 })
 
-const buyer = ref(props.buyer)
-const buyerLogo = ref('')
-const crmOpportunityId = ref(props.crmOpportunityId)
-const dealAmount = ref(props.dealAmount)
+const buyer = ref(props.buyersphere?.buyer)
+const buyerLogo = ref(props.buyersphere?.buyerLogo)
+const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
+const dealAmount = ref(props.buyersphere?.dealAmount)
 
 const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value)
-
-watch(submissionState, (newState, _) => {
-  if (newState === 'submitted') {
-    emit('close')
-  }
-})
 </script>
 
 <style lang="postcss" scoped>

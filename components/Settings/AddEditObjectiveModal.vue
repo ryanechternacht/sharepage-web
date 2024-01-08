@@ -48,13 +48,13 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
     await store.updatePainPoint({ painPoint: {
       ...props.objective,
-      title: title.value,
-      description: description.value
+      title,
+      description,
     } })
   } else {
     await store.createPainPoint({ painPoint: {
-      title: title.value,
-      description: description.value
+      title,
+      description,
     } })
   }
   emit('close')

@@ -78,19 +78,19 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
     await store.updatePricingTier({ pricingTier: {
       ...props.pricingTier,
-      title: title.value,
-      amountPerPeriod: amountPerPeriod.value,
-      amountOther: amountOther.value,
-      periodType: periodType.value,
-      description: description.value,
+      title,
+      amountPerPeriod,
+      amountOther,
+      periodType,
+      description,
     } })
   } else {
     await store.createPricingTier({ pricingTier: {
-      title: title.value,
-      amountPerPeriod: amountPerPeriod.value,
-      amountOther: amountOther.value,
-      periodType: periodType.value,
-      description: description.value,
+      title,
+      amountPerPeriod,
+      amountOther,
+      periodType,
+      description,
     } })
   }
   emit('close')

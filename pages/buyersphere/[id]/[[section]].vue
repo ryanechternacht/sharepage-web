@@ -57,7 +57,16 @@
         </div> -->
       </div>
 
-      <!-- These return the left, center, left-header, and center-header sections -->
+      <div class="[grid-area:left-header] left-header">
+        <div class="flex flex-row items-center gap-2">
+          <CopyToClipboardButton />
+          <EditButton v-if="isSeller"
+            show-text
+            @click="editBuyersphere" />
+        </div>
+      </div>
+
+      <!-- These return the left, center, and center-header sections -->
       <BuyersphereDiscoveryGuide v-if="mainSection === 'discovery-guide'" />
       <BuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
       <BuyersphereTeam v-else-if="mainSection === 'team'" />
@@ -72,57 +81,67 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
-import lodash_pkg from 'lodash';
-const { filter, find, orderBy } = lodash_pkg;
+// import lodash_pkg from 'lodash';
+// const { filter, find, orderBy } = lodash_pkg;
+import { useModal } from 'vue-final-modal'
+import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
-const [buyersphere, conversations] = await Promise.all([
+const usersStore = useUsersStore()
+const { isUserSeller } = storeToRefs(usersStore)
+
+const [buyersphere, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId),
+  isUserSeller.value(),
 ])
 
 const isActive = computed(() => buyersphere.status === 'active')
 
-const dayjs = useDayjs()
-function formatDate(date) {
-  return dayjs(date).format('MMMM Do')
-}
+// const dayjs = useDayjs()
+// function formatDate(date) {
+//   return dayjs(date).format('MMMM Do')
+// }
 
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'discovery-guide')
 
-function putOnHold() {
-  const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
+// function putOnHold() {
+//   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
-  if (answer) {
-    buyersphereStore.saveStatus({ buyersphereId, status: "on-hold" })
-  }
-}
+//   if (answer) {
+//     buyersphereStore.saveStatus({ buyersphereId, status: "on-hold" })
+//   }
+// }
 
-function reactivate() {
-  const answer = confirm(`Are you sure you want to reactive the buying process?`)
+// function reactivate() {
+//   const answer = confirm(`Are you sure you want to reactive the buying process?`)
   
-  if (answer) {
-    buyersphereStore.saveStatus({ buyersphereId, status: "active" })
+//   if (answer) {
+//     buyersphereStore.saveStatus({ buyersphereId, status: "active" })
+//   }
+// }
+
+const { open, close, patchOptions } = useModal({
+  component: AddEditBuyersphereModal,
+  attrs: {
+    onClose () {
+      close()
+      refresh()
+    }
   }
+})
+
+function editBuyersphere() {
+  patchOptions({ attrs: { buyersphere }})
+  open()
 }
-
-// TODO we may want a way to get these directly, without having to filter
-// all activities
-const milestones = computed(() => 
-  orderBy(
-    filter(conversations, c => c.collaborationType === 'milestone'),
-    ['dueDate'],
-    ['asc']
-  ))
-
-const nextMilestone = computed(() => find(milestones.value, m => !m.resolved))
 </script>
 
 <style lang="postcss" scoped>

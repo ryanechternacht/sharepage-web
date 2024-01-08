@@ -1,10 +1,4 @@
 <template>
-  <div class="[grid-area:left-header] left-header">
-    <div class="flex flex-row items-center">
-      <CopyToClipboardButton />
-    </div>
-  </div>
-
   <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center">
       <NewButton @click="addAsset" />
