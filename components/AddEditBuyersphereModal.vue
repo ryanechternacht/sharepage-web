@@ -21,6 +21,14 @@
           placeholder="Buyer Logo Url (https://...)">
       </div>
       <div>
+        <h3>Deal Status</h3>
+        <select v-model="status"
+          class="flex-grow">
+          <option value="active">Active</option>
+          <option value="on-hold">On Hold</option>
+        </select>
+      </div>
+      <div>
         <h3>Deal Amount</h3>
         <Money3Component
           v-model.number="dealAmount"
@@ -75,6 +83,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       buyersphereId: props.buyersphere.id,
       buyer,
       buyerLogo,
+      status,
       crmOpportunityId,
       dealAmount,
     })
@@ -82,6 +91,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     await store.createBuyersphere({ 
       buyer,
       buyerLogo,
+      status,
       crmOpportunityId,
       dealAmount,
     })
@@ -91,6 +101,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
 
 const buyer = ref(props.buyersphere?.buyer)
 const buyerLogo = ref(props.buyersphere?.buyerLogo)
+const status = ref(props.buyersphere.status)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
 

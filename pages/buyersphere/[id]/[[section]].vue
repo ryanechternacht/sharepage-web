@@ -63,6 +63,10 @@
           <EditButton v-if="isSeller"
             show-text
             @click="editBuyersphere" />
+          <ReactivateButton v-else-if="buyersphere.status === 'on-hold'"
+            @click="reactivate" />
+          <PutOnHoldButton v-else
+            @click="putOnHold" />
         </div>
       </div>
 
@@ -112,28 +116,27 @@ const isActive = computed(() => buyersphere.status === 'active')
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'discovery-guide')
 
-// function putOnHold() {
-//   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
+function putOnHold() {
+  const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
-//   if (answer) {
-//     buyersphereStore.saveStatus({ buyersphereId, status: "on-hold" })
-//   }
-// }
+  if (answer) {
+    buyersphereStore.saveStatus({ buyersphereId, status: "on-hold" })
+  }
+}
 
-// function reactivate() {
-//   const answer = confirm(`Are you sure you want to reactive the buying process?`)
+function reactivate() {
+  const answer = confirm(`Are you sure you want to reactive the buying process?`)
   
-//   if (answer) {
-//     buyersphereStore.saveStatus({ buyersphereId, status: "active" })
-//   }
-// }
+  if (answer) {
+    buyersphereStore.saveStatus({ buyersphereId, status: "active" })
+  }
+}
 
 const { open, close, patchOptions } = useModal({
   component: AddEditBuyersphereModal,
   attrs: {
     onClose () {
       close()
-      refresh()
     }
   }
 })

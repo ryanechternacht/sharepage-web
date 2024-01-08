@@ -36,7 +36,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
     },
     async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, dealAmount, crmOpportunityId, 
-      currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate }) {
+      currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate, status }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
@@ -49,7 +49,8 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
           showPricing,
           qualificationDate,
           evaluationDate,
-          decisionDate
+          decisionDate,
+          status,
         } 
       })
 
@@ -63,6 +64,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       b.decisionDate = data.value.decisionDate
       b.dealAmount = data.value.dealAmount
       b.crmOpportunityId = data.value.crmOpportunityId
+      b.status = data.value.status
     },
     async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
       const { apiFetch } = useNuxtApp()
