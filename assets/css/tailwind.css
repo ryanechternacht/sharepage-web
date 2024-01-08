@@ -121,7 +121,7 @@
   }
 
   .page-center {
-    @apply flex flex-col gap-16 relative pl-3 pr-12;
+    @apply flex flex-col gap-8 relative pl-3 pr-12;
   }
 
   .section {

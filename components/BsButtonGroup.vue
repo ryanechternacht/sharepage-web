@@ -4,9 +4,10 @@
     <div class="button-group">
       <div v-for="option in options"
         class="button tag"
-        :class="{ selected: option === mySelectedOption }"
-        @click="selectOption(option)">
-        {{ option }}
+        :class="{ selected: option.text === mySelectedOption.text,
+                 inactive: !option.active }"
+        @click="clickOption(option)">
+        {{ option.text }}
       </div>
     </div>
   </div>
@@ -14,7 +15,7 @@
 
 <script setup>
 const props = defineProps({ 
-  options: { type: Object, required: true },
+  options: { type: Array, required: true },
   selectedOption: { type: String },
   header: { type: String }
  })
@@ -23,9 +24,11 @@ const emit = defineEmits(['update:option'])
 
 const mySelectedOption = ref(props.selectedOption ?? props.options[0])
 
-function selectOption (option) {
-  mySelectedOption.value = option
-  emit('update:option', { option })
+function clickOption (option) {
+  if (option.active) {
+    mySelectedOption.value = option
+    emit('update:option', { option })
+  }
 }
 </script>
 
@@ -50,6 +53,10 @@ function selectOption (option) {
 
     &:last-child {
       @apply rounded-r-md border-r;
+    }
+
+    &.inactive {
+      @apply text-gray-hover-active cursor-default hover:bg-white;
     }
   }
 }

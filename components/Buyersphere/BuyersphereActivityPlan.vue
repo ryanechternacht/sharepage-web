@@ -118,7 +118,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, last, orderBy } = lodash_pkg;
+const { filter, find, last, orderBy } = lodash_pkg;
 import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
@@ -145,11 +145,16 @@ const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
 const next90Days = todayDayJs.add(90, 'day').toDate()
 
-const filterOptions = ['Anyone', 'Me', 'Us', 'Them']
+const filterOptions = computed(() => [
+  {text: 'Anyone', active: true},
+  {text: 'Me', active: find(conversations, a => a.assignedTo?.id === me.id)},
+  {text: 'Us', active: find(conversations, a => a.assignedTeam === me.team)},
+  {text: 'Them', active: find(conversations, a => a.assignedTeam !== me.team)},
+])
 const currentFilter = ref('Anyone')
 
 function updateFilter ({ option }) {
-  currentFilter.value = option
+  currentFilter.value = option.text
 }
 
 const filteredActivities = computed(() => {
