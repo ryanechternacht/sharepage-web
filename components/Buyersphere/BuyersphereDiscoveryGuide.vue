@@ -107,11 +107,11 @@
               class="tag center-xy text-blue-primary h-full py-[2px] px-2">
               {{ pt.periodType === 'other'
                 ? pt.amountOther
-                : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
+                : `${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
             <Tag2 v-else color="gray">
               {{ pt.periodType === 'other'
                 ? pt.amountOther
-                : `$${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
+                : `${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
             </Tag2>
           </div>
           <h3 class="leading-[1.375rem]">{{ pt.title }}</h3>
@@ -201,7 +201,7 @@ const periodMap = {
 
 const moneyConfig = {
   precision: 0,
-  prefix: '',
+  prefix: '$ ',
   disableNegative: true,
   thousands: ',',
   suffix: ''

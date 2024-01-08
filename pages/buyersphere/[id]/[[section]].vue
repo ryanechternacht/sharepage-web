@@ -4,10 +4,16 @@
     <div class="page-layout">
       <div class="[grid-area:top] page-top bg-purple-background"
         :class="{ 'grayscale-top': !isActive }">
-        <div class="flex flex-row items-center gap-2">
-          <Logo v-if="buyersphere.buyerLogo" 
-            :src="buyersphere.buyerLogo" />
-          <h1>{{ buyersphere.buyer }}</h1>
+        <div class="flex flex-col gap-4 items-center">
+          <div class="flex flex-row items-center gap-2">
+            <Logo v-if="buyersphere.buyerLogo" 
+              :src="buyersphere.buyerLogo" />
+            <h1>{{ buyersphere.buyer }}</h1>
+          </div>
+          <div v-if="buyersphere.dealAmount > 0"
+            class="tag">
+            {{ format(buyersphere.dealAmount, moneyConfig) }}
+          </div>
         </div>
         <!-- <div class="flex flex-col gap-4 pl-8 pb-5">
           <div class="flex flex-row items-center gap-2">
@@ -91,6 +97,7 @@ import { storeToRefs } from 'pinia'
 // const { filter, find, orderBy } = lodash_pkg;
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
+import { format } from 'v-money3'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -112,6 +119,14 @@ const isActive = computed(() => buyersphere.status === 'active')
 // function formatDate(date) {
 //   return dayjs(date).format('MMMM Do')
 // }
+
+const moneyConfig = {
+  precision: 0,
+  prefix: '$ ',
+  disableNegative: true,
+  thousands: ',',
+  suffix: ''
+}
 
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'discovery-guide')

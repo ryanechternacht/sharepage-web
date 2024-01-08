@@ -20,7 +20,7 @@
           class="flex-grow mb-4"
           placeholder="Buyer Logo Url (https://...)">
       </div>
-      <div>
+      <div v-if="editMode">
         <h3>Deal Status</h3>
         <select v-model="status"
           class="flex-grow">
