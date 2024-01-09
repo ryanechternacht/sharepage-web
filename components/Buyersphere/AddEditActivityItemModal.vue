@@ -13,7 +13,7 @@
       </div>
       <div class="w-full">
         <h3>Collaboration Type</h3>
-        <select v-model="collaborationType">
+        <select v-model="collaborationType" class="w-full">
           <option value="action">Action</option>
           <option value="comment">Comment</option>
           <option value="meeting">Meeting</option>
@@ -32,7 +32,7 @@
       </div>
       <div class="w-full">
         <h3>Assigned To</h3>
-        <select v-model="assignedToId">
+        <select v-model="assignedToId" class="w-full">
           <option v-for="u in allBuyersphereUsers"
             :value="u.id">
             {{ u.firstName }} {{ u.lastName }}

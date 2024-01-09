@@ -28,6 +28,10 @@
           <option value="on-hold">On Hold</option>
         </select>
       </div>
+      <div v-if="editMode">
+        <h3>Show Pricing?</h3>
+        <input type="checkbox" v-model="showPricing" class="!w-auto">
+      </div>
       <div>
         <h3>Deal Amount</h3>
         <Money3Component
@@ -41,7 +45,7 @@
           class="flex-grow mb-2"
           placeholder="Opportunity ID in CRM">
       </div>
-      <SubmitButton 
+      <SubmitButton
         class="self-center"
         :ready-text="`${editMode ? 'Edit' : 'Add'} Account`"
         :submitting-text="`${editMode ? 'Editing' : 'Adding'} Account`"
@@ -84,16 +88,16 @@ const { submissionState, submitFn } = useSubmit(async () => {
       buyer,
       buyerLogo,
       status,
-      crmOpportunityId,
+      showPricing,
       dealAmount,
+      crmOpportunityId,
     })
   } else {
     await store.createBuyersphere({ 
       buyer,
       buyerLogo,
-      status,
-      crmOpportunityId,
       dealAmount,
+      crmOpportunityId,
     })
   }
   emit('close')
@@ -104,6 +108,7 @@ const buyerLogo = ref(props.buyersphere?.buyerLogo)
 const status = ref(props.buyersphere.status)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
+const showPricing = ref(props.buyersphere.showPricing)
 
 const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value)
 </script>

@@ -94,7 +94,8 @@
       </div>
     </div>
 
-    <div id="pricing"
+    <div v-if="buyersphere.showPricing" 
+      id="pricing"
       class="section">
       <div class="group-header">Pricing</div>
       <h4>Select the most appropriate tier</h4>
