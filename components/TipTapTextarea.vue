@@ -16,7 +16,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
 
 const props = defineProps({ 
-  modelValue: { type: String, required: true },
+  modelValue: { type: String },
   placeholder: { type: String, default: '' },
   minHeight: { type: String, default: "40px" },
   readonly: { type: Boolean, default: false },

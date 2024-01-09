@@ -94,6 +94,15 @@
     <div id="pricing"
       class="section">
       <div class="group-header">Pricing</div>
+
+      <div class="mt-4 flex flex-row items-center">
+        <input v-model="showByDefault"
+          id="hide-pricing" 
+          type="checkbox"
+          class="mr-2">
+        <label for="hide-pricing">Hide Pricing from Buyers by Default?</label>
+      </div>
+
       <h4>Select the most appropriate tier</h4>
       <div class="pricing-tier-list">
         <div v-for="pricingTier in pricingTiers"
@@ -144,6 +153,8 @@ import AddEditObjectiveModal from '@/components/Settings/AddEditObjectiveModal.v
 import AddEditFeatureModal from '@/components/Settings/AddEditFeatureModal.vue';
 import AddEditPricingTierModal from '@/components/Settings/AddEditPricingTierModal.vue';
 import { useModal } from 'vue-final-modal'
+import lodash_pkg from 'lodash';
+const { debounce } = lodash_pkg;
 
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
@@ -154,11 +165,18 @@ const { getFeaturesCached } = storeToRefs(featuresStore)
 const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
-const [painPoints, features, { pricingTiers }] = await Promise.all([
+const [painPoints, features, { pricingTiers, settings }] = await Promise.all([
   getPainPointsCached.value(),
   getFeaturesCached.value(),
   getPricingCached.value(),
 ])
+
+const showByDefault = ref(settings.showByDefault)
+
+const debouncedSavePricingVisibilityDefault = 
+  debounce(async () => await pricingStore.updateSettings({ showByDefault }), 2000)
+
+watch(() => showByDefault.value, (newValue) => debouncedSavePricingVisibilityDefault())
 
 const periodMap = {
   'annually': 'yr',
