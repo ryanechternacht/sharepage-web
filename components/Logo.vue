@@ -1,9 +1,15 @@
 <template>
   <div 
-    class="flex flex-col items-center"
+    class="center-xy"
     :class="[height, width]"
   >
-    <img :src="src" :class="[maxHeight, maxWidth]">
+    <img v-if="loadingError"
+      src="/svg/briefcase.svg"
+      :class="[maxHeight, maxWidth]">
+    <img v-else
+      :src="src" 
+      :class="[maxHeight, maxWidth]"
+      @error="loadingError = true">
   </div>
 </template>
 
@@ -40,6 +46,8 @@ const maxWidth = computed(
     'x-large': 'max-h-[5rem]',
   }[props.size ?? 'medium'])
 )
+
+const loadingError = ref(false)
 </script>
 
 <style lang="postcss" scoped>
