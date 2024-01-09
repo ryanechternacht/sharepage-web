@@ -269,16 +269,16 @@ function editActivity({ activity }) {
   open()
 }
 
-function deleteActivity({ activity }) {
+async function deleteActivity({ activity }) {
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
-    buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
+    await buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
   }
 }
 
-function resolveActivity({ activity, resolved }) {
-  buyerspheresStore.updateConversation({ 
+async function resolveActivity({ activity, resolved }) {
+  await buyerspheresStore.updateConversation({ 
     buyersphereId: buyersphereId,
     conversationId: activity.id,
     resolved: resolved,

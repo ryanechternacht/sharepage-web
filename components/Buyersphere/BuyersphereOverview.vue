@@ -108,9 +108,9 @@ function edit() {
   editedIntroMessage.value = buyersphere.introMessage
 }
 
-function save() {
+async function save() {
   editing.value = false
-  buyersphereStore.saveIntroMessage({ buyersphereId, introMessage: editedIntroMessage.value })
+  await buyersphereStore.saveIntroMessage({ buyersphereId, introMessage: editedIntroMessage.value })
 }
 
 function dismissEdit() {

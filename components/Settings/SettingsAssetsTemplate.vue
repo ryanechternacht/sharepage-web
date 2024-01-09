@@ -61,11 +61,11 @@ function addAssetTemplate() {
   open()
 }
 
-function deleteAssetTemplate({ asset }) {
+async function deleteAssetTemplate({ asset }) {
   const c = confirm(`Are you sure you want to delete ${asset.title}`)
 
   if (c) {
-    resourcesStore.deleteResource({ resourceId: asset.id })
+    await resourcesStore.deleteResource({ resourceId: asset.id })
   }
 }
 </script>

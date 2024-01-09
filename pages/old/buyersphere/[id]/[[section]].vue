@@ -253,28 +253,28 @@ const actionDate = computed(() => {
   }
 })
 
-function updateStage ({ stage }) {
-  buyersphereStore.advanceStage({ buyersphereId, stage })
+async function updateStage ({ stage }) {
+  await buyersphereStore.advanceStage({ buyersphereId, stage })
 }
 
-function updateStatus ({ status }) {
-  buyersphereStore.updateBuyerInput({ buyersphereId, status })
+async function updateStatus ({ status }) {
+  await buyersphereStore.updateBuyerInput({ buyersphereId, status })
 }
 
-function updatePricingCanPay ({ canPay }) {
-  buyersphereStore.savePricingCanPay({ buyersphereId, pricingCanPay: canPay })
+async function updatePricingCanPay ({ canPay }) {
+  await buyersphereStore.savePricingCanPay({ buyersphereId, pricingCanPay: canPay })
 }
 
-function createResource({ title, link }) {
-  buyersphereStore.createResource({ buyersphereId, title, link })
+async function createResource({ title, link }) {
+  await buyersphereStore.createResource({ buyersphereId, title, link })
 }
 
-function updateResource({ resourceId, title, link }) {
-  buyersphereStore.updateResource({ buyersphereId, resourceId, title, link })
+async function updateResource({ resourceId, title, link }) {
+  await buyersphereStore.updateResource({ buyersphereId, resourceId, title, link })
 }
 
-function deleteResource({ resourceId }) {
-  buyersphereStore.deleteResource({ buyersphereId, resourceId })
+async function deleteResource({ resourceId }) {
+  await buyersphereStore.deleteResource({ buyersphereId, resourceId })
 }
 </script>
 

@@ -74,12 +74,12 @@ async function checkReady() {
   }
 }
 
-function updateNote({ noteId, title, body }) {
-  buyersphereStore.updateNote({ buyersphereId, noteId, title, body })
+async function updateNote({ noteId, title, body }) {
+  await buyersphereStore.updateNote({ buyersphereId, noteId, title, body })
 }
 
-function deleteNote({ noteId }) {
-  buyersphereStore.deleteNote({ buyersphereId, noteId })
+async function deleteNote({ noteId }) {
+  await buyersphereStore.deleteNote({ buyersphereId, noteId })
 } 
 </script>
 

@@ -80,7 +80,7 @@ const assignedTeam = ref(props.activity?.assignedTeam)
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
-    activityTemplateStore.updateActivityTemplateItem({ 
+    await activityTemplateStore.updateActivityTemplateItem({ 
       id: props.activity?.id,
       message,
       dueDateDays,
@@ -88,7 +88,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
       collaborationType,
     })
   } else {
-    activityTemplateStore.createActivityTemplateItem({
+    await activityTemplateStore.createActivityTemplateItem({
       activityTemplateItem: {
       message,
       dueDateDays,

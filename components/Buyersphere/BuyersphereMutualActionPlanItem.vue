@@ -70,7 +70,7 @@ const icon = computed(() => {
 })
 
 async function updateQuestion ({ id, resolved }) {
-  buyersphereStore.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
+  await buyersphereStore.updateConversation({ buyersphereId: props.buyersphereId, conversationId: id, resolved })
 }
 </script>
 

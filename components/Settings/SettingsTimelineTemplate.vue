@@ -181,11 +181,11 @@ function editActivityTemplate({ activity }) {
   open()
 }
 
-function deleteActivityTemplate({ activity }) {
+async function deleteActivityTemplate({ activity }) {
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
-    activityTemplateStore.deleteActivityTemplateItem({ id: activity.id })
+    await activityTemplateStore.deleteActivityTemplateItem({ id: activity.id })
   }
 }
 

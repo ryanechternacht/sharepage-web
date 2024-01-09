@@ -197,11 +197,11 @@ function editObjective ({ objective }) {
   openObjectiveModal()
 }
 
-function deleteObjective({ objective }) {
+async function deleteObjective({ objective }) {
   const c = confirm(`Are you sure you want to delete "${objective.title}"`)
 
   if (c) {
-    painPointsStore.deletePainPoint({ painPoint: objective})
+    await painPointsStore.deletePainPoint({ painPoint: objective})
   }
 }
 
@@ -228,11 +228,11 @@ function editFeature ({ feature }) {
   openFeatureModal()
 }
 
-function deleteFeature({ feature }) {
+async function deleteFeature({ feature }) {
   const c = confirm("Are you sure you want to delete")
 
   if (c) {
-    featuresStore.deleteFeature({ feature })
+    await featuresStore.deleteFeature({ feature })
   }
 }
 
@@ -259,11 +259,11 @@ function editPricingTier ({ pricingTier }) {
   openPricingTierModal()
 }
 
-function deletePricingTier({ pricingTier }) {
+async function deletePricingTier({ pricingTier }) {
   const c = confirm("Are you sure you want to delete")
 
   if (c) {
-    pricingStore.deletePricingTier({ pricingTier })
+    await pricingStore.deletePricingTier({ pricingTier })
   }
 }
 </script>

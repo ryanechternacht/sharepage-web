@@ -131,19 +131,19 @@ const moneyConfig = {
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'discovery-guide')
 
-function putOnHold() {
+async function putOnHold() {
   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
   if (answer) {
-    buyersphereStore.updateBuyerInput({ buyersphereId, status: "on-hold" })
+    await buyersphereStore.updateBuyerInput({ buyersphereId, status: "on-hold" })
   }
 }
 
-function reactivate() {
+async function reactivate() {
   const answer = confirm(`Are you sure you want to reactive the buying process?`)
   
   if (answer) {
-    buyersphereStore.updateBuyerInput({ buyersphereId, status: "active" })
+    await buyersphereStore.updateBuyerInput({ buyersphereId, status: "active" })
   }
 }
 

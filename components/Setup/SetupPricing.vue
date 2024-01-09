@@ -156,8 +156,8 @@ const [organization, { pricingTiers, settings }] = await Promise.all([
   getPricingCached.value(),
 ])
 
-function updateShowByDefault() {
-  pricingStore.updateSettings({ showByDefault: !settings.showByDefault })
+async function updateShowByDefault() {
+  await pricingStore.updateSettings({ showByDefault: !settings.showByDefault })
 }
 
 const { submissionState, submitFn } = useSubmit(async () =>

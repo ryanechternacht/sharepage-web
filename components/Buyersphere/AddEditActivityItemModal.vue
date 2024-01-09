@@ -117,7 +117,7 @@ const assignedTeam = computed(
 
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
-    buyersphereStore.updateConversation({ 
+    await buyersphereStore.updateConversation({ 
       buyersphereId: props.buyersphereId,
       conversationId: props.activity.id,
       resolved,
@@ -128,7 +128,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       collaborationType,
     })
   } else {
-    buyersphereStore.startConversation({ 
+    await buyersphereStore.startConversation({ 
       buyersphereId: props.buyersphereId,
       dueDate,
       message,

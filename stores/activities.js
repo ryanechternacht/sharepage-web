@@ -36,7 +36,7 @@ export const useActivitiesStore = defineStore('activities', {
     async resolveActivity ({ activity, resolved }) {
       const buyersphereStore = useBuyerspheresStore()
 
-      buyersphereStore.updateConversation({
+      await buyersphereStore.updateConversation({
         buyersphereId: activity.buyersphereId,
         conversationId: activity.id,
         resolved,

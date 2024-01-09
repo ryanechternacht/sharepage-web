@@ -52,8 +52,8 @@ function isInBuyersphere (user) {
   return find(buyersphere.sellerTeam, p => p.id === user.id)
 }
 
-function addToDeal (user) {
-  buyersphereStore.addSellerUser({ buyersphereId, user }) 
+async function addToDeal (user) {
+  await buyersphereStore.addSellerUser({ buyersphereId, user }) 
 }
 </script>
 

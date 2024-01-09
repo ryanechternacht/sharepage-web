@@ -69,11 +69,11 @@ function addAsset() {
   open()
 }
 
-function deleteAsset({ asset }) {
+async function deleteAsset({ asset }) {
   const c = confirm(`Are you sure you want to delete ${asset.title}`)
 
   if (c) {
-    buyersphereStore.deleteResource({ buyersphereId, resourceId: asset.id })
+    await buyersphereStore.deleteResource({ buyersphereId, resourceId: asset.id })
   }
 }
 </script>

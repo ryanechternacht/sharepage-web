@@ -55,9 +55,9 @@ const [buyersphere, globalFeatures] = await Promise.all([
 // is this worth doing for snappier UX? (probably)
 const myFeatures = ref(buyersphere.featuresAnswer)
 
-function saveFeatureInterest (featureId, answer) {
+async function saveFeatureInterest (featureId, answer) {
   myFeatures.value.interests[featureId] = answer
-  store.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
+  await store.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
 }
 </script>
 

@@ -196,8 +196,8 @@ function goToActivity({ activity }) {
   navigateTo(`/buyersphere/${activity.buyersphereId}/activity-plan`)
 }
 
-function resolveActivity({ activity, resolved }) {
-  activitiesStore.resolveActivity({ activity, resolved })
+async function resolveActivity({ activity, resolved }) {
+  await activitiesStore.resolveActivity({ activity, resolved })
 }
 </script>
 
