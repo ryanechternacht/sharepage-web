@@ -34,10 +34,10 @@
       <div class="group-header">Success Criteria</div>
       
       <h4>How will you measure success?</h4>
-      <TipTapTextarea :model-value="successCriteria"
+      <AutoSaveTipTapTextarea :model-value="successCriteria"
         placeholder="Pain points to resolve"
         class="w-full mb-4"
-        @update:model-value="updateSuccessCriteriaAnswer" />
+        :on-update-fn="updateSuccessCriteriaAnswer" />
     </div>
     
     <div id="objectives"
@@ -54,10 +54,10 @@
       </div>
 
       <h4>Which objectives are most important for you? Are any not covered above?</h4>
-      <TipTapTextarea :model-value="objectives"
+      <AutoSaveTipTapTextarea :model-value="objectives"
         placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
         class="w-full mb-4"
-        @update:model-value="updateObjectivesAnswer" />
+        :on-update-fn="updateObjectivesAnswer" />
     </div>
 
     <div id="features"
@@ -128,10 +128,10 @@
       class="section">
       <div class="group-header">Constraints</div>
       <h4>Are there any constraints we should know about?</h4>
-      <TipTapTextarea :model-value="keyConstraints"
+      <AutoSaveTipTapTextarea :model-value="keyConstraints"
         placeholder="Key constraints to buying"
         class="w-full mb-4"
-        @update:model-value="updateConstraintsAnswer" />
+        :on-update-fn="updateConstraintsAnswer" />
     </div>
 
     <div id="milestones"
@@ -218,35 +218,35 @@ function formatDate(date) {
 // is this worth doing for snappier UX? (probably)
 const myFeatures = ref(buyersphere.featuresAnswer)
 
-function saveFeatureInterest (featureId, answer) {
+async function saveFeatureInterest (featureId, answer) {
   myFeatures.value.interests[featureId] = answer
-  buyersphereStore.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
+  await buyersphereStore.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
 }
 
-function updatePricingTierId (tierId) {
-  buyersphereStore.updateBuyerInput({ buyersphereId, pricingTierId: tierId })
+async function updatePricingTierId (tierId) {
+  await buyersphereStore.updateBuyerInput({ buyersphereId, pricingTierId: tierId })
 }
 
 const successCriteria = ref(buyersphere.successCriteriaAnswer.text)
 const objectives = ref(buyersphere.objectivesAnswer.text)
 const keyConstraints = ref(buyersphere.constraintsAnswer.text)
 
-function updateSuccessCriteriaAnswer(text) {
-  buyersphereStore.updateBuyerInput({ 
+async function updateSuccessCriteriaAnswer(text) {
+  await buyersphereStore.updateBuyerInput({ 
     buyersphereId, 
     successCriteriaAnswer: { text }
   })
 }
 
-function updateObjectivesAnswer(text) {
-  buyersphereStore.updateBuyerInput({ 
+async function updateObjectivesAnswer(text) {
+  await buyersphereStore.updateBuyerInput({ 
     buyersphereId, 
     objectivesAnswer: { text }
   })
 }
 
-function updateConstraintsAnswer(text) {
-  buyersphereStore.updateBuyerInput({ 
+async function updateConstraintsAnswer(text) {
+  await buyersphereStore.updateBuyerInput({ 
     buyersphereId, 
     constraintsAnswer: { text }
   })
