@@ -57,7 +57,7 @@ const myFeatures = ref(buyersphere.featuresAnswer)
 
 function saveFeatureInterest (featureId, answer) {
   myFeatures.value.interests[featureId] = answer
-  store.saveFeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })
+  store.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
 }
 </script>
 

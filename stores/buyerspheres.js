@@ -66,13 +66,42 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       b.crmOpportunityId = data.value.crmOpportunityId
       b.status = data.value.status
     },
-    async saveFeaturesAnswer({ buyersphereId, featuresAnswer }) {
+    async updateBuyerInput({ buyersphereId, featuresAnswer, successCriteriaAnswer,
+      objectivesAnswer, constraintsAnswer, pricingTierId, status }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { featuresAnswer } }
+        { 
+          method: 'PATCH', 
+          body: { 
+            featuresAnswer,
+            successCriteriaAnswer,
+            objectivesAnswer,
+            constraintsAnswer,
+            pricingTierId,
+            status,
+          } 
+        }
       )
-      this.buyerspheres[buyersphereId].content.featuresAnswer = data.value.featuresAnswer
+      const b = this.buyerspheres[buyersphereId].content
+      if (data.value.featuresAnswer !== undefined) {
+        b.featuresAnswer = data.value.featuresAnswer
+      }
+      if (data.value.successCriteriaAnswer !== undefined) {
+        b.successCriteriaAnswer = data.value.successCriteriaAnswer
+      }
+      if (data.value.objectivesAnswer !== undefined) {
+        b.objectivesAnswer = data.value.objectivesAnswer
+      }
+      if (data.value.constraintsAnswer !== undefined) {
+        b.constraintsAnswer = data.value.constraintsAnswer
+      }
+      if (data.value.pricingTierId !== undefined) {
+        b.pricingTierId = data.value.pricingTierId
+      }
+      if (data.value.status !== undefined) {
+        b.status = data.value.status
+      }
     },
     async advanceStage({ buyersphereId, stage }) {
       const body = { currentStage: stage }
@@ -106,14 +135,6 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         b.adoptedOn = data.value.adoptedOn
       }
     },
-    async saveStatus({ buyersphereId, status }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { status } }
-      )
-      this.buyerspheres[buyersphereId].content.status = data.value.status
-    },
     async savePricingCanPay({ buyersphereId, pricingCanPay }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
@@ -121,14 +142,6 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'PATCH', body: { pricingCanPay } }
       )
       this.buyerspheres[buyersphereId].content.pricingCanPay = data.value.pricingCanPay
-    },
-    async savePricingTierId({ buyersphereId, pricingTierId }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
-        { method: 'PATCH', body: { pricingTierId } }
-      )
-      this.buyerspheres[buyersphereId].content.pricingTierId = data.value.pricingTierId
     },
     async saveIntroMessage({ buyersphereId, introMessage }) {
       const { apiFetch } = useNuxtApp()

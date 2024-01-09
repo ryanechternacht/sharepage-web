@@ -258,15 +258,11 @@ function updateStage ({ stage }) {
 }
 
 function updateStatus ({ status }) {
-  buyersphereStore.saveStatus({ buyersphereId, status })
+  buyersphereStore.updateBuyerInput({ buyersphereId, status })
 }
 
 function updatePricingCanPay ({ canPay }) {
   buyersphereStore.savePricingCanPay({ buyersphereId, pricingCanPay: canPay })
-}
-
-function updatePricingTierId ({ tierId }) {
-  buyersphereStore.savePricingTierId({ buyersphereId, pricingTierId: tierId })
 }
 
 function createResource({ title, link }) {

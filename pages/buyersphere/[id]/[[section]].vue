@@ -135,7 +135,7 @@ function putOnHold() {
   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
   if (answer) {
-    buyersphereStore.saveStatus({ buyersphereId, status: "on-hold" })
+    buyersphereStore.updateBuyerInput({ buyersphereId, status: "on-hold" })
   }
 }
 
@@ -143,7 +143,7 @@ function reactivate() {
   const answer = confirm(`Are you sure you want to reactive the buying process?`)
   
   if (answer) {
-    buyersphereStore.saveStatus({ buyersphereId, status: "active" })
+    buyersphereStore.updateBuyerInput({ buyersphereId, status: "active" })
   }
 }
 

@@ -34,9 +34,10 @@
       <div class="group-header">Success Criteria</div>
       
       <h4>How will you measure success?</h4>
-      <TipTapTextarea v-model="successCriteria"
+      <TipTapTextarea :model-value="successCriteria"
         placeholder="Pain points to resolve"
-        class="w-full mb-4" />
+        class="w-full mb-4"
+        @update:model-value="updateSuccessCriteriaAnswer" />
     </div>
     
     <div id="objectives"
@@ -53,9 +54,10 @@
       </div>
 
       <h4>Which objectives are most important for you? Are any not covered above?</h4>
-      <TipTapTextarea v-model="objectives"
+      <TipTapTextarea :model-value="objectives"
         placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
-        class="w-full mb-4" />
+        class="w-full mb-4"
+        @update:model-value="updateObjectivesAnswer" />
     </div>
 
     <div id="features"
@@ -63,7 +65,7 @@
       <div class="group-header">Features</div>
       <h4>Select which features are most/least important to you</h4>
       <div class="flex flex-col gap-4">
-        <div v-for="(f, i) in features"
+        <div v-for="f in features"
           class="feature-list">
           <div><!-- empty --></div>
           <h3>{{ f.title }}</h3>
@@ -126,9 +128,10 @@
       class="section">
       <div class="group-header">Constraints</div>
       <h4>Are there any constraints we should know about?</h4>
-      <TipTapTextarea v-model="keyConstraints"
+      <TipTapTextarea :model-value="keyConstraints"
         placeholder="Key constraints to buying"
-        class="w-full mb-4" />
+        class="w-full mb-4"
+        @update:model-value="updateConstraintsAnswer" />
     </div>
 
     <div id="milestones"
@@ -204,7 +207,7 @@ const moneyConfig = {
   prefix: '$ ',
   disableNegative: true,
   thousands: ',',
-  suffix: ''
+  suffix: '',
 }
 
 const dayjs = useDayjs()
@@ -217,16 +220,37 @@ const myFeatures = ref(buyersphere.featuresAnswer)
 
 function saveFeatureInterest (featureId, answer) {
   myFeatures.value.interests[featureId] = answer
-  buyersphereStore.saveFeaturesAnswer({ buyersphereId, featuresAnswer: myFeatures })
+  buyersphereStore.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
 }
 
 function updatePricingTierId (tierId) {
-  buyersphereStore.savePricingTierId({ buyersphereId, pricingTierId: tierId })
+  buyersphereStore.updateBuyerInput({ buyersphereId, pricingTierId: tierId })
 }
 
-const keyConstraints = ref('')
-const objectives = ref('')
-const successCriteria = ref('')
+const successCriteria = ref(buyersphere.successCriteriaAnswer.text)
+const objectives = ref(buyersphere.objectivesAnswer.text)
+const keyConstraints = ref(buyersphere.constraintsAnswer.text)
+
+function updateSuccessCriteriaAnswer(text) {
+  buyersphereStore.updateBuyerInput({ 
+    buyersphereId, 
+    successCriteriaAnswer: { text }
+  })
+}
+
+function updateObjectivesAnswer(text) {
+  buyersphereStore.updateBuyerInput({ 
+    buyersphereId, 
+    objectivesAnswer: { text }
+  })
+}
+
+function updateConstraintsAnswer(text) {
+  buyersphereStore.updateBuyerInput({ 
+    buyersphereId, 
+    constraintsAnswer: { text }
+  })
+}
 
 // TODO do we need to filter this?
 const milestones = computed(() => 
