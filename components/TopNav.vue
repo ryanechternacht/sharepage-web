@@ -27,7 +27,7 @@
       <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
       <NuxtLink v-if="user.buyersphereRole === 'admin'"
         to="/settings"
-        class="mr-2">
+        class="mr-2 hover:font-bold">
         <!-- TODO should probably be an icon -->
         Settings
       </NuxtLink>
@@ -47,6 +47,10 @@ const user = await getMeCached.value()
 
 <style lang="postcss" scoped>
 .link {
-  @apply flex flex-row items-center gap-1;
+  @apply flex flex-row items-center gap-1 w-[5rem];
+
+  &:hover * {
+    @apply font-bold;
+  }
 }
 </style>

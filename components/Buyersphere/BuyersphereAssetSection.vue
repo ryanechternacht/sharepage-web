@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="group-header">{{ header }} {{ isTemplate }}</div>
+    <div class="group-header">{{ header }}</div>
     <div class="item-count">
       {{ assets.length === 1 ? '1 asset' : `${assets.length} assets`}}
     </div>
