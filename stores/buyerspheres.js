@@ -301,11 +301,20 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
 
       remove(this.buyerspheres[buyersphereId].content.notes, n => n.id === noteId)
     },
-    async createBuyerUser({ buyersphereId, user}) {
+    async createBuyerUser({ buyersphereId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}/teams/buyer`,
         { method: 'POST', body: user }
+      )
+      
+      this.buyerspheres[buyersphereId].content.buyerTeam = data.value
+    },
+    async editBuyerUser({ buyersphereId, user }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/teams/buyer/${user.id}`,
+        { method: 'PATCH', body: user }
       )
       
       this.buyerspheres[buyersphereId].content.buyerTeam = data.value

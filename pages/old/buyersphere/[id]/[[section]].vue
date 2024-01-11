@@ -141,7 +141,7 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
-import BuyersphereAddBuyerModal from '@/components/Buyersphere/AddBuyerModal'
+import AddEditBuyerModal from '@/components/Buyersphere/AddEditBuyerModal'
 import BuyersphereAddSellerModal from '@/components/Buyersphere/AddSellerModal'
 import BuyersphereEditBuyersphereModal from '@/components/Buyersphere/EditBuyersphereModal'
 
@@ -188,7 +188,7 @@ async function changeSection (section) {
 }
 
 const { open: openBuyerModal, close: closeBuyerModal } = useModal({
-  component: BuyersphereAddBuyerModal,
+  component: AddEditBuyerModal,
   attrs: {
     buyer: buyersphere.buyer,
     buyersphereId,
