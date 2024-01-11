@@ -10,7 +10,7 @@ export const useBuyerActivityStore = defineStore('buyer-activity', {
     buyerActivity: {},
   }),
   getters: {
-    getBuyerActivityForOrganizationCached: (state) => async (buyersphereId) => {
+    getBuyerActivityForOrganizationCached: (state) => async () => {
       await state.fetchBuyerActivity()
       return state.buyerActivity?.content
     }
@@ -29,6 +29,18 @@ export const useBuyerActivityStore = defineStore('buyer-activity', {
           generatedAt: dayjs().toJSON()
         }
       }
-    }, 
+    },
+    async captureBuyerActivity({ activity, activityData }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(`/v0.1/buyer-activity`,
+        { 
+          method: 'POST', 
+          body: { 
+            activity,
+            activityData
+          },
+        }
+      )
+    }
   }
 })

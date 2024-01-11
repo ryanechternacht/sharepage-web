@@ -92,6 +92,7 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
+import { useBuyerActivityStore } from '~/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 // import lodash_pkg from 'lodash';
 // const { filter, find, orderBy } = lodash_pkg;
@@ -112,6 +113,8 @@ const [buyersphere, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   isUserSeller.value(),
 ])
+
+const buyerActivityStore = useBuyerActivityStore()
 
 const isActive = computed(() => buyersphere.status === 'active')
 
@@ -136,6 +139,7 @@ async function putOnHold() {
 
   if (answer) {
     await buyersphereStore.updateBuyerInput({ buyersphereId, status: "on-hold" })
+    buyerActivityStore.captureBuyerActivity({ activity: "hold-deal" })
   }
 }
 
@@ -144,6 +148,7 @@ async function reactivate() {
   
   if (answer) {
     await buyersphereStore.updateBuyerInput({ buyersphereId, status: "active" })
+    buyerActivityStore.captureBuyerActivity({ activity: "reactivate-deal" })
   }
 }
 

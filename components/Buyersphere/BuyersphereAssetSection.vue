@@ -9,7 +9,8 @@
         :href="isTemplate ? null : asset.link"
         target="_blank"
         class="item-list-row"
-        :class="{'hover:cursor-pointer': !isTemplate}">
+        :class="{'hover:cursor-pointer': !isTemplate}"
+        @click="clickActivity(asset)">
         
         <img src="/svg/book.svg" class="w-[1rem] h-[1rem]">
         <div>{{ asset.title }}</div>
@@ -32,8 +33,11 @@
 </template>
 
 <script setup>
+import { useBuyerActivityStore } from '~/stores/buyer-activity';
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
+
+const buyerActivityStore = useBuyerActivityStore()
 
 const usersStore = useUsersStore()
 const { isUserSeller } = storeToRefs(usersStore)
@@ -53,6 +57,13 @@ const emit = defineEmits(['update:asset', 'delete:asset'])
 const dayjs = useDayjs()
 function formatdate (date) {
   return dayjs(date).format('MMM Do')
+}
+
+function clickActivity(asset) {
+  buyerActivityStore.captureBuyerActivity({ 
+    activity: "open-asset",
+    activityData: { title: asset.title, id: asset.id }
+  })
 }
 </script>
 

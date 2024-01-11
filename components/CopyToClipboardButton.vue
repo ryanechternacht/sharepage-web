@@ -20,6 +20,10 @@
 </template>
 
 <script setup>
+import { useBuyerActivityStore } from '~/stores/buyer-activity';
+
+const store = useBuyerActivityStore()
+
 const props = defineProps({ 
   color: String,
   showText: { type: Boolean, default: true }
@@ -33,13 +37,13 @@ async function copyToClipboard() {
     console.log(`can't find navigator, but would copy ${window.location.href}`)
   }
   recentlyClicked.value = true
-  lastTimeout.value = setTimeout(() => recentlyClicked.value = false,
-    3000)
+  lastTimeout.value = setTimeout(() => recentlyClicked.value = false, 3000)
+
+  store.captureBuyerActivity({ activity: "click-share" })
 }
 
 const recentlyClicked = ref(false)
 const lastTimeout = ref(null)
-const showToolip = computed(() => recentlyClicked.value ? true : null)
 </script>
 
 <style lang="postcss">
