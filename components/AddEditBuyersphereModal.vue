@@ -26,6 +26,7 @@
           class="flex-grow">
           <option value="active">Active</option>
           <option value="on-hold">On Hold</option>
+          <option value="opt-out">Archive</option>
         </select>
       </div>
       <div v-if="editMode">
