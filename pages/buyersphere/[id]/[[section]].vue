@@ -10,9 +10,17 @@
               :src="buyersphere.buyerLogo" />
             <h1>{{ buyersphere.buyer }}</h1>
           </div>
-          <div v-if="buyersphere.dealAmount > 0"
-            class="tag">
-            {{ format(buyersphere.dealAmount, moneyConfig) }}
+          <div v-if="buyersphere.subname || buyersphere.dealAmount > 0">
+            <span v-if="buyersphere.subname" class="tag">
+              {{ buyersphere.subname }}
+            </span>
+            <span v-if="buyersphere.dealAmount > 0 && buyersphere.subname"
+              class="mx-2 tag">
+              | 
+            </span>
+            <span v-if="buyersphere.dealAmount > 0" class="tag">
+              {{ format(buyersphere.dealAmount, moneyConfig) }}
+            </span>
           </div>
         </div>
         <!-- <div class="flex flex-col gap-4 pl-8 pb-5">

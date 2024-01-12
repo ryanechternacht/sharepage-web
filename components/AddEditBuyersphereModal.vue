@@ -15,6 +15,12 @@
           placeholder="Buyer Name">
       </div>
       <div>
+        <h3>Group Name within Account</h3>
+        <input v-model="subname"
+          class="flex-grow mb-2"
+          placeholder="Group Name">
+      </div>
+      <div>
         <h3>Account Logo (required)</h3>
         <input v-model="buyerLogo" 
           class="flex-grow mb-4"
@@ -87,6 +93,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     await store.saveBuyersphereSettings({
       buyersphereId: props.buyersphere.id,
       buyer,
+      subname,
       buyerLogo,
       status,
       showPricing,
@@ -96,6 +103,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
   } else {
     await store.createBuyersphere({ 
       buyer,
+      subname,
       buyerLogo,
       dealAmount,
       crmOpportunityId,
@@ -105,6 +113,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
 })
 
 const buyer = ref(props.buyersphere?.buyer)
+const subname = ref(props.buyersphere?.subname)
 const buyerLogo = ref(props.buyersphere?.buyerLogo)
 const status = ref(props.buyersphere.status)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)

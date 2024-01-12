@@ -92,8 +92,6 @@ const { data: buyerspheres, refresh } = await apiFetch('/v0.1/buyerspheres', {
   // query
 })
 
-console.log('bs', buyerspheres, buyerspheres.value, buyerspheres.value.value)
-
 const { open, close } = useModal({
   component: AddEditBuyersphereModal,
   attrs: {

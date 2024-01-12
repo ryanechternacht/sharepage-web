@@ -28,20 +28,21 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     },
   },
   actions: {
-    async createBuyersphere({ buyer, buyerLogo, crmOpportunityId, dealAmount }) {
+    async createBuyersphere({ buyer, subname, buyerLogo, crmOpportunityId, dealAmount }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
         `/v0.1/buyerspheres`,
-        { method: 'POST', body: { buyer, buyerLogo, crmOpportunityId, dealAmount } }
+        { method: 'POST', body: { buyer, subname, buyerLogo, crmOpportunityId, dealAmount } }
       )
     },
-    async saveBuyersphereSettings({ buyersphereId, buyer, buyerLogo, dealAmount, crmOpportunityId, 
+    async saveBuyersphereSettings({ buyersphereId, buyer, subname, buyerLogo, dealAmount, crmOpportunityId, 
       currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate, status }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${buyersphereId}`,
         { method: 'PATCH', body: { 
           buyer,
+          subname, 
           buyerLogo,
           dealAmount,
           crmOpportunityId,
@@ -57,6 +58,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       const b = this.buyerspheres[buyersphereId].content
       b.currentStage = data.value.currentStage
       b.buyer = data.value.buyer
+      b.subname = data.value.subname
       b.buyerLogo = data.value.buyerLogo
       b.showPricing = data.value.showPricing
       b.qualificationDate = data.value.qualificationDate
