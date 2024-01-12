@@ -4,7 +4,7 @@
       <div class="flex-grow" />
       <NewButton v-if="isSeller"
         text="New Seller" 
-        @click="openSellerModal" />
+        @click="addSeller" />
       <NewButton text="New Buyer" @click="addBuyer" />
     </div>
   </div>
@@ -39,13 +39,16 @@
       :users="buyersphere.buyerTeam"
       :header="buyersphere.buyer"
       :can-edit="true"
+      :can-delete="true"
       @update:user="editBuyer"
-      @delete:user="deleteUser" />
+      @delete:user="removeUser" />
 
     <BuyersphereTeamSection
       id="seller"
       :users="buyersphere.sellerTeam"
-      :header="organization.name" />
+      :header="organization.name"
+      :can-delete="isSeller"
+      @delete:user="removeUser" />
     
     <div class="vertical-bar" />
   </div>
@@ -97,7 +100,11 @@ const {
   }
 })
 
-const { open: openSellerModal, close: closeSellerModal } = useModal({
+const { 
+  open: openSellerModal,
+  close: closeSellerModal,
+  patchOptions: patchSellerModalOptions,
+ } = useModal({
   component: BuyersphereAddSellerModal,
   attrs: {
     buyersphereId,
@@ -108,20 +115,20 @@ const { open: openSellerModal, close: closeSellerModal } = useModal({
 })
 
 function editBuyer({ user }) {
-  patchBuyerModalOptions({ attrs: { user }})
+  patchBuyerModalOptions({ attrs: { user, team: buyersphere.buyer }})
   openBuyerModal()
 }
 
 function addBuyer() {
-  patchBuyerModalOptions({ attrs: { asset: {} }})
+  patchBuyerModalOptions({ attrs: { user: {}, team: buyersphere.buyer }})
   openBuyerModal()
 }
 
-async function deleteAsset({ asset }) {
-  const c = confirm(`Are you sure you want to delete ${asset.title}`)
+async function removeUser({ user }) {
+  const c = confirm(`Are you sure you want to remove ${user.firstName} ${user.lastName}?`)
 
   if (c) {
-    await buyersphereStore.deleteResource({ buyersphereId, resourceId: asset.id })
+    await buyersphereStore.removeBuyerUser({ buyersphereId, userId: user.id })
   }
 }
 </script>

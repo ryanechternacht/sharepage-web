@@ -319,6 +319,15 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       
       this.buyerspheres[buyersphereId].content.buyerTeam = data.value
     },
+    async removeBuyerUser({ buyersphereId, userId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/teams/buyer/${userId}`,
+        { method: 'DELETE' }
+      )
+
+      this.buyerspheres[buyersphereId].content.buyerTeam = data.value
+    },
     async addSellerUser({ buyersphereId, user}) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
@@ -326,6 +335,15 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'POST', body: { user_id: user.id } }
       )
       
+      this.buyerspheres[buyersphereId].content.sellerTeam = data.value
+    },
+    async removeSellerUser({ buyersphereId, userId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/teams/seller/${userId}`,
+        { method: 'DELETE' }
+      )
+
       this.buyerspheres[buyersphereId].content.sellerTeam = data.value
     },
   },

@@ -7,7 +7,7 @@
         <UserAvatar :user="user" />
         <h3 class="min-w-[10rem]">{{ user.firstName }} {{ user.lastName }}</h3>
         <div class="main-content">{{ user.displayRole }}</div>
-        <DeleteButton v-if="canEdit" 
+        <DeleteButton v-if="canDelete" 
           class="show-on-row-hover"
           @click.prevent="emit('delete:user', { user })" />
         <EditButton v-if="canEdit" 
@@ -22,7 +22,8 @@
 const props = defineProps({
   users: { type: Array, required: true },
   header: { type: String, required: true },
-  canEdit: { type: Boolean, default: false }
+  canEdit: { type: Boolean, default: false },
+  canDelete: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:user', 'delete:user'])
