@@ -43,6 +43,14 @@ export const useActivitiesStore = defineStore('activities', {
       })
 
       remove(this.activities.content, a => a.id === activity.id)
-    }
+    },
+    async createActivity({ buyersphereId, message, dueDate, assignedTo, assignedTeam, collaborationType }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/conversations`,
+        { method: 'POST', body: {message, dueDate, assignedTo, assignedTeam, collaborationType} }
+      )
+      this.activities.content.push(data.value)
+    },
   },
 })

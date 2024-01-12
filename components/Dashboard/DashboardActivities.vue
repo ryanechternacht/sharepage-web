@@ -6,6 +6,12 @@
       @update:option="updateFilter" />
   </div>
 
+  <div class="[grid-area:right-header] right-header">
+    <div class="h-full flex flex-row-reverse items-end">
+      <NewButton @click="open" />
+    </div>
+  </div>
+
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <h3 class="page-link">Activities</h3>
@@ -85,6 +91,8 @@ import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy } = lodash_pkg;
+import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
+import { useModal } from 'vue-final-modal'
 
 const activitiesStore = useActivitiesStore()
 const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
@@ -199,6 +207,15 @@ function goToActivity({ activity }) {
 async function resolveActivity({ activity, resolved }) {
   await activitiesStore.resolveActivity({ activity, resolved })
 }
+
+const { open, close } = useModal({
+  component: AddEditActivityItemModal,
+  attrs: {
+    onClose () {
+      close ()
+    }
+  }
+})
 </script>
 
 <style lang="postcss" scoped>

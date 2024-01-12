@@ -4,6 +4,14 @@
     content-class="p-4 bg-white rounded-md">
     <div class="w-[36rem] flex flex-col items-center gap-2">
       <h1>{{ editMode ? "Edit" : "Add" }} Action Item</h1>
+      <div v-if="globalMode" class="w-full">
+        <h3>{{ buyersphereId }}</h3>
+        <h3>Deal</h3>
+        <select v-model="buyersphereId" class="w-full">
+          <option v-for="b in buyerspheres"
+            :value="b.id">{{ b.buyer }}</option>
+        </select>
+      </div>
       <div class="w-full">
         <h3>What needs to be done</h3>
         <TipTapTextarea
@@ -62,16 +70,18 @@
 import { VueFinalModal } from 'vue-final-modal'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
+import { useActivitiesStore } from '@/stores/activities'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, concat, find } = lodash_pkg;
 
 const props = defineProps({
   activity: { type: Object, default: {} },
-  buyersphereId: { type: Number, required: true }
+  buyersphereId: { type: Number }
 })
 
 const editMode = ref(!!props.activity?.id)
+const globalMode = ref(!props.buyersphereId)
 
 const emit = defineEmits(['close'])
 
@@ -81,27 +91,46 @@ const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [buyersphere, organization] = await Promise.all([
-  getBuyersphereByIdCached.value(props.buyersphereId),
-  getOrganizationCached.value()
+const { apiFetch } = useNuxtApp()
+const [organization, { data: buyerspheres }] = await Promise.all([
+  getOrganizationCached.value(),
+  apiFetch('/v0.1/buyerspheres')
 ])
+
+const activitiesStore = useActivitiesStore()
+
+async function getBuyersphere() {
+  return buyersphereId.value
+    ? await getBuyersphereByIdCached.value(buyersphereId.value)
+    : null
+}
+
+const buyersphereId = ref(props.buyersphereId)
+const buyersphere = ref(await getBuyersphere())
+
+// not sure why a computed on buyersphereId didn't work here :/
+watch(buyersphereId, async (newState, _) => {
+  if (newState) {
+    buyersphere.value = await getBuyersphere()
+  }
+})
 
 const allBuyersphereUsers = computed(
   () => concat(
     {
       id: -1,
-      firstName: buyersphere.buyer,
+      firstName: buyersphere.value?.buyer ?? "Buyer",
       lastName: "Team",
       team: "buyer"
     },
-    buyersphere.buyerTeam ?? [], 
+    buyersphere.value?.buyerTeam ?? [], 
     {
       id: -2,
       firstName: organization.name,
       lastName: "Team",
       team: "seller"
     },
-    buyersphere.sellerTeam ?? [])
+    buyersphere.value?.sellerTeam ?? [])
 )
 
 const resolved = ref(props.activity?.resolved)
@@ -118,7 +147,7 @@ const assignedTeam = computed(
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await buyersphereStore.updateConversation({ 
-      buyersphereId: props.buyersphereId,
+      buyersphereId: buyersphereId.value,
       conversationId: props.activity.id,
       resolved,
       dueDate,
@@ -128,19 +157,30 @@ const { submissionState, submitFn } = useSubmit(async () => {
       collaborationType,
     })
   } else {
-    await buyersphereStore.startConversation({ 
-      buyersphereId: props.buyersphereId,
-      dueDate,
-      message,
-      assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-      assignedTeam,
-      collaborationType,
-    })
+    if (globalMode.value) {
+      await activitiesStore.createActivity({ 
+        buyersphereId: buyersphereId.value,
+        dueDate,
+        message,
+        assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+        assignedTeam,
+        collaborationType,
+      })
+    } else {
+      await buyersphereStore.startConversation({ 
+        buyersphereId: buyersphereId.value,
+        dueDate,
+        message,
+        assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+        assignedTeam,
+        collaborationType,
+      })
+    }
   }
 })
 
-const needsMoreInput = computed(() => 
-  !message.value || !dueDate.value || !collaborationType.value || !assignedToId.value)
+const needsMoreInput = computed(() => !message.value || !dueDate.value 
+  || !collaborationType.value || !assignedToId.value || !buyersphereId.value)
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {
