@@ -4,7 +4,7 @@
       <div class="flex-grow" />
       <NewButton v-if="isSeller"
         text="New Seller" 
-        @click="addSeller" />
+        @click="openSellerModal" />
       <NewButton text="New Buyer" @click="addBuyer" />
     </div>
   </div>
