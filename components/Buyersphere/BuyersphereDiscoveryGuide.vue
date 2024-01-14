@@ -48,7 +48,7 @@
         <div v-for="pp in painPoints"
           class="item-list-row">
           <img src="/svg/gift-tag.svg">
-          <Tag2 class="whitespace-nowrap" color="blue">{{ pp.title }}</Tag2>
+          <Tag class="whitespace-nowrap" color="blue">{{ pp.title }}</Tag>
           <div class="inline-html tag" v-html="pp.description" />
         </div>
       </div>
@@ -111,11 +111,11 @@
               {{ pt.periodType === 'other'
                 ? pt.amountOther
                 : `${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}</div>
-            <Tag2 v-else color="gray">
+            <Tag v-else color="gray">
               {{ pt.periodType === 'other'
                 ? pt.amountOther
                 : `${format(pt.amountPerPeriod, moneyConfig)}/${periodMap[pt.periodType]}` }}
-            </Tag2>
+            </Tag>
           </div>
           <h3 class="leading-[1.375rem]">{{ pt.title }}</h3>
           <div><!-- empty --></div>
@@ -143,12 +143,12 @@
         <div v-for="m in milestones" 
           class="item-list-row">
           <img src="/svg/calendar.svg">
-          <Tag2 v-if="m.resolved" 
+          <Tag v-if="m.resolved" 
             color="gray"
-            class="w-[4.75rem]">Complete</Tag2>
-          <Tag2 v-else 
+            class="w-[4.75rem]">Complete</Tag>
+          <Tag v-else 
             color="blue"
-            class="w-[4.75rem]">{{ toDate(m.dueDate) }}</Tag2>
+            class="w-[4.75rem]">{{ toDate(m.dueDate) }}</Tag>
           <div class="flex-grow gray inline-html" v-html="m.message" />
           <div v-if="!m.resolved" class="tag">By {{ formatDate(m.dueDate) }}</div>
         </div>

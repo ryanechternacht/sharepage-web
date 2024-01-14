@@ -17,9 +17,9 @@
         
         <div class="flex-grow h-[2rem]" />
         
-        <Tag2 color="gray">
+        <Tag color="gray">
           {{ formatdate(asset.createdAt) }}
-        </Tag2>
+        </Tag>
 
         <DeleteButton v-if="isSeller" 
           class="show-on-row-hover"

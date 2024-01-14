@@ -52,21 +52,21 @@
           <h3>Current Stage: {{ capitalize(buyersphere.currentStage) }}</h3>
           <div class="mt-2 flex flex-row gap-4">
             <template v-if="buyersphere.status === 'active'">
-              <Tag2 color="teal" v-if="buyersphere.currentStage != 'adoption'"
+              <Tag color="teal" v-if="buyersphere.currentStage != 'adoption'"
                 use-dot
                 button
-                @click="advanceStage">Next Stage</Tag2>
-              <Tag2 color="orange" 
+                @click="advanceStage">Next Stage</Tag>
+              <Tag color="orange" 
                 use-dot
                 button
-                @click="putOnHold">Put on Hold</Tag2>
+                @click="putOnHold">Put on Hold</Tag>
             </template>
-            <Tag2 v-else
+            <Tag v-else
               color="teal"
               use-dot
               button
               class="reactivate-button"
-              @click="reactivate">Reactivate</Tag2>
+              @click="reactivate">Reactivate</Tag>
           </div>
         </div> -->
       </div>

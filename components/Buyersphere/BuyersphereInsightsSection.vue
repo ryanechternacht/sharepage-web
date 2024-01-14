@@ -9,7 +9,7 @@
         class="item-list-row">
         <img :src="activityMap[item.activity]?.icon"
           class="w-[1rem] h-[1rem]">
-        <Tag2 color="gray">{{ activityMap[item.activity]?.label }}</Tag2>
+        <Tag color="gray">{{ activityMap[item.activity]?.label }}</Tag>
         <div 
         v-html="activityMap[item.activity]?.detailsFn(item.activityData)"
         class="main-content inline-html" />

@@ -44,7 +44,7 @@
         <div v-for="objective in painPoints"
           class="item-list-row">
           <img src="/svg/gift-tag.svg">
-          <Tag2 class="whitespace-nowrap" color="blue">{{ objective.title }}</Tag2>
+          <Tag class="whitespace-nowrap" color="blue">{{ objective.title }}</Tag>
           <div class="inline-html tag main-content" v-html="objective.description" />
           <DeleteButton class="show-on-row-hover" @click="deleteObjective({ objective })" />
           <EditButton class="show-on-row-hover" @click="editObjective({ objective })" />
@@ -109,11 +109,11 @@
           class="pricing-row">
           <img src="/svg/package.svg">
           <div>
-            <Tag2 color="gray">
+            <Tag color="gray">
               {{ pricingTier.periodType === 'other'
               ? pricingTier.amountOther
               : `$${format(pricingTier.amountPerPeriod, moneyConfig)}/${periodMap[pricingTier.periodType]}` }}
-            </Tag2>
+            </Tag>
           </div>
           <h3 class="leading-[1.375rem]">{{ pricingTier.title }}</h3>
           <div class="row-span-2 h-full flex flex-row items-center gap-2">

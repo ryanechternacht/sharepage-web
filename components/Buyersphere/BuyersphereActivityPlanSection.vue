@@ -23,9 +23,9 @@
             @click.stop="emit('resolve:activity', { activity, resolved: true })" />
         </div>
         
-        <Tag2 class="w-[4.75rem]" color="gray">
+        <Tag class="w-[4.75rem]" color="gray">
           {{ capitalize(activity.collaborationType) }}
-        </Tag2>
+        </Tag>
         
         <div class="inline-html main-content" v-html="activity.message" />
 
