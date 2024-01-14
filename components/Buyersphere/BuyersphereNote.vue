@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row gap-x-1">
     <div class="note flex-grow">
-      <img src="/svg/yellow-notebook.svg" class="note-icon">
+      <img src="/svg/notebook.svg" class="note-icon">
       <div class="note-mid-higher">
         <input v-if="editing"
           v-model="editedTitle"
@@ -55,11 +55,11 @@
       class="row-icon"
       @click="dismissEdit">
     <img v-else
-      src="/svg/edit.svg"
+      src="/svg/pencil.svg"
       class="row-icon"
       @click="edit">
     <img
-      src="/svg/trash.svg"
+      src="/svg/trash-can.svg"
       class="row-icon"
       @click="deleteNote">
   </div>
