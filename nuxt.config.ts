@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     'dayjs-nuxt',
     'floating-vue/nuxt',
+    'nuxt-feather-icons',
   ],
 
   build: {

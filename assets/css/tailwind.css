@@ -30,6 +30,14 @@
     font-size: .875rem; /* 14px */
   }
 
+  svg {
+    @apply min-w-[.875rem] w-[.875rem] h-[.875rem];
+
+    &.tag {
+      @apply min-w-[.75rem] w-[.75rem] h-[.75rem];
+    }
+  }
+
   .tag {
     @apply font-sans font-normal text-gray-subtext;
     font-size: .75rem; /* 12px */
@@ -173,7 +181,7 @@
       @apply bg-gray-hover pl-[.375rem];
   
       &::before {
-        @apply h-[.875rem] mr-1;
+        @apply h-[.875rem] max-h-[.875rem] mr-1;
         content: url('/svg/compass.svg');
       }
     }

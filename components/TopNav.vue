@@ -7,15 +7,15 @@
     <template v-if="user.buyersphereRole === 'admin'">
       <!-- TOOD point these to the correct routes and style them when active -->
       <NuxtLink to="/dashboard/activities" class="link">
-        <img src="/svg/inbox.svg">
+        <InboxIcon class="body" />
         <span>Activities</span>
       </NuxtLink>
       <NuxtLink to="/dashboard/accounts" class="link">
-        <img src="/svg/target.svg">
+        <CrosshairIcon class="body" />
         <span>Accounts</span>
       </NuxtLink>
       <NuxtLink to="/dashboard/insights" class="link">
-        <img src="/svg/lightning-bolt.svg">
+        <ZapIcon class="body" />
         <span>Insights</span>
       </NuxtLink>
     </template>

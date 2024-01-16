@@ -7,14 +7,14 @@
         class="mr-2 body-header">
         Copied
       </div> 
-      <img src="/svg/checkmark--green.svg">
+      <CheckCircleIcon />
     </template>
     <template v-else>
       <div v-if="showText"
         class="mr-2 body-header">
         Share
       </div> 
-      <img src="/svg/share.svg">
+      <ShareIcon />
     </template>
   </BsButton>
 </template>

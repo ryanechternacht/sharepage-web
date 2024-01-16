@@ -103,7 +103,6 @@ const {
 const { 
   open: openSellerModal,
   close: closeSellerModal,
-  patchOptions: patchSellerModalOptions,
  } = useModal({
   component: BuyersphereAddSellerModal,
   attrs: {

@@ -2,7 +2,7 @@
   <BsButton id="btn" :color="color" hover-color="blue">
     <div v-if="showText"
       class="body-header mr-2">Edit</div> 
-    <div id="pencil" />
+    <Edit2Icon />
   </BsButton>
 </template>
 
@@ -14,15 +14,4 @@ const props = defineProps({
 </script>
 
 <style lang="postcss" scoped>
-#pencil {
-  mask: url(/svg/pencil.svg);
-
-  @apply bg-gray-body;
-  width: 14px;
-  height: 14px;
-}
-
-#btn:hover #pencil {
-  @apply bg-white;
-}
 </style>
