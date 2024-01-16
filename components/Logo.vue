@@ -3,9 +3,8 @@
     class="center-xy"
     :class="[height, width]"
   >
-    <img v-if="loadingError"
-      src="/svg/briefcase.svg"
-      :class="[maxHeight, maxWidth]">
+    <BriefcaseIcon v-if="loadingError"
+      :class="[maxHeight, maxWidth]" />
     <img v-else
       :src="src" 
       :class="[maxHeight, maxWidth]"

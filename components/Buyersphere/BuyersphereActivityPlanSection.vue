@@ -14,10 +14,9 @@
           :class="{'hide-on-row-hover': !isTemplate}">
         <div v-if="!isTemplate" 
           class="show-on-row-hover">
-          <img v-if="activity.resolved"
-            src="/svg/reply.svg"
+          <RotateCcwIcon v-if="activity.resolved"
             class="cursor-pointer w-[1rem] h-[1rem]"
-            @click.stop="emit('resolve:activity', { activity, resolved: false })">
+            @click.stop="emit('resolve:activity', { activity, resolved: false })" />
           <div v-else
             class="circle"
             @click.stop="emit('resolve:activity', { activity, resolved: true })" />
@@ -59,7 +58,7 @@
         </template>
         <template v-else-if="isTemplate">
           <div class="template-buyer-logo">
-            <img src="/svg/briefcase.svg">
+            <BriefcaseIcon />
           </div>
           <div class="ml-[-.5rem] min-w-[8rem]">Buying Company</div>
         </template>
@@ -186,7 +185,7 @@ const iconMap = {
 
 .template-buyer-logo {
   @apply w-[1.5rem] h-[1.5rem] max-w-[1.5rem] max-h-[1.5rem]
-    center-xy bg-gray-border rounded-md;
+    center-xy rounded-md;
 }
 
 .circle {

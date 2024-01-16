@@ -43,7 +43,7 @@
       <div class="item-list">
         <div v-for="objective in painPoints"
           class="item-list-row">
-          <img src="/svg/gift-tag.svg">
+          <TagIcon class="w-[1rem] h-[1rem]"/>
           <Tag class="whitespace-nowrap" color="blue">{{ objective.title }}</Tag>
           <div class="inline-html tag main-content" v-html="objective.description" />
           <DeleteButton class="show-on-row-hover" @click="deleteObjective({ objective })" />
@@ -75,13 +75,13 @@
           </div>
           <div class="justify-center flex flex-row items-center gap-2">
             <div class="feature-button">
-              <img src="/svg/checkmark.svg">
+              <CheckCircleIcon />
             </div>
             <div class="feature-button">
-              <img src="/svg/circle-dash.svg">
+              <MinusCircleIcon />
             </div>
             <div class="feature-button">
-              <img src="/svg/do-not-enter.svg">
+              <SlashIcon />
             </div>
           </div>
           <div class="gray inline-html" v-html="feature.description" />
@@ -107,7 +107,7 @@
       <div class="pricing-tier-list">
         <div v-for="pricingTier in pricingTiers"
           class="pricing-row">
-          <img src="/svg/package.svg">
+          <PackageIcon class="w-[1rem] h-[1rem] "/>
           <div>
             <Tag color="gray">
               {{ pricingTier.periodType === 'other'

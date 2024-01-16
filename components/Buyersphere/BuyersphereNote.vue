@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row gap-x-1">
     <div class="note flex-grow">
-      <img src="/svg/notebook.svg" class="note-icon">
+      <BookIcon class="note-icon" />
       <div class="note-mid-higher">
         <input v-if="editing"
           v-model="editedTitle"
@@ -50,18 +50,15 @@
     </div>
 
     <!-- TODO get these to show/hide on hover -->
-    <img v-if="editing"
-      src="/svg/x.svg"
+    <XIcon v-if="editing"
       class="row-icon"
-      @click="dismissEdit">
-    <img v-else
-      src="/svg/pencil.svg"
+      @click="dismissEdit" />
+    <PencilIcon v-else
       class="row-icon"
-      @click="edit">
-    <img
-      src="/svg/trash-can.svg"
+      @click="edit" />
+    <Trash2Icon
       class="row-icon"
-      @click="deleteNote">
+      @click="deleteNote" />
   </div>
 </template>
 

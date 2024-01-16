@@ -47,7 +47,7 @@
       <div class="item-list">
         <div v-for="pp in painPoints"
           class="item-list-row">
-          <img src="/svg/gift-tag.svg">
+          <TagIcon class="w-[1rem] h-[1rem]"/>
           <Tag class="whitespace-nowrap" color="blue">{{ pp.title }}</Tag>
           <div class="inline-html tag" v-html="pp.description" />
         </div>
@@ -73,20 +73,23 @@
             <div class="feature-button feature-button-yes"
               :class="{'selected': myFeatures?.interests[f.id] === 'yes'}"
               @click="saveFeatureInterest(f.id, 'yes')">
-              <img v-if="myFeatures?.interests[f.id] === 'yes'" src="/svg/checkmark--green.svg">
-              <img v-else src="/svg/checkmark.svg">
+              <CheckCircleIcon v-if="myFeatures?.interests[f.id] === 'yes'"
+                class="[stroke:#08C4B2]" />
+              <CheckCircleIcon v-else />
             </div>
             <div class="feature-button feature-button-maybe"
               :class="{'selected': myFeatures?.interests[f.id] === 'maybe'}"
               @click="saveFeatureInterest(f.id, 'maybe')">
-              <img v-if="myFeatures?.interests[f.id] === 'maybe'" src="/svg/circle-dash--yellow.svg">
-              <img v-else src="/svg/circle-dash.svg">
+              <MinusCircleIcon v-if="myFeatures?.interests[f.id] === 'maybe'"
+                class="[stroke:#FFBC00]" />
+              <MinusCircleIcon v-else />
             </div>
             <div class="feature-button feature-button-no"
               :class="{'selected': myFeatures?.interests[f.id] === 'no'}"
               @click="saveFeatureInterest(f.id, 'no')">
-              <img v-if="myFeatures?.interests[f.id] === 'no'" src="/svg/do-not-enter--red.svg">
-              <img v-else src="/svg/do-not-enter.svg">
+              <SlashIcon v-if="myFeatures?.interests[f.id] === 'no'"
+                class="[stroke:#CE3665]" />
+              <SlashIcon v-else />
             </div>
           </div>
           <div class="gray inline-html" v-html="f.description" />
@@ -104,7 +107,7 @@
           class="contents"
           :class="{'selected': pt.id === buyersphere.pricingTierId}"
           @click="updatePricingTierId(pt.id)">
-          <img src="/svg/package.svg">
+          <PackageIcon class="w-[1rem] h-[1rem] "/>
           <div>
             <div v-if="pt.id === buyersphere.pricingTierId"
               class="tag center-xy text-blue-primary h-full py-[2px] px-2">
@@ -142,7 +145,7 @@
       <div class="item-list">
         <div v-for="m in milestones" 
           class="item-list-row">
-          <img src="/svg/calendar.svg">
+          <CalendarIcon />
           <Tag v-if="m.resolved" 
             color="gray"
             class="w-[4.75rem]">Complete</Tag>

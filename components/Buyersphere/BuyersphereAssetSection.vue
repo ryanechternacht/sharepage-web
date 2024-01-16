@@ -12,7 +12,7 @@
         :class="{'hover:cursor-pointer': !isTemplate}"
         @click="clickActivity(asset)">
         
-        <img src="/svg/book.svg" class="w-[1rem] h-[1rem]">
+        <BookIcon class="w-[1rem] h-[1rem]" />
         <div>{{ asset.title }}</div>
         
         <div class="flex-grow h-[2rem]" />

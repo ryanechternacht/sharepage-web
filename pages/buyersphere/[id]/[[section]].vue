@@ -23,52 +23,6 @@
             </span>
           </div>
         </div>
-        <!-- <div class="flex flex-col gap-4 pl-8 pb-5">
-          <div class="flex flex-row items-center gap-2">
-            <Logo :src="buyersphere.buyerLogo"
-              size="medium"
-              class="mr-2" />
-            <h3 class="text-gray-headline">{{ buyersphere.buyer }}</h3>
-            <div class="white-box inline-flex">
-              <img src="/svg/person.svg"> &nbsp;
-              {{ buyersphere.buyerTeam.length }}
-            </div>
-            <div class="white-box">+</div>
-          </div>
-          <div class="flex flex-row items-center gap-2">
-            <Logo :src="organization.logo"
-              size="medium"
-              class="mr-2" />
-            <h3 class="text-gray-headline">{{ organization.name }}</h3>
-            <div class="white-box inline-flex">
-              <img src="/svg/person.svg"> &nbsp;
-              {{ buyersphere.sellerTeam.length }}
-            </div>
-            <div class="white-box">+</div>
-          </div>
-        </div>
-        <div class="flex flex-col items-end mr-8 mb-4">
-          <div class="tag text-gray-subtext">By {{ formatDate(nextStageDate) }}</div>
-          <h3>Current Stage: {{ capitalize(buyersphere.currentStage) }}</h3>
-          <div class="mt-2 flex flex-row gap-4">
-            <template v-if="buyersphere.status === 'active'">
-              <Tag color="teal" v-if="buyersphere.currentStage != 'adoption'"
-                use-dot
-                button
-                @click="advanceStage">Next Stage</Tag>
-              <Tag color="orange" 
-                use-dot
-                button
-                @click="putOnHold">Put on Hold</Tag>
-            </template>
-            <Tag v-else
-              color="teal"
-              use-dot
-              button
-              class="reactivate-button"
-              @click="reactivate">Reactivate</Tag>
-          </div>
-        </div> -->
       </div>
 
       <div class="[grid-area:left-header] left-header">
