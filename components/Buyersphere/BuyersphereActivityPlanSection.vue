@@ -14,9 +14,10 @@
           :class="{'hide-on-row-hover': !isTemplate}">
         <div v-if="!isTemplate" 
           class="show-on-row-hover">
-          <RotateCcwIcon v-if="activity.resolved"
-            class="cursor-pointer w-[1rem] h-[1rem]"
-            @click.stop="emit('resolve:activity', { activity, resolved: false })" />
+          <div v-if="activity.resolved"
+            @click.stop="emit('resolve:activity', { activity, resolved: false })">
+            <RotateCcwIcon class="cursor-pointer w-[1rem] h-[1rem]" />
+          </div>
           <div v-else
             class="circle"
             @click.stop="emit('resolve:activity', { activity, resolved: true })" />
