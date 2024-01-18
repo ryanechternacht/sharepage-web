@@ -96,6 +96,12 @@ const moneyConfig = {
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'discovery-guide')
 
+// update the url of the page to the latest name of the buyersphere
+const router = useRouter()
+const { makeBuyersphereLink } = useBuyersphereLinks()
+router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
+
+
 async function putOnHold() {
   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
