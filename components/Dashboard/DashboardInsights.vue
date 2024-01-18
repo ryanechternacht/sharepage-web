@@ -7,21 +7,21 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/dashboard/activities`)">Activities</div>
-      <div class="page-link"
-        @click="navigateTo(`/dashboard/accounts`)">Accounts</div>
+      <NuxtLink class="page-link"
+        :to="(`/dashboard/activities`)">Activities</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/dashboard/accounts`)">Accounts</NuxtLink>
       <h3 class="page-link">Insights</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 v-if="last7DaysItems.length" 
-          @click="navigateTo('#last-7-days')"
-          class="in-page-link">Last 7 Days</h4>
-        <h4 v-if="last30DaysItems.length" 
-          @click="navigateTo('#last-30-days')"
-          class="in-page-link">Last 30 Days</h4>
-        <h4 v-if="olderItems.length" 
-          @click="navigateTo('#older')"
-          class="in-page-link">Older</h4>
+        <a v-if="last7DaysItems.length" 
+          class="in-page-link" 
+          href="#last-7-days">Last 7 Days</a>
+        <a v-if="last30DaysItems.length" 
+          class="in-page-link" 
+          href="#last-30-days">Last 30 Days</a>
+        <a v-if="olderItems.length" 
+          class="in-page-link" 
+          href="#older">Older</a>
       </div>
     </div>
   </div>

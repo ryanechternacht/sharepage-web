@@ -11,25 +11,23 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
       <h3 class="page-link">Team</h3>
       <div v-scroll-spy-active v-scroll-spy-link 
         class="mt-[-.75rem] mb-[.75rem]">
-        <h4 
-          @click="navigateTo('#buyer')"
-          class="in-page-link">{{ buyersphere.buyer }}</h4>
-        <h4 
-          @click="navigateTo('#seller')"
-          class="in-page-link">{{ organization.name }}</h4>
+        <a class="in-page-link"
+          href="#buyer">{{ buyersphere.buyer }}</a>
+        <a class="in-page-link" 
+          href="#seller">{{ organization.name }}</a>
       </div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
-      <div v-if="isSeller"
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/assets`)">Assets</NuxtLink>
+      <NuxtLink v-if="isSeller"
         class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
+        :to="(`/buyersphere/${buyersphereId}/insights`)">Insights</NuxtLink>
     </div>
   </div>
 

@@ -7,15 +7,15 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/settings/personal`)">Personal</div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/guide-template`)">Guide Template</div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/timeline-template`)">Timeline Template</div>
+      <NuxtLink class="page-link"
+        :to="(`/settings/personal`)">Personal</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/settings/guide-template`)">Guide Template</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/settings/timeline-template`)">Timeline Template</NuxtLink>
       <h3 class="page-link">Assets Template</h3>
-      <div class="page-link"
-        @click="navigateTo(`/settings/admin`)">Admin</div>
+      <NuxtLink class="page-link"
+        :to="(`/settings/admin`)">Admin</NuxtLink>
     </div>
   </div>
 

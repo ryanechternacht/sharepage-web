@@ -7,16 +7,16 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>      
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/team`)">Team</NuxtLink>      
       <h3 class="page-link">Assets</h3>
-      <div v-if="isSeller"
+      <NuxtLink v-if="isSeller"
         class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
+        :to="(`/buyersphere/${buyersphereId}/insights`)">Insights</NuxtLink>
     </div>
   </div>
   <div class="[grid-area:center] page-center">

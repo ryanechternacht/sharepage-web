@@ -3,28 +3,22 @@
     <div class="left-sidebar">
       <h3 class="page-link">Discovery Guide</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 @click="navigateTo('#success-criteria')"
-          class="in-page-link">Success Criteria</h4>
-        <h4 @click="navigateTo('#objectives')"
-          class="in-page-link">Objectives</h4>
-        <h4 @click="navigateTo('#features')"
-          class="in-page-link">Features</h4>
-        <h4 @click="navigateTo('#pricing')"
-          class="in-page-link">Pricing</h4>
-        <h4 @click="navigateTo('#constraints')"
-          class="in-page-link">Constraints</h4>
-        <h4 @click="navigateTo('#milestones')"
-          class="in-page-link">Milestones</h4>
+        <a class="in-page-link" href="#success-criteria">Success Criteria</a>
+        <a class="in-page-link" href="#objectives">Objectives</a>
+        <a class="in-page-link" href="#features">Features</a>
+        <a class="in-page-link" href="#pricing">Pricing</a>
+        <a class="in-page-link" href="#constraints">Constraints</a>
+        <a class="in-page-link" href="#milestones">Milestones</a>
       </div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
-        <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
-      <div v-if="isSeller"
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/team`)">Team</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/assets`)">Assets</NuxtLink>
+      <NuxtLink v-if="isSeller"
         class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
+        :to="(`/buyersphere/${buyersphereId}/insights`)">Insights</NuxtLink>
       </div>
   </div>
 

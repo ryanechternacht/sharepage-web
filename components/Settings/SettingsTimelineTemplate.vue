@@ -8,29 +8,29 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/settings/personal`)">Personal</div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/guide-template`)">Guide Template</div>
+      <NuxtLink class="page-link"
+        :to="(`/settings/personal`)">Personal</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/settings/guide-template`)">Guide Template</NuxtLink>
       <h3 class="page-link">Timeline Template</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 v-if="next7DaysItems.length" 
-          @click="navigateTo('#next-7-days')"
-          class="in-page-link">Next 7 Days</h4>
-        <h4 v-if="next30DaysItems.length" 
-          @click="navigateTo('#next-30-days')"
-          class="in-page-link">Next 30 Days</h4>
-        <h4 v-if="next90DaysItems.length" 
-          @click="navigateTo('#next-90-days')"
-          class="in-page-link">Next 90 Days</h4>
-        <h4 v-if="beyondItems.length" 
-          @click="navigateTo('#beyond')"
-          class="in-page-link">Beyond</h4>
+        <a v-if="next7DaysItems.length" 
+          class="in-page-link" 
+          href="#next-7-days">Next 7 Days</a>
+        <a v-if="next30DaysItems.length" 
+          class="in-page-link" 
+          href="#next-30-days">Next 30 Days</a>
+        <a v-if="next90DaysItems.length" 
+          class="in-page-link" 
+          href="#next-90-days">Next 90 Days</a>
+        <a v-if="beyondItems.length" 
+          class="in-page-link" 
+          href="#beyond">Beyond</a>
       </div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/assets-template`)">Assets Template</div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/admin`)">Admin</div>
+      <NuxtLink class="page-link"
+        :to="(`/settings/assets-template`)">Assets Template</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/settings/admin`)">Admin</NuxtLink>
     </div>
   </div>
 

@@ -14,37 +14,37 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</div>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</NuxtLink>
       <h3 class="page-link">Activity Plan</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <!-- TODO grey these that are done -->
-        <h4 v-if="overdueItems.length" 
-          @click="navigateTo('#overdue')"
-          class="in-page-link">Overdue</h4>
-        <h4 v-if="next7DaysItems.length" 
-          @click="navigateTo('#next-7-days')"
-          class="in-page-link">Next 7 Days</h4>
-        <h4 v-if="next30DaysItems.length" 
-          @click="navigateTo('#next-30-days')"
-          class="in-page-link">Next 30 Days</h4>
-        <h4 v-if="next90DaysItems.length" 
-          @click="navigateTo('#next-90-days')"
-          class="in-page-link">Next 90 Days</h4>
-        <h4 v-if="beyondItems.length" 
-          @click="navigateTo('#beyond')"
-          class="in-page-link">Beyond</h4>
-        <h4 v-if="completedItems.length" 
-          @click="navigateTo('#completed')"
-          class="in-page-link">Completed</h4>
+        <a v-if="overdueItems.length" 
+          class="in-page-link" 
+          href="#overdue">Overdue</a>
+        <a v-if="next7DaysItems.length" 
+          class="in-page-link" 
+          href="#next-7-days">Next 7 Days</a>
+        <a v-if="next30DaysItems.length" 
+          class="in-page-link" 
+          href="#next-30-days">Next 30 Days</a>
+        <a v-if="next90DaysItems.length" 
+          class="in-page-link" 
+          href="#next-90-days">Next 90 Days</a>
+        <a v-if="beyondItems.length" 
+          class="in-page-link" 
+          href="#beyond">Beyond</a>
+        <a v-if="completedItems.length" 
+          class="in-page-link" 
+          href="#completed">Completed</a>
       </div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/team`)">Team</div>
-      <div class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/assets`)">Assets</div>
-      <div v-if="isSeller"
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/team`)">Team</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/buyersphere/${buyersphereId}/assets`)">Assets</NuxtLink>
+      <NuxtLink v-if="isSeller"
         class="page-link"
-        @click="navigateTo(`/buyersphere/${buyersphereId}/insights`)">Insights</div>
+        :to="(`/buyersphere/${buyersphereId}/insights`)">Insights</NuxtLink>
     </div>
   </div>
 

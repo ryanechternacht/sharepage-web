@@ -11,22 +11,22 @@
 
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/dashboard/activities`)">Activities</div>
+      <NuxtLink class="page-link"
+        :to="(`/dashboard/activities`)">Activities</NuxtLink>
       <h3 class="page-link">Accounts</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 v-if="activeDeals.length" 
-          @click="navigateTo('#active')"
-          class="in-page-link">Active</h4>
-        <h4 v-if="onHoldDeals.length" 
-          @click="navigateTo('#on-hold')"
-          class="in-page-link">On Hold</h4>
-        <h4 v-if="archivedDeals.length" 
-          @click="navigateTo('#opt-out')"
-          class="in-page-link">Archived</h4>
+        <a v-if="activeDeals.length" 
+          class="in-page-link" 
+          href="#active">Active</a>
+        <a v-if="onHoldDeals.length" 
+          class="in-page-link" 
+          href="#on-hold">On Hold</a>
+        <a v-if="archivedDeals.length" 
+          class="in-page-link" 
+          href="#archived">Archived</a>
       </div>
-      <div class="page-link"
-        @click="navigateTo(`/dashboard/insights`)">Insights</div>
+      <NuxtLink class="page-link"
+        :to="(`/dashboard/insights`)">Insights</NuxtLink>
     </div>
   </div>
 

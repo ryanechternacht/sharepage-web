@@ -1,29 +1,23 @@
 <template>
   <div class="[grid-area:left]">
     <div class="left-sidebar">
-      <div class="page-link"
-        @click="navigateTo(`/settings/personal`)">Personal</div>
+      <NuxtLink class="page-link"
+        :to="(`/settings/personal`)">Personal</NuxtLink>
       <h3 class="page-link">Guide Template</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <h4 @click="navigateTo('#success-criteria')"
-          class="in-page-link">Success Criteria</h4>
-        <h4 @click="navigateTo('#objectives')"
-          class="in-page-link">Objectives</h4>
-        <h4 @click="navigateTo('#features')"
-          class="in-page-link">Features</h4>
-        <h4 @click="navigateTo('#pricing')"
-          class="in-page-link">Pricing</h4>
-        <h4 @click="navigateTo('#constraints')"
-          class="in-page-link">Constraints</h4>
-        <h4 @click="navigateTo('#milestones')"
-          class="in-page-link">Milestones</h4>
+        <a class="in-page-link" href="#success-criteria">Success Criteria</a>
+        <a class="in-page-link" href="#objectives">Objectives</a>
+        <a class="in-page-link" href="#features">Features</a>
+        <a class="in-page-link" href="#pricing">Pricing</a>
+        <a class="in-page-link" href="#constraints">Constraints</a>
+        <a class="in-page-link" href="#milestones">Milestones</a>
       </div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/timeline-template`)">Timeline Template</div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/assets-template`)">Assets Template</div>
-      <div class="page-link"
-        @click="navigateTo(`/settings/admin`)">Admin</div>
+      <NuxtLink class="page-link"
+        :to="(`/settings/timeline-template`)">Timeline Template</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/settings/assets-template`)">Assets Template</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="(`/settings/admin`)">Admin</NuxtLink>
     </div>
   </div>
 
