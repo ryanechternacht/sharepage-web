@@ -33,9 +33,9 @@
           href="#beyond">Beyond</a>
       </div>
       <NuxtLink class="page-link"
-        :to="(`/dashboard/accounts`)">Accounts</NuxtLink>
+        :to="`/dashboard/accounts`">Accounts</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/dashboard/insights`)">Insights</NuxtLink>
+        :to="`/dashboard/insights`">Insights</NuxtLink>
     </div>
   </div>
 

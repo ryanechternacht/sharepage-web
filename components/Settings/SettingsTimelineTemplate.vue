@@ -9,9 +9,9 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="(`/settings/personal`)">Personal</NuxtLink>
+        :to="`/settings/personal`">Personal</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/guide-template`)">Guide Template</NuxtLink>
+        :to="`/settings/guide-template`">Guide Template</NuxtLink>
       <h3 class="page-link">Timeline Template</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <a v-if="next7DaysItems.length" 
@@ -28,9 +28,9 @@
           href="#beyond">Beyond</a>
       </div>
       <NuxtLink class="page-link"
-        :to="(`/settings/assets-template`)">Assets Template</NuxtLink>
+        :to="`/settings/assets-template`">Assets Template</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/admin`)">Admin</NuxtLink>
+        :to="`/settings/admin`">Admin</NuxtLink>
     </div>
   </div>
 

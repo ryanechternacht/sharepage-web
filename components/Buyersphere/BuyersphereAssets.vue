@@ -8,15 +8,15 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/discovery-guide`">Discovery Guide</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/activity-plan`">Activity Plan</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/team`)">Team</NuxtLink>      
+        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>      
       <h3 class="page-link">Assets</h3>
       <NuxtLink v-if="isSeller"
         class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/insights`)">Insights</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/insights`">Insights</NuxtLink>
     </div>
   </div>
   <div class="[grid-area:center] page-center">

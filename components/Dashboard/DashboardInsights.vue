@@ -8,9 +8,9 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="(`/dashboard/activities`)">Activities</NuxtLink>
+        :to="`/dashboard/activities`">Activities</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/dashboard/accounts`)">Accounts</NuxtLink>
+        :to="`/dashboard/accounts`">Accounts</NuxtLink>
       <h3 class="page-link">Insights</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <a v-if="last7DaysItems.length" 

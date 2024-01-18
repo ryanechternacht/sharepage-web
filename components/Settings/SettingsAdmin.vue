@@ -2,13 +2,13 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="(`/settings/personal`)">Personal</NuxtLink>
+        :to="`/settings/personal`">Personal</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/guide-template`)">Guide Template</NuxtLink>
+        :to="`/settings/guide-template`">Guide Template</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/timeline-template`)">Timeline Template</NuxtLink>
+        :to="`/settings/timeline-template`">Timeline Template</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/assets-template`)">Assets Template</NuxtLink>
+        :to="`/settings/assets-template`">Assets Template</NuxtLink>
       <h3 class="page-link">Admin</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <a class="in-page-link" 

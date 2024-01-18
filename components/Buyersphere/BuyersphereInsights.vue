@@ -2,13 +2,13 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/discovery-guide`">Discovery Guide</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/activity-plan`">Activity Plan</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/team`)">Team</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/assets`)">Assets</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/assets`">Assets</NuxtLink>
       <h3 class="page-link">Insights</h3>
       <div v-scroll-spy-active v-scroll-spy-link
         class="mt-[-.75rem] mb-[.75rem]">

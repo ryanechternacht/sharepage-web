@@ -11,14 +11,14 @@
         <a class="in-page-link" href="#milestones">Milestones</a>
       </div>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/activity-plan`">Activity Plan</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/team`)">Team</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/assets`)">Assets</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/assets`">Assets</NuxtLink>
       <NuxtLink v-if="isSeller"
         class="page-link"
-        :to="(`/buyersphere/${buyersphereId}/insights`)">Insights</NuxtLink>
+        :to="`/buyersphere/${buyersphereId}/insights`">Insights</NuxtLink>
       </div>
   </div>
 

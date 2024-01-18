@@ -6,13 +6,13 @@
         <a class="in-page-link" href="#profile">Profile</a>
       </div>
       <NuxtLink class="page-link"
-        :to="(`/settings/guide-template`)">Guide Template</NuxtLink>
+        :to="`/settings/guide-template`">Guide Template</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/timeline-template`)">Timeline Template</NuxtLink>
+        :to="`/settings/timeline-template`">Timeline Template</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/assets-template`)">Assets Template</NuxtLink>
+        :to="`/settings/assets-template`">Assets Template</NuxtLink>
       <NuxtLink class="page-link"
-        :to="(`/settings/admin`)">Admin</NuxtLink>
+        :to="`/settings/admin`">Admin</NuxtLink>
     </div>
   </div>
 
