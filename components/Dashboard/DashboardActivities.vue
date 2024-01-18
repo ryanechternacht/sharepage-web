@@ -94,6 +94,8 @@ const { filter, find, orderBy } = lodash_pkg;
 import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
+const { makeBuyersphereLink } = useBuyersphereLinks()
+
 const activitiesStore = useActivitiesStore()
 const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
 
@@ -201,7 +203,11 @@ const beyondItems = computed(() =>
 )
 
 function goToActivity({ activity }) {
-  navigateTo(`/buyersphere/${activity.buyersphereId}/activity-plan`)
+  // TODO this is a bit of a hack :/
+  navigateTo(makeBuyersphereLink({ 
+    id: activity.buyersphereId, 
+    buyer: activity.buyer.name,
+  }, 'activity-plan'))
 }
 
 async function resolveActivity({ activity, resolved }) {

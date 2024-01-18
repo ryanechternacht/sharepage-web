@@ -171,10 +171,11 @@
   }
 
   .page-link {
-    @apply mb-4 cursor-pointer;
+    @apply block mb-4 cursor-pointer;
   }
   
   .in-page-link {
+    @apply h4;
     @apply py-2 pl-6 cursor-pointer rounded-md flex flex-row items-center;
   
     &.active {

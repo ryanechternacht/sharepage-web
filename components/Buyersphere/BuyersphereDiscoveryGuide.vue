@@ -11,14 +11,14 @@
         <a class="in-page-link" href="#milestones">Milestones</a>
       </div>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/activity-plan`">Activity Plan</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/assets`">Assets</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
       <NuxtLink v-if="isSeller"
         class="page-link"
-        :to="`/buyersphere/${buyersphereId}/insights`">Insights</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
       </div>
   </div>
 
@@ -166,6 +166,8 @@ import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
+
+const { makeBuyersphereLink } = useBuyersphereLinks()
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)

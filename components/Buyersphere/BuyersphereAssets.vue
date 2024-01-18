@@ -8,15 +8,15 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/discovery-guide`">Discovery Guide</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/activity-plan`">Activity Plan</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>      
+        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>      
       <h3 class="page-link">Assets</h3>
       <NuxtLink v-if="isSeller"
         class="page-link"
-        :to="`/buyersphere/${buyersphereId}/insights`">Insights</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
     </div>
   </div>
   <div class="[grid-area:center] page-center">
@@ -34,6 +34,8 @@ import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import AddEditAssetModal from '@/components/Buyersphere/AddEditAssetModal.vue';
 import { useModal } from 'vue-final-modal'
+
+const { makeBuyersphereLink } = useBuyersphereLinks()
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)

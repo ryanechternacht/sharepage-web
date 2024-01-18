@@ -12,9 +12,9 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/discovery-guide`)">Discovery Guide</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/activity-plan`)">Activity Plan</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
       <h3 class="page-link">Team</h3>
       <div v-scroll-spy-active v-scroll-spy-link 
         class="mt-[-.75rem] mb-[.75rem]">
@@ -24,10 +24,10 @@
           href="#seller">{{ organization.name }}</a>
       </div>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/assets`">Assets</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
       <NuxtLink v-if="isSeller"
         class="page-link"
-        :to="`/buyersphere/${buyersphereId}/insights`">Insights</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
     </div>
   </div>
 
@@ -60,6 +60,8 @@ import { storeToRefs } from 'pinia'
 import AddEditBuyerModal from '@/components/Buyersphere/AddEditBuyerModal'
 import BuyersphereAddSellerModal from '@/components/Buyersphere/AddSellerModal'
 import { useModal } from 'vue-final-modal'
+
+const { makeBuyersphereLink } = useBuyersphereLinks()
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)

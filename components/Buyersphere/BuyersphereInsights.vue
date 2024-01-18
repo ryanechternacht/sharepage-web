@@ -2,13 +2,13 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/discovery-guide`">Discovery Guide</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/activity-plan`">Activity Plan</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/assets`">Assets</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
       <h3 class="page-link">Insights</h3>
       <div v-scroll-spy-active v-scroll-spy-link
         class="mt-[-.75rem] mb-[.75rem]">
@@ -51,13 +51,16 @@ import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
 
+const { makeBuyersphereLink } = useBuyersphereLinks()
+
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getBuyersphereBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
 
-const [buyerActivity] = await Promise.all([
+const [buyersphere, buyerActivity] = await Promise.all([
+  getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereBuyerActivityByIdCached.value(buyersphereId),
 ])
 

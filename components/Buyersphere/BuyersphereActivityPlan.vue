@@ -15,7 +15,7 @@
   <div class="[grid-area:left]">
     <div class="left-sidebar">
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/discovery-guide`">Discovery Guide</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
       <h3 class="page-link">Activity Plan</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
         <!-- TODO grey these that are done -->
@@ -39,12 +39,12 @@
           href="#completed">Completed</a>
       </div>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/team`">Team</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
       <NuxtLink class="page-link"
-        :to="`/buyersphere/${buyersphereId}/assets`">Assets</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
       <NuxtLink v-if="isSeller"
         class="page-link"
-        :to="`/buyersphere/${buyersphereId}/insights`">Insights</NuxtLink>
+        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
     </div>
   </div>
 
@@ -116,16 +116,19 @@ const { filter, find, last, orderBy } = lodash_pkg;
 import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
+const { makeBuyersphereLink } = useBuyersphereLinks()
+
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyerspheresStore = useBuyerspheresStore()
-const { getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
 
 const usersStore = useUsersStore()
 const { isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const [conversations, me, isSeller] = await Promise.all([
+const [buyersphere, conversations, me, isSeller] = await Promise.all([
+  getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
   getMeCached.value(),
   isUserSeller.value(),

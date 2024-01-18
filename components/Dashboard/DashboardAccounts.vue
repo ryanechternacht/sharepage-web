@@ -39,7 +39,7 @@
       <div class="mt-[2rem] flex flex-col gap-4">
         <div v-for="bs in activeDeals"
           class="item-list-row"
-          @click="navigateTo(`/buyersphere/${bs.id}`)">
+          @click="navigateTo(makeBuyersphereLink(bs))">
           <Logo :src="bs.buyerLogo" />
           <h3>{{ bs.buyer }}</h3>
           <div class="flex-grow" />
@@ -55,7 +55,7 @@
       <div class="mt-[2rem] flex flex-col gap-4">
         <div v-for="bs in onHoldDeals"
           class="item-list-row"
-          @click="navigateTo(`/buyersphere/${bs.id}`)">
+          @click="navigateTo(makeBuyersphereLink(bs))">
           <Logo :src="bs.buyerLogo" />
           <h3>{{ bs.buyer }}</h3>
           <div class="flex-grow" />
@@ -71,7 +71,7 @@
       <div class="mt-[2rem] flex flex-col gap-4">
         <div v-for="bs in archivedDeals"
           class="item-list-row"
-          @click="navigateTo(`/buyersphere/${bs.id}`)">
+          @click="navigateTo(makeBuyersphereLink(bs))">
           <Logo :src="bs.buyerLogo" />
           <h3>{{ bs.buyer }}</h3>
           <div class="flex-grow" />
@@ -86,6 +86,8 @@ import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
+
+const { makeBuyersphereLink } = useBuyersphereLinks()
 
 const { apiFetch } = useNuxtApp()
 const { data: buyerspheres, refresh } = await apiFetch('/v0.1/buyerspheres', { 
