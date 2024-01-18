@@ -101,6 +101,9 @@ const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
 router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
 
+watch(() => buyersphere.buyer, () => {
+  router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
+})
 
 async function putOnHold() {
   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
