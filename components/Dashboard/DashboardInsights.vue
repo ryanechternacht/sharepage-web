@@ -65,7 +65,6 @@ const [buyerActivity] = await Promise.all([
 const dayjs = useDayjs()
 
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
-const today = todayDayJs.toDate()
 const last7Days = todayDayJs.subtract(7, 'day').toDate()
 const last30Days = todayDayJs.subtract(30, 'day').toDate()
 
