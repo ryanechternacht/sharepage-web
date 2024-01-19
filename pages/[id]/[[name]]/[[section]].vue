@@ -56,11 +56,13 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
 import { useBuyerActivityStore } from '~/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
-// import lodash_pkg from 'lodash';
-// const { filter, find, orderBy } = lodash_pkg;
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import { format } from 'v-money3'
+
+definePageMeta({
+  name: 'buyersphere'
+})
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -79,11 +81,6 @@ const [buyersphere, isSeller] = await Promise.all([
 const buyerActivityStore = useBuyerActivityStore()
 
 const isActive = computed(() => buyersphere.status === 'active')
-
-// const dayjs = useDayjs()
-// function formatDate(date) {
-//   return dayjs(date).format('MMMM Do')
-// }
 
 const moneyConfig = {
   precision: 0,
