@@ -11,8 +11,8 @@
         @click="emit('click:activity', { activity })">
         <img :src="iconMap[activity.collaborationType]"
           class="w-[1rem] h-[1rem]"
-          :class="{'hide-on-row-hover': !isTemplate}">
-        <div v-if="!isTemplate" 
+          :class="{'hide-on-row-hover': showResolveButton}">
+        <div v-if="showResolveButton" 
           class="show-on-row-hover">
           <div v-if="activity.resolved"
             @click.stop="emit('resolve:activity', { activity, resolved: false })">
@@ -69,7 +69,7 @@
         </template>
 
         <div class="min-w-[5rem]"
-          :class="{'hide-on-row-hover': !isGlobalList}">
+          :class="{'hide-on-row-hover': showEditDeleteButtons}">
           <div v-if="isTemplate">
             {{ activity.dueDateDays === 1 
               ? `${activity.dueDateDays} day` 
@@ -81,10 +81,10 @@
           </div>
         </div>
 
-        <DeleteButton v-if="!isGlobalList"
+        <DeleteButton v-if="showEditDeleteButtons"
           class="show-on-row-hover"
           @click.stop="emit('delete:activity', { activity })" />
-        <EditButton v-if="!isGlobalList"
+        <EditButton v-if="showEditDeleteButtons"
           class="show-on-row-hover"
           @click.stop="emit('update:activity', { activity })" />
       </div>
@@ -111,7 +111,11 @@ const props = defineProps({
   header: { type: String, required: true },
   isTemplate: { type: Boolean, default: false },
   isGlobalList: { type: Boolean, default: false },
+  isUserLoggedIn: { type: Boolean, default: true },
 })
+
+const showResolveButton = props.isUserLoggedIn && !props.isTemplate
+const showEditDeleteButtons = props.isUserLoggedIn && !props.isGlobalList
 
 const emit = defineEmits([
   'click:activity',

@@ -11,6 +11,9 @@ function is10MinutesOld(jsonTimestamp) {
   return dayjs.duration(dayjs().diff(jsonTimestamp)).asMinutes() >= 10
 }
 
+// TODO cache that we failed to find a user 
+// (right now we keep re-requesting on the no-user flow)
+
 export const useUsersStore = defineStore('users', {
   state: () => ({ me: null, users: {} }),
   getters: {

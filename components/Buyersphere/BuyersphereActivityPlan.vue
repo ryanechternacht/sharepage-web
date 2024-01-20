@@ -8,7 +8,7 @@
 
   <div class="[grid-area:right-header] right-header">
     <div class="h-full flex flex-row-reverse items-end">
-      <NewButton @click="addActivity" />
+      <NewButton v-if="hasUser" @click="addActivity" />
     </div>
   </div>
 
@@ -54,6 +54,7 @@
       :activities="overdueItems"
       overdue
       header="Overdue"
+      :is-user-logged-in="hasUser"
       @update:activity="editActivity"
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
@@ -62,6 +63,7 @@
       id="next-7-days"
       :activities="next7DaysItems"
       header="Next 7 Days"
+      :is-user-logged-in="hasUser"
       @update:activity="editActivity"
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
@@ -70,6 +72,7 @@
       id="next-30-days"
       :activities="next30DaysItems"
       header="Next 30 Days"
+      :is-user-logged-in="hasUser"
       @update:activity="editActivity"
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
@@ -78,6 +81,7 @@
       id="next-90-days"
       :activities="next90DaysItems"
       header="Next 90 Days"
+      :is-user-logged-in="hasUser"
       @update:activity="editActivity"
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
@@ -86,6 +90,7 @@
       id="beyond"
       :activities="beyondItems"
       header="Beyond"
+      :is-user-logged-in="hasUser"
       @update:activity="editActivity"
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
@@ -94,6 +99,7 @@
       id="completed"
       :activities="completedItems"
       header="Completed"
+      :is-user-logged-in="hasUser"
       @update:activity="editActivity"
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
@@ -125,14 +131,18 @@ const buyerspheresStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
 
 const usersStore = useUsersStore()
-const { isUserSeller, getMeCached } = storeToRefs(usersStore)
+const { getMeCached, isUserLoggedIn, isUserSeller,  } = storeToRefs(usersStore)
 
-const [buyersphere, conversations, me, isSeller] = await Promise.all([
+const [buyersphere, conversations, me, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
   getMeCached.value(),
+  isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
+
+const userTeam = (hasUser && isSeller ? 'seller' : 'buyer')
+const userId = hasUser ? me.id : -100
 
 const dayjs = useDayjs()
 
@@ -144,9 +154,9 @@ const next90Days = todayDayJs.add(90, 'day').toDate()
 
 const filterOptions = computed(() => [
   {text: 'Anyone', active: true},
-  {text: 'Me', active: find(conversations, a => a.assignedTo?.id === me.id)},
-  {text: 'Us', active: find(conversations, a => a.assignedTeam === me.team)},
-  {text: 'Them', active: find(conversations, a => a.assignedTeam !== me.team)},
+  {text: 'Me', active: find(conversations, a => a.assignedTo?.id === userId)},
+  {text: 'Us', active: find(conversations, a => a.assignedTeam === userTeam)},
+  {text: 'Them', active: find(conversations, a => a.assignedTeam !== userTeam)},
 ])
 const currentFilter = ref('Anyone')
 
@@ -160,21 +170,21 @@ const filteredActivities = computed(() => {
   } else if (currentFilter.value === 'Me') {
     return orderBy(
       filter(conversations, 
-        a => a.assignedTo?.id === me.id),
+        a => a.assignedTo?.id === userId),
       ['dueDate'],
       ['asc']
     )
   } else if (currentFilter.value === 'Us') {
     return orderBy(
       filter(conversations, 
-        a => a.assignedTeam === me.team),
+        a => a.assignedTeam === userTeam),
       ['dueDate'],
       ['asc']
     )
   } else if (currentFilter.value === 'Them') {
     return orderBy(
       filter(conversations, 
-        a => a.assignedTeam !== me.team),
+        a => a.assignedTeam !== userTeam),
       ['dueDate'],
       ['asc']
     )
