@@ -6,6 +6,8 @@
 </template>
 
 <script setup>
+// TODO consider a BsButtonLink element, or a way to make this render
+// as a link for better site semantics
 const props = defineProps({ 
   big: Boolean,
   color: String,

@@ -22,10 +22,14 @@ export const useUsersStore = defineStore('users', {
       await state.fetchUsers()
       return state.users.content
     },
+    isUserLoggedIn: (state) => async () => {
+      await state.fetchMe()
+      return !!state.me
+    },
     isUserSeller: (state) => async () => {
       await state.fetchMe()
-      return state.me.buyersphereRole === 'admin'
-    }
+      return state.me?.buyersphereRole === 'admin'
+    },
   },
   actions: {
     async createUser({ user }) {

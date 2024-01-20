@@ -29,8 +29,9 @@
       
       <h4>How will you measure success?</h4>
       <AutoSaveTipTapTextarea :model-value="successCriteria"
-        placeholder="Pain points to resolve"
         class="w-full mb-4"
+        placeholder="Pain points to resolve"
+        :readonly="!hasUser"
         :on-update-fn="updateSuccessCriteriaAnswer" />
     </div>
     
@@ -49,8 +50,9 @@
 
       <h4>Which objectives are most important for you? Are any not covered above?</h4>
       <AutoSaveTipTapTextarea :model-value="objectives"
-        placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
         class="w-full mb-4"
+        placeholder="Ex: We have the objective to have unanimous agreement as a buying committee"
+        :readonly="!hasUser"
         :on-update-fn="updateObjectivesAnswer" />
     </div>
 
@@ -65,21 +67,26 @@
           <h3>{{ f.title }}</h3>
           <div class="justify-center flex flex-row items-center gap-2">
             <div class="feature-button feature-button-yes"
-              :class="{'selected': myFeatures?.interests[f.id] === 'yes'}"
+              :class="{'selected': myFeatures?.interests[f.id] === 'yes',
+                       'cursor-pointer': hasUser}"
               @click="saveFeatureInterest(f.id, 'yes')">
+              <!-- TODO trying to combine the v-if/else here doesn't
+                   render the color on update for some reason -->
               <CheckCircleIcon v-if="myFeatures?.interests[f.id] === 'yes'"
                 class="[stroke:#08C4B2]" />
               <CheckCircleIcon v-else />
             </div>
             <div class="feature-button feature-button-maybe"
-              :class="{'selected': myFeatures?.interests[f.id] === 'maybe'}"
+              :class="{'selected': myFeatures?.interests[f.id] === 'maybe',
+                       'cursor-pointer': hasUser}"
               @click="saveFeatureInterest(f.id, 'maybe')">
               <MinusCircleIcon v-if="myFeatures?.interests[f.id] === 'maybe'"
                 class="[stroke:#FFBC00]" />
               <MinusCircleIcon v-else />
             </div>
             <div class="feature-button feature-button-no"
-              :class="{'selected': myFeatures?.interests[f.id] === 'no'}"
+              :class="{'selected': myFeatures?.interests[f.id] === 'no',
+                       'cursor-pointer': hasUser}"
               @click="saveFeatureInterest(f.id, 'no')">
               <SlashIcon v-if="myFeatures?.interests[f.id] === 'no'"
                 class="[stroke:#CE3665]" />
@@ -96,7 +103,8 @@
       class="section">
       <div class="group-header">Pricing</div>
       <h4>Select the most appropriate tier</h4>
-      <div class="pricing-tier-list">
+      <div class="pricing-tier-list"
+        :class="{'cursor-pointer': hasUser}">
         <div v-for="pt in pricingTiers"
           class="contents"
           :class="{'selected': pt.id === buyersphere.pricingTierId}"
@@ -127,8 +135,9 @@
       <div class="group-header">Constraints</div>
       <h4>Are there any constraints we should know about?</h4>
       <AutoSaveTipTapTextarea :model-value="keyConstraints"
-        placeholder="Key constraints to buying"
         class="w-full mb-4"
+        placeholder="Key constraints to buying"
+        :readonly="!hasUser"
         :on-update-fn="updateConstraintsAnswer" />
     </div>
 
@@ -185,14 +194,15 @@ const pricingStore = usePricingStore()
 const { getPricingCached } = storeToRefs(pricingStore)
 
 const usersStore = useUsersStore()
-const { isUserSeller } = storeToRefs(usersStore)
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [buyersphere, conversations, painPoints, features, { pricingTiers }, isSeller] = await Promise.all([
+const [buyersphere, conversations, painPoints, features, { pricingTiers }, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyersphereConversationsByIdCached.value(buyersphereId),
-  getPainPointsCached.value(),
-  getFeaturesCached.value(),
-  getPricingCached.value(),
+  getPainPointsCached.value(buyersphereId),
+  getFeaturesCached.value(buyersphereId),
+  getPricingCached.value(buyersphereId),
+  isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
 
@@ -219,12 +229,16 @@ function formatDate(date) {
 const myFeatures = ref(buyersphere.featuresAnswer)
 
 async function saveFeatureInterest (featureId, answer) {
-  myFeatures.value.interests[featureId] = answer
-  await buyersphereStore.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
+  if (hasUser) {
+    myFeatures.value.interests[featureId] = answer
+    await buyersphereStore.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
+  }
 }
 
 async function updatePricingTierId (tierId) {
-  await buyersphereStore.updateBuyerInput({ buyersphereId, pricingTierId: tierId })
+  if (hasUser) {
+    await buyersphereStore.updateBuyerInput({ buyersphereId, pricingTierId: tierId })
+  }
 }
 
 const successCriteria = ref(buyersphere.successCriteriaAnswer.text)
@@ -232,24 +246,30 @@ const objectives = ref(buyersphere.objectivesAnswer.text)
 const keyConstraints = ref(buyersphere.constraintsAnswer.text)
 
 async function updateSuccessCriteriaAnswer(text) {
-  await buyersphereStore.updateBuyerInput({ 
-    buyersphereId, 
-    successCriteriaAnswer: { text }
-  })
+  if (hasUser) {
+    await buyersphereStore.updateBuyerInput({ 
+      buyersphereId, 
+      successCriteriaAnswer: { text }
+    })
+  }
 }
 
 async function updateObjectivesAnswer(text) {
-  await buyersphereStore.updateBuyerInput({ 
-    buyersphereId, 
-    objectivesAnswer: { text }
-  })
+  if (hasUser) {
+    await buyersphereStore.updateBuyerInput({ 
+      buyersphereId, 
+      objectivesAnswer: { text }
+    })
+  }
 }
 
 async function updateConstraintsAnswer(text) {
-  await buyersphereStore.updateBuyerInput({ 
-    buyersphereId, 
-    constraintsAnswer: { text }
-  })
+  if (hasUser) {
+    await buyersphereStore.updateBuyerInput({ 
+      buyersphereId, 
+      constraintsAnswer: { text }
+    })
+  }
 }
 
 // TODO do we need to filter this?
@@ -278,7 +298,7 @@ function toDate (date) {
 }
 
 .feature-button {
-  @apply p-2 rounded-md border border-gray-border cursor-pointer;
+  @apply p-2 rounded-md border border-gray-border;
 
   &::before,
   &:hover::before {
@@ -335,7 +355,7 @@ function toDate (date) {
 }
 
 .pricing-tier-list {
-  @apply grid cursor-pointer gap-y-1 gap-x-3 items-center;
+  @apply grid gap-y-1 gap-x-3 items-center;
   grid-template-columns: auto auto 1fr;
 
   /* vertical gap between sections */

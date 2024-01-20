@@ -10,8 +10,8 @@ function is10MinutesOld(jsonTimestamp) {
 export const usePainPointsStore = defineStore('pain-points', {
   state: () => ({ painPoints: {} }),
   getters: {
-    getPainPointsCached: (state) => async () => {
-      await state.fetchPainPoints()
+    getPainPointsCached: (state) => async (buyersphereId) => {
+      await state.fetchPainPoints({ buyersphereId })
       return state.painPoints.content
   },
     get: (state) => state.painPoints.content
@@ -34,14 +34,18 @@ export const usePainPointsStore = defineStore('pain-points', {
 
       remove(this.painPoints.content, pp => pp.id === painPoint.id)
     },
-    async fetchPainPoints({ forceRefresh } = {}) {
+    async fetchPainPoints({ buyersphereId, forceRefresh } = {}) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
+
+      const url = buyersphereId
+        ? `/v0.1/pain-points/${buyersphereId}`
+        : '/v0.1/pain-points'
 
       if (!this.painPoints.content
           || forceRefresh
           || is10MinutesOld(this.painPoints.generatedAt)) {
-        const { data } = await apiFetch('/v0.1/pain-points')
+        const { data } = await apiFetch(url)
         this.painPoints = {
           content: data.value,
           generatedAt: dayjs().toJSON()

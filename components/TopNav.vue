@@ -4,7 +4,7 @@
       <img src="/svg/logo-gradient.svg">
       <span>Home</span>
     </NuxtLink>
-    <template v-if="user.buyersphereRole === 'admin'">
+    <template v-if="user?.buyersphereRole === 'admin'">
       <!-- TOOD point these to the correct routes and style them when active -->
       <NuxtLink to="/dashboard/activities" class="link">
         <InboxIcon class="body" />
@@ -22,27 +22,36 @@
 
     <div class="flex-grow" />
 
-    <div class="flex flex-row-reverse items-center gap-x-2 min-w-[200px]">
+    <div v-if="user"
+      class="flex flex-row-reverse items-center gap-x-2 min-w-[200px]">
       <UserAvatar :user="user" size="large" />
       <span>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</span>
-      <NuxtLink v-if="user.buyersphereRole === 'admin'"
+      <NuxtLink v-if="user?.buyersphereRole === 'admin'"
         to="/settings"
         class="mr-2 hover:font-bold">
         <!-- TODO should probably be an icon -->
         Settings
       </NuxtLink>
     </div>
+    <div v-else>
+      <BsButton color="blue" hover-color="blue"
+        @click="goToLogin">Login</BsButton>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
 const usersStore = useUsersStore()
-const { getMeCached } = storeToRefs(usersStore)
+const { hasUser, getMeCached } = storeToRefs(usersStore)
 
 const user = await getMeCached.value()
+
+async function goToLogin () {
+  await navigateTo('/login')
+}
 </script>
 
 <style lang="postcss" scoped>

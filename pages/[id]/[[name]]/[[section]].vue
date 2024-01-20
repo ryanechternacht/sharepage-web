@@ -28,13 +28,15 @@
       <div class="[grid-area:left-header] left-header">
         <div class="flex flex-row items-center gap-2">
           <CopyToClipboardButton />
-          <EditButton v-if="isSeller"
-            show-text
-            @click="editBuyersphere" />
-          <ReactivateButton v-else-if="buyersphere.status === 'on-hold'"
-            @click="reactivate" />
-          <PutOnHoldButton v-else
-            @click="putOnHold" />
+          <template v-if="hasUser">
+            <EditButton v-if="isSeller"
+              show-text
+              @click="editBuyersphere" />
+            <ReactivateButton v-else-if="buyersphere.status === 'on-hold'"
+              @click="reactivate" />
+            <PutOnHoldButton v-else
+              @click="putOnHold" />
+          </template>
         </div>
       </div>
 
@@ -71,10 +73,11 @@ const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
-const { isUserSeller } = storeToRefs(usersStore)
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [buyersphere, isSeller] = await Promise.all([
+const [buyersphere, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
+  isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
 
