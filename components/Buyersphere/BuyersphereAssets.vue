@@ -1,7 +1,7 @@
 <template>
   <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton @click="addAsset" />
+      <NewButton v-if="hasUser" @click="addAsset" />
     </div>
   </div>
 
@@ -44,10 +44,11 @@ const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
-const { isUserSeller } = storeToRefs(usersStore)
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [buyersphere, isSeller] = await Promise.all([
+const [buyersphere, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
+  isUserLoggedIn.value(),
   isUserSeller.value()
 ])
 

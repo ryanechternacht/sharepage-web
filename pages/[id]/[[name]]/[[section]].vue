@@ -18,7 +18,7 @@
               class="mx-2 tag">
               | 
             </span>
-            <span v-if="buyersphere.dealAmount > 0" class="tag">
+            <span v-if="isSeller && buyersphere.dealAmount > 0" class="tag">
               {{ format(buyersphere.dealAmount, moneyConfig) }}
             </span>
           </div>

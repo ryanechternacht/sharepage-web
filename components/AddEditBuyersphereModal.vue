@@ -52,6 +52,10 @@
           class="flex-grow mb-2"
           placeholder="Opportunity ID in CRM">
       </div>
+      <div v-if="editMode">
+        <h3>Publicly Visible?</h3>
+        <input type="checkbox" v-model="isPublic" class="!w-auto">
+      </div>
       <SubmitButton
         class="self-center"
         :ready-text="`${editMode ? 'Edit' : 'Add'} Account`"
@@ -99,6 +103,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       showPricing,
       dealAmount,
       crmOpportunityId,
+      isPublic,
     })
   } else {
     await store.createBuyersphere({ 
@@ -119,6 +124,7 @@ const status = ref(props.buyersphere.status)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
 const showPricing = ref(props.buyersphere.showPricing)
+const isPublic = ref(props.buyersphere.isPublic)
 
 const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value)
 </script>

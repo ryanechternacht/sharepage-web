@@ -1,11 +1,12 @@
 <template>
   <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center gap-2">
-      <div class="flex-grow" />
       <NewButton v-if="isSeller"
         text="New Seller" 
         @click="openSellerModal" />
-      <NewButton text="New Buyer" @click="addBuyer" />
+      <NewButton v-if="hasUser"
+        text="New Buyer"
+        @click="addBuyer" />
     </div>
   </div>
 
@@ -36,8 +37,8 @@
       id="buyer"
       :users="buyersphere.buyerTeam"
       :header="buyersphere.buyer"
-      :can-edit="true"
-      :can-delete="true"
+      :can-edit="hasUser"
+      :can-delete="hasUser"
       @update:user="editBuyer"
       @delete:user="removeUser" />
 
@@ -73,11 +74,12 @@ const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
 const usersStore = useUsersStore()
-const { isUserSeller } = storeToRefs(usersStore)
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [buyersphere, organization, isSeller] = await Promise.all([
+const [buyersphere, organization, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
+  isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
 
