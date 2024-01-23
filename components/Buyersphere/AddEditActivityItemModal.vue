@@ -5,7 +5,6 @@
     <div class="w-[36rem] flex flex-col items-center gap-2">
       <h1>{{ editMode ? "Edit" : "Add" }} Action Item</h1>
       <div v-if="globalMode" class="w-full">
-        <h3>{{ buyersphereId }}</h3>
         <h3>Deal</h3>
         <select v-model="buyersphereId" class="w-full">
           <option v-for="b in buyerspheres"
