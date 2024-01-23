@@ -1,0 +1,242 @@
+<template>
+  <div class="[grid-area:center-header] center-header">
+    <!-- <BsButtonGroup 
+      :options="filterOptions"
+      header="Assigned To"
+      @update:option="updateFilter" /> -->
+  </div>
+
+  <div class="[grid-area:right-header] right-header">
+    <div class="h-full flex flex-row-reverse items-end">
+      <NewButton v-if="hasUser" 
+        @click="addMilestone"
+        text="New Milestone" />
+    </div>
+  </div>
+
+  <div class="[grid-area:left]">
+    <div class="left-sidebar">
+      <NuxtLink class="page-link"
+        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
+      <h3 class="page-link">Activity Plan</h3>
+      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
+        <!-- TODO grey these that are done -->
+        <!-- <a v-if="overdueItems.length" 
+          class="in-page-link" 
+          href="#overdue">Overdue</a>
+        <a v-if="next7DaysItems.length" 
+          class="in-page-link" 
+          href="#next-7-days">Next 7 Days</a>
+        <a v-if="next30DaysItems.length" 
+          class="in-page-link" 
+          href="#next-30-days">Next 30 Days</a>
+        <a v-if="next90DaysItems.length" 
+          class="in-page-link" 
+          href="#next-90-days">Next 90 Days</a>
+        <a v-if="beyondItems.length" 
+          class="in-page-link" 
+          href="#beyond">Beyond</a>
+        <a v-if="completedItems.length" 
+          class="in-page-link" 
+          href="#completed">Completed</a> -->
+      </div>
+      <NuxtLink class="page-link"
+        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
+      <NuxtLink class="page-link"
+        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
+      <NuxtLink v-if="isSeller"
+        class="page-link"
+        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
+    </div>
+  </div>
+
+  <div class="[grid-area:center] page-center" v-scroll-spy>
+    <div v-for="milestone in milestones"
+      class="section">
+      <div class="group-header">
+        {{ milestone.name }}
+        <EditButton @click="editMilestone({ milestone })" class="show-on-hover" />
+      </div>
+      <VueDraggable 
+        v-model="milestone.items" 
+        group="activities"
+        ghost-class="ghost"
+        animation="200"
+        item-key="id"
+        class="mt-[2rem] flex flex-col gap-4"
+        handle=".drag-handle"
+      >
+        <BuyersphereActivityItem
+          v-for="activity in milestone.items"
+          :key="activity.id"
+          :activity="activity" />
+      </VueDraggable>
+      <NewButton class="section-add-button"
+        @click="addActivity({ milestoneId: milestone.id })" />
+    </div>
+
+    <div class="vertical-bar" />
+  </div>
+</template>
+
+<script setup>
+import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useUsersStore  } from '@/stores/users'
+import { storeToRefs } from 'pinia'
+import lodash_pkg from 'lodash';
+const { find, take, drop } = lodash_pkg;
+import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal2';
+import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
+import { useModal } from 'vue-final-modal'
+import { VueDraggable } from 'vue-draggable-plus'
+
+const { makeBuyersphereLink } = useBuyersphereLinks()
+
+const route = useRoute()
+const buyersphereId = parseInt(route.params.id)
+
+const buyerspheresStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
+
+const usersStore = useUsersStore()
+const { getMeCached, isUserLoggedIn, isUserSeller,  } = storeToRefs(usersStore)
+
+const [buyersphere, conversations, me, hasUser, isSeller] = await Promise.all([
+  getBuyersphereByIdCached.value(buyersphereId),
+  getBuyersphereConversationsByIdCached.value(buyersphereId),
+  getMeCached.value(),
+  isUserLoggedIn.value(),
+  isUserSeller.value(),
+])
+
+const milestones = ref([
+  {
+    id: 1,
+    name: "hello", 
+    items: take(conversations, 5)
+  }, {
+    id: 2,
+    name: "world", 
+    items: take(drop(conversations, 5), 5)
+  }
+])
+
+const {
+  open: openItemModal,
+  close: closeItemModal,
+  patchOptions: patchItemModal
+} = useModal({
+  component: AddEditActivityItemModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeItemModal ()
+    },
+    onActivityCreated ({ activity, milestoneId }) {
+      const milestone = find(milestone.value, m => m.id === milestoneId)
+      milestone.items.push(activity)
+    },
+  }
+})
+
+function addActivity({ milestoneId }) {
+  patchItemModal({ attrs: { activity: {}, milestoneId }})
+  openItemModal()
+}
+
+function editActivity({ activity }) {
+  patchItemModal({ attrs: { activity }})
+  openItemModal()
+}
+
+async function deleteActivity({ activity }) {
+  const c = confirm(`Are you sure you want to delete this action item`)
+
+  if (c) {
+    await buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
+  }
+}
+
+async function resolveActivity({ activity, resolved }) {
+  await buyerspheresStore.updateConversation({ 
+    buyersphereId: buyersphereId,
+    conversationId: activity.id,
+    resolved: resolved,
+  })
+}
+
+const {
+  open: openMilestoneModal,
+  close: closeMilestoneModal,
+  patchOptions: patchMilestoneModal
+} = useModal({
+  component: AddEditActivityMilestoneModal,
+  attrs: {
+    buyersphereId,
+    onClose () {
+      closeMilestoneModal ()
+    },
+    onMilestoneCreated ({ milestone }) {
+      milestones.value.push({ 
+        id: milestones.value.length + 1,
+        name: milestone.name,
+        items: []
+      })
+    },
+    onMilestoneEdited ({ milestone: edited }) {
+      const milestone = find(milestones.value, m => m.id === edited.id)
+      milestone.name = edited.name
+    }
+  }
+})
+
+function addMilestone() {
+  patchMilestoneModal({ attrs: { milestone: {} }})
+  openMilestoneModal()
+}
+
+function editMilestone({ milestone }) {
+  patchMilestoneModal({ attrs: { milestone }})
+  openMilestoneModal()
+}
+
+async function deleteMilestone({ activity }) {
+  const c = confirm(`Are you sure you want to delete this action item`)
+
+  if (c) {
+    await buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
+  }
+}
+
+async function resolveMilestone({ activity, resolved }) {
+}
+</script>
+
+<style lang="postcss" scoped>
+.estimated-finish {
+  @apply mx-auto p-2 rounded-md bg-purple-background text-purple-secondary center-xy;
+
+  /* midway - left sidebar - btn width - center left margin*/
+  margin-left: calc(50vw - 220px - 6.5rem - .75rem);
+
+  /* midway - btn width - center right margin*/
+  margin-right: calc(50vw - 6.5rem - 3rem);
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+  /* background-color: red; */
+  /* border: 4px solid black; */
+}
+
+.show-on-hover {
+  @apply hidden;
+}
+
+*:has(> .show-on-hover):hover {
+  .show-on-hover {
+    @apply block;
+  }
+}
+</style>
