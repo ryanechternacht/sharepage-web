@@ -57,12 +57,12 @@ const list2 = ref([
   { name: "Jean 2", id: 5 }
 ])
 
-// const dragOptions = ref({
-//   animation: 200,
-//   group: "description",
-//   disabled: false,
-//   ghostClass: "ghost"
-// })
+const dragOptions = ref({
+  animation: 200,
+  group: "description",
+  disabled: false,
+  ghostClass: "ghost"
+})
 
 </script>
 

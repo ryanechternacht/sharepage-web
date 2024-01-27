@@ -6,7 +6,7 @@
       <h1>{{ editMode ? "Edit" : "Add" }} Milestone</h1>
       <div class="w-full">
         <h3>Section Name</h3>
-        <input v-model="name" placeholder="Milestone Name">
+        <input v-model="title" placeholder="Milestone Name">
       </div>
       <SubmitButton
         class="mt-10 mx-20 h-[2.5rem]"
@@ -17,8 +17,6 @@
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :disabled="needsMoreInput"
         @click="submitFn" />
-
-        {{ error }}
     </div>
   </VueFinalModal>
 </template>
@@ -35,28 +33,28 @@ const editMode = ref(!!props.milestone?.id)
 
 const emit = defineEmits(['milestone-created', 'milestone-edited', 'close'])
 
-const name = ref(props.milestone.name)
+const title = ref(props.milestone.title)
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
     emit('milestone-edited', { 
       milestone: {
         ...props.milestone,
-        name,
+        title,
       }
     })
     emit('close')
   } else {
     emit('milestone-created', { 
       milestone: {
-        name,
+        title,
       }
     })
     emit('close')
   }
 })
 
-const needsMoreInput = computed(() => !name.value)
+const needsMoreInput = computed(() => !title.value)
 </script>
 
 <style lang="postcss" scoped>

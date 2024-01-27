@@ -11,6 +11,8 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
   state: () => ({ 
     buyerspheres: {},
     conversations: {},
+    milestones: {},
+    activities: {},
     buyerActivity: {},
   }),
   getters: {
@@ -21,6 +23,14 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     getBuyersphereConversationsByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphereConversations({ buyersphereId })
       return state.conversations[buyersphereId]?.content
+    },
+    getBuyersphereMilestonesByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchBuyersphereMilestones({ buyersphereId })
+      return state.milestones[buyersphereId]?.content
+    },
+    getBuyersphereActivitiesByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchBuyersphereActivities({ buyersphereId })
+      return state.activities[buyersphereId]?.content
     },
     getBuyersphereBuyerActivityByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphereBuyerActivity({ buyersphereId })
@@ -39,7 +49,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate, status, isPublic }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
+        `/v0.1/buyersphere/${buyersphereId}`,
         { method: 'PATCH', body: { 
           buyer,
           subname, 
@@ -74,7 +84,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       objectivesAnswer, constraintsAnswer, pricingTierId, status }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
+        `/v0.1/buyersphere/${buyersphereId}`,
         { 
           method: 'PATCH', 
           body: { 
@@ -119,7 +129,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
 
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
+        `/v0.1/buyersphere/${buyersphereId}`,
         { method: 'PATCH', body }
       )
       
@@ -142,7 +152,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async savePricingCanPay({ buyersphereId, pricingCanPay }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
+        `/v0.1/buyersphere/${buyersphereId}`,
         { method: 'PATCH', body: { pricingCanPay } }
       )
       this.buyerspheres[buyersphereId].content.pricingCanPay = data.value.pricingCanPay
@@ -150,7 +160,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async saveIntroMessage({ buyersphereId, introMessage }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}`,
+        `/v0.1/buyersphere/${buyersphereId}`,
         { method: 'PATCH', body: { introMessage }}
       )
       
@@ -164,7 +174,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
           || forceRefresh
           || is10MinutesOld(this.buyerspheres[buyersphereId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}`)
+        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}`)
         this.buyerspheres[buyersphereId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
@@ -179,10 +189,106 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
           || forceRefresh
           || is10MinutesOld(this.conversations[buyersphereId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/conversations`)
+        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/conversations`)
         this.conversations[buyersphereId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async fetchBuyersphereMilestones({ buyersphereId, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.milestones[buyersphereId]?.content
+          || forceRefresh
+          || is10MinutesOld(this.milestones[buyersphereId]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/milestones`)
+        this.milestones[buyersphereId] = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async createBuyersphereMilestone({ buyersphereId, milestone }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${buyersphereId}/milestones`,
+        { method: 'POST', body: milestone }
+      )
+      this.milestones[buyersphereId].content.push(data.value)
+    },
+    async updateBuyersphereMilestone({ buyersphereId, id, milestone }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${buyersphereId}/milestone/${id}`,
+        { method: 'PATCH', body: milestone }
+      )
+      const m = find(this.milestones[buyersphereId]?.content, m => m.id === id)
+      if (m) {
+        if (data.value.title !== undefined) {
+          m.title = data.value.title
+        }
+      }
+    },
+    async fetchBuyersphereActivities({ buyersphereId, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.activities[buyersphereId]?.content
+          || forceRefresh
+          || is10MinutesOld(this.activities[buyersphereId]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/milestones/activities`)
+        this.activities[buyersphereId] = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async createBuyersphereActivity({ buyersphereId, milestoneId, activity }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${buyersphereId}/milestone/${milestoneId}/activities`,
+        { method: 'POST', body: activity }
+      )
+      this.activities[buyersphereId].content.push(data.value)
+    },
+    async deleteBuyersphereActivity({ buyersphereId, id }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/buyersphere/${buyersphereId}/activity/${id}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.activities[buyersphereId].content, a => a.id === id)
+    },
+    async updateBuyersphereActivity({ buyersphereId, id, activity }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${buyersphereId}/activity/${id}`,
+        { method: 'PATCH', body: activity }
+      )
+      const a = find(this.activities[buyersphereId]?.content, a => a.id === id)
+      if (a) {
+        if (data.value.resolved !== undefined) {
+          a.resolved = data.value.resolved
+        }
+        if (data.value.dueDate !== undefined) {
+          a.dueDate = data.value.dueDate
+        }
+        if (data.value.title !== undefined) {
+          a.title = data.value.title
+        }
+        if (data.value.assignedTo !== undefined) {
+          a.assignedTo = data.value.assignedTo
+        }
+        if (data.value.assignedTeam !== undefined) {
+          a.assignedTeam = data.value.assignedTeam
+        }
+        if (data.value.activityType !== undefined) {
+          a.activityType = data.value.activityType
         }
       }
     },
@@ -194,7 +300,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
           || forceRefresh
           || is10MinutesOld(this.buyerActivity[buyersphereId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/buyer-activity`)
+        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/buyer-activity`)
         this.buyerActivity[buyersphereId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
@@ -204,7 +310,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async startConversation({ buyersphereId, message, dueDate, assignedTo, assignedTeam, collaborationType }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/conversations`,
+        `/v0.1/buyersphere/${buyersphereId}/conversations`,
         { method: 'POST', body: {message, dueDate, assignedTo, assignedTeam, collaborationType} }
       )
       this.conversations[buyersphereId].content.push(data.value)
@@ -213,7 +319,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
                                message, assignedTo, assignedTeam, collaborationType }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
+        `/v0.1/buyersphere/${buyersphereId}/conversation/${conversationId}`,
         { method: 'PATCH', body: { resolved, dueDate, message, assignedTo, assignedTeam, collaborationType }}
       )
       const c = find(this.conversations[buyersphereId]?.content, c => c.id === conversationId)
@@ -241,7 +347,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async deleteConversation({ buyersphereId, conversationId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/conversations/${conversationId}`,
+        `/v0.1/buyersphere/${buyersphereId}/conversation/${conversationId}`,
         { method: 'DELETE' }
       )
 
@@ -250,7 +356,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async createResource({ buyersphereId, title, link }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/resources`,
+        `/v0.1/buyersphere/${buyersphereId}/resources`,
         { method: 'POST', body: { title, link } }
       )
       this.buyerspheres[buyersphereId].content.resources.push(data.value)
@@ -258,7 +364,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async updateResource({ buyersphereId, resourceId, title, link }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/resources/${resourceId}`,
+        `/v0.1/buyersphere/${buyersphereId}/resource/${resourceId}`,
         { method: 'PATCH', body: { title, link }}
       )
       
@@ -270,7 +376,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async deleteResource({ buyersphereId, resourceId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/resources/${resourceId}`,
+        `/v0.1/buyersphere/${buyersphereId}/resource/${resourceId}`,
         { method: 'DELETE' }
       )
 
@@ -279,7 +385,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async createNote({ buyersphereId, title, body, authorId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/notes`,
+        `/v0.1/buyersphere/${buyersphereId}/notes`,
         { method: 'POST', body: { title, body, authorId } }
       )
       this.buyerspheres[buyersphereId].content.notes.push(data.value)
@@ -287,7 +393,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async updateNote({ buyersphereId, noteId, title, body }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/notes/${noteId}`,
+        `/v0.1/buyersphere/${buyersphereId}/note/${noteId}`,
         { method: 'PATCH', body: { title, body }}
       )
       
@@ -299,7 +405,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async deleteNote({ buyersphereId, noteId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/notes/${noteId}`,
+        `/v0.1/buyersphere/${buyersphereId}/note/${noteId}`,
         { method: 'DELETE' }
       )
 
@@ -308,7 +414,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async createBuyerUser({ buyersphereId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/teams/buyer`,
+        `/v0.1/buyersphere/${buyersphereId}/team/buyer`,
         { method: 'POST', body: user }
       )
       
@@ -317,7 +423,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async editBuyerUser({ buyersphereId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/teams/buyer/${user.id}`,
+        `/v0.1/buyersphere/${buyersphereId}/team/buyer/${user.id}`,
         { method: 'PATCH', body: user }
       )
       
@@ -326,7 +432,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async removeBuyerUser({ buyersphereId, userId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/teams/buyer/${userId}`,
+        `/v0.1/buyersphere/${buyersphereId}/team/buyer/${userId}`,
         { method: 'DELETE' }
       )
 
@@ -335,7 +441,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async addSellerUser({ buyersphereId, user}) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/teams/seller`,
+        `/v0.1/buyersphere/${buyersphereId}/team/seller`,
         { method: 'POST', body: { user_id: user.id } }
       )
       
@@ -344,7 +450,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     async removeSellerUser({ buyersphereId, userId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/teams/seller/${userId}`,
+        `/v0.1/buyersphere/${buyersphereId}/team/seller/${userId}`,
         { method: 'DELETE' }
       )
 

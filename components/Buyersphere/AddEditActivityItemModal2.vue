@@ -14,17 +14,16 @@
       <div class="w-full">
         <h3>What needs to be done</h3>
         <TipTapTextarea
-          v-model="message"
+          v-model="title"
           placeholder="What needs to be done?"
           class="w-full" />
       </div>
       <div class="w-full">
         <h3>Collaboration Type</h3>
-        <select v-model="collaborationType" class="w-full">
+        <select v-model="activityType" class="w-full">
           <option value="action">Action</option>
           <option value="comment">Comment</option>
           <option value="meeting">Meeting</option>
-          <option value="milestone">Milestone</option>
           <option value="question">Question</option>
         </select>
       </div>
@@ -69,7 +68,6 @@
 import { VueFinalModal } from 'vue-final-modal'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
-import { useActivitiesStore } from '@/stores/activities'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, concat, find } = lodash_pkg;
@@ -96,8 +94,6 @@ const [organization, { data: buyerspheres }] = await Promise.all([
   getOrganizationCached.value(),
   apiFetch('/v0.1/buyerspheres')
 ])
-
-const activitiesStore = useActivitiesStore()
 
 async function getBuyersphere() {
   return buyersphereId.value
@@ -134,11 +130,11 @@ const allBuyersphereUsers = computed(
 )
 
 const resolved = ref(props.activity?.resolved)
-const message = ref(props.activity?.message)
+const title = ref(props.activity?.title)
 const dueDate = ref(props.activity?.dueDate)
 const assignedToId = ref(props.activity?.assignedTo?.id ??
   (props.activity?.assignedTeam === "buyer" ? -1 : -2))
-const collaborationType = ref(props.activity?.collaborationType)
+const activityType = ref(props.activity?.activityType)
 
 const assignedTeam = computed(
   () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
@@ -146,52 +142,45 @@ const assignedTeam = computed(
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
-    // await buyersphereStore.updateConversation({ 
-    //   buyersphereId: buyersphereId.value,
-    //   conversationId: props.activity.id,
-    //   resolved,
-    //   dueDate,
-    //   message,
-    //   assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-    //   assignedTeam,
-    //   collaborationType,
-    // })
-  } else {
-    if (globalMode.value) {
-      // await activitiesStore.createActivity({ 
-      //   buyersphereId: buyersphereId.value,
-      //   dueDate,
-      //   message,
-      //   assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-      //   assignedTeam,
-      //   collaborationType,
-      // })
-    } else {
-      emit('activity-created', {
+    emit('activity-edited', {
         activity: {
+          ...props.activity,
           buyersphereId: buyersphereId.value,
           dueDate,
-          message,
-          assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+          title,
+          assignedToId: assignedToId.value > 0 ? assignedToId.value : null,
           assignedTeam,
-          collaborationType,
+          activityType,
         },
         milestoneId: props.milestoneId,
       })
-      // await buyersphereStore.startConversation({ 
+  } else {
+    // if (globalMode.value) {
+      // await activitiesStore.createActivity({ 
       //   buyersphereId: buyersphereId.value,
       //   dueDate,
-      //   message,
+      //   title,
       //   assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
       //   assignedTeam,
-      //   collaborationType,
+      //   activityType,
       // })
-    }
+    // } else {
+    emit('activity-created', {
+      activity: {
+        buyersphereId: buyersphereId.value,
+        dueDate,
+        title,
+        assignedToId: assignedToId.value > 0 ? assignedToId.value : null,
+        assignedTeam,
+        activityType,
+      },
+      milestoneId: props.milestoneId,
+    })
   }
 })
 
-const needsMoreInput = computed(() => !message.value || !dueDate.value 
-  || !collaborationType.value || !assignedToId.value || !buyersphereId.value)
+const needsMoreInput = computed(() => !title.value || 
+  !activityType.value || !assignedToId.value || !buyersphereId.value)
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {

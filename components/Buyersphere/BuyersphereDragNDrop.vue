@@ -51,29 +51,36 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <div v-for="milestone in milestones"
+    <div v-for="milestone in groups"
       class="section">
       <div class="group-header">
-        {{ milestone.name }}
+        {{ milestone.title }}
         <EditButton @click="editMilestone({ milestone })" class="show-on-hover" />
       </div>
-      <VueDraggable 
-        v-model="milestone.items" 
+      <!-- <VueDraggable 
+        v-model="milestone.activities" 
         group="activities"
         ghost-class="ghost"
         animation="200"
         item-key="id"
         class="mt-[2rem] flex flex-col gap-4"
         handle=".drag-handle"
-      >
+      > -->
+      <div class="mt-[2rem] flex flex-col gap-4">
         <BuyersphereActivityItem
-          v-for="activity in milestone.items"
-          :key="activity.id"
-          :activity="activity" />
-      </VueDraggable>
+        v-for="activity in milestone.activities"
+        :key="activity.id"
+        :activity="activity"
+        @update:activity="editActivity"
+        @delete:activity="deleteActivity"
+        @resolve:activity="resolveActivity" />
+      </div>
+      <!-- </VueDraggable> -->
       <NewButton class="section-add-button"
         @click="addActivity({ milestoneId: milestone.id })" />
     </div>
+
+    <div class="section">{{ activities }}</div>
 
     <div class="vertical-bar" />
   </div>
@@ -84,11 +91,11 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { find, take, drop } = lodash_pkg;
-import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal2';
+const { filter, find, orderBy, map } = lodash_pkg;
+import AddEditActivityItemModal2 from '@/components/Buyersphere/AddEditActivityItemModal2';
 import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
-import { VueDraggable } from 'vue-draggable-plus'
+// import { VueDraggable } from 'vue-draggable-plus'
 
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
@@ -96,45 +103,59 @@ const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyerspheresStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyerspheresStore)
+const { 
+  getBuyersphereByIdCached,
+  getBuyersphereMilestonesByIdCached,
+  getBuyersphereActivitiesByIdCached,
+} = storeToRefs(buyerspheresStore)
 
 const usersStore = useUsersStore()
 const { getMeCached, isUserLoggedIn, isUserSeller,  } = storeToRefs(usersStore)
 
-const [buyersphere, conversations, me, hasUser, isSeller] = await Promise.all([
+const [buyersphere, milestones, activities, me, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId),
+  getBuyersphereMilestonesByIdCached.value(buyersphereId),
+  getBuyersphereActivitiesByIdCached.value(buyersphereId),
   getMeCached.value(),
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
 
-const milestones = ref([
-  {
-    id: 1,
-    name: "hello", 
-    items: take(conversations, 5)
-  }, {
-    id: 2,
-    name: "world", 
-    items: take(drop(conversations, 5), 5)
-  }
-])
+const groups = computed(() => 
+  orderBy(
+    map(milestones, (m) => {
+      m.activities = filter(activities, (a) => a.milestoneId === m.id)
+      return m
+    }),
+  ['ordering'],
+  ['asc'])
+)
 
 const {
   open: openItemModal,
   close: closeItemModal,
   patchOptions: patchItemModal
 } = useModal({
-  component: AddEditActivityItemModal,
+  component: AddEditActivityItemModal2,
   attrs: {
     buyersphereId,
     onClose () {
       closeItemModal ()
     },
     onActivityCreated ({ activity, milestoneId }) {
-      const milestone = find(milestone.value, m => m.id === milestoneId)
-      milestone.items.push(activity)
+      buyerspheresStore.createBuyersphereActivity({
+        buyersphereId,
+        milestoneId,
+        activity
+      })
+    },
+    onActivityEdited ({ activity, milestoneId }) {
+      buyerspheresStore.updateBuyersphereActivity({
+        buyersphereId,
+        milestoneId,
+        id: activity.id,
+        activity
+      })
     },
   }
 })
@@ -153,16 +174,16 @@ async function deleteActivity({ activity }) {
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
-    await buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
+    await buyerspheresStore.deleteBuyersphereActivity({ buyersphereId, id: activity.id })
   }
 }
 
 async function resolveActivity({ activity, resolved }) {
-  await buyerspheresStore.updateConversation({ 
-    buyersphereId: buyersphereId,
-    conversationId: activity.id,
-    resolved: resolved,
-  })
+  // await buyerspheresStore.updateConversation({ 
+  //   buyersphereId: buyersphereId,
+  //   conversationId: activity.id,
+  //   resolved: resolved,
+  // })
 }
 
 const {
@@ -177,15 +198,17 @@ const {
       closeMilestoneModal ()
     },
     onMilestoneCreated ({ milestone }) {
-      milestones.value.push({ 
-        id: milestones.value.length + 1,
-        name: milestone.name,
-        items: []
+      buyerspheresStore.createBuyersphereMilestone({
+        buyersphereId,
+        milestone,
       })
     },
-    onMilestoneEdited ({ milestone: edited }) {
-      const milestone = find(milestones.value, m => m.id === edited.id)
-      milestone.name = edited.name
+    onMilestoneEdited ({ milestone }) {
+      buyerspheresStore.updateBuyersphereMilestone({
+        buyersphereId,
+        id: milestone.id,
+        milestone,
+      })
     }
   }
 })

@@ -3,7 +3,7 @@
     class="item-list-row"
     :class="{'cursor-pointer': isGlobalList}"
     @click="emit('click:activity', { activity })">
-    <img :src="iconMap[activity.collaborationType]"
+    <img :src="iconMap[activity.activityType]"
       class="w-[1rem] h-[1rem]"
       :class="{'hide-on-row-hover': showResolveButton}">
     <div v-if="showResolveButton" 
@@ -18,10 +18,10 @@
     </div>
     
     <Tag class="w-[4.75rem]" color="gray">
-      {{ capitalize(activity.collaborationType) }}
+      {{ capitalize(activity.activityType) }}
     </Tag>
     
-    <div class="inline-html main-content" v-html="activity.message" />
+    <div class="inline-html main-content" v-html="activity.title" />
 
     <!-- <template v-if="activity.assignedTo">
       <UserAvatar :user="activity.assignedTo" />
@@ -61,7 +61,7 @@
       <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
     </template> -->
 
-    <div class="min-w-[5rem]">
+    <div v-if="activity.dueDate" class="min-w-[5rem]">
       <div v-if="isTemplate">
         {{ activity.dueDateDays === 1 
           ? `${activity.dueDateDays} day` 
@@ -93,8 +93,8 @@
     <!-- if global list show the buyersphere here -->
 
     <div class="show-on-row-hover min-w-[10rem] flex flex-row-reverse flex-end gap-4 items-center">
-      <MenuIcon v-if="showEditDeleteButtons" 
-        class="drag-handle"/>
+      <!-- <MenuIcon v-if="showEditDeleteButtons" 
+        class="drag-handle"/> -->
       <EditButton v-if="showEditDeleteButtons"
         @click.stop="emit('update:activity', { activity })" />
       <DeleteButton v-if="showEditDeleteButtons"
