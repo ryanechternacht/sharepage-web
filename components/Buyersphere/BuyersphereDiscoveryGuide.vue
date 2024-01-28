@@ -152,11 +152,14 @@
           <Tag v-if="m.resolved" 
             color="gray"
             class="w-[4.75rem]">Complete</Tag>
+          <Tag v-else-if="m.id === currentMilestone.id"
+            color="blue"
+            class="w-[4.75rem]">Current</Tag>
           <Tag v-else 
             color="blue"
-            class="w-[4.75rem]">{{ toDate(m.dueDate) }}</Tag>
-          <div class="flex-grow gray inline-html" v-html="m.message" />
-          <div v-if="!m.resolved" class="tag">By {{ formatDate(m.dueDate) }}</div>
+            class="w-[4.75rem]">Upcoming</Tag>
+          <div class="flex-grow gray inline-html" v-html="m.title" />
+          <!-- <div v-if="!m.resolved" class="tag">By {{ formatDate(m.dueDate) }}</div> -->
         </div>
       </div>
     </div>
@@ -174,7 +177,7 @@ import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
+const { filter, find, orderBy } = lodash_pkg;
 
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
@@ -182,7 +185,7 @@ const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereConversationsByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getBuyersphereMilestonesByIdCached } = storeToRefs(buyersphereStore)
 
 const painPointsStore = usePainPointsStore()
 const { getPainPointsCached } = storeToRefs(painPointsStore)
@@ -196,9 +199,9 @@ const { getPricingCached } = storeToRefs(pricingStore)
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [buyersphere, conversations, painPoints, features, { pricingTiers }, hasUser, isSeller] = await Promise.all([
+const [buyersphere, milestones, painPoints, features, { pricingTiers }, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyersphereConversationsByIdCached.value(buyersphereId),
+  getBuyersphereMilestonesByIdCached.value(buyersphereId),
   getPainPointsCached.value(buyersphereId),
   getFeaturesCached.value(buyersphereId),
   getPricingCached.value(buyersphereId),
@@ -272,13 +275,14 @@ async function updateConstraintsAnswer(text) {
   }
 }
 
-// TODO do we need to filter this?
-const milestones = computed(() => 
-  orderBy(
-    filter(conversations, c => c.collaborationType === 'milestone'),
-    ['dueDate'],
-    ['asc']
-  ))
+// const milestones = computed(() => 
+//   orderBy(
+//     filter(conversations, c => c.collaborationType === 'milestone'),
+//     ['dueDate'],
+//     ['asc']
+//   ))
+
+const currentMilestone = computed(() => find(milestones, m => !m.resolved))
 
 // TODO why didn't $dayjs form inlined in template work?
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
