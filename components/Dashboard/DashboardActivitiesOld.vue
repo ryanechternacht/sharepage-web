@@ -16,15 +16,21 @@
     <div class="left-sidebar">
       <h3 class="page-link">Activities</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <a v-if="overdueActivities.length" 
+        <a v-if="overdueItems.length" 
           class="in-page-link" 
           href="#overdue">Overdue</a>
-        <a v-if="next7DaysActivities.length" 
+        <a v-if="next7DaysItems.length" 
           class="in-page-link" 
           href="#next-7-days">Next 7 Days</a>
-        <a v-if="next30DaysActivities.length" 
+        <a v-if="next30DaysItems.length" 
           class="in-page-link" 
           href="#next-30-days">Next 30 Days</a>
+        <a v-if="next90DaysItems.length" 
+          class="in-page-link" 
+          href="#next-90-days">Next 90 Days</a>
+        <a v-if="beyondItems.length" 
+          class="in-page-link" 
+          href="#beyond">Beyond</a>
       </div>
       <NuxtLink class="page-link"
         :to="`/dashboard/accounts`">Accounts</NuxtLink>
@@ -34,42 +40,46 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <div id="overdue" class="section">
-      <div class="group-header">Overdue</div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-          v-for="activity in overdueActivities"
-          is-global-list
-          overdue
-          :activity="activity"
-          @click:activity="goToActivity"
-          @resolve:activity="resolveActivity" />
-      </div>
-    </div>
+    <BuyersphereActivityPlanSection v-if="overdueItems.length"
+      id="overdue"
+      is-global-list
+      overdue
+      :activities="overdueItems"
+      header="Overdue"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
-    <div id="next-7-days" class="section">
-      <div class="group-header">Next 7 Days</div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-          v-for="activity in next7DaysActivities"
-          is-global-list
-          :activity="activity"
-          @click:activity="goToActivity"
-          @resolve:activity="resolveActivity" />
-      </div>
-    </div>
+    <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
+      id="next-7-days"
+      is-global-list
+      :activities="next7DaysItems"
+      header="Next 7 Days"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
-    <div id="next-30-days" class="section">
-      <div class="group-header">Next 30 Days</div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-          v-for="activity in next30DaysActivities"
-          is-global-list
-          :activity="activity"
-          @click:activity="goToActivity"
-          @resolve:activity="resolveActivity" />
-      </div>
-    </div>
+    <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
+      id="next-30-days"
+      is-global-list
+      :activities="next30DaysItems"
+      header="Next 30 Days"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
+
+    <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
+      id="next-90-days"
+      is-global-list
+      :activities="next90DaysItems"
+      header="Next 90 Days"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
+
+    <BuyersphereActivityPlanSection v-if="beyondItems.length"
+      id="beyond"
+      is-global-list
+      :activities="beyondItems"
+      header="Beyond"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <div class="vertical-bar" />
   </div>
@@ -81,19 +91,19 @@ import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy } = lodash_pkg;
-import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
+import AddEditActivityItemModalOld from '@/components/Buyersphere/AddEditActivityItemModalOld.vue';
 import { useModal } from 'vue-final-modal'
 
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
 const activitiesStore = useActivitiesStore()
-const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
+const { getConversationsForOrganization } = storeToRefs(activitiesStore)
 
 const usersStore = useUsersStore()
 const { getMeCached } = storeToRefs(usersStore)
 
 const [activities, me] = await Promise.all([
-  getActivitiesForOrganization.value(),
+  getConversationsForOrganization.value(),
   getMeCached.value(),
 ])
 
@@ -103,6 +113,7 @@ const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
 const today = todayDayJs.toDate()
 const next7Days = todayDayJs.add(7, 'day').toDate()
 const next30Days = todayDayJs.add(30, 'day').toDate()
+const next90Days = todayDayJs.add(90, 'day').toDate()
 
 const filterOptions = computed(() => [
   {text: 'Anyone', active: true},
@@ -145,7 +156,7 @@ const filteredActivities = computed(() => {
   }
 })
 
-const overdueActivities = computed(() =>
+const overdueItems = computed(() =>
   orderBy(
     filter(filteredActivities.value, a => dayjs(a.dueDate) < todayDayJs),
     ['dueDate'],
@@ -153,7 +164,7 @@ const overdueActivities = computed(() =>
   )
 )
 
-const next7DaysActivities = computed(() =>
+const next7DaysItems = computed(() =>
   orderBy(
     filter(filteredActivities.value, 
       a => dayjs(a.dueDate) >= today
@@ -163,11 +174,29 @@ const next7DaysActivities = computed(() =>
   )
 )
 
-const next30DaysActivities = computed(() =>
+const next30DaysItems = computed(() =>
   orderBy(
     filter(filteredActivities.value, 
       a => dayjs(a.dueDate) >= next7Days
         && dayjs(a.dueDate) < next30Days),
+    ['dueDate'],
+    ['asc']
+  )
+)
+
+const next90DaysItems = computed(() =>
+  orderBy(
+    filter(filteredActivities.value, 
+      a => dayjs(a.dueDate) >= next30Days
+        && dayjs(a.dueDate) < next90Days),
+    ['dueDate'],
+    ['asc']
+  )
+)
+
+const beyondItems = computed(() =>
+  orderBy(
+    filter(filteredActivities.value, a => dayjs(a.dueDate) >= next90Days),
     ['dueDate'],
     ['asc']
   )
@@ -182,22 +211,15 @@ function goToActivity({ activity }) {
 }
 
 async function resolveActivity({ activity, resolved }) {
-  await activitiesStore.resolveActivity({ activity, resolved })
+  await activitiesStore.resolveConversation({ activity, resolved })
 }
 
 const { open, close } = useModal({
-  component: AddEditActivityItemModal,
+  component: AddEditActivityItemModalOld,
   attrs: {
     onClose () {
       close ()
-    },
-    onActivityCreated ({ activity, milestoneId, buyersphereId }) {
-      activitiesStore.createActivity({
-        buyersphereId,
-        milestoneId,
-        activity
-      })
-    },
+    }
   }
 })
 </script>

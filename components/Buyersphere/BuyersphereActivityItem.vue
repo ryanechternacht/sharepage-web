@@ -75,7 +75,7 @@
     </div>
 
     <div class="flex flex-row gap-2 min-w-[10rem]" 
-      :class="{'hide-on-row-hover': showEditDeleteButtons}">
+      :class="{'hide-on-row-hover': !isGlobalList && showEditDeleteButtons}">
       <Logo v-if="activity.assignedTeam === 'seller'" 
         :src="organization.logo" />
       <Logo v-else :src="activity.buyer.logo" />
@@ -92,8 +92,15 @@
     </div>
 
     <!-- if global list show the buyersphere here -->
+    <div v-if="isGlobalList"
+      class="flex flex-row gap-2 min-w-[10rem]">
+      <Logo :src="activity.buyer.logo" />
+      <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
+    </div>
 
-    <div class="show-on-row-hover min-w-[10rem] flex flex-row-reverse flex-end gap-4 items-center">
+
+    <div v-if="showEditDeleteButtons" 
+      class="show-on-row-hover min-w-[10rem] flex flex-row-reverse flex-end gap-4 items-center">
       <!-- <MenuIcon v-if="showEditDeleteButtons" 
         class="drag-handle"/> -->
       <EditButton v-if="showEditDeleteButtons"

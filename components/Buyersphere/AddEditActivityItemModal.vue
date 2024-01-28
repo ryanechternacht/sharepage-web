@@ -4,22 +4,21 @@
     content-class="p-4 bg-white rounded-md">
     <div class="w-[36rem] flex flex-col items-center gap-2">
       <h1>{{ editMode ? "Edit" : "Add" }} Action Item</h1>
-      <!-- TODO this should only be on create, not edit -->
-      <!-- It should futher determine which milestones are available -->
-      <!-- <div v-if="globalMode" class="w-full">
+      <div v-if="globalMode" class="w-full">
         <h3>Deal</h3>
         <select v-model="buyersphereId" class="w-full">
           <option v-for="b in buyerspheres"
             :value="b.id">{{ b.buyer }}</option>
         </select>
-      </div> -->
+      </div>
       <div class="w-full">
-        <h3>Milestone</h3>
+        <h3>Milestone 
+          <span v-if="globalMode" class="italic">(set deal first)</span>
+        </h3>
         <select v-model="milestoneId" class="w-full">
           <option v-for="m in milestones" 
             :value="m.id">{{ m.title }}</option>
         </select>
-        {{ milestoneId }}
       </div>
       <div class="w-full">
         <h3>What needs to be done</h3>
@@ -89,7 +88,7 @@ const props = defineProps({
 })
 
 const editMode = ref(!!props.activity?.id)
-// const globalMode = ref(!props.buyersphereId)
+const globalMode = ref(!props.buyersphereId)
 
 const emit = defineEmits(['activity-created', 'activity-edited', 'close'])
 
@@ -99,10 +98,10 @@ const { getBuyersphereByIdCached, getBuyersphereMilestonesByIdCached } = storeTo
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-// const { apiFetch } = useNuxtApp()
-const [organization, /*{ data: buyerspheres }*/] = await Promise.all([
+const { apiFetch } = useNuxtApp()
+const [organization, { data: buyerspheres }] = await Promise.all([
   getOrganizationCached.value(),
-  // apiFetch('/v0.1/buyerspheres')
+  apiFetch('/v0.1/buyerspheres')
 ])
 
 const buyersphereId = ref(props.buyersphereId)
@@ -177,18 +176,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
         },
       })
   } else {
-    // if (globalMode.value) {
-      // await activitiesStore.createActivity({ 
-      //   buyersphereId: buyersphereId.value,
-      //   dueDate,
-      //   title,
-      //   assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-      //   assignedTeam,
-      //   activityType,
-      // })
-    // } else {
-    console.log('before activity-created', milestoneId.value)
-    emit('activity-created', {
+  emit('activity-created', {
       activity: {
         buyersphereId: buyersphereId.value,
         dueDate,
@@ -198,6 +186,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
         activityType,
       },
       milestoneId: milestoneId.value,
+      buyersphereId: buyersphereId.value
     })
   }
 })

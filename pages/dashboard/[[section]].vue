@@ -13,6 +13,7 @@
       <DashboardActivities v-if="mainSection === 'activities'" />
       <DashboardAccounts v-if="mainSection === 'accounts'" />
       <DashboardInsights v-if="mainSection === 'insights'" />
+      <DashboardActivitiesOld v-if="mainSection === 'activities-old'" />
 
       <div class="[grid-area:footer] h-20" />
     </div>

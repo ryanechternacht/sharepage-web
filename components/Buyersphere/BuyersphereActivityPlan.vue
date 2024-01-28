@@ -149,7 +149,6 @@ const {
       closeItemModal ()
     },
     onActivityCreated ({ activity, milestoneId }) {
-      console.log('onActivityCreated', milestoneId)
       buyerspheresStore.createBuyersphereActivity({
         buyersphereId,
         milestoneId,

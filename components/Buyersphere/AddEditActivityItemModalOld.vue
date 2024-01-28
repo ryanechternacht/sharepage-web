@@ -157,7 +157,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     })
   } else {
     if (globalMode.value) {
-      await activitiesStore.createActivity({ 
+      await activitiesStore.createConversation({ 
         buyersphereId: buyersphereId.value,
         dueDate,
         message,
