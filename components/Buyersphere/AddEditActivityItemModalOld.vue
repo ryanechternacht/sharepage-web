@@ -14,16 +14,17 @@
       <div class="w-full">
         <h3>What needs to be done</h3>
         <TipTapTextarea
-          v-model="title"
+          v-model="message"
           placeholder="What needs to be done?"
           class="w-full" />
       </div>
       <div class="w-full">
         <h3>Collaboration Type</h3>
-        <select v-model="activityType" class="w-full">
+        <select v-model="collaborationType" class="w-full">
           <option value="action">Action</option>
           <option value="comment">Comment</option>
           <option value="meeting">Meeting</option>
+          <option value="milestone">Milestone</option>
           <option value="question">Question</option>
         </select>
       </div>
@@ -68,20 +69,20 @@
 import { VueFinalModal } from 'vue-final-modal'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
+import { useActivitiesStore } from '@/stores/activities'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, concat, find } = lodash_pkg;
 
 const props = defineProps({
   activity: { type: Object, default: {} },
-  buyersphereId: { type: Number },
-  milestoneId: { type: Number }
+  buyersphereId: { type: Number }
 })
 
 const editMode = ref(!!props.activity?.id)
 const globalMode = ref(!props.buyersphereId)
 
-const emit = defineEmits(['activity-created', 'activity-edited', 'close'])
+const emit = defineEmits(['close'])
 
 const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
@@ -94,6 +95,8 @@ const [organization, { data: buyerspheres }] = await Promise.all([
   getOrganizationCached.value(),
   apiFetch('/v0.1/buyerspheres')
 ])
+
+const activitiesStore = useActivitiesStore()
 
 async function getBuyersphere() {
   return buyersphereId.value
@@ -130,57 +133,53 @@ const allBuyersphereUsers = computed(
 )
 
 const resolved = ref(props.activity?.resolved)
-const title = ref(props.activity?.title)
+const message = ref(props.activity?.message)
 const dueDate = ref(props.activity?.dueDate)
 const assignedToId = ref(props.activity?.assignedTo?.id ??
   (props.activity?.assignedTeam === "buyer" ? -1 : -2))
-const activityType = ref(props.activity?.activityType)
+const collaborationType = ref(props.activity?.collaborationType)
 
 const assignedTeam = computed(
   () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
 )
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
-    emit('activity-edited', {
-        activity: {
-          ...props.activity,
-          buyersphereId: buyersphereId.value,
-          dueDate,
-          title,
-          assignedToId: assignedToId.value > 0 ? assignedToId.value : null,
-          assignedTeam,
-          activityType,
-        },
-        milestoneId: props.milestoneId,
-      })
+    await buyersphereStore.updateConversation({ 
+      buyersphereId: buyersphereId.value,
+      conversationId: props.activity.id,
+      resolved,
+      dueDate,
+      message,
+      assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+      assignedTeam,
+      collaborationType,
+    })
   } else {
-    // if (globalMode.value) {
-      // await activitiesStore.createActivity({ 
-      //   buyersphereId: buyersphereId.value,
-      //   dueDate,
-      //   title,
-      //   assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
-      //   assignedTeam,
-      //   activityType,
-      // })
-    // } else {
-    emit('activity-created', {
-      activity: {
+    if (globalMode.value) {
+      await activitiesStore.createActivity({ 
         buyersphereId: buyersphereId.value,
         dueDate,
-        title,
-        assignedToId: assignedToId.value > 0 ? assignedToId.value : null,
+        message,
+        assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
         assignedTeam,
-        activityType,
-      },
-      milestoneId: props.milestoneId,
-    })
+        collaborationType,
+      })
+    } else {
+      await buyersphereStore.startConversation({ 
+        buyersphereId: buyersphereId.value,
+        dueDate,
+        message,
+        assignedTo: assignedToId.value > 0 ? assignedToId.value : null,
+        assignedTeam,
+        collaborationType,
+      })
+    }
   }
 })
 
-const needsMoreInput = computed(() => !title.value || 
-  !activityType.value || !assignedToId.value || !buyersphereId.value)
+const needsMoreInput = computed(() => !message.value || !dueDate.value 
+  || !collaborationType.value || !assignedToId.value || !buyersphereId.value)
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {

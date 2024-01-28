@@ -46,7 +46,7 @@
       <BuyersphereTeam v-else-if="mainSection === 'team'" />
       <BuyersphereInsights v-else-if="mainSection === 'insights'" />
       <BuyersphereAssets v-else-if="mainSection === 'assets'" />
-      <BuyersphereDragNDrop v-else-if="mainSection === 'drag-n-drop'" />
+      <BuyersphereActivityPlanOld v-else-if="mainSection === 'activity-plan-old'" />
       <!-- <BuyersphereNotes v-else-if="mainSection === 'notes'" /> -->
 
       <div class="[grid-area:footer] h-20" />

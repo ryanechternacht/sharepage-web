@@ -281,6 +281,9 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       const a = find(this.activities[buyersphereId]?.content, a => a.id === id)
       if (a) {
+        if (data.value.milestoneId !== undefined) {
+          a.milestoneId = data.value.milestoneId
+        }
         if (data.value.resolved !== undefined) {
           a.resolved = data.value.resolved
         }

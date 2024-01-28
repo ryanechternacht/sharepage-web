@@ -91,7 +91,7 @@ import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy } = lodash_pkg;
-import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
+import AddEditActivityItemModalOld from '@/components/Buyersphere/AddEditActivityItemModalOld.vue';
 import { useModal } from 'vue-final-modal'
 
 const { makeBuyersphereLink } = useBuyersphereLinks()
@@ -215,7 +215,7 @@ async function resolveActivity({ activity, resolved }) {
 }
 
 const { open, close } = useModal({
-  component: AddEditActivityItemModal,
+  component: AddEditActivityItemModalOld,
   attrs: {
     onClose () {
       close ()
