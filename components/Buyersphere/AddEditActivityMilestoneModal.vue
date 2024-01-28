@@ -6,7 +6,9 @@
       <h1>{{ editMode ? "Edit" : "Add" }} Milestone</h1>
       <div class="w-full">
         <h3>Section Name</h3>
-        <input v-model="title" placeholder="Milestone Name">
+        <input v-model="title"
+          class="w-full"
+          placeholder="Milestone Name">
       </div>
       <SubmitButton
         class="mt-10 mx-20 h-[2.5rem]"

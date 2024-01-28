@@ -24,54 +24,9 @@
     
     <div class="inline-html main-content" v-html="activity.title" />
 
-    <!-- <template v-if="activity.assignedTo">
-      <UserAvatar :user="activity.assignedTo" />
-      <div class="ml-[-.5rem] min-w-[8rem]">
-        {{ activity.assignedTo.firstName}} {{ activity.assignedTo.lastName }}
-      </div>
-    </template>
-    <template v-else-if="isGlobalList"> -->
-      <!-- If global, but unassigned, still show assigned team -->
-      <!-- <template v-if="activity.assignedTeam === 'seller'">
-        <Logo :src="organization.logo" />
-        <div class="ml-[-.5rem] min-w-[8rem]">{{ organization.name }}</div>
-      </template>
-      <template v-else>
-        <Logo :src="activity.buyer.logo" />
-        <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
-      </template>
-    </template> -->
-
-    <!-- <template v-if="isGlobalList"> -->
-      <!-- if global list, always show the buyersphere for the deal -->
-      <!-- <Logo :src="activity.buyer.logo" />
-      <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
-    </template>
-    <template v-else-if="activity.assignedTeam === 'seller'">
-      <Logo :src="organization.logo" />
-      <div class="ml-[-.5rem] min-w-[8rem]">{{ organization.name }}</div>
-    </template>
-    <template v-else-if="isTemplate">
-      <div class="template-buyer-logo">
-        <BriefcaseIcon />
-      </div>
-      <div class="ml-[-.5rem] min-w-[8rem]">Buying Company</div>
-    </template>
-    <template v-else>
-      <Logo :src="activity.buyer.logo" />
-      <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
-    </template> -->
-
-    <div v-if="activity.dueDate" class="min-w-[5rem]">
-      <div v-if="isTemplate">
-        {{ activity.dueDateDays === 1 
-          ? `${activity.dueDateDays} day` 
-          : `${activity.dueDateDays} days`}} out
-      </div>
-      <div v-else
-        :class="{'text-red-secondary': overdue}">
-        {{ prettyFormatDateFromToday(activity.dueDate) }}
-      </div>
+    <div v-if="activity.dueDate" class="min-w-[5rem]"
+      :class="{'text-red-secondary': isDateOverdue(activity.dueDate)}">
+      {{ prettyFormatDateFromToday(activity.dueDate) }}
     </div>
 
     <div class="flex flex-row gap-2 min-w-[10rem]" 
@@ -91,7 +46,6 @@
       </div>
     </div>
 
-    <!-- if global list show the buyersphere here -->
     <div v-if="isGlobalList"
       class="flex flex-row gap-2 min-w-[10rem]">
       <Logo :src="activity.buyer.logo" />
@@ -166,6 +120,11 @@ function prettyFormatDateFromToday(date) {
   } else {
     return d.format(dateFormat)
   }
+}
+function isDateOverdue(date) {
+  const d = dayjs(date)
+  const daysApart = d.diff(todayDayJs, 'days')
+  return daysApart < 0
 }
 
 const iconMap = {

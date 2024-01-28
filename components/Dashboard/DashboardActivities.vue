@@ -34,42 +34,29 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <div id="overdue" class="section">
-      <div class="group-header">Overdue</div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-          v-for="activity in overdueActivities"
-          is-global-list
-          overdue
-          :activity="activity"
-          @click:activity="goToActivity"
-          @resolve:activity="resolveActivity" />
-      </div>
-    </div>
+    <BuyersphereActivityPlanSection
+      v-if="overdueActivities.length"
+      :activities="overdueActivities"
+      is-global-list
+      header="Overdue"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
-    <div id="next-7-days" class="section">
-      <div class="group-header">Next 7 Days</div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-          v-for="activity in next7DaysActivities"
-          is-global-list
-          :activity="activity"
-          @click:activity="goToActivity"
-          @resolve:activity="resolveActivity" />
-      </div>
-    </div>
+    <BuyersphereActivityPlanSection
+      v-if="next7DaysActivities.length"
+      :activities="next7DaysActivities"
+      is-global-list
+      header="Next 7 Days"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
-    <div id="next-30-days" class="section">
-      <div class="group-header">Next 30 Days</div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-          v-for="activity in next30DaysActivities"
-          is-global-list
-          :activity="activity"
-          @click:activity="goToActivity"
-          @resolve:activity="resolveActivity" />
-      </div>
-    </div>
+    <BuyersphereActivityPlanSection
+      v-if="next30DaysActivities.length"
+      :activities="next30DaysActivities"
+      is-global-list
+      header="Next 30 Days"
+      @click:activity="goToActivity"
+      @resolve:activity="resolveActivity" />
 
     <div class="vertical-bar" />
   </div>

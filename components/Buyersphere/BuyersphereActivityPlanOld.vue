@@ -49,7 +49,7 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereActivityPlanSection v-if="overdueItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="overdueItems.length"
       id="overdue"
       :activities="overdueItems"
       overdue
@@ -59,7 +59,7 @@
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="next7DaysItems.length"
       id="next-7-days"
       :activities="next7DaysItems"
       header="Next 7 Days"
@@ -68,7 +68,7 @@
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="next30DaysItems.length"
       id="next-30-days"
       :activities="next30DaysItems"
       header="Next 30 Days"
@@ -77,7 +77,7 @@
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="next90DaysItems.length"
       id="next-90-days"
       :activities="next90DaysItems"
       header="Next 90 Days"
@@ -86,7 +86,7 @@
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection v-if="beyondItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="beyondItems.length"
       id="beyond"
       :activities="beyondItems"
       header="Beyond"
@@ -95,7 +95,7 @@
       @delete:activity="deleteActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection v-if="completedItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="completedItems.length"
       id="completed"
       :activities="completedItems"
       header="Completed"

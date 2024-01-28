@@ -54,38 +54,20 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <div v-for="milestone in groups"
+    <BuyersphereActivityPlanSection
+      v-for="milestone in groups"
       :id="milestone.title"
-      class="section">
-      <div class="group-header">
-        <div class="h-[1.5rem]">{{ milestone.title }}</div> 
-        <div  v-if="milestone.resolved" class="h-[1.5rem] italic">
-          (Completed)</div>
-        <EditButton @click="editMilestone({ milestone })" class="show-on-hover" />
-        <DeleteButton @click="deleteMilestone({ milestone })" class="show-on-hover" />
-      </div>
-      <!-- <VueDraggable 
-        v-model="milestone.activities" 
-        group="activities"
-        ghost-class="ghost"
-        animation="200"
-        item-key="id"
-        class="mt-[2rem] flex flex-col gap-4"
-        handle=".drag-handle"
-      > -->
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <BuyersphereActivityItem
-        v-for="activity in milestone.activities"
-        :key="activity.id"
-        :activity="activity"
-        @update:activity="editActivity"
-        @delete:activity="deleteActivity"
-        @resolve:activity="resolveActivity" />
-      </div>
-      <!-- </VueDraggable> -->
-      <NewButton class="section-add-button"
-        @click="addActivity({ milestoneId: milestone.id })" />
-    </div>
+      :milestone="milestone"
+      :activities="milestone.activities"
+      @update:milestone="editMilestone"
+      @resolve:milestone="resolveMilestone"
+      @unresolve:milestone="unresolveMilestone"
+      @delete:milestone="deleteMilestone"
+      @create:activity="addActivity"
+      @update:activity="editActivity"
+      @resolve:activity="resolveActivity"
+      @delete:activity="deleteActivity"
+    />
 
     <div class="vertical-bar" />
   </div>
@@ -130,11 +112,10 @@ const groups = computed(() =>
   orderBy(
     map(milestones, (m) => {
       m.activities = filter(activities, (a) => a.milestoneId === m.id)
-      m.resolved = every(m.activities, (a) => a.resolved)
       return m
     }),
-  ['ordering'],
-  ['asc'])
+  ['resolved', 'ordering'],
+  ['asc', 'asc'])
 )
 
 const {
@@ -241,6 +222,32 @@ async function deleteMilestone({ milestone }) {
     await buyerspheresStore.deleteBuyersphereMilestone({ buyersphereId, id: milestone.id })
   }
 }
+
+async function resolveMilestone({ milestone }) {
+  const c = confirm(`Are you sure you want to mark this milestone resolved?`)
+
+  if (c) {
+    milestone.resolved = true
+    await buyerspheresStore.updateBuyersphereMilestone({
+      buyersphereId,
+      id: milestone.id,
+      milestone,
+    }) 
+  }
+}
+
+async function unresolveMilestone({ milestone }) {
+  const c = confirm(`Are you sure you want to open this milestone back up?`)
+
+  if (c) {
+    milestone.resolved = false
+    await buyerspheresStore.updateBuyersphereMilestone({
+      buyersphereId,
+      id: milestone.id,
+      milestone,
+    }) 
+  }
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -252,22 +259,5 @@ async function deleteMilestone({ milestone }) {
 
   /* midway - btn width - center right margin*/
   margin-right: calc(50vw - 6.5rem - 3rem);
-}
-
-.ghost {
-  opacity: 0.5;
-  background: #c8ebfb;
-  /* background-color: red; */
-  /* border: 4px solid black; */
-}
-
-.show-on-hover {
-  @apply hidden;
-}
-
-*:has(> .show-on-hover):hover {
-  .show-on-hover {
-    @apply block;
-  }
 }
 </style>

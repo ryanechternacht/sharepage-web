@@ -41,7 +41,7 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereActivityPlanSection v-if="next7DaysItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="next7DaysItems.length"
       id="next-7-days"
       is-template
       :activities="next7DaysItems"
@@ -49,7 +49,7 @@
       @update:activity="editActivityTemplate"
       @delete:activity="deleteActivityTemplate" />
 
-    <BuyersphereActivityPlanSection v-if="next30DaysItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="next30DaysItems.length"
       id="next-30-days"
       is-template
       :activities="next30DaysItems"
@@ -57,7 +57,7 @@
       @update:activity="editActivityTemplate"
       @delete:activity="deleteActivityTemplate" />
 
-    <BuyersphereActivityPlanSection v-if="next90DaysItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="next90DaysItems.length"
       id="next-90-days"
       is-template
       :activities="next90DaysItems"
@@ -65,7 +65,7 @@
       @update:activity="editActivityTemplate"
       @delete:activity="deleteActivityTemplate" />
 
-    <BuyersphereActivityPlanSection v-if="beyondItems.length"
+    <BuyersphereActivityPlanSectionOld v-if="beyondItems.length"
       id="beyond"
       is-template
       :activities="beyondItems"

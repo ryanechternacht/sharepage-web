@@ -25,6 +25,7 @@ const hoverColorClasses = computed(() => ({
   'gray': 'hover:bg-gray-hover',
   'blue': 'hover:bg-blue-primary hover:text-white hover:border-blue-primary',
   'red': 'hover:bg-red-secondary hover:text-white hover:border-red-secondary',
+  'green': 'hover:bg-green-primary hover:text-white hover:border-green-primary',
 }[props.hoverColor ?? 'none']))
 </script>
 
