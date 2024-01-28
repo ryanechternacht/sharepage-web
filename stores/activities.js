@@ -40,9 +40,12 @@ export const useActivitiesStore = defineStore('activities', {
     },
     async resolveActivity ({ activity, resolved }) {
       const buyersphereStore = useBuyerspheresStore()
-      await buyersphereStore.updateBuyersphereActivity({ activity, resolved })
-
-      remove(this.activities.content, a => a.id === activity.id)
+      activity.resolved = resolved
+      await buyersphereStore.updateBuyersphereActivity({
+        activity,
+        buyersphereId: activity.buyersphereId,
+        id: activity.id,
+      })
     },
     async createActivity({ buyersphereId, milestoneId, activity }) {
       const { apiFetch } = useNuxtApp()

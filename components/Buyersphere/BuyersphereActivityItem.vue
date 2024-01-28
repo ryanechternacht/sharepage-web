@@ -95,7 +95,7 @@
     <div v-if="isGlobalList"
       class="flex flex-row gap-2 min-w-[10rem]">
       <Logo :src="activity.buyer.logo" />
-      <div class="ml-[-.5rem] min-w-[8rem]">{{ activity.buyer.name }}</div>
+      <div>{{ activity.buyer.name }}</div>
     </div>
 
 
