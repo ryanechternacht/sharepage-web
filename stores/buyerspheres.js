@@ -232,6 +232,15 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
+    async deleteBuyersphereMilestone({ buyersphereId, id }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/buyersphere/${buyersphereId}/milestone/${id}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.milestones[buyersphereId].content, m => m.id === id)
+    },
     async fetchBuyersphereActivities({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()

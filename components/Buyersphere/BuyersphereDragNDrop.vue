@@ -54,8 +54,11 @@
     <div v-for="milestone in groups"
       class="section">
       <div class="group-header">
-        {{ milestone.title }}
+        <div class="h-[1.5rem]">{{ milestone.title }}</div> 
+        <div  v-if="milestone.resolved" class="h-[1.5rem] italic">
+          (Completed)</div>
         <EditButton @click="editMilestone({ milestone })" class="show-on-hover" />
+        <DeleteButton @click="deleteMilestone({ milestone })" class="show-on-hover" />
       </div>
       <!-- <VueDraggable 
         v-model="milestone.activities" 
@@ -80,8 +83,6 @@
         @click="addActivity({ milestoneId: milestone.id })" />
     </div>
 
-    <div class="section">{{ activities }}</div>
-
     <div class="vertical-bar" />
   </div>
 </template>
@@ -91,7 +92,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, find, orderBy, map } = lodash_pkg;
+const { every, filter, find, orderBy, map } = lodash_pkg;
 import AddEditActivityItemModal2 from '@/components/Buyersphere/AddEditActivityItemModal2';
 import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
@@ -125,6 +126,7 @@ const groups = computed(() =>
   orderBy(
     map(milestones, (m) => {
       m.activities = filter(activities, (a) => a.milestoneId === m.id)
+      m.resolved = every(m.activities, (a) => a.resolved)
       return m
     }),
   ['ordering'],
@@ -184,6 +186,13 @@ async function resolveActivity({ activity, resolved }) {
   //   conversationId: activity.id,
   //   resolved: resolved,
   // })
+
+  buyerspheresStore.updateBuyersphereActivity({
+    buyersphereId,
+    milestoneId: activity.milestoneId,
+    id: activity.id,
+    activity: { resolved }
+  })
 }
 
 const {
@@ -223,15 +232,17 @@ function editMilestone({ milestone }) {
   openMilestoneModal()
 }
 
-async function deleteMilestone({ activity }) {
-  const c = confirm(`Are you sure you want to delete this action item`)
+async function deleteMilestone({ milestone }) {
+  if (milestone.activities.length) {
+    alert('You must delete all activities in a milestone before deleting the milestone')
+    return
+  }
+
+  const c = confirm(`Are you sure you want to delete this milestone`)
 
   if (c) {
-    await buyerspheresStore.deleteConversation({ buyersphereId, conversationId: activity.id })
+    await buyerspheresStore.deleteBuyersphereMilestone({ buyersphereId, id: milestone.id })
   }
-}
-
-async function resolveMilestone({ activity, resolved }) {
 }
 </script>
 

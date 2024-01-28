@@ -1,7 +1,8 @@
 <template>
   <div
     class="item-list-row"
-    :class="{'cursor-pointer': isGlobalList}"
+    :class="{'cursor-pointer': isGlobalList,
+              completed: activity.resolved}"
     @click="emit('click:activity', { activity })">
     <img :src="iconMap[activity.activityType]"
       class="w-[1rem] h-[1rem]"
@@ -192,6 +193,10 @@ const iconMap = {
 
   .main-content {
     @apply shrink grow;
+  }
+
+  &.completed * {
+    @apply line-through;
   }
 }
 
