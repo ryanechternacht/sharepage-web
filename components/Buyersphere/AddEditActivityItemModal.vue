@@ -185,7 +185,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
         },
       })
   } else {
-  emit('activity-created', {
+    emit('activity-created', {
       activity: {
         buyersphereId: buyersphereId.value,
         dueDate,

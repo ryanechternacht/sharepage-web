@@ -1,9 +1,9 @@
 <template>
   <div class="[grid-area:center-header] center-header">
-    <BsButtonGroup 
+    <!-- <BsButtonGroup 
       :options="filterOptions"
       header="Assigned To"
-      @update:option="updateFilter" />
+      @update:option="updateFilter" /> -->
   </div>
 
   <div class="[grid-area:left]">
@@ -76,16 +76,16 @@ const [milestoneTemplates, activityTemplates] = await Promise.all([
   getActivityTemplatesCached.value(),
 ])
 
-const filterOptions = computed(() => [
-  {text: 'Anyone', active: true},
-  {text: 'Us', active: find(activityTemplates, a => a.assignedTeam === 'seller')},
-  {text: 'Them', active: find(activityTemplates, a => a.assignedTeam === 'buyer')},
-])
+// const filterOptions = computed(() => [
+//   {text: 'Anyone', active: true},
+//   {text: 'Us', active: find(activityTemplates, a => a.assignedTeam === 'seller')},
+//   {text: 'Them', active: find(activityTemplates, a => a.assignedTeam === 'buyer')},
+// ])
 const currentFilter = ref('Anyone')
 
-function updateFilter ({ option }) {
-  currentFilter.value = option.text
-}
+// function updateFilter ({ option }) {
+//   currentFilter.value = option.text
+// }
 
 const filteredActivityTemplates = computed(() => {
   if (currentFilter.value === 'Anyone') {
@@ -133,10 +133,9 @@ const {
       closeActivityModal ()
     },
     onActivityCreated ({ activity, milestoneId }) {
-      activity.milestoneTemplateId = milestoneId
       templatesStore.createActivityTemplate({
-        milestoneId,
-        activity
+        milestoneTemplateId: milestoneId,
+        activityTemplate: activity
       })
     },
     onActivityEdited ({ activity }) {

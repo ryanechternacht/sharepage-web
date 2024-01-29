@@ -64,9 +64,9 @@ export const useTemplatesStore = defineStore('templates', {
 
       remove(this.milestoneTemplates.content, mt => mt.id === id)
     },
-    async createActivityTemplate({ activityTemplate }) {
+    async createActivityTemplate({ activityTemplate, milestoneTemplateId }) {
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch('/v0.1/templates/activities', {
+      const { data } = await apiFetch(`/v0.1/templates/milestone/${milestoneTemplateId}/activities`, {
         method: 'POST',
         body: activityTemplate
       })
