@@ -14,7 +14,7 @@
         :to="`/settings/guide-template`">Guide Template</NuxtLink>
       <h3 class="page-link">Timeline Template</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <a v-if="next7DaysItems.length" 
+        <!-- <a v-if="next7DaysItems.length" 
           class="in-page-link" 
           href="#next-7-days">Next 7 Days</a>
         <a v-if="next30DaysItems.length" 
@@ -25,7 +25,7 @@
           href="#next-90-days">Next 90 Days</a>
         <a v-if="beyondItems.length" 
           class="in-page-link" 
-          href="#beyond">Beyond</a>
+          href="#beyond">Beyond</a> -->
       </div>
       <NuxtLink class="page-link"
         :to="`/settings/assets-template`">Assets Template</NuxtLink>
@@ -36,66 +36,50 @@
 
   <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center">
-      <NewButton @click="createItem" />
+      <NewButton @click="addMilestoneTemplate"
+        text="New Milestone" />
     </div>
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereActivityPlanSectionOld v-if="next7DaysItems.length"
-      id="next-7-days"
+    <BuyersphereActivityPlanSection
+      v-for="milestoneTemplate in groups"
+      :id="milestoneTemplate.title"
+      :milestone="milestoneTemplate"
+      :activities="milestoneTemplate.activityTemplates"
       is-template
-      :activities="next7DaysItems"
-      header="Next 7 Days"
+      @update:milestone="editMilestoneTemplate"
+      @delete:milestone="deleteMilestoneTemplate"
+      @create:activity="addActivityTemplate"
       @update:activity="editActivityTemplate"
-      @delete:activity="deleteActivityTemplate" />
-
-    <BuyersphereActivityPlanSectionOld v-if="next30DaysItems.length"
-      id="next-30-days"
-      is-template
-      :activities="next30DaysItems"
-      header="Next 30 Days"
-      @update:activity="editActivityTemplate"
-      @delete:activity="deleteActivityTemplate" />
-
-    <BuyersphereActivityPlanSectionOld v-if="next90DaysItems.length"
-      id="next-90-days"
-      is-template
-      :activities="next90DaysItems"
-      header="Next 90 Days"
-      @update:activity="editActivityTemplate"
-      @delete:activity="deleteActivityTemplate" />
-
-    <BuyersphereActivityPlanSectionOld v-if="beyondItems.length"
-      id="beyond"
-      is-template
-      :activities="beyondItems"
-      header="Beyond"
-      @update:activity="editActivityTemplate"
-      @delete:activity="deleteActivityTemplate" />
+      @delete:activity="deleteActivityTemplate"
+    />
 
     <div class="vertical-bar" />
   </div>
 </template>
 
 <script setup>
-import { useActivityTemplateStore } from '@/stores/activity-template'
+import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, find, orderBy } = lodash_pkg;
-import AddEditActivityTemplateModal from '@/components/Settings/AddEditActivityTemplateModal.vue';
+const { filter, find, map, orderBy } = lodash_pkg;
+import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal';
+import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
 
-const activityTemplateStore = useActivityTemplateStore()
-const { getActivityTemplateCached } = storeToRefs(activityTemplateStore)
+const templatesStore = useTemplatesStore()
+const { getMilestoneTemplatesCached, getActivityTemplatesCached } = storeToRefs(templatesStore)
 
-const [items] = await Promise.all([
-  getActivityTemplateCached.value(),
+const [milestoneTemplates, activityTemplates] = await Promise.all([
+  getMilestoneTemplatesCached.value(),
+  getActivityTemplatesCached.value(),
 ])
 
 const filterOptions = computed(() => [
   {text: 'Anyone', active: true},
-  {text: 'Us', active: find(items, a => a.assignedTeam === 'seller')},
-  {text: 'Them', active: find(items, a => a.assignedTeam === 'buyer')},
+  {text: 'Us', active: find(activityTemplates, a => a.assignedTeam === 'seller')},
+  {text: 'Them', active: find(activityTemplates, a => a.assignedTeam === 'buyer')},
 ])
 const currentFilter = ref('Anyone')
 
@@ -103,19 +87,19 @@ function updateFilter ({ option }) {
   currentFilter.value = option.text
 }
 
-const filteredItems = computed(() => {
+const filteredActivityTemplates = computed(() => {
   if (currentFilter.value === 'Anyone') {
-    return items
+    return activityTemplates
   } else if (currentFilter.value === 'Us') {
     return orderBy(
-      filter(items, 
+      filter(activityTemplates, 
         a => a.assignedTeam === 'seller'),
       ['dueDate'],
       ['asc']
     )
   } else if (currentFilter.value === 'Them') {
     return orderBy(
-      filter(items, 
+      filter(activityTemplates, 
         a => a.assignedTeam === 'buyer'),
       ['dueDate'],
       ['asc']
@@ -125,70 +109,111 @@ const filteredItems = computed(() => {
   }
 })
 
-const next7DaysItems = computed(() =>
+const groups = computed(() =>
   orderBy(
-    filter(filteredItems.value, 
-      i => i.dueDateDays <= 7),
-    ['dueDateDays'],
-    ['asc']
-  )
+    map(milestoneTemplates, (mt) => {
+      mt.activityTemplates = []
+      mt.activityTemplates = filter(filteredActivityTemplates.value,
+        (at) => at.milestoneTemplateId === mt.id)
+      return mt
+    }),
+  ['ordering'],
+  ['asc'])
 )
 
-const next30DaysItems = computed(() =>
-  orderBy(
-    filter(filteredItems.value, 
-      i => i.dueDateDays > 7
-        && i.dueDateDays <= 30),
-    ['dueDateDays'],
-    ['asc']
-  )
-)
-
-const next90DaysItems = computed(() =>
-  orderBy(
-    filter(filteredItems.value, 
-      i => i.dueDateDays > 30
-        && i.dueDateDays <= 90),
-    ['dueDateDays'],
-    ['asc']
-  )
-)
-
-const beyondItems = computed(() =>
-  orderBy(
-    filter(filteredItems.value, i => i.dueDateDays > 90),
-    ['dueDateDays'],
-    ['asc']
-  )
-)
-
-const { open, close, patchOptions } = useModal({
-  component: AddEditActivityTemplateModal,
+const {
+  open: openActivityModal,
+  close: closeActivityModal,
+  patchOptions: patchActivityModal
+} = useModal({
+  component: AddEditActivityItemModal,
   attrs: {
+    isTemplate: true,
     onClose () {
-      close ()
+      closeActivityModal ()
+    },
+    onActivityCreated ({ activity, milestoneId }) {
+      activity.milestoneTemplateId = milestoneId
+      templatesStore.createActivityTemplate({
+        milestoneId,
+        activity
+      })
+    },
+    onActivityEdited ({ activity }) {
+      activity.milestoneTemplateId = activity.milestoneId
+      templatesStore.updateActivityTemplate({
+        id: activity.id,
+        activityTemplate: activity
+      })
+    },
+  }
+})
+
+function addActivityTemplate({ milestoneId }) {
+  patchActivityModal({ attrs: { activity: {}, milestoneId }})
+  openActivityModal()
+}
+
+function editActivityTemplate({ activity }) {
+  patchActivityModal({ attrs: { activity, milestoneId: activity.milestoneTemplateId }})
+  openActivityModal()
+}
+
+async function deleteActivityTemplate({ activity }) {
+  const c = confirm('Are you sure you want to delete this action item template')
+
+  if (c) {
+    await templatesStore.deleteActivityTemplate({ id: activity.id })
+  }
+}
+
+const {
+  open: openMilestoneTemplateModal,
+  close: closeMilestoneTemplateModal,
+  patchOptions: patchMilestoneTemplateModal
+} = useModal({
+  component: AddEditActivityMilestoneModal,
+  attrs: {
+    isTemplate: true,
+    onClose () {
+      closeMilestoneTemplateModal ()
+    },
+    onMilestoneCreated ({ milestone }) {
+      templatesStore.createMilestoneTemplate({
+        milestoneTemplate: milestone,
+      })
+    },
+    onMilestoneEdited ({ milestone }) {
+      templatesStore.updateMilestoneTemplate({
+        id: milestone.id,
+        milestoneTemplate: milestone,
+      })
     }
   }
 })
 
-function createItem() {
-  patchOptions({ attrs: { activity: {} } })
-  open()
+function addMilestoneTemplate() {
+  patchMilestoneTemplateModal({ attrs: { milestone: {} }})
+  openMilestoneTemplateModal()
 }
 
-function editActivityTemplate({ activity }) {
-  patchOptions({ attrs: { activity }})
-  open()
+function editMilestoneTemplate({ milestone }) {
+  patchMilestoneTemplateModal({ attrs: { milestone }})
+  openMilestoneTemplateModal()
 }
 
-async function deleteActivityTemplate({ activity }) {
-  const c = confirm(`Are you sure you want to delete this action item`)
+async function deleteMilestoneTemplate({ milestone }) {
+  if (milestone.activityTemplates.length) {
+    alert('You must delete all activities in a milestone before deleting the milestone.')
+    return
+  }
+
+  const c = confirm('Are you sure you want to delete this milestone template?')
 
   if (c) {
-    await activityTemplateStore.deleteActivityTemplateItem({ id: activity.id })
+    await templatesStore.deleteMilestoneTemplate({ id: milestone.id })
   }
 }
-
 </script>
 
 <style lang="postcss" scoped>

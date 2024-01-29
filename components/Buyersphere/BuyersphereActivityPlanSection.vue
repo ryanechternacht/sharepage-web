@@ -5,24 +5,31 @@
       <div v-if="milestone?.resolved" class="italic tag">
         (Completed)</div>
       <template v-if="!isGlobalList">
-        <BsButton v-if="!milestone.resolved" 
-          hover-color="blue"
-          class="show-on-hover"
-          @click="emit('resolve:milestone', { milestone })">
-          <CheckCircleIcon />
-        </BsButton>
-        <BsButton v-else
-          hover-color="blue"
-          class="show-on-hover"
-          @click="emit('unresolve:milestone', { milestone })">
-          <RotateCcwIcon />
-        </BsButton>
+        <template v-if="!isTemplate">
+          <BsButton v-if="!milestone.resolved" 
+            hover-color="blue"
+            class="show-on-hover"
+            @click="emit('resolve:milestone', { milestone })">
+            <CheckCircleIcon />
+          </BsButton>
+          <BsButton v-else
+            hover-color="blue"
+            class="show-on-hover"
+            @click="emit('unresolve:milestone', { milestone })">
+            <RotateCcwIcon />
+          </BsButton>
+        </template>
         <EditButton @click="emit('update:milestone', { milestone })" class="show-on-hover" />
         <DeleteButton @click="emit('delete:milestone', { milestone })" class="show-on-hover" />
       </template>
     </div>
     <div v-if="activities.length" class="item-count">
-      {{ completed }} / {{ activities.length }} completed
+      <span v-if="isTemplate">
+        {{ activities.length === 1 ? "1 activity" : `${activities.length} activities` }}
+      </span>
+      <span v-else>
+        {{ completed }} / {{ activities.length }} completed
+      </span>
     </div>
     <!-- <VueDraggable 
       v-model="milestone.activities" 
@@ -39,6 +46,7 @@
       :key="activity.id"
       :activity="activity"
       :is-global-list="isGlobalList"
+      :is-template="isTemplate"
       @update:activity="args => emit('update:activity', args)"
       @delete:activity="args => emit('delete:activity', args)"
       @resolve:activity="args => emit('resolve:activity', args)"
@@ -59,6 +67,7 @@ const props = defineProps({
   milestone: { type: Object },
   activities: { type: Array, required: true },
   isGlobalList: { type: Boolean, default: false },
+  isTemplate: { type: Boolean, default: false },
   header: { type: String }
 })
 

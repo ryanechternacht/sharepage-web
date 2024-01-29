@@ -31,8 +31,11 @@
 
     <div class="flex flex-row gap-2 min-w-[10rem]" 
       :class="{'hide-on-row-hover': !isGlobalList && showEditDeleteButtons}">
-      <Logo v-if="activity.assignedTeam === 'seller'" 
+      <Logo v-if="activity.assignedTeam === 'seller'"
         :src="organization.logo" />
+      <div v-else-if="isTemplate" class="template-buyer-logo">
+        <BriefcaseIcon />
+      </div>
       <Logo v-else :src="activity.buyer.logo" />
 
       <div v-if="activity.assignedTo">
@@ -40,6 +43,9 @@
       </div>
       <div v-else-if="activity.assignedTeam === 'seller'">
         {{ organization.name }}
+      </div>
+      <div v-else-if="isTemplate">
+        Buying Company
       </div>
       <div v-else>
         {{ activity.buyer.name }}

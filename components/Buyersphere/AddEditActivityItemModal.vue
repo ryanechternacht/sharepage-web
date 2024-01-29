@@ -13,7 +13,7 @@
       </div>
       <div class="w-full">
         <h3>Milestone 
-          <span v-if="globalMode" class="italic">(set deal first)</span>
+          <span v-if="globalMode" class="italic tag">(set deal first)</span>
         </h3>
         <select v-model="milestoneId" class="w-full">
           <option v-for="m in milestones" 
@@ -36,7 +36,7 @@
           <option value="question">Question</option>
         </select>
       </div>
-      <div class="w-full">
+      <div v-if="!isTemplate" class="w-full">
         <h3>Due Date</h3>
         <vue-date-picker
           v-model="dueDate"
@@ -53,9 +53,9 @@
             {{ u.firstName }} {{ u.lastName }}
           </option>
         </select>
-        <p>Team: {{ capitalize(assignedTeam) }}</p>
+        <p v-if="!isTemplate">Team: {{ capitalize(assignedTeam) }}</p>
       </div>
-      <div class="w-full">
+      <div v-if="!isTemplate" class="w-full">
         <h3>Resolved?</h3>
         <input type="checkbox" v-model="resolved">
       </div>
@@ -77,6 +77,7 @@
 import { VueFinalModal } from 'vue-final-modal'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
+import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { capitalize, concat, find } = lodash_pkg;
@@ -84,11 +85,12 @@ const { capitalize, concat, find } = lodash_pkg;
 const props = defineProps({
   activity: { type: Object, default: {} },
   buyersphereId: { type: Number },
-  milestoneId: { type: Number }
+  milestoneId: { type: Number },
+  isTemplate: { type: Boolean, default: false }
 })
 
 const editMode = ref(!!props.activity?.id)
-const globalMode = ref(!props.buyersphereId)
+const globalMode = ref(!props.buyersphereId && !props.isTemplate)
 
 const emit = defineEmits(['activity-created', 'activity-edited', 'close'])
 
@@ -97,6 +99,9 @@ const { getBuyersphereByIdCached, getBuyersphereMilestonesByIdCached } = storeTo
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const templatesStore = useTemplatesStore()
+const { getMilestoneTemplatesCached } = storeToRefs(templatesStore)
 
 const { apiFetch } = useNuxtApp()
 const [organization, { data: buyerspheres }] = await Promise.all([
@@ -123,7 +128,11 @@ async function updateValuesFromBuyersphere() {
   }
 }
 
-await updateValuesFromBuyersphere()
+if (!props.isTemplate) {
+  await updateValuesFromBuyersphere()
+} else {
+  milestones.value = await getMilestoneTemplatesCached.value()
+}
 
 // not sure why a computed on buyersphereId didn't work here :/
 watch(buyersphereId, async (newState, _) => {
@@ -191,8 +200,8 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   }
 })
 
-const needsMoreInput = computed(() => !title.value || 
-  !activityType.value || !assignedToId.value || !buyersphereId.value)
+const needsMoreInput = computed(() => !title.value || !activityType.value 
+  || !assignedTeam.value || (!buyersphereId.value && !props.isTemplate))
 
 watch(submissionState, (newState, _) => {
   if (newState === 'submitted') {

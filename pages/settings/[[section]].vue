@@ -12,6 +12,7 @@
       <SettingsGuideTemplate v-else-if="mainSection === 'guide-template'" />
       <SettingsTimelineTemplate v-else-if="mainSection === 'timeline-template'" />
       <SettingsAssetsTemplate v-else-if="mainSection === 'assets-template'" />
+      <SettingsTimelineTemplateOld v-else-if="mainSection === 'timeline-template-old'" />
 
       <div class="[grid-area:footer] h-20" />
     </div>
