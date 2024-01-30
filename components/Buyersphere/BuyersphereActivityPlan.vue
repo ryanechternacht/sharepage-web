@@ -1,9 +1,9 @@
 <template>
   <div class="[grid-area:center-header] center-header">
-    <!-- <BsButtonGroup 
+    <BsButtonGroup 
       :options="filterOptions"
       header="Assigned To"
-      @update:option="updateFilter" /> -->
+      @update:option="updateFilter" />
   </div>
 
   <div class="[grid-area:right-header] right-header">
@@ -50,7 +50,6 @@
       @resolve:activity="resolveActivity"
       @delete:activity="deleteActivity"
     />
-
     <div class="vertical-bar" />
   </div>
 </template>
@@ -90,10 +89,54 @@ const [buyersphere, milestones, activities, me, hasUser, isSeller] = await Promi
   isUserSeller.value(),
 ])
 
+const userTeam = (hasUser && isSeller ? 'seller' : 'buyer')
+const userId = hasUser ? me.id : -100
+
+const filterOptions = computed(() => [
+  {text: 'Anyone', active: true},
+  {text: 'Me', active: find(activities, a => a.assignedTo?.id === userId)},
+  {text: 'Us', active: find(activities, a => a.assignedTeam === userTeam)},
+  {text: 'Them', active: find(activities, a => a.assignedTeam !== userTeam)},
+])
+const currentFilter = ref('Anyone')
+
+function updateFilter ({ option }) {
+  currentFilter.value = option.text
+}
+
+const filteredActivities = computed(() => {
+  if (currentFilter.value === 'Anyone') {
+    return activities
+  } else if (currentFilter.value === 'Me') {
+    return orderBy(
+      filter(activities, 
+        a => a.assignedTo?.id === userId),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Us') {
+    return orderBy(
+      filter(activities, 
+        a => a.assignedTeam === userTeam),
+      ['dueDate'],
+      ['asc']
+    )
+  } else if (currentFilter.value === 'Them') {
+    return orderBy(
+      filter(activities, 
+        a => a.assignedTeam !== userTeam),
+      ['dueDate'],
+      ['asc']
+    )
+  } else {
+    return []
+  }
+})
+
 const groups = computed(() => 
   orderBy(
     map(milestones, (m) => {
-      m.activities = filter(activities, (a) => a.milestoneId === m.id)
+      m.activities = filter(filteredActivities.value, (a) => a.milestoneId === m.id)
       return m
     }),
   ['resolved', 'ordering'],

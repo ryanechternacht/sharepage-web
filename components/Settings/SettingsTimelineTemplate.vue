@@ -1,9 +1,9 @@
 <template>
   <div class="[grid-area:center-header] center-header">
-    <!-- <BsButtonGroup 
+    <BsButtonGroup 
       :options="filterOptions"
       header="Assigned To"
-      @update:option="updateFilter" /> -->
+      @update:option="updateFilter" />
   </div>
 
   <div class="[grid-area:left]">
@@ -14,18 +14,11 @@
         :to="`/settings/guide-template`">Guide Template</NuxtLink>
       <h3 class="page-link">Timeline Template</h3>
       <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <!-- <a v-if="next7DaysItems.length" 
-          class="in-page-link" 
-          href="#next-7-days">Next 7 Days</a>
-        <a v-if="next30DaysItems.length" 
-          class="in-page-link" 
-          href="#next-30-days">Next 30 Days</a>
-        <a v-if="next90DaysItems.length" 
-          class="in-page-link" 
-          href="#next-90-days">Next 90 Days</a>
-        <a v-if="beyondItems.length" 
-          class="in-page-link" 
-          href="#beyond">Beyond</a> -->
+        <template v-for="mt in groups">
+          <a v-if="mt.activityTemplates.length" 
+            class="in-page-link" 
+            :href="`#${mt.title}`">{{ mt.title }}</a>
+        </template>
       </div>
       <NuxtLink class="page-link"
         :to="`/settings/assets-template`">Assets Template</NuxtLink>
@@ -76,16 +69,16 @@ const [milestoneTemplates, activityTemplates] = await Promise.all([
   getActivityTemplatesCached.value(),
 ])
 
-// const filterOptions = computed(() => [
-//   {text: 'Anyone', active: true},
-//   {text: 'Us', active: find(activityTemplates, a => a.assignedTeam === 'seller')},
-//   {text: 'Them', active: find(activityTemplates, a => a.assignedTeam === 'buyer')},
-// ])
+const filterOptions = computed(() => [
+  {text: 'Anyone', active: true},
+  {text: 'Us', active: find(activityTemplates, a => a.assignedTeam === 'seller')},
+  {text: 'Them', active: find(activityTemplates, a => a.assignedTeam === 'buyer')},
+])
 const currentFilter = ref('Anyone')
 
-// function updateFilter ({ option }) {
-//   currentFilter.value = option.text
-// }
+function updateFilter ({ option }) {
+  currentFilter.value = option.text
+}
 
 const filteredActivityTemplates = computed(() => {
   if (currentFilter.value === 'Anyone') {
