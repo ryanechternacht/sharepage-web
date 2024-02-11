@@ -46,6 +46,7 @@
       <BuyersphereTeam v-else-if="mainSection === 'team'" />
       <BuyersphereInsights v-else-if="mainSection === 'insights'" />
       <BuyersphereAssets v-else-if="mainSection === 'assets'" />
+      <BuyerspherePage v-else-if="mainSection === 'page'" />
       <!-- <BuyersphereNotes v-else-if="mainSection === 'notes'" /> -->
 
       <div class="[grid-area:footer] h-20" />
@@ -65,6 +66,7 @@ import { format } from 'v-money3'
 definePageMeta({
   name: 'buyersphere'
 })
+
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -99,10 +101,14 @@ const mainSection = computed(
 // update the url of the page to the latest name of the buyersphere
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
-router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
+router.replace({ 
+  path: makeBuyersphereLink(buyersphere, mainSection.value, route.params.subId)
+})
 
 watch(() => buyersphere.buyer, () => {
-  router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
+  router.replace({ 
+    path: makeBuyersphereLink(buyersphere, mainSection.value, route.params.subId)
+  })
 })
 
 async function putOnHold() {

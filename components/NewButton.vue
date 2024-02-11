@@ -1,5 +1,5 @@
 <template>
-  <BsButton id="btn" :color="color" hover-color="blue">
+  <BsButton :color="color" hover-color="blue">
     <div v-if="showText"
       class="mr-2 body-header">{{ text }}</div>
     <PlusSquareIcon />

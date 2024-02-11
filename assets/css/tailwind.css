@@ -145,6 +145,15 @@
         mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white;
     }
 
+    .group-header-input {
+      @apply h2;
+      @apply px-2 py-[.4375rem] ml-[-1px] /* -1px to account for border */
+
+        flex flex-row gap-2 items-center mr-auto rounded-md 
+        mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white
+        w-[400px];
+    }
+
     /* This needs to be created under the group header for the margin to be correct */
     .item-count {
       @apply bg-white tag-header p-2 ml-auto mb-[-1rem];

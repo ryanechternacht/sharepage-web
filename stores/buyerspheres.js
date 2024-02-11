@@ -12,6 +12,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     buyerspheres: {},
     conversations: {},
     buyerActivity: {},
+    pages: {},
   }),
   getters: {
     getBuyersphereByIdCached: (state) => async (buyersphereId) => {
@@ -25,6 +26,10 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     getBuyersphereBuyerActivityByIdCached: (state) => async (buyersphereId) => {
       await state.fetchBuyersphereBuyerActivity({ buyersphereId })
       return state.buyerActivity[buyersphereId]?.content
+    },
+    getBuyerspherePagesByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchBuyerspherePages({ buyersphereId })
+      return state.pages[buyersphereId]?.content
     },
   },
   actions: {
@@ -349,6 +354,50 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
 
       this.buyerspheres[buyersphereId].content.sellerTeam = data.value
+    },
+    async fetchBuyerspherePages({ buyersphereId, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.pages[buyersphereId]?.content
+          || forceRefresh
+          || is10MinutesOld(this.pages[buyersphereId]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/pages`)
+        this.pages[buyersphereId] = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async createPage({ buyersphereId, page }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/pages`,
+        { method: 'POST', body: page }
+      )
+      this.pages[buyersphereId].content.push(data.value)
+    },
+    async updatePage({ buyersphereId, pageId, page }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/page/${pageId}`,
+        { method: 'PATCH', body: page }
+      )
+      
+      const pi = findIndex(
+        this.pages[buyersphereId].content, 
+        p => p.id === pageId)
+      this.pages[buyersphereId].content[pi] = data.value
+    },
+    async deleteResource({ buyersphereId, pageId }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/buyerspheres/${buyersphereId}/page/${pageId}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.pages[buyersphereId].content, p => p.id === pageId)
     },
   },
 })

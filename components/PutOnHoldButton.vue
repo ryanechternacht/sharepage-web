@@ -1,5 +1,5 @@
 <template>
-  <BsButton id="btn" :color="color" hover-color="red">
+  <BsButton :color="color" hover-color="red">
     <div v-if="showText"
       class="body-header mr-2">Put on Hold</div> 
     <PauseIcon />

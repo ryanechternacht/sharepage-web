@@ -170,7 +170,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { usePainPointsStore } from '@/stores/pain-points'
 import { useFeaturesStore } from '@/stores/features'
 import { usePricingStore } from '@/stores/pricing'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
