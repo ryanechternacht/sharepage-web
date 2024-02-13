@@ -131,6 +131,10 @@ const moneyConfig = {
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
+if (pages.length === 0) {
+  await buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
+}
+
 const page = computed(() => route.params.page || first(pages).id)
 
 watch(() => buyersphere.buyer, () => {
@@ -169,6 +173,10 @@ const { open, close, patchOptions } = useModal({
 function editBuyersphere() {
   patchOptions({ attrs: { buyersphere }})
   open()
+}
+
+function createNewPage () {
+  buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
 }
 </script>
 

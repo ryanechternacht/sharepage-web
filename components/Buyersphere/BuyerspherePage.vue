@@ -149,9 +149,10 @@ const page = pageId
 
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
-router.replace({ 
+
+setTimeout(() => router.replace({
   path: makeBuyersphereLink(buyersphere, page.id)
-})
+}), 100)
 
 const sections = ref(page.body.sections)
 const title = ref(page.title)
@@ -206,10 +207,6 @@ function addNewListBlock () {
       },
     },
   })
-}
-
-function createNewPage () {
-  buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
 }
 </script>
 
