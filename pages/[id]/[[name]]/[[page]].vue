@@ -86,13 +86,14 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
-import { useBuyerActivityStore } from '~/stores/buyer-activity';
+import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
+import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
-const { debounce, find, first } = lodash_pkg;
+const { first } = lodash_pkg;
 
 definePageMeta({
   name: 'buyersphere'
@@ -161,22 +162,43 @@ async function reactivate() {
   }
 }
 
-const { open, close, patchOptions } = useModal({
+const { 
+  open: openBuyersphereModal,
+  close: closeBuyersphereModal,
+  patchOptions: patchBuyersphereModalOptions
+} = useModal({
   component: AddEditBuyersphereModal,
   attrs: {
     onClose () {
-      close()
+      closeBuyersphereModal()
     }
   }
 })
 
 function editBuyersphere() {
-  patchOptions({ attrs: { buyersphere }})
-  open()
+  patchBuyersphereModalOptions({ attrs: { buyersphere }})
+  openBuyersphereModal()
 }
 
+const { 
+  open: openBuyerspherePageModal,
+  close: closeBuyerspherePageModal
+} = useModal({
+  component: AddBuyerspherePageModal,
+  attrs: {
+    buyersphereId,
+    page: {},
+    async onClose ({ pageId }) {
+      closeBuyerspherePageModal()
+      await router.replace({ 
+        path: makeBuyersphereLink(buyersphere, pageId)
+      })
+    }
+  }
+})
+
 function createNewPage () {
-  buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
+  openBuyerspherePageModal()
 }
 </script>
 

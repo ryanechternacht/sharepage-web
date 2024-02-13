@@ -377,6 +377,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'POST', body: page }
       )
       this.pages[buyersphereId].content.push(data.value)
+      return data.value.id
     },
     async updatePage({ buyersphereId, pageId, page }) {
       const { apiFetch } = useNuxtApp()
