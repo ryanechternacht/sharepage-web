@@ -12,42 +12,6 @@
     </div>
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
-      <h3 class="page-link">Activity Plan</h3>
-      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <!-- TODO grey these that are done -->
-        <a v-if="overdueItems.length" 
-          class="in-page-link" 
-          href="#overdue">Overdue</a>
-        <a v-if="next7DaysItems.length" 
-          class="in-page-link" 
-          href="#next-7-days">Next 7 Days</a>
-        <a v-if="next30DaysItems.length" 
-          class="in-page-link" 
-          href="#next-30-days">Next 30 Days</a>
-        <a v-if="next90DaysItems.length" 
-          class="in-page-link" 
-          href="#next-90-days">Next 90 Days</a>
-        <a v-if="beyondItems.length" 
-          class="in-page-link" 
-          href="#beyond">Beyond</a>
-        <a v-if="completedItems.length" 
-          class="in-page-link" 
-          href="#completed">Completed</a>
-      </div>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
-      <NuxtLink v-if="isSeller"
-        class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereActivityPlanSection v-if="overdueItems.length"
       id="overdue"

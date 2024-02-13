@@ -1,30 +1,4 @@
 <template>
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
-      <h3 class="page-link">Insights</h3>
-      <div v-scroll-spy-active v-scroll-spy-link
-        class="mt-[-.75rem] mb-[.75rem]">
-        <a v-if="last7DaysItems.length" 
-          class="in-page-link" 
-          href="#last-7-days">Last 7 Days</a>
-        <a v-if="last30DaysItems.length" 
-          class="in-page-link" 
-          href="#last-30-days">Last 30 Days</a>
-        <a v-if="olderItems.length" 
-          class="in-page-link" 
-          href="#older">Older</a>
-      </div>
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereInsightsSection 
       id="last-7-days"

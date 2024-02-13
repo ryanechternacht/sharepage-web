@@ -6,28 +6,6 @@
       @update:option="updatePageView" />
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
-      <NuxtLink v-if="isSeller"
-        class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
-      <h3 class="page-link">Pages</h3>
-      <NuxtLink v-for="p in pages"
-        class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'page', p.id)">
-      </NuxtLink>
-      <NewButton @click="createNewPage" />
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center">
     <template v-if="pageView === 'View'">
       <template v-for="section in sections">
@@ -63,7 +41,6 @@
       <div class="section">
         <div class="group-header">Page Title</div>
         <input v-model="title" class="mt-4">
-        {{ title }}
       </div>
       <template v-for="section in sections">
         <div class="section"
@@ -132,7 +109,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { find, debounce } = lodash_pkg;
+const { debounce, find, first } = lodash_pkg;
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
@@ -152,8 +129,6 @@ const [buyersphere, pages, isSeller] = await Promise.all([
   isUserSeller.value(),
 ])
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
-
 const pageViews = computed(() => [
   {text: 'View', active: true},
   {text: 'Edit', active: true},
@@ -167,43 +142,19 @@ function updatePageView ({ option }) {
   pageView.value = option.text
 }
 
-const pageId = parseInt(route.params.subId)
-const page = find(pages, p => p.id === pageId)
+const pageId = parseInt(route.params.page)
+const page = pageId
+  ? find(pages, p => p.id === pageId)
+  : first(pages)
+
+const router = useRouter()
+const { makeBuyersphereLink } = useBuyersphereLinks()
+router.replace({ 
+  path: makeBuyersphereLink(buyersphere, page.id)
+})
 
 const sections = ref(page.body.sections)
 const title = ref(page.title)
-
-// const sections = ref([{
-//   type: "simple-text",
-//   title: "Example Text",
-//   body: {
-//     question: "hello, world. I am text. <b>AND I AM BOLD</b>",
-//     showAnswer: false,
-//   },
-// }, {
-//   type: "simple-text",
-//   title: "Simple Text with Answer",
-//   body: {
-//     question: "hello, world. I am a question about life?",
-//     answer: "a user typed me in",
-//     showAnswer: true,
-//   }
-// }, {
-//   type: "simple-list",
-//   title: "List Example",
-//   body: {
-//     question: "What is most important for you in this deal?",
-//     choices: [
-//       { text: "Price" },
-//       { text: "Speed" },
-//       { text: "Quality" },
-//     ],
-//     answer: {
-//       index: 2,
-//       text: "Quality",
-//     }
-//   }
-// }])
 
 function selectListIem ({ section, choice, index }) {
   section.body.answer.text = choice.text
@@ -218,7 +169,7 @@ function save() {
 const debouncedSave = debounce(save, 5000, { leading: false, trailing: true})
 // const debouncedSave = debounce(save, 5000)
 
-watch(sections, () => {
+watch(sections.value, () => {
   debouncedSave()
 })
 

@@ -6,14 +6,10 @@ function simplifyName (name) {
     .toLowerCase();
 }
 
-function makeBuyersphereLink (buyersphere, section, subId) {
-  if (subId) {
-    return `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}/${section}/${subId}`
-  } else if (section) {
-    return `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}/${section}`
-  } else {
-    return `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}`
-  }
+function makeBuyersphereLink (buyersphere, page) {
+  return page
+    ? `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}/${page}`
+    : `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}`
 }
 
 export const useBuyersphereLinks = () => ({ 
