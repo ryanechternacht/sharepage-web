@@ -10,28 +10,6 @@
     </div>
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'activity-plan')">Activity Plan</NuxtLink>
-      <h3 class="page-link">Team</h3>
-      <div v-scroll-spy-active v-scroll-spy-link 
-        class="mt-[-.75rem] mb-[.75rem]">
-        <a class="in-page-link"
-          href="#buyer">{{ buyersphere.buyer }}</a>
-        <a class="in-page-link" 
-          href="#seller">{{ organization.name }}</a>
-      </div>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
-      <NuxtLink v-if="isSeller"
-        class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereTeamSection
       id="buyer"

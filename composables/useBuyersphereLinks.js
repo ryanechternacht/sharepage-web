@@ -6,9 +6,9 @@ function simplifyName (name) {
     .toLowerCase();
 }
 
-function makeBuyersphereLink (buyersphere, section) {
-  return section
-    ? `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}/${section}`
+function makeBuyersphereLink (buyersphere, page) {
+  return page
+    ? `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}/${page}`
     : `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}`
 }
 

@@ -26,6 +26,8 @@ import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-
 import lodash_pkg from 'lodash';
 const { debounce } = lodash_pkg;
 
+// TODO update this debounce?
+
 const props = defineProps({ 
   modelValue: { type: String, required: true },
   placeholder: { type: String, default: '' },

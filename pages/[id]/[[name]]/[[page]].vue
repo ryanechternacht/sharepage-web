@@ -40,14 +40,43 @@
         </div>
       </div>
 
-      <!-- These return the left, center, and center-header sections -->
-      <BuyersphereDiscoveryGuide v-if="mainSection === 'discovery-guide'" />
-      <BuyersphereActivityPlan v-else-if="mainSection === 'activity-plan'" />
-      <BuyersphereTeam v-else-if="mainSection === 'team'" />
-      <BuyersphereInsights v-else-if="mainSection === 'insights'" />
-      <BuyersphereAssets v-else-if="mainSection === 'assets'" />
-      <BuyersphereActivityPlanOld v-else-if="mainSection === 'activity-plan-old'" />
-      <!-- <BuyersphereNotes v-else-if="mainSection === 'notes'" /> -->
+      <div class="[grid-area:left]">
+        <div class="left-sidebar">
+          <h3 class="mb-4">Pages</h3>
+          <NuxtLink v-for="p in pages"
+            class="page-link"
+            :class="{underline: p.id === page}"
+            :to="makeBuyersphereLink(buyersphere, p.id)">
+            {{ p.title }}
+          </NuxtLink>
+          <NewButton @click="createNewPage" />
+
+          <div class="h-[80px]" />
+
+          <h3 class="mb-4">Directory</h3>
+          <NuxtLink class="page-link"
+            :to="makeBuyersphereLink(buyersphere, 'activity-plan')"
+            :class="{underline: page === 'activity-plan'}">Activity Plan</NuxtLink>
+          <NuxtLink class="page-link"
+            :to="makeBuyersphereLink(buyersphere, 'team')"
+            :class="{underline: page === 'team'}">Team</NuxtLink>
+          <NuxtLink class="page-link"
+            :to="makeBuyersphereLink(buyersphere, 'assets')"
+            :class="{underline: page === 'assets'}">Assets</NuxtLink>
+          <NuxtLink v-if="isSeller"
+            class="page-link"
+            :to="makeBuyersphereLink(buyersphere, 'insights')"
+            :class="{underline: page === 'insights'}">Insights</NuxtLink>
+        </div>
+      </div>
+
+      <!-- These return the center and center-header sections -->
+      <BuyersphereActivityPlan v-if="page === 'activity-plan'" />
+      <BuyersphereTeam v-else-if="page === 'team'" />
+      <BuyersphereInsights v-else-if="page === 'insights'" />
+      <BuyersphereAssets v-else-if="page === 'assets'" />
+      <BuyerspherePage v-else />
+      <!-- <BuyersphereNotes v-else-if="page === 'notes'" /> -->
 
       <div class="[grid-area:footer] h-20" />
     </div>
@@ -57,27 +86,32 @@
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
-import { useBuyerActivityStore } from '~/stores/buyer-activity';
+import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
+import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
 import { format } from 'v-money3'
+import lodash_pkg from 'lodash';
+const { first } = lodash_pkg;
 
 definePageMeta({
   name: 'buyersphere'
 })
 
+
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getBuyerspherePagesByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [buyersphere, hasUser, isSeller] = await Promise.all([
+const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
+  getBuyerspherePagesByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
@@ -94,16 +128,20 @@ const moneyConfig = {
   suffix: ''
 }
 
-const mainSection = computed(
-  () => route.params.section ? route.params.section : 'discovery-guide')
-
 // update the url of the page to the latest name of the buyersphere
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
-router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
+
+if (pages.length === 0) {
+  await buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
+}
+
+const page = computed(() => route.params.page || first(pages).id)
 
 watch(() => buyersphere.buyer, () => {
-  router.replace({ path: makeBuyersphereLink(buyersphere, mainSection.value) })
+  router.replace({ 
+    path: makeBuyersphereLink(buyersphere, page.value)
+  })
 })
 
 async function putOnHold() {
@@ -124,18 +162,43 @@ async function reactivate() {
   }
 }
 
-const { open, close, patchOptions } = useModal({
+const { 
+  open: openBuyersphereModal,
+  close: closeBuyersphereModal,
+  patchOptions: patchBuyersphereModalOptions
+} = useModal({
   component: AddEditBuyersphereModal,
   attrs: {
     onClose () {
-      close()
+      closeBuyersphereModal()
     }
   }
 })
 
 function editBuyersphere() {
-  patchOptions({ attrs: { buyersphere }})
-  open()
+  patchBuyersphereModalOptions({ attrs: { buyersphere }})
+  openBuyersphereModal()
+}
+
+const { 
+  open: openBuyerspherePageModal,
+  close: closeBuyerspherePageModal
+} = useModal({
+  component: AddBuyerspherePageModal,
+  attrs: {
+    buyersphereId,
+    page: {},
+    async onClose ({ pageId }) {
+      closeBuyerspherePageModal()
+      await router.replace({ 
+        path: makeBuyersphereLink(buyersphere, pageId)
+      })
+    }
+  }
+})
+
+function createNewPage () {
+  openBuyerspherePageModal()
 }
 </script>
 

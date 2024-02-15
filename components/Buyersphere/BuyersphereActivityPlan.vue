@@ -14,27 +14,6 @@
     </div>
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'discovery-guide')">Discovery Guide</NuxtLink>
-      <h3 class="page-link">Activity Plan</h3>
-      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <!-- TODO grey these that are done -->
-        <a v-for="m in milestones"
-          class="in-page-link"
-          :href="`#${m.title}`">{{ m.title }}</a>
-      </div>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'team')">Team</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'assets')">Assets</NuxtLink>
-      <NuxtLink v-if="isSeller"
-        class="page-link"
-        :to="makeBuyersphereLink(buyersphere, 'insights')">Insights</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <BuyersphereActivityPlanSection
       v-for="milestone in groups"
