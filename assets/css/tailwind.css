@@ -143,6 +143,10 @@
       @apply h2;
       @apply p-2 flex flex-row gap-2 items-center mr-auto rounded-md 
         mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white;
+
+      * {
+        @apply h2;
+      }
     }
 
     .group-header-input {
@@ -158,6 +162,10 @@
     .item-count {
       @apply bg-white tag-header p-2 ml-auto mb-[-1rem];
       margin-top: calc(-1.25rem - 1px);
+
+      * {
+        @apply tag-header;
+      }
     }
 
     .section-add-button {

@@ -26,7 +26,7 @@
       </div>
 
       <div class="[grid-area:left-header] left-header">
-        <div class="flex flex-row items-center gap-2">
+        <div class="flex flex-row items-end gap-2 h-full">
           <CopyToClipboardButton />
           <template v-if="hasUser">
             <EditButton v-if="isSeller"
