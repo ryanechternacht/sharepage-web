@@ -5,20 +5,6 @@
     </div>
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="`/settings/personal`">Personal</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/guide-template`">Guide Template</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/timeline-template`">Timeline Template</NuxtLink>
-      <h3 class="page-link">Assets Template</h3>
-      <NuxtLink class="page-link"
-        :to="`/settings/admin`">Admin</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center">
     <BuyersphereAssetSection
       is-template

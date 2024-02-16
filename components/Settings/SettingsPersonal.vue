@@ -1,21 +1,4 @@
 <template>
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <h3 class="page-link">Personal</h3>
-      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <a class="in-page-link" href="#profile">Profile</a>
-      </div>
-      <NuxtLink class="page-link"
-        :to="`/settings/guide-template`">Guide Template</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/timeline-template`">Timeline Template</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/assets-template`">Assets Template</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/admin`">Admin</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <div id="profile"
       class="section">

@@ -6,10 +6,39 @@
         <h1>{{ startCase(mainSection) }} Settings</h1>
       </div>
 
+      <div class="[grid-area:left]">
+        <div class="left-sidebar">
+          <h3 class="mb-4">Settings</h3>
+          <NuxtLink class="page-link"
+            :to="`/settings/personal`"
+            :class="{underline: mainSection === 'personal'}">Personal</NuxtLink>
+          <NuxtLink class="page-link"
+            :to="`/settings/timeline-template`"
+            :class="{underline: mainSection === 'timeline-template'}">Timeline Template</NuxtLink>
+          <NuxtLink class="page-link"
+            :to="`/settings/assets-template`"
+            :class="{underline: mainSection === 'assets-template'}">Assets Template</NuxtLink>
+          <NuxtLink class="page-link"
+            :to="`/settings/admin`"
+            :class="{underline: mainSection === 'admin'}">Admin</NuxtLink>
+
+          <div class="h-[80px]" />
+
+          <h3 class="mb-4">Page Templates</h3>
+          <!-- <NuxtLink v-for="p in pages"
+            class="page-link"
+            :class="{underline: p.id === page}"
+            :to="makeBuyersphereLink(buyersphere, p.id)">
+            {{ p.title }}
+          </NuxtLink> -->
+          <NewButton @click="createNewPage" />
+        </div>
+      </div>
+
       <!-- These return the left, center, left-header, and center-header sections -->
       <SettingsPersonal v-if="mainSection === 'personal'" />
       <SettingsAdmin v-else-if="mainSection === 'admin'" />
-      <SettingsGuideTemplate v-else-if="mainSection === 'guide-template'" />
+      <!-- <SettingsGuideTemplate v-else-if="mainSection === 'guide-template'" /> -->
       <SettingsTimelineTemplate v-else-if="mainSection === 'timeline-template'" />
       <SettingsAssetsTemplate v-else-if="mainSection === 'assets-template'" />
 

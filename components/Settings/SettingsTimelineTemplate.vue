@@ -6,29 +6,8 @@
       @update:option="updateFilter" />
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="`/settings/personal`">Personal</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/guide-template`">Guide Template</NuxtLink>
-      <h3 class="page-link">Timeline Template</h3>
-      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <template v-for="mt in groups">
-          <a v-if="mt.activityTemplates.length" 
-            class="in-page-link" 
-            :href="`#${mt.title}`">{{ mt.title }}</a>
-        </template>
-      </div>
-      <NuxtLink class="page-link"
-        :to="`/settings/assets-template`">Assets Template</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/admin`">Admin</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:right-header] right-header">
-    <div class="flex flex-row-reverse items-center">
+    <div class="h-full flex flex-row-reverse items-end">
       <NewButton @click="addMilestoneTemplate"
         text="New Milestone" />
     </div>

@@ -6,34 +6,6 @@
       @update:option="updateFilter" />
   </div>
 
-  <div class="[grid-area:left]">
-    <div class="left-sidebar">
-      <NuxtLink class="page-link"
-        :to="`/settings/personal`">Personal</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/guide-template`">Guide Template</NuxtLink>
-      <h3 class="page-link">Timeline Template</h3>
-      <div v-scroll-spy-active v-scroll-spy-link class="mt-[-.75rem] mb-[.75rem]">
-        <a v-if="next7DaysItems.length" 
-          class="in-page-link" 
-          href="#next-7-days">Next 7 Days</a>
-        <a v-if="next30DaysItems.length" 
-          class="in-page-link" 
-          href="#next-30-days">Next 30 Days</a>
-        <a v-if="next90DaysItems.length" 
-          class="in-page-link" 
-          href="#next-90-days">Next 90 Days</a>
-        <a v-if="beyondItems.length" 
-          class="in-page-link" 
-          href="#beyond">Beyond</a>
-      </div>
-      <NuxtLink class="page-link"
-        :to="`/settings/assets-template`">Assets Template</NuxtLink>
-      <NuxtLink class="page-link"
-        :to="`/settings/admin`">Admin</NuxtLink>
-    </div>
-  </div>
-
   <div class="[grid-area:right-header] right-header">
     <div class="flex flex-row-reverse items-center">
       <NewButton @click="createItem" />
