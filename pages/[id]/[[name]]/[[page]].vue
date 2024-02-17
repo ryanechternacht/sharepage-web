@@ -187,11 +187,13 @@ const {
   attrs: {
     buyersphereId,
     page: {},
-    async onClose ({ pageId }) {
+    async onClose (props) {
+      if (props?.pageId) {
+        await router.replace({ 
+          path: makeBuyersphereLink(buyersphere, props.pageId)
+        })
+      }
       closeBuyerspherePageModal()
-      await router.replace({ 
-        path: makeBuyersphereLink(buyersphere, pageId)
-      })
     }
   }
 })

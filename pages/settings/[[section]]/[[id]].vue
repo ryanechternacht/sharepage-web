@@ -79,11 +79,13 @@ const { open, close } = useModal({
   attrs: {
     page: {},
     isTemplate: true,
-    async onClose ({ pageId }) {
+    async onClose (props) {
+      if (props?.pageId) {
+        await router.replace({ 
+          path: `/settings/page-template/${pageId}`
+        })
+      }
       close()
-      await router.replace({ 
-        path: `/settings/page-template/${pageId}`
-      })
     }
   }
 })
