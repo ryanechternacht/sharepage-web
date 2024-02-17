@@ -80,6 +80,8 @@
 
       <div class="[grid-area:footer] h-20" />
     </div>
+
+    <div class="page-hider" v-if="hidePage" />
   </div>
 </template>
 
@@ -91,6 +93,7 @@ import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
+import AnonymousViewModal from '@/components/Buyersphere/AnonymousViewModal';
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
 const { first } = lodash_pkg;
@@ -114,6 +117,37 @@ const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
+
+const linkedName = useCookie('linked-name', { domain: '.buyersphere-local.com' })
+const enteredName = useCookie('entered-name', { domain: '.buyersphere-local.com' })
+
+const hidePage = ref(false)
+
+const { 
+  open: openAnonymousViewerModal,
+  close: closeAnonymousViewerModal,
+} = useModal({
+  component: AnonymousViewModal,
+  attrs: {
+    buyersphereName: buyersphere.buyer,
+    linkedName,
+    onClose ({ name }) {
+      closeAnonymousViewerModal()
+      hidePage.value = false
+      enteredName.value = name
+    }
+  }
+})
+
+// TODO Restore the more complex form once I'm not always logged in 
+// if (!hasUser && !enteredName.value && route.query['sent-to']) {
+if (route.query['sent-to']) {
+  linkedName.value = route.query['sent-to']
+  hidePage.value = true
+  // TODO can we put the blur into the modal background itself somehow?
+  // surely there are props for overriding the default??
+  openAnonymousViewerModal()
+}
 
 const buyerActivityStore = useBuyerActivityStore()
 
@@ -233,5 +267,14 @@ function createNewPage () {
   .milestone-icon {
     @apply [grid-area:icon] self-center px-1 w-[1.375rem];
   }
+}
+
+.page-hider {
+  /* TODO switch these to tailwind props and blur */
+  @apply bg-green-primary;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
 }
 </style>
