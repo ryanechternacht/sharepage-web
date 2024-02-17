@@ -40,7 +40,7 @@
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :disabled="needsMoreInput"
         :submission-state="submissionState"
-        @click="submitFn" /> {{ error }}
+        @click="submitFn" />
     </div>
   </VueFinalModal>
 </template>
@@ -74,7 +74,7 @@ const amountOther = ref(props.pricingTier?.amountOther)
 const periodType = ref(props.pricingTier?.periodType)
 const description = ref(props.pricingTier?.description)
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updatePricingTier({ pricingTier: {
       ...props.pricingTier,

@@ -170,7 +170,7 @@ const assignedTeam = computed(
   () => find(allBuyersphereUsers.value, u => u.id === assignedToId.value).team
 )
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     emit('activity-edited', {
         activity: {

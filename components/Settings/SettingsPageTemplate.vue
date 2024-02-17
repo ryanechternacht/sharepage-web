@@ -110,18 +110,14 @@
 <script setup>
 import lodash_pkg from 'lodash';
 const { debounce, find, first } = lodash_pkg;
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'
 
-const route = useRoute()
-const buyersphereId = parseInt(route.params.id)
+const templatesStore = useTemplatesStore()
+const { getPageTemplatesCached } = storeToRefs(templatesStore)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyerspherePagesByIdCached } = storeToRefs(buyersphereStore)
-
-const [buyersphere, pages] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
-  getBuyerspherePagesByIdCached.value(buyersphereId),
+const [pageTemplates] = await Promise.all([
+  getPageTemplatesCached.value(),
 ])
 
 const pageViews = computed(() => [
@@ -137,20 +133,14 @@ function updatePageView ({ option }) {
   pageView.value = option.text
 }
 
-const pageId = parseInt(route.params.page)
-const page = pageId
-  ? find(pages, p => p.id === pageId)
-  : first(pages)
+const route = useRoute()
+const pageTemplateId = parseInt(route.params.id)
+const pageTemplate = pageTemplateId
+  ? find(pageTemplates, pt => pt.id === pageTemplateId)
+  : first(pageTemplates)
 
-const router = useRouter()
-const { makeBuyersphereLink } = useBuyersphereLinks()
-
-setTimeout(() => router.replace({
-  path: makeBuyersphereLink(buyersphere, page.id)
-}), 100)
-
-const sections = ref(page.body.sections)
-const title = ref(page.title)
+const sections = ref(pageTemplate.body.sections)
+const title = ref(pageTemplate.title)
 
 function selectListIem ({ section, choice, index }) {
   section.body.answer.text = choice.text
@@ -158,8 +148,8 @@ function selectListIem ({ section, choice, index }) {
 }
 
 function save() {
-  page.title = title.value
-  buyersphereStore.updatePage({ buyersphereId, pageId, page })
+  pageTemplate.title = title.value
+  templatesStore.updatePageTemplate({ id: pageTemplateId, pageTemplate })
 }
 
 const debouncedSave = debounce(save, 5000, { leading: false, trailing: true})
@@ -204,31 +194,5 @@ function addNewListBlock () {
 }
 </script>
 
-<style lang="postcss" scoped>
-.item-list-row {
-  @apply w-full flex flex-row items-center gap-2;
-
-  * {
-    @apply shrink-0;
-  }
-
-  .main-content {
-    @apply shrink grow;
-  }
-
-  &.selected {
-    /* wish the bg-color didn't have to be important */
-    @apply !bg-blue-background px-4 mx-[-1rem] py-2 my-[-.5rem];
-    width: calc(100% + 2rem);
-  }
-
-  &:hover {
-    @apply bg-gray-hover px-4 mx-[-1rem] py-2 my-[-.5rem] cursor-pointer;
-    width: calc(100% + 2rem);
-
-    .show-on-row-hover {
-      @apply [display:inherit];
-    }
-  }
-}
+<style scoped lang="postcss">
 </style>

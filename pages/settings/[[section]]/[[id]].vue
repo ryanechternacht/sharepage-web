@@ -25,13 +25,13 @@
           <div class="h-[80px]" />
 
           <h3 class="mb-4">Page Templates</h3>
-          <!-- <NuxtLink v-for="p in pages"
+          <NuxtLink v-for="pt in pageTemplates"
             class="page-link"
-            :class="{underline: p.id === page}"
-            :to="makeBuyersphereLink(buyersphere, p.id)">
-            {{ p.title }}
-          </NuxtLink> -->
-          <NewButton @click="createNewPage" />
+            :class="{underline: pt.id === mainSection}"
+            :to="`/settings/page-template/${pt.id}`">
+            {{ pt.title }}
+          </NuxtLink>
+          <NewButton @click="createNewPageTemplate" />
         </div>
       </div>
 
@@ -41,6 +41,7 @@
       <!-- <SettingsGuideTemplate v-else-if="mainSection === 'guide-template'" /> -->
       <SettingsTimelineTemplate v-else-if="mainSection === 'timeline-template'" />
       <SettingsAssetsTemplate v-else-if="mainSection === 'assets-template'" />
+      <SettingsPageTemplate v-else />
 
       <div class="[grid-area:footer] h-20" />
     </div>
@@ -49,12 +50,47 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { startCase } = lodash_pkg;
+const { find, startCase } = lodash_pkg;
+import { useTemplatesStore } from '@/stores/templates'
+import { storeToRefs } from 'pinia'
+import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
+import { useModal } from 'vue-final-modal'
+
+const templatesStore = useTemplatesStore()
+const { getPageTemplatesCached } = storeToRefs(templatesStore)
+
+const [pageTemplates] = await Promise.all([
+  getPageTemplatesCached.value(),
+])
 
 const route = useRoute()
-const mainSection = computed(() => route.params.section || 'personal')
-// TODO rewrite route to /personal
+const mainSection = computed(() => {
+  if (!route.params.section) {
+    return 'personal'
+  } else if (route.params.section === 'page-template') {
+    return find(pageTemplates, pt => pt.id === parseInt(route.params.id)).title
+  } else {
+    return route.params.section
+  }
+})
+const router = useRouter()
+const { open, close } = useModal({
+  component: AddBuyerspherePageModal,
+  attrs: {
+    page: {},
+    isTemplate: true,
+    async onClose ({ pageId }) {
+      close()
+      await router.replace({ 
+        path: `/settings/page-template/${pageId}`
+      })
+    }
+  }
+})
 
+function createNewPageTemplate () {
+  open()
+}
 </script>
 
 <style lang="postcss" scoped>

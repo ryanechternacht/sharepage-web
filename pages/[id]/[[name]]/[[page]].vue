@@ -99,7 +99,6 @@ definePageMeta({
   name: 'buyersphere'
 })
 
-
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 

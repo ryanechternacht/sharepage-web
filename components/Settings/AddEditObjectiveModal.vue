@@ -44,7 +44,7 @@ const store = usePainPointsStore();
 const title = ref(props.objective?.title)
 const description = ref(props.objective?.description)
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updatePainPoint({ painPoint: {
       ...props.objective,

@@ -50,7 +50,7 @@ const readyText = computed(() => user ? "Update User" : "Create User")
 const submittingText = computed(() => user ? "Updating" : "Creating")
 const errorText = computed(() => user ? "Update Failed" : "Creation Failed")
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (user) {
     await usersStore.updateUser({
       id: user.id,

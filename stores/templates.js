@@ -8,7 +8,11 @@ function is10MinutesOld(jsonTimestamp) {
 }
 
 export const useTemplatesStore = defineStore('templates', {
-  state: () => ({ milestoneTemplates: {}, activityTemplates: {} }),
+  state: () => ({ 
+    milestoneTemplates: {},
+    activityTemplates: {},
+    pageTemplates: {},
+  }),
   getters: {
     getMilestoneTemplatesCached: (state) => async () => {
       await state.fetchMilestoneTemplates()
@@ -17,6 +21,10 @@ export const useTemplatesStore = defineStore('templates', {
     getActivityTemplatesCached: (state) => async () => {
       await state.fetchActivityTemplates()
       return state.activityTemplates.content
+    },
+    getPageTemplatesCached: (state) => async () => {
+      await state.fetchPageTemplates()
+      return state.pageTemplates.content
     },
   },
   actions: {
@@ -116,6 +124,60 @@ export const useTemplatesStore = defineStore('templates', {
       )
 
       remove(this.activityTemplates.content, at => at.id === id)
-    }
+    },
+    async createPageTemplate({ pageTemplate }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/templates/pages`, {
+        method: 'POST',
+        body: pageTemplate
+      })
+
+      this.pageTemplates.content.push(data.value)
+      return data.value.id
+    },
+    async fetchPageTemplates({ forceRefresh } = {}) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.pageTemplates.content
+          || forceRefresh
+          || is10MinutesOld(this.pageTemplates.generatedAt)) {
+        const { data } = await apiFetch('/v0.1/templates/pages')
+        this.pageTemplates = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async updatePageTemplate({ id, pageTemplate }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/templates/page/${id}`, {
+        method: 'PATCH',
+        body: pageTemplate
+      })
+
+      const pt = find(this.pageTemplates.content, pt => pt.id === id)
+      if (data.value.title !== undefined) {
+        pt.title = data.value.title
+      }
+      if (data.value.body !== undefined) {
+        pt.body = data.value.body
+      }
+      if (data.value.isPublic !== undefined) {
+        pt.isPublic = data.value.isPublic
+      }
+      if (data.value.ordering !== undefined) {
+        pt.ordering = data.value.ordering
+      }
+    },
+    async deletePageTemplate({ id }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/templates/page/${id}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.pageTemplates.content, pt => pt.id === id)
+    },
   },
 })

@@ -45,7 +45,7 @@ const store = useFeaturesStore();
 const title = ref(props.feature?.title)
 const description = ref(props.feature?.description)
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updateFeature({ feature: {
       ...props.feature,

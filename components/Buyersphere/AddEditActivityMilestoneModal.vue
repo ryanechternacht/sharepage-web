@@ -37,7 +37,7 @@ const emit = defineEmits(['milestone-created', 'milestone-edited', 'close'])
 
 const title = ref(props.milestone.title)
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     emit('milestone-edited', { 
       milestone: {
