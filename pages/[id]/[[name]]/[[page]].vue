@@ -118,6 +118,7 @@ const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   isUserSeller.value(),
 ])
 
+// TODO pull these from config
 const linkedName = useCookie('linked-name', { domain: '.buyersphere-local.com' })
 const enteredName = useCookie('entered-name', { domain: '.buyersphere-local.com' })
 

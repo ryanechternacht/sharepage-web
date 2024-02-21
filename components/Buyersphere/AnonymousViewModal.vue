@@ -29,6 +29,8 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 
+// TODO prevent being able to hit `esc` and close the modal
+
 const props = defineProps({
   buyersphereName: { type: String, required: true },
   linkedName: { type: String, default: "" }

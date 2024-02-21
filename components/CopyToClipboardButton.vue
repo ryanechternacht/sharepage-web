@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { useBuyerActivityStore } from '~/stores/buyer-activity';
+import { useBuyerActivityStore } from '@/stores/buyer-activity';
 
 const store = useBuyerActivityStore()
 
