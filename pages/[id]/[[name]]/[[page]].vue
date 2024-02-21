@@ -49,7 +49,7 @@
             :to="makeBuyersphereLink(buyersphere, p.id)">
             {{ p.title }}
           </NuxtLink>
-          <NewButton @click="createNewPage" />
+          <NewButton v-if="isSeller" @click="createNewPage" />
 
           <div class="h-[80px]" />
 
@@ -71,11 +71,13 @@
       </div>
 
       <!-- These return the center and center-header sections -->
-      <BuyersphereActivityPlan v-if="page === 'activity-plan'" />
+      <BuyersphereActivityPlan v-if="page === 'activity-plan'"
+        @require-login="requireLogin" />
       <BuyersphereTeam v-else-if="page === 'team'" />
       <BuyersphereInsights v-else-if="page === 'insights'" />
       <BuyersphereAssets v-else-if="page === 'assets'" />
-      <BuyerspherePage v-else />
+      <BuyerspherePage v-else 
+        @require-login="requireLogin" />
       <!-- <BuyersphereNotes v-else-if="page === 'notes'" /> -->
 
       <div class="[grid-area:footer] h-20" />
@@ -94,6 +96,7 @@ import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
 import AnonymousViewModal from '@/components/Buyersphere/AnonymousViewModal';
+import RequireLoginModal from '@/components/Buyersphere/RequireLoginModal.vue';
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
 const { first } = lodash_pkg;
@@ -119,8 +122,9 @@ const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
 ])
 
 // TODO pull these from config
-const linkedName = useCookie('linked-name', { domain: '.buyersphere-local.com' })
-const enteredName = useCookie('entered-name', { domain: '.buyersphere-local.com' })
+const config = useAppConfig()
+const linkedName = useCookie('linked-name', { domain: config.cookies.domain })
+const enteredName = useCookie('entered-name', { domain: config.cookies.domain })
 
 const hidePage = ref(false)
 
@@ -235,6 +239,24 @@ const {
 
 function createNewPage () {
   openBuyerspherePageModal()
+}
+
+const { 
+  open: openLoginModal,
+  close: closeLoginModal
+} = useModal({
+  component: RequireLoginModal,
+  attrs: {
+    buyersphereId,
+    page: {},
+    async onClose () {
+      closeLoginModal()
+    }
+  }
+})
+
+function requireLogin () {
+  openLoginModal()
 }
 </script>
 

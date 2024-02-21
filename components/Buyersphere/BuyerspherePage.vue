@@ -1,6 +1,7 @@
 <template>
   <div class="[grid-area:center-header] center-header">
-    <BsButtonGroup 
+    <BsButtonGroup
+      v-if="isSeller"
       :options="pageViews"
       header="Assigned To"
       @update:option="updatePageView" />
@@ -18,6 +19,7 @@
             :model-value="section.body.answer"
             class="w-full mt-6"
             placeholder="Please enter an answer here"
+            :readonly="!hasUser"
             :on-update-fn="(text) => section.body.answer = text" />
         </div>
 
@@ -111,6 +113,7 @@
 import lodash_pkg from 'lodash';
 const { debounce, find, first } = lodash_pkg;
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
@@ -119,9 +122,14 @@ const buyersphereId = parseInt(route.params.id)
 const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached, getBuyerspherePagesByIdCached } = storeToRefs(buyersphereStore)
 
-const [buyersphere, pages] = await Promise.all([
+const usersStore = useUsersStore()
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
+
+const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyerspherePagesByIdCached.value(buyersphereId),
+  isUserLoggedIn.value(),
+  isUserSeller.value(),
 ])
 
 const pageViews = computed(() => [
@@ -152,9 +160,14 @@ setTimeout(() => router.replace({
 const sections = ref(page.body.sections)
 const title = ref(page.title)
 
+const emit = defineEmits(['require-login'])
 function selectListIem ({ section, choice, index }) {
-  section.body.answer.text = choice.text
-  section.body.answer.index = index
+  if (hasUser) {
+    section.body.answer.text = choice.text
+    section.body.answer.index = index
+  } else {
+    emit('require-login')
+  }
 }
 
 function save() {

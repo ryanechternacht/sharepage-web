@@ -10,4 +10,7 @@ export default defineAppConfig({
   featureFlags: {
     salesforce: true,
   },
+  cookies: {
+    domain: '.buyersphere-local.com'
+  },
 })

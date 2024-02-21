@@ -10,4 +10,7 @@ export default defineAppConfig({
   featureFlags: {
     salesforce: false,
   },
+  cookies: {
+    domain: '.thebuyersphere.com'
+  }
 })

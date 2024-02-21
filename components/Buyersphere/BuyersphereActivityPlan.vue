@@ -20,6 +20,7 @@
       :id="milestone.title"
       :milestone="milestone"
       :activities="milestone.activities"
+      :has-user="hasUser"
       @update:milestone="editMilestone"
       @resolve:milestone="resolveMilestone"
       @unresolve:milestone="unresolveMilestone"
@@ -43,8 +44,6 @@ import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityIt
 import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
 // import { VueDraggable } from 'vue-draggable-plus'
-
-const { makeBuyersphereLink } = useBuyersphereLinks()
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -155,12 +154,23 @@ function addActivity({ milestoneId }) {
   openItemModal()
 }
 
+const emit = defineEmits(['require-login'])
+
 function editActivity({ activity }) {
-  patchItemModal({ attrs: { activity, milestoneId: activity.milestoneId }})
-  openItemModal()
+  if (hasUser) {
+    patchItemModal({ attrs: { activity, milestoneId: activity.milestoneId }})
+    openItemModal()
+  } else {
+    emit('require-login')
+  }
 }
 
 async function deleteActivity({ activity }) {
+  if (!hasUser) {
+    emit('require-login')
+    return
+  }
+  
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
@@ -169,12 +179,16 @@ async function deleteActivity({ activity }) {
 }
 
 async function resolveActivity({ activity, resolved }) {
-  buyerspheresStore.updateBuyersphereActivity({
-    buyersphereId,
-    milestoneId: activity.milestoneId,
-    id: activity.id,
-    activity: { resolved }
-  })
+  if (hasUser) {
+    buyerspheresStore.updateBuyersphereActivity({
+      buyersphereId,
+      milestoneId: activity.milestoneId,
+      id: activity.id,
+      activity: { resolved }
+    })
+  } else {
+    emit('require-login')
+  }
 }
 
 const {

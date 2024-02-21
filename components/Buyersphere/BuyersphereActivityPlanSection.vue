@@ -4,7 +4,7 @@
       <div class="h-[1.5rem]">{{ !isGlobalList ? milestone.title : header }}</div> 
       <div v-if="milestone?.resolved" class="italic tag">
         (Completed)</div>
-      <template v-if="!isGlobalList">
+      <template v-if="!isGlobalList && hasUser">
         <template v-if="!isTemplate">
           <BsButton v-if="!milestone.resolved" 
             hover-color="blue"
@@ -42,15 +42,15 @@
     > -->
     <div class="mt-[2rem] flex flex-col gap-4">
       <BuyersphereActivityItem
-      v-for="activity in activities"
-      :key="activity.id"
-      :activity="activity"
-      :is-global-list="isGlobalList"
-      :is-template="isTemplate"
-      @update:activity="args => emit('update:activity', args)"
-      @delete:activity="args => emit('delete:activity', args)"
-      @resolve:activity="args => emit('resolve:activity', args)"
-      @click:activity="args => emit('click:activity', args)" />
+        v-for="activity in activities"
+        :key="activity.id"
+        :activity="activity"
+        :is-global-list="isGlobalList"
+        :is-template="isTemplate"
+        @update:activity="args => emit('update:activity', args)"
+        @delete:activity="args => emit('delete:activity', args)"
+        @resolve:activity="args => emit('resolve:activity', args)"
+        @click:activity="args => emit('click:activity', args)" />
     </div>
     <!-- </VueDraggable> -->
     <NewButton v-if="!isGlobalList"
@@ -68,7 +68,8 @@ const props = defineProps({
   activities: { type: Array, required: true },
   isGlobalList: { type: Boolean, default: false },
   isTemplate: { type: Boolean, default: false },
-  header: { type: String }
+  header: { type: String },
+  hasUser: { type: Boolean, default: true },
 })
 
 const emit = defineEmits([
