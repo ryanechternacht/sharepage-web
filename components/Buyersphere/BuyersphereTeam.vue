@@ -40,8 +40,6 @@ import AddEditBuyerModal from '@/components/Buyersphere/AddEditBuyerModal'
 import BuyersphereAddSellerModal from '@/components/Buyersphere/AddSellerModal'
 import { useModal } from 'vue-final-modal'
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
-
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 

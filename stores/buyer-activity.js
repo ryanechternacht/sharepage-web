@@ -30,14 +30,15 @@ export const useBuyerActivityStore = defineStore('buyer-activity', {
         }
       }
     },
-    async captureBuyerActivity({ activity, activityData }) {
+    async captureBuyerActivity({ buyersphereId, activity, activityData }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(`/v0.1/buyer-activity`,
         { 
           method: 'POST', 
-          body: { 
+          body: {
+            buyersphereId,
             activity,
-            activityData
+            activityData,
           },
         }
       )

@@ -25,23 +25,19 @@ import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
-
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
 
-const [buyersphere, buyerActivity] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+const [buyerActivity] = await Promise.all([
   getBuyersphereBuyerActivityByIdCached.value(buyersphereId),
 ])
 
 const dayjs = useDayjs()
 
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
-const today = todayDayJs.toDate()
 const last7Days = todayDayJs.subtract(7, 'day').toDate()
 const last30Days = todayDayJs.subtract(30, 'day').toDate()
 
@@ -73,5 +69,4 @@ const olderItems = computed(() =>
 </script>
 
 <style lang="postcss" scoped>
-
 </style>

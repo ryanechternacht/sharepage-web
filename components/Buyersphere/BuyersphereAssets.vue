@@ -21,8 +21,6 @@ import { storeToRefs } from 'pinia'
 import AddEditAssetModal from '@/components/Buyersphere/AddEditAssetModal.vue';
 import { useModal } from 'vue-final-modal'
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
-
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
@@ -30,12 +28,11 @@ const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
-const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
+const { isUserLoggedIn } = storeToRefs(usersStore)
 
-const [buyersphere, hasUser, isSeller] = await Promise.all([
+const [buyersphere, hasUser] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
-  isUserSeller.value()
 ])
 
 const { open, close, patchOptions } = useModal({

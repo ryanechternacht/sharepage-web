@@ -203,7 +203,6 @@ const beyondItems = computed(() =>
 )
 
 function goToActivity({ activity }) {
-  // TODO this is a bit of a hack :/
   navigateTo(makeBuyersphereLink({ 
     id: activity.buyersphereId, 
     buyer: activity.buyer.name,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="debouncedTrackUserAction">
     <TopNav />
     <div class="page-layout">
       <div class="[grid-area:top] page-top bg-purple-background"
@@ -27,7 +27,7 @@
 
       <div class="[grid-area:left-header] left-header">
         <div class="flex flex-row items-end gap-2 h-full">
-          <CopyToClipboardButton />
+          <CopyToClipboardButton :buyersphere-id="buyersphereId" />
           <template v-if="hasUser">
             <EditButton v-if="isSeller"
               show-text
@@ -97,7 +97,7 @@ import AnonymousViewModal from '@/components/Buyersphere/AnonymousViewModal';
 import RequireLoginModal from '@/components/Buyersphere/RequireLoginModal.vue';
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
-const { first } = lodash_pkg;
+const { debounce, first } = lodash_pkg;
 
 definePageMeta({
   name: 'buyersphere'
@@ -176,7 +176,7 @@ async function putOnHold() {
 
   if (answer) {
     await buyersphereStore.updateBuyerInput({ buyersphereId, status: "on-hold" })
-    buyerActivityStore.captureBuyerActivity({ activity: "hold-deal" })
+    buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "hold-deal" })
   }
 }
 
@@ -185,7 +185,7 @@ async function reactivate() {
   
   if (answer) {
     await buyersphereStore.updateBuyerInput({ buyersphereId, status: "active" })
-    buyerActivityStore.captureBuyerActivity({ activity: "reactivate-deal" })
+    buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "reactivate-deal" })
   }
 }
 
@@ -246,6 +246,26 @@ const {
 
 function requireLogin () {
   openLoginModal()
+}
+
+function trackUserAction () {
+  buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "site-activity" })
+}
+
+const oneMinute = 60 * 1000;
+const debouncedTrackUserAction = debounce(
+  trackUserAction, 
+  oneMinute, 
+  { leading: true, trailing: false, maxWait: oneMinute },
+)
+
+if (process.client) {
+  onMounted(() => {
+    window.addEventListener('scroll', debouncedTrackUserAction)
+  })
+  onUnmounted(() => {
+    window.removeEventListener('scroll', debouncedTrackUserAction)
+  })
 }
 </script>
 

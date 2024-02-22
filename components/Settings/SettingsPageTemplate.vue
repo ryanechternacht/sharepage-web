@@ -152,7 +152,7 @@ function save() {
   templatesStore.updatePageTemplate({ id: pageTemplateId, pageTemplate })
 }
 
-const debouncedSave = debounce(save, 5000, { leading: false, trailing: true})
+const debouncedSave = debounce(save, 5000, { leading: false, trailing: true })
 
 watch(sections.value, () => {
   debouncedSave()

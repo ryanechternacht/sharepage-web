@@ -177,7 +177,7 @@ import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
-const { filter, find, orderBy } = lodash_pkg;
+const { find } = lodash_pkg;
 
 const { makeBuyersphereLink } = useBuyersphereLinks()
 

@@ -26,7 +26,8 @@ const store = useBuyerActivityStore()
 
 const props = defineProps({ 
   color: String,
-  showText: { type: Boolean, default: true }
+  showText: { type: Boolean, default: true },
+  buyersphereId: { type: Number, required: true }
 })
 
 async function copyToClipboard() {
@@ -39,7 +40,10 @@ async function copyToClipboard() {
   recentlyClicked.value = true
   lastTimeout.value = setTimeout(() => recentlyClicked.value = false, 3000)
 
-  store.captureBuyerActivity({ activity: "click-share" })
+  store.captureBuyerActivity({ 
+    activity: "click-share",
+    buyersphereId: props.buyersphereId,
+  })
 }
 
 const recentlyClicked = ref(false)

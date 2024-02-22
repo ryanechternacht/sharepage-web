@@ -37,6 +37,9 @@ import { useBuyerActivityStore } from '~/stores/buyer-activity';
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
+const route = useRoute()
+const buyersphereId = parseInt(route.params.id)
+
 const buyerActivityStore = useBuyerActivityStore()
 
 const usersStore = useUsersStore()
@@ -60,7 +63,8 @@ function formatdate (date) {
 }
 
 function clickActivity(asset) {
-  buyerActivityStore.captureBuyerActivity({ 
+  buyerActivityStore.captureBuyerActivity({
+    buyersphereId,
     activity: "open-asset",
     activityData: { title: asset.title, id: asset.id }
   })
