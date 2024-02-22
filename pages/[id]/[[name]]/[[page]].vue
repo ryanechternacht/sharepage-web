@@ -119,10 +119,9 @@ const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   isUserSeller.value(),
 ])
 
-// TODO pull these from config
-const config = useAppConfig()
-const linkedName = useCookie('linked-name', { domain: config.cookies.domain })
-const enteredName = useCookie('entered-name', { domain: config.cookies.domain })
+const { cookies } = useAppConfig()
+const linkedName = useCookie('linked-name', { domain: cookies.domain })
+const enteredName = useCookie('entered-name', { domain: cookies.domain })
 
 const { 
   open: openAnonymousViewerModal,
@@ -141,8 +140,6 @@ const {
 
 if (!hasUser && !enteredName.value) {
   linkedName.value = route.query['sent-to']
-  // TODO can we put the blur into the modal background itself somehow?
-  // surely there are props for overriding the default??
   openAnonymousViewerModal()
 }
 
