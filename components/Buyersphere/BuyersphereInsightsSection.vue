@@ -10,12 +10,24 @@
         <img :src="activityMap[item.activity]?.icon"
           class="w-[1rem] h-[1rem]">
         <Tag color="gray">{{ activityMap[item.activity]?.label }}</Tag>
-        <div 
-        v-html="activityMap[item.activity]?.detailsFn(item.activityData)"
-        class="main-content inline-html" />
+        <div
+          v-html="activityMap[item.activity]?.detailsFn(item.activityData)"
+          class="main-content inline-html" />
 
-        <UserAvatar :user="item.user" />
-        <div class="ml-[-.5rem] min-w-[8rem]">{{ item.user.firstName}} {{ item.user.lastName }}</div>
+        <!-- TODO anonymous shape? -->
+        <div class="min-w-[9.5rem]">
+          <div v-if="item.user" class="flex flex-row items-center">
+            <UserAvatar :user="item.user" />
+            <div class="ml-2">{{ item.user.firstName}} {{ item.user.lastName }}</div>
+          </div>
+          <div v-else>
+            <div v-if="item.anonymousUser.enteredName">
+              {{ item.anonymousUser.enteredName }}</div>
+            <div v-if="item.anonymousUser.enteredName != item.anonymousUser.linkedName">
+              ({{ item.anonymousUser.linkedName }})
+            </div>
+          </div>
+        </div>
 
         <template v-if="showAccount">
           <Logo :src="item.buyersphere.buyerLogo" />
@@ -23,7 +35,7 @@
         </template>
 
         <div class="tag min-w-[4rem]">
-          {{ prettyFormatDateFromToday(item.createdAt) }}
+          {{ prettyFormatDateFromToday(item.createdAt || item.lastActivity) }}
         </div>
       </div>
     </div>
@@ -56,54 +68,55 @@ function prettyFormatDateFromToday(date) {
   }
 }
 
+// TODO these to use icons, not hardcoded svgs
 const activityMap = {
   'site-activity': {
     icon: '/svg/eye.svg',
-    label: 'Opened Buyersphere',
-    detailsFn: () => '',
+    label: 'Viewed Page',
+    detailsFn: (activityData) => `In total, has spent ${activityData.numMinutes} minutes in the SwayPage, most recently: ${prettyFormatDateFromToday(activityData.lastActivity)}`,
   },
   'create-activity': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Created Activity',
     detailsFn: (activityData) => activityData?.message,
   },
   'edit-activity': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Edited Activity',
     detailsFn: (activityData) => activityData?.message,
   },
   'resolve-activity': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Resolved Activity',
     detailsFn: (activityData) => activityData?.message,
   },
   'unresolve-activity': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Re-opened Activity',
     detailsFn: (activityData) => activityData?.message,
   },
   'delete-activity': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Deleted Activity',
     detailsFn: (activityData) => activityData?.message,
   },
   'edit-constraints': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: '',
     detailsFn: () => 'Edited the Deal Constraints'
   },
   'edit-success-criteria': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Edited the Deal Success Criteria',
     detailsFn: () => '',
   },
   'edit-features': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Edited the Deal Features',
     detailsFn: () => '',
   },
   'edit-objectives': { 
-    icon: '/svg/eye.svg', 
+    icon: '/svg/edit-2.svg', 
     label: 'Edited the Deal Objectives',
     detailsFn: () => '',
   },
@@ -118,30 +131,35 @@ const activityMap = {
     detailsFn: () => '',
   },
   'hold-deal': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Put the Deal on Hold',
     detailsFn: () => '',
   },
   'reactivate-deal': { 
-    icon: '/svg/eye.svg', 
+    icon: '/svg/edit-2.svg', 
     label: 'Reactivated the Deal',
     detailsFn: () => '',
   },
   'invite-user': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Invited User',
     detailsFn: (activityData) => activityData?.user,
   },
   'edit-user': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Edited User',
     detailsFn: (activityData) => activityData?.user,
   },
   'remove-user': {
-    icon: '/svg/eye.svg',
+    icon: '/svg/edit-2.svg',
     label: 'Removed User',
     detailsFn: (activityData) => activityData?.user,
   },
+  'edit-page': {
+    icon: '/svg/edit-2.svg',
+    label: 'Edited Page',
+    detailsFn: (activityData) => activityData?.body.title
+  }
 }
 </script>
 

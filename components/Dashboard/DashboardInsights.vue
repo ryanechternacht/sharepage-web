@@ -53,7 +53,7 @@
 import { useBuyerActivityStore } from '@/stores/buyer-activity'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
+const { concat, filter, map, orderBy } = lodash_pkg;
 
 const buyerActivityStore = useBuyerActivityStore()
 const { getBuyerActivityForOrganizationCached } = storeToRefs(buyerActivityStore)
@@ -68,9 +68,14 @@ const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
 const last7Days = todayDayJs.subtract(7, 'day').toDate()
 const last30Days = todayDayJs.subtract(30, 'day').toDate()
 
+const allEvents = concat(
+  map(buyerActivity.events, e => { e.sortDate = e.createdAt; return e }), 
+  map(buyerActivity.activity, a => { a.sortDate = a.lastActivity; return a })
+)
+
 const last7DaysItems = computed(() => 
   orderBy(
-    filter(buyerActivity, ba => dayjs(ba.createdAt) > last7Days),
+    filter(allEvents, e => dayjs(e.sortDate) > last7Days),
     ['createdAt'],
     ['asc']
   )
@@ -78,9 +83,9 @@ const last7DaysItems = computed(() =>
 
 const last30DaysItems = computed(() => 
   orderBy(
-    filter(buyerActivity, 
-      ba => dayjs(ba.createdAt) <= last7Days
-        && dayjs(ba.createdAt) > last30Days),
+    filter(allEvents, 
+      e => dayjs(e.sortDate) <= last7Days
+        && dayjs(e.sortDate) > last30Days),
     ['createdAt'],
     ['asc']
   )
@@ -88,7 +93,7 @@ const last30DaysItems = computed(() =>
 
 const olderItems = computed(() => 
   orderBy(
-    filter(buyerActivity, ba => dayjs(ba.createdAt) <= last30Days),
+    filter(allEvents, e => dayjs(e.sortDate) <= last30Days),
     ['createdAt'],
     ['asc']
   )
