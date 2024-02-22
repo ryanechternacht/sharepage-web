@@ -82,8 +82,6 @@
 
       <div class="[grid-area:footer] h-20" />
     </div>
-
-    <div class="page-hider" v-if="hidePage" />
   </div>
 </template>
 
@@ -126,8 +124,6 @@ const config = useAppConfig()
 const linkedName = useCookie('linked-name', { domain: config.cookies.domain })
 const enteredName = useCookie('entered-name', { domain: config.cookies.domain })
 
-const hidePage = ref(false)
-
 const { 
   open: openAnonymousViewerModal,
   close: closeAnonymousViewerModal,
@@ -138,17 +134,13 @@ const {
     linkedName,
     onClose ({ name }) {
       closeAnonymousViewerModal()
-      hidePage.value = false
       enteredName.value = name
     }
   }
 })
 
-// TODO Restore the more complex form once I'm not always logged in 
-// if (!hasUser && !enteredName.value && route.query['sent-to']) {
-if (route.query['sent-to']) {
+if (!hasUser && !enteredName.value) {
   linkedName.value = route.query['sent-to']
-  hidePage.value = true
   // TODO can we put the blur into the modal background itself somehow?
   // surely there are props for overriding the default??
   openAnonymousViewerModal()
@@ -290,14 +282,5 @@ function requireLogin () {
   .milestone-icon {
     @apply [grid-area:icon] self-center px-1 w-[1.375rem];
   }
-}
-
-.page-hider {
-  /* TODO switch these to tailwind props and blur */
-  @apply bg-green-primary;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0;
 }
 </style>
