@@ -11,9 +11,9 @@
         <p>To edit this page, you'll need to login</p>
       </div>
       <BsButton
+        class="mx-auto"
         color="blue"
         hover-color="blue"
-        class="mx-auto"
         @click="goToLogin">Go to Login Page</BsButton>
     </div>
   </VueFinalModal>

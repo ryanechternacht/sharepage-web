@@ -27,7 +27,10 @@
 
       <div class="[grid-area:left-header] left-header">
         <div class="flex flex-row items-end gap-2 h-full">
-          <CopyToClipboardButton :buyersphere-id="buyersphereId" />
+          <BsButton @click="openShareModal">
+            <div class="mr-2 body-header"> Share</div> 
+            <ShareIcon />
+          </BsButton> 
           <template v-if="hasUser">
             <EditButton v-if="isSeller"
               show-text
@@ -94,7 +97,8 @@ import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
 import AnonymousViewModal from '@/components/Buyersphere/AnonymousViewModal';
-import RequireLoginModal from '@/components/Buyersphere/RequireLoginModal.vue';
+import RequireLoginModal from '@/components/Buyersphere/RequireLoginModal';
+import ShareLinkModal from '@/components/ShareLinkModal';
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';
 const { debounce, first } = lodash_pkg;
@@ -247,6 +251,21 @@ const {
 function requireLogin () {
   openLoginModal()
 }
+
+const { 
+  open: openShareModal,
+  close: closeShareModal
+} = useModal({
+  component: ShareLinkModal,
+  attrs: {
+    buyersphereId,
+    isBuyerspherePublic: buyersphere.isPublic,
+    page: {},
+    async onClose () {
+      closeShareModal()
+    }
+  }
+})
 
 function trackUserAction () {
   buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "site-activity" })
