@@ -35,7 +35,7 @@ module.exports = {
         'not-selected': '#929A9B',
         inactive: '#DEE1E1',
         border: '#E8E9ED',
-        hover: '#F8F8FA',
+        hover: '#F3F3F5',
         'hover-active': '#f3f4f4'
       },
       white: '#FFF'
