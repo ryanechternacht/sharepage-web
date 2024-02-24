@@ -4,33 +4,39 @@ module.exports = {
     colors: {
       // New colors
       green: {
-        primary: '#08C4B2',
-        background: '#ECF9F8',
+        primary: '#057A6F',
+        secondary: '#09DCC8',
+        background: '#DDECEA',
       },
       blue: {
-        primary: '#205BC3',
-        background: '#E7EBFD',
+        primary: '#36597c',
+        secondary: '#5f8cb9',
+        background: '#DFE8F1',
       },
       black: '#040404',
       purple: {
         secondary: '#AC44A8',
-        background: '#F8F4FF',
+        background: '#EAE6F2',
       },
       red: {
-        secondary: '#CE3665',
-        background: '#F8ECEC',
+        primary: '#753d3d',
+        secondary: '#B06868',
+        background: '#F2E6E6',
       },
       orange: {
-        secondary: '#DD9903',
-        background: '#FFF9E5',
+        primary: '#935420',
+        secondary: '#DFA16C',
+        background: '#FCF6F1',
       },
       gray: {
         headline: '#273333',
         body: '#364141',
         subtext: '#515E5F',
+        'not-selected': '#929A9B',
+        inactive: '#DEE1E1',
         border: '#E8E9ED',
-        hover: '#F3F3F5',
-        'hover-active': '#DEE1E1'
+        hover: '#F8F8FA',
+        'hover-active': '#f3f4f4'
       },
       white: '#FFF'
     },

@@ -2,10 +2,7 @@
   <div>
     <TopNav />
     <div class="page-layout">
-      <div class="[grid-area:top] page-top"
-        :class="{'bg-green-background': mainSection === 'activities',
-                 'bg-blue-background': mainSection === 'accounts',
-                 'bg-purple-background': mainSection === 'insights',}">
+      <div class="[grid-area:top] page-top bg-blue-background">
         <h1>{{ capitalize(mainSection) }}</h1>
       </div>
 
