@@ -33,15 +33,18 @@
   <div class="[grid-area:center] page-center" v-scroll-spy>
     <DashboardAccountSection v-if="activeDeals.length"
       id="active"
-      :accounts="activeDeals" />
+      :accounts="activeDeals"
+      @update:deal-status="updateDealStatus" />
 
     <DashboardAccountSection v-if="onHoldDeals.length"
       id="on-hold"
-      :accounts="onHoldDeals" />
+      :accounts="onHoldDeals"
+      @update:deal-status="updateDealStatus" />
 
     <DashboardAccountSection v-if="archivedDeals.length"
       id="archived"
-      :accounts="archivedDeals" />
+      :accounts="archivedDeals"
+      @update:deal-status="updateDealStatus" />
   </div>
 </template>
 
@@ -50,8 +53,9 @@ import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
+import { useBuyerspheresStore } from '@/stores/buyerspheres'
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
+const buyersphereStore = useBuyerspheresStore()
 
 const { apiFetch } = useNuxtApp()
 const { data: buyerspheres, refresh } = await apiFetch('/v0.1/buyerspheres', { 
@@ -92,6 +96,11 @@ const archivedDeals = computed(() =>
     ['asc']
   )
 )
+
+async function updateDealStatus({ account, status }) {
+  await buyersphereStore.updateBuyerInput({ buyersphereId: account.id, status })
+  account.status = status
+}
 </script>
 
 <style lang="postcss" scoped>

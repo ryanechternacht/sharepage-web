@@ -102,7 +102,11 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
           } 
         }
       )
-      const b = this.buyerspheres[buyersphereId].content
+      const b = this.buyerspheres && this.buyerspheres[buyersphereId]?.content
+      if (!b) {
+        return
+      }
+      
       if (data.value.featuresAnswer !== undefined) {
         b.featuresAnswer = data.value.featuresAnswer
       }
