@@ -20,8 +20,16 @@
         :buyersphere-id="buyersphereId"
         :name="name" />
 
-      <div v-if="!isBuyerspherePublic" class="mt-8 italic tag">
-        NOTE: this buyersphere isn't publicly viewable
+      <div v-if="!isBuyerspherePublic" class="mt-8">
+        <div class="italic tag">
+          NOTE: Because this Swaypage isn't publicly viewable, it can only be 
+          viewed users with a login.
+        </div>
+        <NuxtLink :to="makeBuyersphereLink(buyersphere, 'team')" 
+          class="block mt-2"
+          @click="emit('close')">
+          <div class="italic tag underline">Invite Users to this Swaypage</div>
+        </NuxtLink>
       </div>
     </div>
   </VueFinalModal>
@@ -29,13 +37,22 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
+import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
   buyersphereId: { type: String, required: true },
   isBuyerspherePublic: { type: Boolean, default: true }
 })
 
+const buyersphereStore = useBuyerspheresStore()
+const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+
+const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
+
 const emit = defineEmits(['close'])
 
 const name = ref(props.linkedName)
+
+const { makeBuyersphereLink } = useBuyersphereLinks()
 </script>
