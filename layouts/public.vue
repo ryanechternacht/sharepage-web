@@ -3,18 +3,12 @@
     <div class="px-6 pt-6 grid grid-cols-3">
       <div class="flex flex-row items-center gap-x-1">
         <img src="/logo.svg">
-        <h3>Buyersphere</h3>
+        <h3>Swaypage</h3>
       </div>
       <div class="flex flex-row items-center gap-x-4 mx-auto">
-        <NuxtLink to="https://www.thebuyersphere.com">
+        <NuxtLink to="https://www.swaypage.io">
           <h3 class="gray">LEARN MORE</h3>
         </NuxtLink>
-        <!-- <NuxtLink to="https://www.thebuyersphere.com/solution">
-          <h3 class="gray">SOLUTION</h3>
-        </NuxtLink>
-        <NuxtLink to="https://www.thebuyersphere.com/about">
-          <h3 class="gray">ABOUT</h3>
-        </NuxtLink> -->
       </div>
       <div class="flex flex-row items-center gap-x-3">
         <!-- TODO add these login options back if we use this for more than login -->

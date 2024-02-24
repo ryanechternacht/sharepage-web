@@ -104,7 +104,7 @@ import lodash_pkg from 'lodash';
 const { debounce, first } = lodash_pkg;
 
 definePageMeta({
-  name: 'buyersphere'
+  name: 'swaypage'
 })
 
 const route = useRoute()

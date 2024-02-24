@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia'
 export default defineNuxtRouteMiddleware(async (to, _) => {
   if (to.path === '/test') {
     return;
-  } else if (to.matched[0]?.name === 'buyersphere') {
+  } else if (to.matched[0]?.name === 'swaypage') {
     const buyersphereStore = useBuyerspheresStore()
     const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 

@@ -7,7 +7,7 @@
     <h1>
       {{ organization 
         ? `Welcome to ${organization.name}`
-        : "Welcome to the Buyersphere 🚀" }}
+        : "Welcome to Swaypage 🚀" }}
     </h1>
     
     <input 
