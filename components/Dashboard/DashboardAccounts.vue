@@ -31,53 +31,17 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <div id="active" class="section">
-      <div class="group-header">Active Deals</div>
-      <div class="item-count">
-        {{ activeDeals.length === 1 ? '1 account' : `${activeDeals.length} accounts`}}
-      </div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <div v-for="bs in activeDeals"
-          class="item-list-row"
-          @click="navigateTo(makeBuyersphereLink(bs))">
-          <Logo :src="bs.buyerLogo" />
-          <h3>{{ bs.buyer }}</h3>
-          <div class="flex-grow" />
-        </div>
-      </div>
-    </div>
+    <DashboardAccountSection v-if="activeDeals.length"
+      id="active"
+      :accounts="activeDeals" />
 
-    <div id="on-hold" class="section">
-      <div class="group-header">On Hold Deals</div>
-      <div class="item-count">
-        {{ onHoldDeals.length === 1 ? '1 account' : `${onHoldDeals.length} accounts`}}
-      </div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <div v-for="bs in onHoldDeals"
-          class="item-list-row"
-          @click="navigateTo(makeBuyersphereLink(bs))">
-          <Logo :src="bs.buyerLogo" />
-          <h3>{{ bs.buyer }}</h3>
-          <div class="flex-grow" />
-        </div>
-      </div>
-    </div>
+    <DashboardAccountSection v-if="onHoldDeals.length"
+      id="on-hold"
+      :accounts="onHoldDeals" />
 
-    <div id="opt-out" class="section">
-      <div class="group-header">Archived Deals</div>
-      <div class="item-count">
-        {{ archivedDeals.length === 1 ? '1 account' : `${archivedDeals.length} accounts`}}
-      </div>
-      <div class="mt-[2rem] flex flex-col gap-4">
-        <div v-for="bs in archivedDeals"
-          class="item-list-row"
-          @click="navigateTo(makeBuyersphereLink(bs))">
-          <Logo :src="bs.buyerLogo" />
-          <h3>{{ bs.buyer }}</h3>
-          <div class="flex-grow" />
-        </div>
-      </div>
-    </div>
+    <DashboardAccountSection v-if="archivedDeals.length"
+      id="archived"
+      :accounts="archivedDeals" />
   </div>
 </template>
 

@@ -3,10 +3,7 @@
     :style="{ width, height }"
     :class="[bgColor, { 'cursor-pointer': button }]"
     class="center-xy rounded-md px-2 py-[2px]">
-    <div class="tag flex flex-row items-center" :class="[textColor]">
-      <div v-if="useDot" 
-        class="rounded-full w-2 h-2 mr-2" 
-        :class="[dotColor]"/> 
+    <div class="tag center-xy" :class="[textColor]">
       <slot />
     </div>
   </div>
@@ -17,7 +14,6 @@ const props = defineProps({
   color: { type: String, required: true }, 
   button: Boolean,
   height: String,
-  useDot: Boolean,
   width: String, 
 })
 
