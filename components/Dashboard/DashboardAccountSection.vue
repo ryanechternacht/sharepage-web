@@ -16,14 +16,17 @@
         <div
           class="show-on-row-hover flex flex-row gap-4 items-center">
           <BsButton v-if="a.status !== 'active'"
+            hover-color="blue"
             @click.stop="changeDealStatus(a, 'active')">
             <span class="tag-header">Reactivate</span>
           </BsButton>
           <BsButton v-if="a.status !== 'on-hold'"
+            hover-color="red"
             @click.stop="changeDealStatus(a, 'on-hold')">
             <span class="tag-header">Put on Hold</span>
           </BsButton>
           <BsButton v-if="a.status !== 'opt-out'"
+            hover-color="red"
             @click.stop="changeDealStatus(a, 'opt-out')">
             <span class="tag-header">Archive</span>
           </BsButton>
