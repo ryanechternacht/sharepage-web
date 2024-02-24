@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row items-center gap-6 w-full px-10 py-6">
     <NuxtLink to="/" class="link">
-      <img src="/svg/logo-gradient.svg">
+      <img src="/svg/logo.svg" class="h-[1rem] w-[1rem]">
       <span>Home</span>
     </NuxtLink>
     <template v-if="user?.buyersphereRole === 'admin'">
