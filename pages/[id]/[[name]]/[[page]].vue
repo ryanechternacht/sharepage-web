@@ -79,7 +79,8 @@
       <BuyersphereTeam v-else-if="page === 'team'" />
       <BuyersphereInsights v-else-if="page === 'insights'" />
       <BuyersphereAssets v-else-if="page === 'assets'" />
-      <BuyerspherePage v-else 
+      <BuyerspherePage v-else
+        :key="route.params.page"
         @require-login="requireLogin" />
       <!-- <BuyersphereNotes v-else-if="page === 'notes'" /> -->
 
