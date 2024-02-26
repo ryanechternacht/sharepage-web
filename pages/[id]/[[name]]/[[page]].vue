@@ -281,11 +281,9 @@ const debouncedTrackUserAction = debounce(
 
 if (process.client) {
   onMounted(() => {
-    console.log('mounted')
     window.addEventListener('scroll', debouncedTrackUserAction)
   })
   onUnmounted(() => {
-    console.log('unmounted')
     window.removeEventListener('scroll', debouncedTrackUserAction)
   })
 }
