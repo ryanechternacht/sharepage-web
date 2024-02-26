@@ -1,6 +1,6 @@
 <template>
   <div id="active" class="section">
-    <div class="group-header">Active Deals</div>
+    <div class="group-header">{{ header }}</div>
     <div class="item-count">
       {{ accounts.length === 1 ? '1 account' : `${accounts.length} accounts`}}
     </div>
@@ -43,7 +43,10 @@
 <script setup>
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
-const props = defineProps({ accounts: { type: Array, required: true }})
+const props = defineProps({ 
+  accounts: { type: Array, required: true },
+  header: { type: String, default: "Accounts" }
+})
 
 const emit = defineEmits(['update:deal-status'])
 

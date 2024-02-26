@@ -31,19 +31,22 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <DashboardAccountSection v-if="activeDeals.length"
+    <DashboardAccountsSection v-if="activeDeals.length"
       id="active"
       :accounts="activeDeals"
+      header="Active Deals"
       @update:deal-status="updateDealStatus" />
 
-    <DashboardAccountSection v-if="onHoldDeals.length"
+    <DashboardAccountsSection v-if="onHoldDeals.length"
       id="on-hold"
       :accounts="onHoldDeals"
+      header="On Hold Deals"
       @update:deal-status="updateDealStatus" />
 
-    <DashboardAccountSection v-if="archivedDeals.length"
+    <DashboardAccountsSection v-if="archivedDeals.length"
       id="archived"
       :accounts="archivedDeals"
+      header="Archived Deals"
       @update:deal-status="updateDealStatus" />
   </div>
 </template>
