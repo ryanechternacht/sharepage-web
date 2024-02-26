@@ -48,7 +48,7 @@
           <h3 class="mb-4">Pages</h3>
           <NuxtLink v-for="p in pages"
             class="page-link"
-            :class="{underline: p.id === page}"
+            :class="{underline: `${p.id}` === page}"
             :to="makeBuyersphereLink(buyersphere, p.id)">
             {{ p.title }}
           </NuxtLink>
