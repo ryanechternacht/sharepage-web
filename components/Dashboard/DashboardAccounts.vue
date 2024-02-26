@@ -61,7 +61,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 const buyersphereStore = useBuyerspheresStore()
 
 const { apiFetch } = useNuxtApp()
-const { data: buyerspheres, refresh } = await apiFetch('/v0.1/buyerspheres', { 
+const { data: buyerspheres } = await apiFetch('/v0.1/buyerspheres', { 
   // query
 })
 
@@ -69,9 +69,14 @@ const { open, close } = useModal({
   component: AddEditBuyersphereModal,
   attrs: {
     buyersphere: {},
-    onClose () {
+    async onClose (props) {
+      if (props?.buyersphereId) {
+        const router = useRouter()
+        await router.replace({
+          path: `/${props.buyersphereId}`
+        })
+      }
       close()
-      refresh()
     }
   }
 })

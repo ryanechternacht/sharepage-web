@@ -43,33 +43,54 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     },
   },
   actions: {
-    async createBuyersphere({ buyer, subname, buyerLogo, crmOpportunityId, dealAmount }) {
+    async createBuyersphere({ 
+      buyer, subname, buyerLogo, crmOpportunityId, dealAmount,
+      pageTemplateId, pageTitle 
+    }) {
       const { apiFetch } = useNuxtApp()
-      await apiFetch(
+      const { data } =  await apiFetch(
         `/v0.1/buyerspheres`,
-        { method: 'POST', body: { buyer, subname, buyerLogo, crmOpportunityId, dealAmount } }
+        { 
+          method: 'POST', 
+          body: { 
+            buyer,
+            subname,
+            buyerLogo,
+            crmOpportunityId,
+            dealAmount,
+            pageTemplateId,
+            pageTitle,
+          } 
+        }
       )
+      return data.value.id
     },
-    async saveBuyersphereSettings({ buyersphereId, buyer, subname, buyerLogo, dealAmount, crmOpportunityId, 
-      currentStage, showPricing,  qualificationDate, evaluationDate, decisionDate, status, isPublic }) {
+    async saveBuyersphereSettings({
+      buyersphereId, buyer, subname, buyerLogo, dealAmount, 
+      crmOpportunityId, currentStage, showPricing,  qualificationDate, 
+      evaluationDate, decisionDate, status, isPublic 
+    }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}`,
-        { method: 'PATCH', body: { 
-          buyer,
-          subname, 
-          buyerLogo,
-          dealAmount,
-          crmOpportunityId,
-          currentStage,
-          showPricing,
-          qualificationDate,
-          evaluationDate,
-          decisionDate,
-          status,
-          isPublic,
-        } 
-      })
+        { 
+          method: 'PATCH',
+          body: { 
+            buyer,
+            subname, 
+            buyerLogo,
+            dealAmount,
+            crmOpportunityId,
+            currentStage,
+            showPricing,
+            qualificationDate,
+            evaluationDate,
+            decisionDate,
+            status,
+            isPublic,
+          } 
+        }
+      )
 
       const b = this.buyerspheres[buyersphereId].content
       b.currentStage = data.value.currentStage

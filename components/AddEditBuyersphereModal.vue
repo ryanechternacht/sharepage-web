@@ -41,6 +41,18 @@
           </div>
         </div>
       </div>
+      <div v-if="!editMode">
+        <h3>Starting Page (required)</h3>
+        <input v-model="pageTitle"
+          class="w-full mb-2"
+          placeholder="Starting Page Title">
+        <select v-model="pageTemplateId">
+          <option disabled hidden selected value="-1">Choose a Template</option>
+          <option value="0">Blank Page</option>
+          <option v-for="pt in pageTemplates"
+            :value="pt.id">{{ pt.title }}</option>
+        </select>
+      </div>
       <div v-if="editMode">
         <h3>Deal Status</h3>
         <select v-model="status"
@@ -87,6 +99,7 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useTemplatesStore } from '@/stores/templates'
 import { Money3Component } from 'v-money3';
 import lodash_pkg from 'lodash';
 const { debounce } = lodash_pkg;
@@ -109,6 +122,12 @@ const editMode = ref(!!props.buyersphere.id)
 
 const store = useBuyerspheresStore()
 
+const templatesStore = useTemplatesStore()
+const pageTemplates = ref([])
+if (!editMode.value) {
+  pageTemplates.value = await templatesStore.getPageTemplatesCached()
+}
+
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.saveBuyersphereSettings({
@@ -122,28 +141,34 @@ const { submissionState, submitFn } = useSubmit(async () => {
       crmOpportunityId,
       isPublic,
     })
+    emit('close', { buyersphereId: props.buyersphere.id })
   } else {
-    await store.createBuyersphere({ 
+    const buyersphereId = await store.createBuyersphere({ 
       buyer,
       subname,
       buyerLogo,
       dealAmount,
       crmOpportunityId,
+      pageTemplateId: pageTemplateId ?? null, // if id = 0, send null
+      pageTitle,
     })
+    emit('close', { buyersphereId })
   }
-  emit('close')
 })
 
 const buyer = ref(props.buyersphere?.buyer)
 const subname = ref(props.buyersphere?.subname)
 const buyerLogo = ref(props.buyersphere?.buyerLogo)
 const status = ref(props.buyersphere.status)
+const pageTitle = ref('')
+const pageTemplateId = ref(-1)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
 const showPricing = ref(props.buyersphere.showPricing)
 const isPublic = ref(props.buyersphere.isPublic)
 
-const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value)
+const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value
+  || !pageTitle.value || pageTemplateId.value < 0)
 
 function isValidUrl (string) {
   try {
