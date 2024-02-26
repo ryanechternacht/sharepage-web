@@ -9,8 +9,12 @@
         class="item-list-row"
         @click="navigateTo(makeBuyersphereLink(a))">
         <Logo :src="a.buyerLogo" />
-        <h3>{{ a.buyer }}</h3>
-        <div v-if="a.subname" class="tag">{{ a.subname }}</div>
+
+        <!-- this is to align the 2 text sizes to baseline to look better -->
+        <div class="flex flex-row items-end gap-4">
+          <h3>{{ a.buyer }}</h3>
+          <div v-if="a.subname" class="tag">{{ a.subname }}</div>
+        </div>
         <div class="flex-grow" />
         
         <div
