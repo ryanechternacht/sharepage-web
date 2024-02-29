@@ -1,6 +1,6 @@
 <template>
   <VueFinalModal
-    class="flex justify-center items-center"
+    class="center-xy"
     content-class="p-4 bg-white rounded-md">
     <div class="w-[36rem] flex flex-col items-center gap-2">
       <h1>{{ editMode ? "Edit" : "Add" }} Milestone</h1>

@@ -1,6 +1,6 @@
 <template>
   <VueFinalModal
-    class="flex justify-center items-center"
+    class="center-xy"
     content-class="p-4 bg-white rounded-md"
   >
     <div class="flex flex-col w-[36rem] gap-2">
@@ -41,7 +41,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 
 const props = defineProps({
-  buyersphereId: { type: String, required: true },
+  buyersphereId: { type: Number, required: true },
   isBuyerspherePublic: { type: Boolean, default: true }
 })
 

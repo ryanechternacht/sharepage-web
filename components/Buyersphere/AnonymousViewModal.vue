@@ -1,6 +1,6 @@
 <template>
   <VueFinalModal
-    class="flex justify-center items-center"
+    class="center-xy"
     content-class="p-4 bg-white rounded-md"
     background="interactive"
     :esc-to-close="false"

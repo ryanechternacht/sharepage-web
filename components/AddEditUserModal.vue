@@ -1,6 +1,6 @@
 <template>
   <VueFinalModal
-    class="flex justify-center items-center"
+    class="center-xy"
     content-class="p-4 bg-white rounded-md">
     <div class="flex flex-col">
       <div class="flex flex-row items-center mb-3">
