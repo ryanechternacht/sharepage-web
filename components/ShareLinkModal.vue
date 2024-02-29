@@ -3,24 +3,34 @@
     class="center-xy"
     content-class="p-4 bg-white rounded-md"
   >
-    <div class="flex flex-col w-[36rem] gap-2">
-      <div class="flex flex-row items-center mb-3">
+    <div class="modal-grid">
+      <div class="col-span-2 flex flex-row items-center mb-3">
         <h3 class="flex-grow">Share this Sway Page</h3>
+        <BsButton @click="emit('close')">Close</BsButton>
       </div>
-      <div class="w-full mb-2">
-        <h3>What's the name of the person you'd like to share this with?</h3>
-        <input v-model="name"
-          class="w-full"
-          placeholder="Enter their name">
-      </div>
-      <CopyToClipboardButton
-        class="mx-auto"
-        color="blue"
-        hover-color="blue"
-        :buyersphere-id="buyersphereId"
-        :name="name" />
 
-      <div v-if="!isBuyerspherePublic" class="mt-8">
+      <div class="flex flex-col">
+        <h3>Send a General Link</h3>
+        <CopyToClipboardButton
+          class="w-[8rem] mt-4"
+          color="blue"
+          hover-color="blue"
+          :buyersphere-id="buyersphereId" />
+      </div>
+      <div>
+        <h3>Send a Personalized Link</h3>
+        <input v-model="name"
+          class="w-full mt-2"
+          placeholder="Enter their name">
+        <CopyToClipboardButton
+          class=" w-[8rem] mt-4"
+          color="blue"
+          hover-color="blue"
+          :buyersphere-id="buyersphereId"
+          :name="name" />
+      </div>
+
+      <div v-if="!isBuyerspherePublic" class="mt-8 col-span-2">
         <div class="italic tag">
           NOTE: Because this Swaypage isn't publicly viewable, it can only be 
           viewed users with a login.
@@ -56,3 +66,12 @@ const name = ref(props.linkedName)
 
 const { makeBuyersphereLink } = useBuyersphereLinks()
 </script>
+
+<style lang="postcss" scoped>
+.modal-grid {
+  @apply grid gap-y-2 gap-x-8 w-[36rem];
+  grid-template-columns: repeat(2, 1fr);
+
+  /* flex flex-col w-[36rem] gap-2 */
+}
+</style>
