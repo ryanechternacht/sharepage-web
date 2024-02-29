@@ -176,6 +176,11 @@ function selectListIem ({ section, choice, index }) {
   }
 }
 
+// Ideally we could use a middleware (vs. a manual route guard) to implement
+// the save on route, but middlewares can only be registered on pages. This
+// would require us to make the current page a layout, and then implement
+// these components as pages. This is probably worth doing when we do a larger
+// layout/styling rework
 async function save() {
   page.title = title.value
   await buyersphereStore.updatePage({ buyersphereId, pageId, page })
