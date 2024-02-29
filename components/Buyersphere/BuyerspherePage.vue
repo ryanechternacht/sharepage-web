@@ -153,6 +153,12 @@ const page = pageId
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
+router.beforeEach(async (to, from) => {
+  if (isDirty) {
+    await debouncedSave.flush()
+  }
+})
+
 setTimeout(() => router.replace({
   path: makeBuyersphereLink(buyersphere, page.id)
 }), 100)
@@ -170,18 +176,22 @@ function selectListIem ({ section, choice, index }) {
   }
 }
 
-function save() {
+async function save() {
   page.title = title.value
-  buyersphereStore.updatePage({ buyersphereId, pageId, page })
+  await buyersphereStore.updatePage({ buyersphereId, pageId, page })
+  isDirty = false
 }
 
 const debouncedSave = debounce(save, 5000, { leading: false, trailing: true})
+let isDirty = false
 
 watch(sections.value, () => {
+  isDirty = true
   debouncedSave()
 })
 
 watch(title, () => {
+  isDirty = true
   debouncedSave()
 })
 

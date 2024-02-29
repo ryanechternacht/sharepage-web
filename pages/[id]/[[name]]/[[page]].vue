@@ -106,7 +106,7 @@ const { debounce, first } = lodash_pkg;
 
 definePageMeta({
   name: 'swaypage',
-  key: route => route.params.id
+  key: route => route.params.id,
 })
 
 const route = useRoute()
