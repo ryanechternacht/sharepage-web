@@ -46,7 +46,7 @@
         <input v-model="pageTitle"
           class="w-full mb-2"
           placeholder="Starting Page Title">
-        <select v-model="pageTemplateId">
+        <select v-model.number="pageTemplateId">
           <option disabled hidden selected value="-1">Choose a Template</option>
           <option value="0">Blank Page</option>
           <option v-for="pt in pageTemplates"
