@@ -153,7 +153,7 @@ const page = pageId
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async () => {
   if (isDirty) {
     await debouncedSave.flush()
   }
@@ -187,7 +187,7 @@ async function save() {
   isDirty = false
 }
 
-const debouncedSave = debounce(save, 5000, { leading: false, trailing: true})
+const debouncedSave = debounce(save, 5000, { leading: false, trailing: true })
 let isDirty = false
 
 watch(sections.value, () => {

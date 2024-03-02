@@ -33,6 +33,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       requestOptions.credentials = 'include'
     }
 
+    // By default, nuxt was trying to intelligently refresh requests,
+    // which was causing api calls to be repeated without me realizing it.
+    // This suggests to me what I'm doing here is a bad idea, and I should
+    // find a better way to achieve this
+    requestOptions.watch = false
+
     return await useFetch(apiUrl(path), requestOptions)
   }
 })
