@@ -176,6 +176,15 @@ function selectListIem ({ section, choice, index }) {
   }
 }
 
+if (process.client) {
+  window.addEventListener('beforeunload', (e) => {
+    if (isDirty) {
+      debouncedSave.flush()
+      e.preventDefault()
+    }
+  })
+}
+
 // Ideally we could use a middleware (vs. a manual route guard) to implement
 // the save on route, but middlewares can only be registered on pages. This
 // would require us to make the current page a layout, and then implement
@@ -187,7 +196,7 @@ async function save() {
   isDirty = false
 }
 
-const debouncedSave = debounce(save, 5000, { leading: false, trailing: true })
+const debouncedSave = debounce(save, 2000, { leading: false, trailing: true })
 let isDirty = false
 
 watch(sections.value, () => {
