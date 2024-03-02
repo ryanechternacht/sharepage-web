@@ -168,7 +168,7 @@ const showPricing = ref(props.buyersphere.showPricing)
 const isPublic = ref(props.buyersphere.isPublic)
 
 const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value
-  || !pageTitle.value || pageTemplateId.value < 0)
+  || (!editMode.value && (!pageTitle.value || pageTemplateId.value < 0)))
 
 function isValidUrl (string) {
   try {
