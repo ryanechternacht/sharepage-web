@@ -44,12 +44,16 @@
         <div class="group-header">Page Title</div>
         <input v-model="title" class="mt-4">
       </div>
-      <template v-for="section in sections">
+      <template v-for="(section, index) in sections">
         <div class="section"
           v-if="section.type === 'simple-text'">
           <input class="group-header-input"
             v-model="section.title"
             placeholder="Enter section title">
+          <div class="item-count">
+            <DeleteButton @click="deleteSection(index)" />
+          </div>
+
           <TipTapTextarea
             class="w-full mt-6"
             v-model="section.body.question"
@@ -68,6 +72,10 @@
           <input class="group-header-input"
             v-model="section.title"
             placeholder="Enter section title">
+          <div class="item-count">
+            <DeleteButton @click="deleteSection(index)" />
+          </div>
+          
           <TipTapTextarea
             class="w-full mt-6"
             v-model="section.body.question"
@@ -105,6 +113,7 @@
       </div>
     </template>
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>
@@ -238,6 +247,10 @@ function addNewListBlock () {
       },
     },
   })
+}
+
+function deleteSection(index) {
+  sections.value.splice(index, 1)
 }
 </script>
 

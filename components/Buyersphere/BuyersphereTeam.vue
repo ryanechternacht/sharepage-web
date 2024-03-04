@@ -27,6 +27,7 @@
       :can-delete="isSeller"
       @delete:user="removeUser" />
     
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

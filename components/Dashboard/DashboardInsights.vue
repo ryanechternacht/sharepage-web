@@ -45,6 +45,7 @@
       header="Older" 
       show-account />
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

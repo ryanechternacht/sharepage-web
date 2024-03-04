@@ -109,6 +109,7 @@
       Est Finish: {{ lastItem.dueDate }}
     </h2>
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

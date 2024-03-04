@@ -27,6 +27,7 @@
       @delete:activity="deleteActivityTemplate"
     />
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

@@ -30,6 +30,7 @@
       @resolve:activity="resolveActivity"
       @delete:activity="deleteActivity"
     />
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

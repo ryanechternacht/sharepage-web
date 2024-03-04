@@ -111,6 +111,7 @@
       <TipTapTextarea is-demo class="w-full mb-4" />
     </div>
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

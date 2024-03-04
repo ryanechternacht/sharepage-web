@@ -15,6 +15,7 @@
       :items="olderItems"
       header="Older" />
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

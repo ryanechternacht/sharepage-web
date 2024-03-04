@@ -58,6 +58,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>

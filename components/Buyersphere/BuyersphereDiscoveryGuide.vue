@@ -164,6 +164,7 @@
       </div>
     </div>
 
+    <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
 </template>
