@@ -3,9 +3,9 @@
     class="center-xy"
     content-class="p-4 bg-white rounded-md"
   >
-    <div class="flex flex-col w-[20rem] gap-2">
+    <div class="flex flex-col w-[24rem] gap-2">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">Welcome to the {{ buyersphereName }} Sway Page</h3>
+        <h3 class="flex-grow">Welcome to the {{ buyersphere.buyer }} Sway Page</h3>
       </div>
       <div class="w-full mb-4">
         <p>To edit this page, you'll need an account.</p>
@@ -27,7 +27,7 @@
 import { VueFinalModal } from 'vue-final-modal'
 
 const props = defineProps({
-  buyersphereName: { type: String, required: true }
+  buyersphere: { type: Object, required: true },
 })
 
 const emit = defineEmits(['close'])
@@ -37,6 +37,6 @@ async function goToLogin () {
 }
 
 async function goToSignup () {
-  await navigateTo('/signup')
+  await navigateTo(`/signup?swaypage-id=${props.buyersphere.id}`)
 }
 </script>

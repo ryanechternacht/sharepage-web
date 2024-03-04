@@ -50,6 +50,9 @@ definePageMeta({
   layout: "public",
 });
 
+const route = useRoute()
+const swaypageId = route.query['swaypage-id']
+
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
@@ -65,6 +68,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       firstName: firstName.value,
       lastName: lastName.value,
       displayRole: displayRole.value,
+      swaypageId,
     }
   })
   if (error.value) throw error.value;

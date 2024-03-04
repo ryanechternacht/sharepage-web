@@ -242,7 +242,7 @@ const {
 } = useModal({
   component: RequireLoginModal,
   attrs: {
-    buyersphereId,
+    buyersphere,
     page: {},
     async onClose () {
       closeLoginModal()
