@@ -36,6 +36,19 @@
             </div>
           </div>
         </div>
+
+        <div class="section"
+          v-else-if="section.type === 'simple-asset'">
+          <div class="group-header">{{ section.title }}</div>
+          <div v-if="section.body.description?.length > 0"
+            class="mt-4 inline-html" v-html="section.body.description" />
+          <div class="mt-4 border border-gray-border rounded-md hover:bg-gray-hover px-2 py-1">
+            <a :href="section.body.asset.link"
+              target="_blank"
+              @click="clickActivity(section.body.asset)"
+            >{{ section.body.asset.title }}</a>
+          </div>
+        </div>
       </template>
     </template>
 
@@ -49,7 +62,7 @@
           v-if="section.type === 'simple-text'">
           <input class="group-header-input"
             v-model="section.title"
-            placeholder="Enter section title">
+            placeholder="Enter Text Block Title">
           <div class="item-count">
             <DeleteButton @click="deleteSection(index)" />
           </div>
@@ -57,7 +70,7 @@
           <TipTapTextarea
             class="w-full mt-6"
             v-model="section.body.question"
-            placeholder="Enter section body text" />
+            placeholder="Enter Text Block body text" />
           <div class="w-full mt-6">
             <input v-model="section.body.showAnswer"
               id="hide-pricing" 
@@ -71,7 +84,7 @@
           v-else-if="section.type === 'simple-list'">
           <input class="group-header-input"
             v-model="section.title"
-            placeholder="Enter section title">
+            placeholder="Enter List Block Title">
           <div class="item-count">
             <DeleteButton @click="deleteSection(index)" />
           </div>
@@ -79,7 +92,7 @@
           <TipTapTextarea
             class="w-full mt-6"
             v-model="section.body.question"
-            placeholder="Enter section body text" />
+            placeholder="Enter List Block body text" />
 
           <h4>Answer Choices:</h4>
           <div class="flex flex-col gap-1">
@@ -94,19 +107,44 @@
           <NewButton class="section-add-button"
             @click="section.body.choices.push({text: ''})" />
         </div>
+
+        <div class="section"
+          v-if="section.type === 'simple-asset'">
+          <input class="group-header-input"
+            v-model="section.title"
+            placeholder="Enter Asset Block Title">
+          <div class="item-count">
+            <DeleteButton @click="deleteSection(index)" />
+          </div>
+
+          <TipTapTextarea
+            class="w-full mt-6"
+            v-model="section.body.description"
+            placeholder="Enter Asset Block description (optional)" />
+          <select v-model="section.body.asset"
+            class="mt-6">
+            <option v-for="r in buyersphere.resources"
+              :value="r">{{ r.title }}</option>
+          </select>
+        </div>
       </template>
 
       <div class="section">
         <div class="group-header">Add New Block</div>
         <div class="mt-4 flex flex-row gap-4">
           <BsButton hover-color="blue"
-              @click="addNewTextBlock">
+              @click="addNewTextSection">
             <div class="body-header mr-2">Text Block</div> 
             <TypeIcon />
           </BsButton>
           <BsButton hover-color="blue"
-              @click="addNewListBlock">
+              @click="addNewListSection">
             <div class="body-header mr-2">List Block</div> 
+            <ListIcon />
+          </BsButton>
+          <BsButton hover-color="blue"
+              @click="addNewAssetSection">
+            <div class="body-header mr-2">Asset Block</div> 
             <ListIcon />
           </BsButton>
         </div>
@@ -218,7 +256,7 @@ watch(title, () => {
   debouncedSave()
 })
 
-function addNewTextBlock () {
+function addNewTextSection () {
   sections.value.push({
     type: "simple-text",
     title: "",
@@ -230,7 +268,7 @@ function addNewTextBlock () {
   })
 }
 
-function addNewListBlock () {
+function addNewListSection () {
   sections.value.push({
     type: "simple-list",
     title: "",
@@ -245,6 +283,20 @@ function addNewListBlock () {
         index: null,
         text: "",
       },
+    },
+  })
+}
+
+function addNewAssetSection () {
+  sections.value.push({
+    type: "simple-asset",
+    title: "",
+    body: {
+      asset: {
+        title: "",
+        link: "",
+      },
+      description: "",
     },
   })
 }
