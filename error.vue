@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col gap-10 mt-10 items-center px-20">
-    <img src="/logo.svg" class="w-40 h-40">
+    <img src="/svg/logo.svg" class="w-40 h-40">
     <h1>
       {{ error?.message ?? "We're sorry. Something went wrong" }}
     </h1>

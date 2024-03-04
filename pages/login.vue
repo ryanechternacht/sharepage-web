@@ -1,13 +1,13 @@
 <template>
-  <div class="flex flex-col items-center gap-y-5 mb-20">
+  <div class="flex flex-col items-center gap-y-5">
     <img 
-      :src="organization ? organization.logo : '/logo-big.svg'"
+      :src="organization ? organization.logo : '/svg/logo.svg'"
       class="w-20">
     
     <h1>
       {{ organization 
         ? `Welcome to ${organization.name}`
-        : "Welcome to Swaypage 🚀" }}
+        : "Welcome to Swaypage" }}
     </h1>
     
     <input 

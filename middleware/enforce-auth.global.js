@@ -15,7 +15,9 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
     if (!buyersphere) {
       return navigateTo('/login')
     }
-  } else if (to.path != '/login') {
+  } else if (!['/login', '/signup'].includes(to.path)) {
+    // TODO a better way to do route permission 
+    // (probably using definePageMeta)
     const usersStore = useUsersStore()
     const { getMeCached } = storeToRefs(usersStore)
 
