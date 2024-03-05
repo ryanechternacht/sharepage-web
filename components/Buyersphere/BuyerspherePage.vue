@@ -54,6 +54,16 @@
     </template>
 
     <template v-else-if="pageView === 'Edit'">
+      <div class="flex flex-row-reverse">
+        <SubmitButton 
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
+      </div>
+      
       <div class="section">
         <div class="group-header">Page Title</div>
         <input v-model="title" class="mt-4">
@@ -149,6 +159,16 @@
             <ListIcon />
           </BsButton>
         </div>
+      </div>
+
+      <div class="flex flex-row-reverse">
+        <SubmitButton 
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
       </div>
     </template>
 
@@ -247,6 +267,14 @@ async function save() {
 
 const debouncedSave = debounce(save, 2000, { leading: false, trailing: true })
 let isDirty = false
+
+const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
+  save()
+})
+
+const saveReadyText = "Save Changes"
+const saveSubmittingText = "Saving Changes"
+const saveErrorText = "Save Failed. Try Again"
 
 watch(sections.value, () => {
   isDirty = true

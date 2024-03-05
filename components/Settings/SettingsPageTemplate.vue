@@ -51,6 +51,16 @@
     </template>
 
     <template v-else-if="pageView === 'Edit'">
+      <div class="flex flex-row-reverse">
+        <SubmitButton 
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
+      </div>
+
       <div class="section">
         <div class="group-header">Page Title</div>
         <input v-model="title" class="mt-4">
@@ -147,6 +157,16 @@
           </BsButton>
         </div>
       </div>
+
+      <div class="flex flex-row-reverse">
+        <SubmitButton 
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
+      </div>
     </template>
 
     <div class="bottom-cover" />
@@ -191,6 +211,13 @@ const pageTemplate = pageTemplateId
   ? find(pageTemplates, pt => pt.id === pageTemplateId)
   : first(pageTemplates)
 
+const router = useRouter()
+router.beforeEach(async () => {
+  if (isDirty) {
+    await debouncedSave.flush()
+  }
+})
+
 const sections = ref(pageTemplate.body.sections)
 const title = ref(pageTemplate.title)
 
@@ -199,18 +226,39 @@ function selectListIem ({ section, choice, index }) {
   section.body.answer.index = index
 }
 
-function save() {
+if (process.client) {
+  window.addEventListener('beforeunload', (e) => {
+    if (isDirty) {
+      debouncedSave.flush()
+      e.preventDefault()
+    }
+  })
+}
+
+async function save() {
   pageTemplate.title = title.value
-  templatesStore.updatePageTemplate({ id: pageTemplateId, pageTemplate })
+  await templatesStore.updatePageTemplate({ id: pageTemplateId, pageTemplate })
+  isDirty = false
 }
 
 const debouncedSave = debounce(save, 5000, { leading: false, trailing: true })
+let isDirty = false
+
+const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
+  save()
+})
+
+const saveReadyText = "Save Changes"
+const saveSubmittingText = "Saving Changes"
+const saveErrorText = "Save Failed. Try Again"
 
 watch(sections.value, () => {
+  isDirty = true
   debouncedSave()
 })
 
 watch(title, () => {
+  isDirty = true
   debouncedSave()
 })
 
