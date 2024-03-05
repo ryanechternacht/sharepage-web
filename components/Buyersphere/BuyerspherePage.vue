@@ -42,12 +42,13 @@
           <div class="group-header">{{ section.title }}</div>
           <div v-if="section.body.description?.length > 0"
             class="mt-4 inline-html" v-html="section.body.description" />
-          <div class="mt-4 border border-gray-border rounded-md hover:bg-gray-hover px-2 py-1">
-            <a :href="section.body.asset.link"
-              target="_blank"
-              @click="clickActivity(section.body.asset)"
-            >{{ section.body.asset.title }}</a>
-          </div>
+          <a class="asset-link"
+            :href="section.body.asset.link"
+            target="_blank"
+            @click="clickActivity(section.body.asset)">
+            <BookIcon class="w-[1rem] h-[1rem]" />
+            <span>{{ section.body.asset.title }}</span>
+          </a>
         </div>
       </template>
     </template>
@@ -161,6 +162,7 @@ import lodash_pkg from 'lodash';
 const { debounce, find, first } = lodash_pkg;
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
+import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
@@ -256,6 +258,15 @@ watch(title, () => {
   debouncedSave()
 })
 
+const buyerActivityStore = useBuyerActivityStore()
+function clickActivity(asset) {
+  buyerActivityStore.captureBuyerActivity({
+    buyersphereId,
+    activity: "open-asset",
+    activityData: { title: asset.title, id: asset.id }
+  })
+}
+
 function addNewTextSection () {
   sections.value.push({
     type: "simple-text",
@@ -332,5 +343,10 @@ function deleteSection(index) {
       @apply [display:inherit];
     }
   }
+}
+
+.asset-link {
+  @apply mt-4 border border-gray-border rounded-md hover:bg-gray-hover 
+    px-2 py-1 flex flex-row gap-2 items-center;
 }
 </style>

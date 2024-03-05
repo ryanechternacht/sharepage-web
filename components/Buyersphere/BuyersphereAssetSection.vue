@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { useBuyerActivityStore } from '~/stores/buyer-activity';
+import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 

@@ -34,6 +34,19 @@
             </div>
           </div>
         </div>
+
+        <div class="section"
+          v-else-if="section.type === 'simple-asset'">
+          <div class="group-header">{{ section.title }}</div>
+          <div v-if="section.body.description?.length > 0"
+            class="mt-4 inline-html" v-html="section.body.description" />
+          <a class="asset-link"
+            :href="section.body.asset.link"
+            target="_blank">
+            <BookIcon class="w-[1rem] h-[1rem]" />
+            <span>{{ section.body.asset.title }}</span>
+          </a>
+        </div>
       </template>
     </template>
 
@@ -92,6 +105,26 @@
           <NewButton class="section-add-button"
             @click="section.body.choices.push({text: ''})" />
         </div>
+
+        <div class="section"
+          v-if="section.type === 'simple-asset'">
+          <input class="group-header-input"
+            v-model="section.title"
+            placeholder="Enter Asset Block Title">
+          <div class="item-count">
+            <DeleteButton @click="deleteSection(index)" />
+          </div>
+
+          <TipTapTextarea
+            class="w-full mt-6"
+            v-model="section.body.description"
+            placeholder="Enter Asset Block description (optional)" />
+          <select v-model="section.body.asset"
+            class="mt-6">
+            <option v-for="r in assetTemplates"
+              :value="r">{{ r.title }}</option>
+          </select>
+        </div>
       </template>
 
       <div class="section">
@@ -107,6 +140,11 @@
             <div class="body-header mr-2">List Block</div> 
             <ListIcon />
           </BsButton>
+          <BsButton hover-color="blue"
+              @click="addNewAssetSection">
+            <div class="body-header mr-2">Asset Block</div> 
+            <ListIcon />
+          </BsButton>
         </div>
       </div>
     </template>
@@ -120,13 +158,18 @@
 import lodash_pkg from 'lodash';
 const { debounce, find, first } = lodash_pkg;
 import { useTemplatesStore } from '@/stores/templates'
+import { useResourcesStore } from '@/stores/resources'
 import { storeToRefs } from 'pinia'
 
 const templatesStore = useTemplatesStore()
 const { getPageTemplatesCached } = storeToRefs(templatesStore)
 
-const [pageTemplates] = await Promise.all([
+const resourcesStore = useResourcesStore()
+const { getResourcesCached } = storeToRefs(resourcesStore)
+
+const [pageTemplates, assetTemplates] = await Promise.all([
   getPageTemplatesCached.value(),
+  getResourcesCached.value(),
 ])
 
 const pageViews = computed(() => [
@@ -202,10 +245,28 @@ function addNewListBlock () {
   })
 }
 
+function addNewAssetSection () {
+  sections.value.push({
+    type: "simple-asset",
+    title: "",
+    body: {
+      asset: {
+        title: "",
+        link: "",
+      },
+      description: "",
+    },
+  })
+}
+
 function deleteSection(index) {
   sections.value.splice(index, 1)
 }
 </script>
 
 <style scoped lang="postcss">
+.asset-link {
+  @apply mt-4 border border-gray-border rounded-md hover:bg-gray-hover 
+    px-2 py-1 flex flex-row gap-2 items-center;
+}
 </style>
