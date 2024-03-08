@@ -1,9 +1,13 @@
 <template>
-  <img v-if="user.image"
+  <div v-if="unknown"
+    :class="[ sizeClass ]">
+    <HelpCircleIcon class="w-auto h-auto" />
+  </div>
+  <img v-else-if="user.image"
     :class="[ sizeClass ]"
     class="rounded-full"
     :src="user.image">
-  <div v-else 
+  <div v-else
     :class="[ sizeClass ]"
     class="bg-blue-primary rounded-full center-xy h-8">
     <h3 class="dark mx-auto">{{ user.firstName[0] }}</h3>
@@ -13,7 +17,8 @@
 <script setup>
 const { user, size } = defineProps({ 
   user: { type: Object, required: true },
-  size: { type: String, default: 'medium' }
+  size: { type: String, default: 'medium' },
+  unknown: { type: Boolean, default: false },
 })
 
 const sizeClass = computed(() => {

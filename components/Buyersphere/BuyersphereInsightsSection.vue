@@ -15,10 +15,10 @@
           class="main-content inline-html" />
 
         <!-- TODO anonymous shape? -->
-        <div class="min-w-[9.5rem]">
-          <div v-if="item.user" class="flex flex-row items-center">
-            <UserAvatar :user="item.user" />
-            <div class="ml-2">{{ item.user.firstName}} {{ item.user.lastName }}</div>
+        <div class="min-w-[9.5rem] flex flex-row items-center gap-2">
+          <UserAvatar :user="item.user" :unknown="!item.user" />
+          <div v-if="item.user">
+            {{ item.user.firstName}} {{ item.user.lastName }}
           </div>
           <div v-else>
             <div v-if="item.anonymousUser.enteredName">
