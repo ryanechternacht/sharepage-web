@@ -50,8 +50,8 @@ const allEvents = concat(
 const last7DaysItems = computed(() => 
   orderBy(
     filter(allEvents, e => dayjs(e.sortDate) > last7Days),
-    ['createdAt'],
-    ['asc']
+    ['sortDate'],
+    ['desc']
   )
 )
 
@@ -60,16 +60,16 @@ const last30DaysItems = computed(() =>
     filter(allEvents, 
       e => dayjs(e.sortDate) <= last7Days
         && dayjs(e.sortDate) > last30Days),
-    ['createdAt'],
-    ['asc']
+    ['sortDate'],
+    ['desc']
   )
 )
 
 const olderItems = computed(() => 
   orderBy(
     filter(allEvents, e => dayjs(e.sortDate) <= last30Days),
-    ['createdAt'],
-    ['asc']
+    ['sortDate'],
+    ['desc']
   )
 )
 </script>
