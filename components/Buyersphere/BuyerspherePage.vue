@@ -1,7 +1,7 @@
 <template>
   <div class="[grid-area:center-header] center-header">
     <BsButtonGroup
-      v-if="isSeller"
+      v-if="canEdit"
       :options="pageViews"
       header="Assigned To"
       @update:option="updatePageView" />
@@ -217,6 +217,8 @@ const pageId = parseInt(route.params.page)
 const page = pageId
   ? find(pages, p => p.id === pageId)
   : first(pages)
+
+const canEdit = isSeller || page.canBuyerEdit
 
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
