@@ -7,6 +7,17 @@
       @update:option="updatePageView" />
   </div>
 
+  <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12">
+    <SubmitButton 
+      v-if="pageView === 'Edit'"
+      :ready-text="saveReadyText"
+      :submitting-text="saveSubmittingText"
+      :error-text="saveErrorText"
+      :submission-state="saveSubmissionState"
+      :disabled="!isDirty"
+      @click="saveSubmitFn" />
+  </div>
+
   <div class="[grid-area:center] page-center">
     <template v-if="pageView === 'View'">
       <template v-for="section in sections">
@@ -54,20 +65,18 @@
     </template>
 
     <template v-else-if="pageView === 'Edit'">
-      <div class="flex flex-row-reverse">
-        <SubmitButton 
-          :ready-text="saveReadyText"
-          :submitting-text="saveSubmittingText"
-          :error-text="saveErrorText"
-          :submission-state="saveSubmissionState"
-          :disabled="!isDirty"
-          @click="saveSubmitFn" />
-      </div>
-      
       <div class="section">
-        <div class="group-header">Page Title</div>
-        <input v-model="title" class="mt-4">
+        <div class="group-header">Page Settings</div>
+        <h3 class="mt-4">Page Title</h3>
+        <input class="mt-1" v-model="title" placeholder="Page Title">
+        <template v-if="isSeller">
+          <h3 class="mt-4">Can Buyer Edit?</h3>
+          <input v-model="canBuyerEdit" 
+            type="checkbox"
+            class="mt-1 self-start">
+        </template>
       </div>
+
       <template v-for="(section, index) in sections">
         <div class="section"
           v-if="section.type === 'simple-text'">
@@ -160,16 +169,6 @@
           </BsButton>
         </div>
       </div>
-
-      <div class="flex flex-row-reverse">
-        <SubmitButton 
-          :ready-text="saveReadyText"
-          :submitting-text="saveSubmittingText"
-          :error-text="saveErrorText"
-          :submission-state="saveSubmissionState"
-          :disabled="!isDirty"
-          @click="saveSubmitFn" />
-      </div>
     </template>
 
     <div class="bottom-cover" />
@@ -234,6 +233,7 @@ setTimeout(() => router.replace({
 
 const sections = ref(page.body.sections)
 const title = ref(page.title)
+const canBuyerEdit = ref(page.canBuyerEdit)
 
 const emit = defineEmits(['require-login'])
 function selectListIem ({ section, choice, index }) {
@@ -261,6 +261,7 @@ if (process.client) {
 // layout/styling rework
 async function save() {
   page.title = title.value
+  page.canBuyerEdit = canBuyerEdit.value
   await buyersphereStore.updatePage({ buyersphereId, pageId, page })
   isDirty = false
 }
@@ -282,6 +283,11 @@ watch(sections.value, () => {
 })
 
 watch(title, () => {
+  isDirty = true
+  debouncedSave()
+})
+
+watch(canBuyerEdit, () => {
   isDirty = true
   debouncedSave()
 })
