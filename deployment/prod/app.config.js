@@ -1,6 +1,6 @@
 export default defineAppConfig({
   stytch: {
-    baseUrl: "https://api.stytch.com",
+    baseUrl: "https://api.stytch.swaypage.io",
     publicToken: "public-token-live-8c2b086c-f622-4dbe-8a04-5b623bad9300",
     redirectUri: "https://app.api.swaypage.io/v0.1/login",
   },
