@@ -78,27 +78,27 @@ const activityMap = {
   'create-activity': {
     icon: '/svg/edit-2.svg',
     label: 'Created Activity',
-    detailsFn: (activityData) => activityData?.message,
+    detailsFn: (activityData) => activityData?.title,
   },
   'edit-activity': {
     icon: '/svg/edit-2.svg',
     label: 'Edited Activity',
-    detailsFn: (activityData) => activityData?.message,
+    detailsFn: (activityData) => activityData?.title,
   },
   'resolve-activity': {
     icon: '/svg/edit-2.svg',
     label: 'Resolved Activity',
-    detailsFn: (activityData) => activityData?.message,
+    detailsFn: (activityData) => activityData?.title,
   },
   'unresolve-activity': {
     icon: '/svg/edit-2.svg',
     label: 'Re-opened Activity',
-    detailsFn: (activityData) => activityData?.message,
+    detailsFn: (activityData) => activityData?.title,
   },
   'delete-activity': {
     icon: '/svg/edit-2.svg',
     label: 'Deleted Activity',
-    detailsFn: (activityData) => activityData?.message,
+    detailsFn: (activityData) => activityData?.title,
   },
   'edit-constraints': {
     icon: '/svg/edit-2.svg',
@@ -145,6 +145,11 @@ const activityMap = {
     label: 'Invited User',
     detailsFn: (activityData) => activityData?.user,
   },
+  'accept-invite': {
+    icon: '/svg/edit-2.svg',
+    label: 'Invite Accepted',
+    detailsFn: (activityData) => activityData?.user,
+  },
   'edit-user': {
     icon: '/svg/edit-2.svg',
     label: 'Edited User',
@@ -158,8 +163,23 @@ const activityMap = {
   'edit-page': {
     icon: '/svg/edit-2.svg',
     label: 'Edited Page',
-    detailsFn: (activityData) => activityData?.body.title
-  }
+    detailsFn: (activityData) => activityData?.title
+  },
+  'create-milestone': {
+    icon: '/svg/edit-2.svg',
+    label: 'Created Milestone',
+    detailsFn: (activityData) => activityData?.title
+  },
+  'edit-milestone': {
+    icon: '/svg/edit-2.svg',
+    label: 'Edited Milestone',
+    detailsFn: (activityData) => activityData?.title
+  },
+  'delete-milestone': {
+    icon: '/svg/edit-2.svg',
+    label: 'Deleted Milestone',
+    detailsFn: (activityData) => activityData?.title
+  },
 }
 </script>
 
