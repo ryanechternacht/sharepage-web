@@ -16,7 +16,7 @@
       </div>
       <div v-if="!props.isTemplate" class="w-full">
         <h3>Page Template</h3>
-        <select v-model="pageTemplateId">
+        <select v-model.number="pageTemplateId">
           <option disabled hidden selected value="-1">Choose a Template</option>
           <option value="0">Blank Page</option>
           <option v-for="pt in pageTemplates"
