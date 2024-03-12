@@ -224,7 +224,7 @@ const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
 
 router.beforeEach(async () => {
-  if (isDirty) {
+  if (isDirty.value) {
     await debouncedSave.flush()
   }
 })
@@ -249,7 +249,7 @@ function selectListIem ({ section, choice, index }) {
 
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {
-    if (isDirty) {
+    if (isDirty.value) {
       debouncedSave.flush()
       e.preventDefault()
     }
@@ -265,32 +265,32 @@ async function save() {
   page.title = title.value
   page.canBuyerEdit = canBuyerEdit.value
   await buyersphereStore.updatePage({ buyersphereId, pageId, page })
-  isDirty = false
+  isDirty.value = false
 }
 
 const debouncedSave = debounce(save, 2000, { leading: false, trailing: true })
-let isDirty = false
+const isDirty = ref(false)
 
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
-  save()
+  await debouncedSave.flush()
 })
 
-const saveReadyText = "Save Changes"
+const saveReadyText = computed(() => isDirty.value ? "Save Changes" : "Saved")
 const saveSubmittingText = "Saving Changes"
 const saveErrorText = "Save Failed. Try Again"
 
 watch(sections.value, () => {
-  isDirty = true
+  isDirty.value = true
   debouncedSave()
 })
 
 watch(title, () => {
-  isDirty = true
+  isDirty.value = true
   debouncedSave()
 })
 
 watch(canBuyerEdit, () => {
-  isDirty = true
+  isDirty.value = true
   debouncedSave()
 })
 
