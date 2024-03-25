@@ -2,7 +2,6 @@
   <div class="[grid-area:center-header] center-header">
     <BsButtonGroup 
       :options="pageViews"
-      header="Assigned To"
       @update:option="updatePageView" />
   </div>
 

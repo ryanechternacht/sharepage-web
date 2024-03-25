@@ -3,7 +3,6 @@
     <BsButtonGroup
       v-if="canEdit"
       :options="pageViews"
-      header="Assigned To"
       @update:option="updatePageView" />
   </div>
 
