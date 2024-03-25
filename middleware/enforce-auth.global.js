@@ -1,4 +1,4 @@
-import { useUsersStore  } from '@/stores/users';
+import { useUsersStore } from '@/stores/users';
 import { useOrganizationStore } from '@/stores/organization'
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia' 
@@ -10,10 +10,19 @@ export default defineNuxtRouteMiddleware(async (to, _) => {
     const buyersphereStore = useBuyerspheresStore()
     const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
 
-    const buyersphere = await getBuyersphereByIdCached.value(to.params.id)
+    const usersStore = useUsersStore()
+    const { isUserSeller } = storeToRefs(usersStore)
+
+    const [buyersphere, isSeller] = await Promise.all([
+      getBuyersphereByIdCached.value(to.params.id),
+      isUserSeller.value(),
+    ])
 
     if (!buyersphere) {
       return navigateTo('/login')
+    } else if (!isSeller && to.params.page === 'insights') {
+      // TODO this is a massive hack, and I need better client side routing/permissioning
+      return navigateTo(`/${to.params.id}`)
     }
   } else if (!['/login', '/signup'].includes(to.path)) {
     // TODO a better way to do route permission 
