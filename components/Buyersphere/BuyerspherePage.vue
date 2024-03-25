@@ -29,7 +29,7 @@
             :model-value="section.body.answer"
             class="w-full mt-6"
             placeholder="Please enter an answer here"
-            :readonly="!hasUser"
+            :readonly="!canUserRespond"
             :on-update-fn="(text) => section.body.answer = text" />
         </div>
 
@@ -177,7 +177,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { debounce, find, first } = lodash_pkg;
+const { debounce, find, first, some } = lodash_pkg;
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
@@ -190,13 +190,14 @@ const buyersphereStore = useBuyerspheresStore()
 const { getBuyersphereByIdCached, getBuyerspherePagesByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
-const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
+const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
+const [buyersphere, pages, hasUser, isSeller, user] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
   getBuyerspherePagesByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
+  getMeCached.value(),
 ])
 
 const pageViews = computed(() => [
@@ -218,6 +219,10 @@ const page = pageId
   : first(pages)
 
 const canEdit = isSeller || page.canBuyerEdit
+
+// TODO should this just come from the backend?
+const isABuyerForThisBuyersphere = some(buyersphere.buyerTeam, p => p.email === user.email)
+const canUserRespond = isSeller || isABuyerForThisBuyersphere
 
 const router = useRouter()
 const { makeBuyersphereLink } = useBuyersphereLinks()
