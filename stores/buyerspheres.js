@@ -529,10 +529,24 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         { method: 'PATCH', body: page }
       )
       
-      const pi = findIndex(
-        this.pages[buyersphereId].content, 
-        p => p.id === pageId)
-      this.pages[buyersphereId].content[pi] = data.value
+      const p = find(this.pages[buyersphereId].content, p => p.id === pageId)
+      if (p) {
+        if (data.value.title !== undefined) {
+          p.title = data.value.title
+        }
+        if (data.value.body !== undefined) {
+          p.body = data.value.body
+        }
+        if (data.value.isPublic !== undefined) {
+          p.isPublic = data.value.isPublic
+        }
+        if (data.value.ordering !== undefined) {
+          p.ordering = data.value.ordering
+        }
+        if (data.value.canBuyerEdit !== undefined) {
+          p.canBuyerEdit = data.value.canBuyerEdit
+        }
+      }
     },
     async deleteResource({ buyersphereId, pageId }) {
       const { apiFetch } = useNuxtApp()
