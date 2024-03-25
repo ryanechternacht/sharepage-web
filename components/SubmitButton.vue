@@ -25,7 +25,7 @@ const emit = defineEmits(['click'])
 
 <style lang="postcss" scoped>
 button {
-  @apply p-2 rounded-md bg-blue-primary body;
+  @apply px-2 py-1 rounded-md bg-blue-primary body;
 
   &:disabled {
     @apply bg-gray-subtext text-white;
