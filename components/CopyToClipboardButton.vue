@@ -29,15 +29,15 @@ const props = defineProps({
   hoverColor: String,
   showText: { type: Boolean, default: true },
   buyersphereId: { type: Number, required: true },
-  name: { type: String }
+  recipient: { type: String }
 })
 
 async function copyToClipboard() {
   clearTimeout(lastTimeout.value)
 
   const url = new URL(window.location.href)
-  if (props.name) {
-    url.search = `sent-to=${props.name}`
+  if (props.recipient) {
+    url.search = `sent-to=${props.recipient}`
   }
   if (navigator?.clipboard) {
     await navigator.clipboard.writeText(url.href)

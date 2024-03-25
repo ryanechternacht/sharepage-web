@@ -27,7 +27,7 @@
           color="blue"
           hover-color="blue"
           :buyersphere-id="buyersphereId"
-          :name="name" />
+          :recipient="name" />
       </div>
 
       <div v-if="!isBuyerspherePublic" class="mt-8 col-span-2">
