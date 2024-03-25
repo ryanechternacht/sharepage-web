@@ -34,7 +34,7 @@
 
 <script setup>
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()

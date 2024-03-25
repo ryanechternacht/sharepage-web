@@ -91,7 +91,7 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'

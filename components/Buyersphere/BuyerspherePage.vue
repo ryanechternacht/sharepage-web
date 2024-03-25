@@ -179,7 +179,7 @@
 import lodash_pkg from 'lodash';
 const { debounce, find, first } = lodash_pkg;
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 

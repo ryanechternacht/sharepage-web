@@ -88,7 +88,7 @@
 
 <script setup>
 import { useActivitiesStore } from '@/stores/activities'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy } = lodash_pkg;

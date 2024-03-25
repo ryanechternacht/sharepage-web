@@ -10,7 +10,7 @@
 
 <script setup>
 import { ModalsContainer } from 'vue-final-modal'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
 const usersStore = useUsersStore()

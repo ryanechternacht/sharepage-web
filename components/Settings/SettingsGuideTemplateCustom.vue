@@ -100,7 +100,7 @@
 </template>
 
 <script setup>
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
 const usersStore = useUsersStore()

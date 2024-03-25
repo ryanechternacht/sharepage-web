@@ -116,7 +116,7 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, last, orderBy } = lodash_pkg;

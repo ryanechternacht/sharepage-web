@@ -16,7 +16,7 @@
 
 <script setup>
 import { useBuyerspheresStore } from '@/stores/buyerspheres'
-import { useUsersStore  } from '@/stores/users'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import AddEditAssetModal from '@/components/Buyersphere/AddEditAssetModal.vue';
 import { useModal } from 'vue-final-modal'
