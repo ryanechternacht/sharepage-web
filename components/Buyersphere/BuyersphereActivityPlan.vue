@@ -40,7 +40,7 @@ import { useBuyerspheresStore } from '@/stores/buyerspheres'
 import { useUsersStore  } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { every, filter, find, orderBy, map } = lodash_pkg;
+const { filter, find, orderBy, map } = lodash_pkg;
 import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal';
 import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
@@ -51,7 +51,6 @@ const buyersphereId = parseInt(route.params.id)
 
 const buyerspheresStore = useBuyerspheresStore()
 const { 
-  getBuyersphereByIdCached,
   getBuyersphereMilestonesByIdCached,
   getBuyersphereActivitiesByIdCached,
 } = storeToRefs(buyerspheresStore)
@@ -59,8 +58,7 @@ const {
 const usersStore = useUsersStore()
 const { getMeCached, isUserLoggedIn, isUserSeller,  } = storeToRefs(usersStore)
 
-const [buyersphere, milestones, activities, me, hasUser, isSeller] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+const [milestones, activities, me, hasUser, isSeller] = await Promise.all([
   getBuyersphereMilestonesByIdCached.value(buyersphereId),
   getBuyersphereActivitiesByIdCached.value(buyersphereId),
   getMeCached.value(),
