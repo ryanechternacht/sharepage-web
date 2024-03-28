@@ -27,19 +27,19 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereInsightsSection
+    <SwaypageInsightsSection
       id="last-7-days"
       :items="last7DaysItems"
       header="Last 7 Days"
       show-account />
 
-    <BuyersphereInsightsSection
+    <SwaypageInsightsSection
       id="last-30-days"
       :items="last30DaysItems"
       header="Last 30 Days" 
       show-account />
 
-    <BuyersphereInsightsSection
+    <SwaypageInsightsSection
       id="older"
       :items="olderItems"
       header="Older" 

@@ -6,7 +6,7 @@
   </div>
 
   <div class="[grid-area:center] page-center">
-    <BuyersphereAssetSection
+    <SwaypageAssetSection
       is-template
       header="Assets"
       :assets="resources"

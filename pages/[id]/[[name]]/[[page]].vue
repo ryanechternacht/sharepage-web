@@ -77,8 +77,8 @@
       <SwaypageActivityPlan v-if="page === 'activity-plan'"
         @require-login="requireLogin" />
       <BuyersphereTeam v-else-if="page === 'team'" />
-      <BuyersphereInsights v-else-if="page === 'insights'" />
-      <BuyersphereAssets v-else-if="page === 'assets'" />
+      <SwaypageInsights v-else-if="page === 'insights'" />
+      <SwaypageAssets v-else-if="page === 'assets'" />
       <BuyerspherePage v-else
         :key="route.params.page"
         @require-login="requireLogin" />
