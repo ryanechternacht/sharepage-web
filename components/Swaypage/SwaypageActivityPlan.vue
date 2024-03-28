@@ -133,14 +133,14 @@ const {
     },
     onActivityCreated ({ activity, milestoneId }) {
       buyerspheresStore.createSwaypageActivity({
-        buyersphereId,
+        swaypageId: buyersphereId,
         milestoneId,
         activity
       })
     },
     onActivityEdited ({ activity }) {
       buyerspheresStore.updateSwaypageActivity({
-        buyersphereId,
+        swaypageId: buyersphereId,
         id: activity.id,
         activity
       })
@@ -173,14 +173,14 @@ async function deleteActivity({ activity }) {
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
-    await buyerspheresStore.deleteSwaypageActivity({ buyersphereId, id: activity.id })
+    await buyerspheresStore.deleteSwaypageActivity({ swaypageId: buyersphereId, id: activity.id })
   }
 }
 
 async function resolveActivity({ activity, resolved }) {
   if (hasUser) {
     buyerspheresStore.updateSwaypageActivity({
-      buyersphereId,
+      swaypageId: buyersphereId,
       milestoneId: activity.milestoneId,
       id: activity.id,
       activity: { resolved }
@@ -203,13 +203,13 @@ const {
     },
     onMilestoneCreated ({ milestone }) {
       buyerspheresStore.createSwaypageMilestone({
-        buyersphereId,
+        swaypageId: buyersphereId,
         milestone,
       })
     },
     onMilestoneEdited ({ milestone }) {
       buyerspheresStore.updateSwaypageMilestone({
-        buyersphereId,
+        swaypageId: buyersphereId,
         id: milestone.id,
         milestone,
       })
@@ -236,7 +236,7 @@ async function deleteMilestone({ milestone }) {
   const c = confirm(`Are you sure you want to delete this milestone`)
 
   if (c) {
-    await buyerspheresStore.deleteSwaypageMilestone({ buyersphereId, id: milestone.id })
+    await buyerspheresStore.deleteSwaypageMilestone({ swaypageId: buyersphereId, id: milestone.id })
   }
 }
 
@@ -246,7 +246,7 @@ async function resolveMilestone({ milestone }) {
   if (c) {
     milestone.resolved = true
     await buyerspheresStore.updateSwaypageMilestone({
-      buyersphereId,
+      swaypageId: buyersphereId,
       id: milestone.id,
       milestone,
     }) 
@@ -259,7 +259,7 @@ async function unresolveMilestone({ milestone }) {
   if (c) {
     milestone.resolved = false
     await buyerspheresStore.updateSwaypageMilestone({
-      buyersphereId,
+      swaypageId: buyersphereId,
       id: milestone.id,
       milestone,
     }) 

@@ -16,25 +16,25 @@ export const useSwaypagesStore = defineStore('swaypages', {
     pages: {},
   }),
   getters: {
-    getSwaypageByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchSwaypage({ buyersphereId })
-      return state.buyerspheres[buyersphereId]?.content
+    getSwaypageByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypage({ swaypageId })
+      return state.buyerspheres[swaypageId]?.content
     },
-    getSwaypageMilestonesByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchSwaypageMilestones({ buyersphereId })
-      return state.milestones[buyersphereId]?.content
+    getSwaypageMilestonesByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypageMilestones({ swaypageId })
+      return state.milestones[swaypageId]?.content
     },
-    getSwaypageActivitiesByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchSwaypageActivities({ buyersphereId })
-      return state.activities[buyersphereId]?.content
+    getSwaypageActivitiesByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypageActivities({ swaypageId })
+      return state.activities[swaypageId]?.content
     },
-    getSwaypageBuyerActivityByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchSwaypageBuyerActivity({ buyersphereId })
-      return state.buyerActivity[buyersphereId]?.content
+    getSwaypageBuyerActivityByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypageBuyerActivity({ swaypageId })
+      return state.buyerActivity[swaypageId]?.content
     },
-    getSwaypagePagesByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchSwaypagePages({ buyersphereId })
-      return state.pages[buyersphereId]?.content
+    getSwaypagePagesByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypagePages({ swaypageId })
+      return state.pages[swaypageId]?.content
     },
   },
   actions: {
@@ -61,13 +61,13 @@ export const useSwaypagesStore = defineStore('swaypages', {
       return data.value.id
     },
     async saveSwaypageSettings({
-      buyersphereId, buyer, subname, buyerLogo, dealAmount, 
+      swaypageId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing,  qualificationDate, 
       evaluationDate, decisionDate, status, isPublic 
     }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}`,
+        `/v0.1/buyersphere/${swaypageId}`,
         { 
           method: 'PATCH',
           body: { 
@@ -87,7 +87,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
       )
 
-      const b = this.buyerspheres[buyersphereId].content
+      const b = this.buyerspheres[swaypageId].content
       b.currentStage = data.value.currentStage
       b.buyer = data.value.buyer
       b.subname = data.value.subname
@@ -101,11 +101,11 @@ export const useSwaypagesStore = defineStore('swaypages', {
       b.status = data.value.status
       b.isPublic = data.value.isPublic
     },
-    async updateBuyerInput({ buyersphereId, featuresAnswer, successCriteriaAnswer,
+    async updateBuyerInput({ swaypageId, featuresAnswer, successCriteriaAnswer,
       objectivesAnswer, constraintsAnswer, pricingTierId, status }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}`,
+        `/v0.1/buyersphere/${swaypageId}`,
         { 
           method: 'PATCH', 
           body: { 
@@ -118,7 +118,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
           } 
         }
       )
-      const b = this.buyerspheres && this.buyerspheres[buyersphereId]?.content
+      const b = this.buyerspheres && this.buyerspheres[swaypageId]?.content
       if (!b) {
         return
       }
@@ -142,105 +142,105 @@ export const useSwaypagesStore = defineStore('swaypages', {
         b.status = data.value.status
       }
     },
-    async fetchSwaypage({ buyersphereId, forceRefresh }) {
+    async fetchSwaypage({ swaypageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.buyerspheres[buyersphereId]?.content
+      if (!this.buyerspheres[swaypageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.buyerspheres[buyersphereId]?.generatedAt))
+          || is10MinutesOld(this.buyerspheres[swaypageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}`)
-        this.buyerspheres[buyersphereId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}`)
+        this.buyerspheres[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async fetchSwaypageMilestones({ buyersphereId, forceRefresh }) {
+    async fetchSwaypageMilestones({ swaypageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.milestones[buyersphereId]?.content
+      if (!this.milestones[swaypageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.milestones[buyersphereId]?.generatedAt))
+          || is10MinutesOld(this.milestones[swaypageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/milestones`)
-        this.milestones[buyersphereId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/milestones`)
+        this.milestones[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async createSwaypageMilestone({ buyersphereId, milestone }) {
+    async createSwaypageMilestone({ swaypageId, milestone }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/milestones`,
+        `/v0.1/buyersphere/${swaypageId}/milestones`,
         { method: 'POST', body: milestone }
       )
-      this.milestones[buyersphereId].content.push(data.value)
+      this.milestones[swaypageId].content.push(data.value)
     },
-    async updateSwaypageMilestone({ buyersphereId, id, milestone }) {
+    async updateSwaypageMilestone({ swaypageId, id, milestone }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/milestone/${id}`,
+        `/v0.1/buyersphere/${swaypageId}/milestone/${id}`,
         { method: 'PATCH', body: milestone }
       )
-      const m = find(this.milestones[buyersphereId]?.content, m => m.id === id)
+      const m = find(this.milestones[swaypageId]?.content, m => m.id === id)
       if (m) {
         if (data.value.title !== undefined) {
           m.title = data.value.title
         }
       }
     },
-    async deleteSwaypageMilestone({ buyersphereId, id }) {
+    async deleteSwaypageMilestone({ swaypageId, id }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/milestone/${id}`,
+        `/v0.1/buyersphere/${swaypageId}/milestone/${id}`,
         { method: 'DELETE' }
       )
 
-      remove(this.milestones[buyersphereId].content, m => m.id === id)
+      remove(this.milestones[swaypageId].content, m => m.id === id)
     },
-    async fetchSwaypageActivities({ buyersphereId, forceRefresh }) {
+    async fetchSwaypageActivities({ swaypageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.activities[buyersphereId]?.content
+      if (!this.activities[swaypageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.activities[buyersphereId]?.generatedAt))
+          || is10MinutesOld(this.activities[swaypageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/milestones/activities`)
-        this.activities[buyersphereId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/milestones/activities`)
+        this.activities[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async createSwaypageActivity({ buyersphereId, milestoneId, activity }) {
+    async createSwaypageActivity({ swaypageId, milestoneId, activity }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/milestone/${milestoneId}/activities`,
+        `/v0.1/buyersphere/${swaypageId}/milestone/${milestoneId}/activities`,
         { method: 'POST', body: activity }
       )
-      this.activities[buyersphereId].content.push(data.value)
+      this.activities[swaypageId].content.push(data.value)
     },
-    async deleteSwaypageActivity({ buyersphereId, id }) {
+    async deleteSwaypageActivity({ swaypageId, id }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/activity/${id}`,
+        `/v0.1/buyersphere/${swaypageId}/activity/${id}`,
         { method: 'DELETE' }
       )
 
-      remove(this.activities[buyersphereId].content, a => a.id === id)
+      remove(this.activities[swaypageId].content, a => a.id === id)
     },
-    async updateSwaypageActivity({ buyersphereId, id, activity }) {
+    async updateSwaypageActivity({ swaypageId, id, activity }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/activity/${id}`,
+        `/v0.1/buyersphere/${swaypageId}/activity/${id}`,
         { method: 'PATCH', body: activity }
       )
-      const a = find(this.activities[buyersphereId]?.content, a => a.id === id)
+      const a = find(this.activities[swaypageId]?.content, a => a.id === id)
       if (a) {
         if (data.value.milestoneId !== undefined) {
           a.milestoneId = data.value.milestoneId
@@ -265,127 +265,127 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
       }
     },
-    async fetchSwaypageBuyerActivity({ buyersphereId, forceRefresh }) {
+    async fetchSwaypageBuyerActivity({ swaypageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.buyerActivity[buyersphereId]?.content
+      if (!this.buyerActivity[swaypageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.buyerActivity[buyersphereId]?.generatedAt))
+          || is10MinutesOld(this.buyerActivity[swaypageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/buyer-activity`)
-        this.buyerActivity[buyersphereId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/buyer-activity`)
+        this.buyerActivity[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async createResource({ buyersphereId, title, link }) {
+    async createResource({ swaypageId, title, link }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/resources`,
+        `/v0.1/buyersphere/${swaypageId}/resources`,
         { method: 'POST', body: { title, link } }
       )
-      this.buyerspheres[buyersphereId].content.resources.push(data.value)
+      this.buyerspheres[swaypageId].content.resources.push(data.value)
     },
-    async updateResource({ buyersphereId, resourceId, title, link }) {
+    async updateResource({ swaypageId, resourceId, title, link }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/resource/${resourceId}`,
+        `/v0.1/buyersphere/${swaypageId}/resource/${resourceId}`,
         { method: 'PATCH', body: { title, link }}
       )
       
       const ri = findIndex(
-        this.buyerspheres[buyersphereId].content.resources, 
+        this.buyerspheres[swaypageId].content.resources, 
         r => r.id === resourceId)
-      this.buyerspheres[buyersphereId].content.resources[ri] = data.value
+      this.buyerspheres[swaypageId].content.resources[ri] = data.value
     },
-    async deleteResource({ buyersphereId, resourceId }) {
+    async deleteResource({ swaypageId, resourceId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/resource/${resourceId}`,
+        `/v0.1/buyersphere/${swaypageId}/resource/${resourceId}`,
         { method: 'DELETE' }
       )
 
-      remove(this.buyerspheres[buyersphereId].content.resources, r => r.id === resourceId)
+      remove(this.buyerspheres[swaypageId].content.resources, r => r.id === resourceId)
     },
-    async createBuyerUser({ buyersphereId, user }) {
+    async createBuyerUser({ swaypageId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/team/buyer`,
+        `/v0.1/buyersphere/${swaypageId}/team/buyer`,
         { method: 'POST', body: user }
       )
       
-      this.buyerspheres[buyersphereId].content.buyerTeam = data.value
+      this.buyerspheres[swaypageId].content.buyerTeam = data.value
     },
-    async editBuyerUser({ buyersphereId, user }) {
+    async editBuyerUser({ swaypageId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/team/buyer/${user.id}`,
+        `/v0.1/buyersphere/${swaypageId}/team/buyer/${user.id}`,
         { method: 'PATCH', body: user }
       )
       
-      this.buyerspheres[buyersphereId].content.buyerTeam = data.value
+      this.buyerspheres[swaypageId].content.buyerTeam = data.value
     },
-    async removeBuyerUser({ buyersphereId, userId }) {
+    async removeBuyerUser({ swaypageId, userId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/team/buyer/${userId}`,
+        `/v0.1/buyersphere/${swaypageId}/team/buyer/${userId}`,
         { method: 'DELETE' }
       )
 
-      this.buyerspheres[buyersphereId].content.buyerTeam = data.value
+      this.buyerspheres[swaypageId].content.buyerTeam = data.value
     },
-    async addSellerUser({ buyersphereId, user}) {
+    async addSellerUser({ swaypageId, user}) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/team/seller`,
+        `/v0.1/buyersphere/${swaypageId}/team/seller`,
         { method: 'POST', body: { user_id: user.id } }
       )
       
-      this.buyerspheres[buyersphereId].content.sellerTeam = data.value
+      this.buyerspheres[swaypageId].content.sellerTeam = data.value
     },
-    async removeSellerUser({ buyersphereId, userId }) {
+    async removeSellerUser({ swaypageId, userId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/team/seller/${userId}`,
+        `/v0.1/buyersphere/${swaypageId}/team/seller/${userId}`,
         { method: 'DELETE' }
       )
 
-      this.buyerspheres[buyersphereId].content.sellerTeam = data.value
+      this.buyerspheres[swaypageId].content.sellerTeam = data.value
     },
-    async fetchSwaypagePages({ buyersphereId, forceRefresh }) {
+    async fetchSwaypagePages({ swaypageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.pages[buyersphereId]?.content
+      if (!this.pages[swaypageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.pages[buyersphereId]?.generatedAt))
+          || is10MinutesOld(this.pages[swaypageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyerspheres/${buyersphereId}/pages`)
-        this.pages[buyersphereId] = {
+        const { data } = await apiFetch(`/v0.1/buyerspheres/${swaypageId}/pages`)
+        this.pages[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async createPage({ buyersphereId, page }) {
+    async createPage({ swaypageId, page }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/pages`,
+        `/v0.1/buyerspheres/${swaypageId}/pages`,
         { method: 'POST', body: page }
       )
-      this.pages[buyersphereId].content.push(data.value)
+      this.pages[swaypageId].content.push(data.value)
       return data.value.id
     },
-    async updatePage({ buyersphereId, pageId, page }) {
+    async updatePage({ swaypageId, pageId, page }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/page/${pageId}`,
+        `/v0.1/buyerspheres/${swaypageId}/page/${pageId}`,
         { method: 'PATCH', body: page }
       )
       
-      const p = find(this.pages[buyersphereId].content, p => p.id === pageId)
+      const p = find(this.pages[swaypageId].content, p => p.id === pageId)
       if (p) {
         if (data.value.title !== undefined) {
           p.title = data.value.title
@@ -404,14 +404,14 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
       }
     },
-    async deleteResource({ buyersphereId, pageId }) {
+    async deleteResource({ swaypageId, pageId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${buyersphereId}/page/${pageId}`,
+        `/v0.1/buyerspheres/${swaypageId}/page/${pageId}`,
         { method: 'DELETE' }
       )
 
-      remove(this.pages[buyersphereId].content, p => p.id === pageId)
+      remove(this.pages[swaypageId].content, p => p.id === pageId)
     },
   },
 })

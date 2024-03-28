@@ -48,14 +48,14 @@ const link = ref(props.asset?.link)
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updateResource({
-      buyersphereId: props.buyersphereId, 
+      swaypageId: props.buyersphereId, 
       resourceId: props.asset.id,
       title,
       link,
     })
   } else {
     await store.createResource({ 
-      buyersphereId: props.buyersphereId, 
+      swaypageId: props.buyersphereId, 
       title,
       link,
    })

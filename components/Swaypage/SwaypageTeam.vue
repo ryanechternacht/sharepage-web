@@ -106,7 +106,7 @@ async function removeUser({ user }) {
   const c = confirm(`Are you sure you want to remove ${user.firstName} ${user.lastName}?`)
 
   if (c) {
-    await buyersphereStore.removeBuyerUser({ buyersphereId, userId: user.id })
+    await buyersphereStore.removeBuyerUser({ swaypageId: buyersphereId, userId: user.id })
   }
 }
 </script>

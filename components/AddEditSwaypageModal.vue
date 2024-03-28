@@ -131,7 +131,7 @@ if (!editMode.value) {
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.saveSwaypageSettings({
-      buyersphereId: props.buyersphere.id,
+      swaypageId: props.buyersphere.id,
       buyer,
       subname,
       buyerLogo,

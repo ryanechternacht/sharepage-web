@@ -79,7 +79,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
   } else {
     const buyersphereStore = useSwaypagesStore()
     pageId = await buyersphereStore.createPage({
-      buyersphereId: props.buyersphereId, 
+      swaypageId: props.buyersphereId, 
       page: { title, pageTemplateId },
     })
   }

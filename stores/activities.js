@@ -37,7 +37,7 @@ export const useActivitiesStore = defineStore('activities', {
       activity.resolved = resolved
       await buyersphereStore.updateSwaypageActivity({
         activity,
-        buyersphereId: activity.buyersphereId,
+        swaypageId: activity.buyersphereId,
         id: activity.id,
       })
     },

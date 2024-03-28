@@ -165,7 +165,7 @@ const router = useRouter()
 const { makeSwaypageLink } = useSwaypageLinks()
 
 if (pages.length === 0) {
-  await buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
+  await buyersphereStore.createPage({ swaypageId: buyersphereId, page: { title: 'New Page'} })
 }
 
 const page = computed(() => route.params.page || first(pages).id)
@@ -180,7 +180,7 @@ async function putOnHold() {
   const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
 
   if (answer) {
-    await buyersphereStore.updateBuyerInput({ buyersphereId, status: "on-hold" })
+    await buyersphereStore.updateBuyerInput({ swaypageId: buyersphereId, status: "on-hold" })
     buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "hold-deal" })
   }
 }
@@ -189,7 +189,7 @@ async function reactivate() {
   const answer = confirm(`Are you sure you want to reactive the buying process?`)
   
   if (answer) {
-    await buyersphereStore.updateBuyerInput({ buyersphereId, status: "active" })
+    await buyersphereStore.updateBuyerInput({ swaypageId: buyersphereId, status: "active" })
     buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "reactivate-deal" })
   }
 }

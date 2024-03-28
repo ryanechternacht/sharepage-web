@@ -53,7 +53,7 @@ function isInBuyersphere (user) {
 }
 
 async function addToDeal (user) {
-  await buyersphereStore.addSellerUser({ buyersphereId, user }) 
+  await buyersphereStore.addSellerUser({ swaypageId: buyersphereId, user }) 
 }
 </script>
 

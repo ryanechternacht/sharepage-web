@@ -59,7 +59,7 @@ async function deleteAsset({ asset }) {
   const c = confirm(`Are you sure you want to delete ${asset.title}`)
 
   if (c) {
-    await buyersphereStore.deleteResource({ buyersphereId, resourceId: asset.id })
+    await buyersphereStore.deleteResource({ swaypageId: buyersphereId, resourceId: asset.id })
   }
 }
 </script>

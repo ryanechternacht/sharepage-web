@@ -106,7 +106,7 @@ const archivedDeals = computed(() =>
 )
 
 async function updateDealStatus({ account, status }) {
-  await buyersphereStore.updateBuyerInput({ buyersphereId: account.id, status })
+  await buyersphereStore.updateBuyerInput({ swaypageId: account.id, status })
   account.status = status
 }
 </script>

@@ -55,7 +55,7 @@ const store = useSwaypagesStore()
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.editBuyerUser({ 
-      buyersphereId: props.buyersphereId,
+      swaypageId: props.buyersphereId,
       user: { 
         id: props.user.id,
         firstName,
@@ -66,7 +66,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     })
   } else {
     await store.createBuyerUser({ 
-      buyersphereId: props.buyersphereId,
+      swaypageId: props.buyersphereId,
       user: { firstName, lastName, email, displayRole }
     })
   }

@@ -113,7 +113,7 @@ const [hasUser] = await Promise.all([
 async function saveFeatureInterest (featureId, answer) {
   if (hasUser) {
     myFeatures.value.interests[featureId] = answer
-    await buyersphereStore.updateBuyerInput({ buyersphereId, featuresAnswer: myFeatures })
+    await buyersphereStore.updateBuyerInput({ swaypageId: buyersphereId, featuresAnswer: myFeatures })
   }
 }
 

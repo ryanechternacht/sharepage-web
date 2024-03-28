@@ -268,7 +268,7 @@ if (process.client) {
 async function save() {
   page.title = title.value
   page.canBuyerEdit = canBuyerEdit.value
-  await buyersphereStore.updatePage({ buyersphereId, pageId, page })
+  await buyersphereStore.updatePage({ swaypageId: buyersphereId, pageId, page })
   isDirty.value = false
 }
 
