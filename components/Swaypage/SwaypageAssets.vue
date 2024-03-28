@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import AddEditAssetModal from '@/components/Swaypage/AddEditAssetModal.vue';
@@ -24,14 +24,14 @@ import { useModal } from 'vue-final-modal'
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn } = storeToRefs(usersStore)
 
 const [buyersphere, hasUser] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+  getSwaypageByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
 ])
 

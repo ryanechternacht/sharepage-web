@@ -49,7 +49,7 @@
           <NuxtLink v-for="p in pages"
             class="page-link"
             :class="{underline: `${p.id}` === page}"
-            :to="makeBuyersphereLink(buyersphere, p.id)">
+            :to="makeSwaypageLink(buyersphere, p.id)">
             {{ p.title }}
           </NuxtLink>
           <NewButton v-if="isSeller" @click="createNewPage" />
@@ -58,17 +58,17 @@
 
           <h3 class="mb-4">Directory</h3>
           <NuxtLink class="page-link"
-            :to="makeBuyersphereLink(buyersphere, 'activity-plan')"
+            :to="makeSwaypageLink(buyersphere, 'activity-plan')"
             :class="{underline: page === 'activity-plan'}">Activity Plan</NuxtLink>
           <NuxtLink class="page-link"
-            :to="makeBuyersphereLink(buyersphere, 'team')"
+            :to="makeSwaypageLink(buyersphere, 'team')"
             :class="{underline: page === 'team'}">Team</NuxtLink>
           <NuxtLink class="page-link"
-            :to="makeBuyersphereLink(buyersphere, 'assets')"
+            :to="makeSwaypageLink(buyersphere, 'assets')"
             :class="{underline: page === 'assets'}">Assets</NuxtLink>
           <NuxtLink v-if="isSeller"
             class="page-link"
-            :to="makeBuyersphereLink(buyersphere, 'insights')"
+            :to="makeSwaypageLink(buyersphere, 'insights')"
             :class="{underline: page === 'insights'}">Insights</NuxtLink>
         </div>
       </div>
@@ -89,12 +89,12 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
-import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
+import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
 import AnonymousViewModal from '@/components/Swaypage/AnonymousViewModal';
 import RequireLoginModal from '@/components/Swaypage/RequireLoginModal';
@@ -111,14 +111,14 @@ definePageMeta({
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+  getSwaypageByIdCached.value(buyersphereId),
   getSwaypagePagesByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
@@ -162,7 +162,7 @@ const moneyConfig = {
 
 // update the url of the page to the latest name of the buyersphere
 const router = useRouter()
-const { makeBuyersphereLink } = useBuyersphereLinks()
+const { makeSwaypageLink } = useSwaypageLinks()
 
 if (pages.length === 0) {
   await buyersphereStore.createPage({ buyersphereId, page: { title: 'New Page'} })
@@ -172,7 +172,7 @@ const page = computed(() => route.params.page || first(pages).id)
 
 watch(() => buyersphere.buyer, () => {
   router.replace({ 
-    path: makeBuyersphereLink(buyersphere, page.value)
+    path: makeSwaypageLink(buyersphere, page.value)
   })
 })
 
@@ -199,7 +199,7 @@ const {
   close: closeBuyersphereModal,
   patchOptions: patchBuyersphereModalOptions
 } = useModal({
-  component: AddEditBuyersphereModal,
+  component: AddEditSwaypageModal,
   attrs: {
     onClose () {
       closeBuyersphereModal()
@@ -223,7 +223,7 @@ const {
     async onClose (props) {
       if (props?.pageId) {
         await router.replace({ 
-          path: makeBuyersphereLink(buyersphere, props.pageId)
+          path: makeSwaypageLink(buyersphere, props.pageId)
         })
       }
       closeSwaypagePageModal()

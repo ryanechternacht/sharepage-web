@@ -6,13 +6,13 @@ function simplifyName (name) {
     .toLowerCase();
 }
 
-function makeBuyersphereLink (buyersphere, page) {
+function makeSwaypageLink (swaypage, page) {
   return page
-    ? `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}/${page}`
-    : `/${buyersphere.id}/${simplifyName(buyersphere.buyer)}`
+    ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
+    : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
-export const useBuyersphereLinks = () => ({ 
+export const useSwaypageLinks = () => ({ 
   simplifyName,
-  makeBuyersphereLink,
+  makeSwaypageLink,
 })

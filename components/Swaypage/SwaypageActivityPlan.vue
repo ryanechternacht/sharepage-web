@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
@@ -49,18 +49,18 @@ import { useModal } from 'vue-final-modal'
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyerspheresStore = useBuyerspheresStore()
+const buyerspheresStore = useSwaypagesStore()
 const { 
-  getBuyersphereMilestonesByIdCached,
-  getBuyersphereActivitiesByIdCached,
+  getSwaypageMilestonesByIdCached,
+  getSwaypageActivitiesByIdCached,
 } = storeToRefs(buyerspheresStore)
 
 const usersStore = useUsersStore()
 const { getMeCached, isUserLoggedIn, isUserSeller,  } = storeToRefs(usersStore)
 
 const [milestones, activities, me, hasUser, isSeller] = await Promise.all([
-  getBuyersphereMilestonesByIdCached.value(buyersphereId),
-  getBuyersphereActivitiesByIdCached.value(buyersphereId),
+  getSwaypageMilestonesByIdCached.value(buyersphereId),
+  getSwaypageActivitiesByIdCached.value(buyersphereId),
   getMeCached.value(),
   isUserLoggedIn.value(),
   isUserSeller.value(),
@@ -132,14 +132,14 @@ const {
       closeItemModal ()
     },
     onActivityCreated ({ activity, milestoneId }) {
-      buyerspheresStore.createBuyersphereActivity({
+      buyerspheresStore.createSwaypageActivity({
         buyersphereId,
         milestoneId,
         activity
       })
     },
     onActivityEdited ({ activity }) {
-      buyerspheresStore.updateBuyersphereActivity({
+      buyerspheresStore.updateSwaypageActivity({
         buyersphereId,
         id: activity.id,
         activity
@@ -173,13 +173,13 @@ async function deleteActivity({ activity }) {
   const c = confirm(`Are you sure you want to delete this action item`)
 
   if (c) {
-    await buyerspheresStore.deleteBuyersphereActivity({ buyersphereId, id: activity.id })
+    await buyerspheresStore.deleteSwaypageActivity({ buyersphereId, id: activity.id })
   }
 }
 
 async function resolveActivity({ activity, resolved }) {
   if (hasUser) {
-    buyerspheresStore.updateBuyersphereActivity({
+    buyerspheresStore.updateSwaypageActivity({
       buyersphereId,
       milestoneId: activity.milestoneId,
       id: activity.id,
@@ -202,13 +202,13 @@ const {
       closeMilestoneModal ()
     },
     onMilestoneCreated ({ milestone }) {
-      buyerspheresStore.createBuyersphereMilestone({
+      buyerspheresStore.createSwaypageMilestone({
         buyersphereId,
         milestone,
       })
     },
     onMilestoneEdited ({ milestone }) {
-      buyerspheresStore.updateBuyersphereMilestone({
+      buyerspheresStore.updateSwaypageMilestone({
         buyersphereId,
         id: milestone.id,
         milestone,
@@ -236,7 +236,7 @@ async function deleteMilestone({ milestone }) {
   const c = confirm(`Are you sure you want to delete this milestone`)
 
   if (c) {
-    await buyerspheresStore.deleteBuyersphereMilestone({ buyersphereId, id: milestone.id })
+    await buyerspheresStore.deleteSwaypageMilestone({ buyersphereId, id: milestone.id })
   }
 }
 
@@ -245,7 +245,7 @@ async function resolveMilestone({ milestone }) {
 
   if (c) {
     milestone.resolved = true
-    await buyerspheresStore.updateBuyersphereMilestone({
+    await buyerspheresStore.updateSwaypageMilestone({
       buyersphereId,
       id: milestone.id,
       milestone,
@@ -258,7 +258,7 @@ async function unresolveMilestone({ milestone }) {
 
   if (c) {
     milestone.resolved = false
-    await buyerspheresStore.updateBuyersphereMilestone({
+    await buyerspheresStore.updateSwaypageMilestone({
       buyersphereId,
       id: milestone.id,
       milestone,

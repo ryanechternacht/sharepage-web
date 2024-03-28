@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
@@ -44,8 +44,8 @@ import { useModal } from 'vue-final-modal'
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -54,7 +54,7 @@ const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const [buyersphere, organization, hasUser, isSeller] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+  getSwaypageByIdCached.value(buyersphereId),
   getOrganizationCached.value(),
   isUserLoggedIn.value(),
   isUserSeller.value(),

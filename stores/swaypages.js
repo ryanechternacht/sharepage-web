@@ -7,34 +7,29 @@ function is10MinutesOld(jsonTimestamp) {
   return dayjs.duration(dayjs().diff(jsonTimestamp)).asMinutes() >= 10
 }
 
-export const useBuyerspheresStore = defineStore('buyerspheres', {
+export const useSwaypagesStore = defineStore('swaypages', {
   state: () => ({ 
     buyerspheres: {},
-    conversations: {},
     milestones: {},
     activities: {},
     buyerActivity: {},
     pages: {},
   }),
   getters: {
-    getBuyersphereByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchBuyersphere({ buyersphereId })
+    getSwaypageByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchSwaypage({ buyersphereId })
       return state.buyerspheres[buyersphereId]?.content
     },
-    getBuyersphereConversationsByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchBuyersphereConversations({ buyersphereId })
-      return state.conversations[buyersphereId]?.content
-    },
-    getBuyersphereMilestonesByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchBuyersphereMilestones({ buyersphereId })
+    getSwaypageMilestonesByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchSwaypageMilestones({ buyersphereId })
       return state.milestones[buyersphereId]?.content
     },
-    getBuyersphereActivitiesByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchBuyersphereActivities({ buyersphereId })
+    getSwaypageActivitiesByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchSwaypageActivities({ buyersphereId })
       return state.activities[buyersphereId]?.content
     },
-    getBuyersphereBuyerActivityByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchBuyersphereBuyerActivity({ buyersphereId })
+    getSwaypageBuyerActivityByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchSwaypageBuyerActivity({ buyersphereId })
       return state.buyerActivity[buyersphereId]?.content
     },
     getSwaypagePagesByIdCached: (state) => async (buyersphereId) => {
@@ -43,7 +38,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
     },
   },
   actions: {
-    async createBuyersphere({ 
+    async createSwaypage({ 
       buyer, subname, buyerLogo, crmOpportunityId, dealAmount,
       pageTemplateId, pageTitle 
     }) {
@@ -65,7 +60,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       return data.value.id
     },
-    async saveBuyersphereSettings({
+    async saveSwaypageSettings({
       buyersphereId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing,  qualificationDate, 
       evaluationDate, decisionDate, status, isPublic 
@@ -147,56 +142,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         b.status = data.value.status
       }
     },
-    async advanceStage({ buyersphereId, stage }) {
-      const body = { currentStage: stage }
-      if (stage === "evaluation") {
-        body.qualifiedOn = new Date().toISOString()
-      } else if (stage === "decision") {
-        body.evaluatedOn = new Date().toISOString()
-      } else if (stage === "adoption") {
-        body.decidedOn = new Date().toISOString()
-      }
-
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}`,
-        { method: 'PATCH', body }
-      )
-      
-      const b = this.buyerspheres[buyersphereId].content
-      b.currentStage = data.value.currentStage
-
-      if (data.value.qualifiedOn !== undefined) {
-        b.qualifiedOn = data.value.qualifiedOn
-      }
-      if (data.value.evaluatedOn !== undefined) {
-        b.evaluatedOn = data.value.evaluatedOn
-      }
-      if (data.value.decidedOn !== undefined) {
-        b.decidedOn = data.value.decidedOn
-      }
-      if (data.value.adoptedOn !== undefined) {
-        b.adoptedOn = data.value.adoptedOn
-      }
-    },
-    async savePricingCanPay({ buyersphereId, pricingCanPay }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}`,
-        { method: 'PATCH', body: { pricingCanPay } }
-      )
-      this.buyerspheres[buyersphereId].content.pricingCanPay = data.value.pricingCanPay
-    },
-    async saveIntroMessage({ buyersphereId, introMessage }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}`,
-        { method: 'PATCH', body: { introMessage }}
-      )
-      
-      this.buyerspheres[buyersphereId].content.introMessage = data.value.introMessage
-    },
-    async fetchBuyersphere({ buyersphereId, forceRefresh }) {
+    async fetchSwaypage({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -211,22 +157,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
-    async fetchBuyersphereConversations({ buyersphereId, forceRefresh }) {
-      const dayjs = useDayjs()
-      const { apiFetch } = useNuxtApp()
-
-      if (!this.conversations[buyersphereId]?.content
-          || forceRefresh
-          || is10MinutesOld(this.conversations[buyersphereId]?.generatedAt))
-      {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${buyersphereId}/conversations`)
-        this.conversations[buyersphereId] = {
-          content: data.value,
-          generatedAt: dayjs().toJSON()
-        }
-      }
-    },
-    async fetchBuyersphereMilestones({ buyersphereId, forceRefresh }) {
+    async fetchSwaypageMilestones({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -241,7 +172,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
-    async createBuyersphereMilestone({ buyersphereId, milestone }) {
+    async createSwaypageMilestone({ buyersphereId, milestone }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}/milestones`,
@@ -249,7 +180,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.milestones[buyersphereId].content.push(data.value)
     },
-    async updateBuyersphereMilestone({ buyersphereId, id, milestone }) {
+    async updateSwaypageMilestone({ buyersphereId, id, milestone }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}/milestone/${id}`,
@@ -262,7 +193,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
-    async deleteBuyersphereMilestone({ buyersphereId, id }) {
+    async deleteSwaypageMilestone({ buyersphereId, id }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}/milestone/${id}`,
@@ -271,7 +202,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
 
       remove(this.milestones[buyersphereId].content, m => m.id === id)
     },
-    async fetchBuyersphereActivities({ buyersphereId, forceRefresh }) {
+    async fetchSwaypageActivities({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -286,7 +217,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
-    async createBuyersphereActivity({ buyersphereId, milestoneId, activity }) {
+    async createSwaypageActivity({ buyersphereId, milestoneId, activity }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}/milestone/${milestoneId}/activities`,
@@ -294,7 +225,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
       this.activities[buyersphereId].content.push(data.value)
     },
-    async deleteBuyersphereActivity({ buyersphereId, id }) {
+    async deleteSwaypageActivity({ buyersphereId, id }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}/activity/${id}`,
@@ -303,7 +234,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
 
       remove(this.activities[buyersphereId].content, a => a.id === id)
     },
-    async updateBuyersphereActivity({ buyersphereId, id, activity }) {
+    async updateSwaypageActivity({ buyersphereId, id, activity }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyersphere/${buyersphereId}/activity/${id}`,
@@ -334,7 +265,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
         }
       }
     },
-    async fetchBuyersphereBuyerActivity({ buyersphereId, forceRefresh }) {
+    async fetchSwaypageBuyerActivity({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -348,52 +279,6 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
           generatedAt: dayjs().toJSON()
         }
       }
-    },
-    async startConversation({ buyersphereId, message, dueDate, assignedTo, assignedTeam, collaborationType }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/conversations`,
-        { method: 'POST', body: {message, dueDate, assignedTo, assignedTeam, collaborationType} }
-      )
-      this.conversations[buyersphereId].content.push(data.value)
-    },
-    async updateConversation({ buyersphereId, conversationId, resolved, dueDate,
-                               message, assignedTo, assignedTeam, collaborationType }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/conversation/${conversationId}`,
-        { method: 'PATCH', body: { resolved, dueDate, message, assignedTo, assignedTeam, collaborationType }}
-      )
-      const c = find(this.conversations[buyersphereId]?.content, c => c.id === conversationId)
-      if (c) {
-        if (data.value.resolved !== undefined) {
-          c.resolved = data.value.resolved
-        }
-        if (data.value.dueDate !== undefined) {
-          c.dueDate = data.value.dueDate
-        }
-        if (data.value.message !== undefined) {
-          c.message = data.value.message
-        }
-        if (data.value.assignedTo !== undefined) {
-          c.assignedTo = data.value.assignedTo
-        }
-        if (data.value.assignedTeam !== undefined) {
-          c.assignedTeam = data.value.assignedTeam
-        }
-        if (data.value.collaborationType !== undefined) {
-          c.collaborationType = data.value.collaborationType
-        }
-      }
-    },
-    async deleteConversation({ buyersphereId, conversationId }) {
-      const { apiFetch } = useNuxtApp()
-      await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/conversation/${conversationId}`,
-        { method: 'DELETE' }
-      )
-
-      remove(this.conversations[buyersphereId].content, c => c.id === conversationId)
     },
     async createResource({ buyersphereId, title, link }) {
       const { apiFetch } = useNuxtApp()
@@ -423,35 +308,6 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       )
 
       remove(this.buyerspheres[buyersphereId].content.resources, r => r.id === resourceId)
-    },
-    async createNote({ buyersphereId, title, body, authorId }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/notes`,
-        { method: 'POST', body: { title, body, authorId } }
-      )
-      this.buyerspheres[buyersphereId].content.notes.push(data.value)
-    },
-    async updateNote({ buyersphereId, noteId, title, body }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/note/${noteId}`,
-        { method: 'PATCH', body: { title, body }}
-      )
-      
-      const ni = findIndex(
-        this.buyerspheres[buyersphereId].content.notes, 
-        n => n.id === noteId)
-      this.buyerspheres[buyersphereId].content.notes[ni] = data.value
-    },
-    async deleteNote({ buyersphereId, noteId }) {
-      const { apiFetch } = useNuxtApp()
-      await apiFetch(
-        `/v0.1/buyersphere/${buyersphereId}/note/${noteId}`,
-        { method: 'DELETE' }
-      )
-
-      remove(this.buyerspheres[buyersphereId].content.notes, n => n.id === noteId)
     },
     async createBuyerUser({ buyersphereId, user }) {
       const { apiFetch } = useNuxtApp()

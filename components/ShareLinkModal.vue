@@ -35,7 +35,7 @@
           NOTE: Because this Swaypage isn't publicly viewable, it can only be 
           viewed users with a login.
         </div>
-        <NuxtLink :to="makeBuyersphereLink(buyersphere, 'team')" 
+        <NuxtLink :to="makeSwaypageLink(buyersphere, 'team')" 
           class="block mt-2"
           @click="emit('close')">
           <div class="italic tag underline">Invite Users to this Swaypage</div>
@@ -47,7 +47,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 
 const props = defineProps({
@@ -55,16 +55,16 @@ const props = defineProps({
   isBuyerspherePublic: { type: Boolean, default: true }
 })
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
 
-const buyersphere = await getBuyersphereByIdCached.value(props.buyersphereId)
+const buyersphere = await getSwaypageByIdCached.value(props.buyersphereId)
 
 const emit = defineEmits(['close'])
 
 const name = ref(props.linkedName)
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
+const { makeSwaypageLink } = useSwaypageLinks()
 </script>
 
 <style lang="postcss" scoped>

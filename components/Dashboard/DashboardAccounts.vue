@@ -53,12 +53,12 @@
 
 <script setup>
 import { useModal } from 'vue-final-modal'
-import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
+import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 
-const buyersphereStore = useBuyerspheresStore()
+const buyersphereStore = useSwaypagesStore()
 
 const { apiFetch } = useNuxtApp()
 const { data: buyerspheres } = await apiFetch('/v0.1/buyerspheres', { 
@@ -66,7 +66,7 @@ const { data: buyerspheres } = await apiFetch('/v0.1/buyerspheres', {
 })
 
 const { open, close } = useModal({
-  component: AddEditBuyersphereModal,
+  component: AddEditSwaypageModal,
   attrs: {
     buyersphere: {},
     async onClose (props) {

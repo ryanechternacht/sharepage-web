@@ -38,7 +38,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useTemplatesStore } from '@/stores/templates'
 
 const props = defineProps({
@@ -77,7 +77,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       pageTemplate: { title },
     })
   } else {
-    const buyersphereStore = useBuyerspheresStore()
+    const buyersphereStore = useSwaypagesStore()
     pageId = await buyersphereStore.createPage({
       buyersphereId: props.buyersphereId, 
       page: { title, pageTemplateId },

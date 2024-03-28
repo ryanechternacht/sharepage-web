@@ -29,7 +29,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 
 const props = defineProps({
   asset: { type: Object, default: {} },
@@ -40,7 +40,7 @@ const editMode = ref(!!props.asset.id)
 
 const emit = defineEmits(['close'])
 
-const store = useBuyerspheresStore();
+const store = useSwaypagesStore();
 
 const title = ref(props.asset?.title)
 const link = ref(props.asset?.link)

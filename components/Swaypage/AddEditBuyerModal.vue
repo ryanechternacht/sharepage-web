@@ -38,7 +38,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 
 const props = defineProps({
   team: { type: String, required: true },
@@ -50,7 +50,7 @@ const editMode = ref(!!props.user?.id)
 
 const emit = defineEmits(['close'])
 
-const store = useBuyerspheresStore()
+const store = useSwaypagesStore()
 
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {

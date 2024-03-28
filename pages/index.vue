@@ -6,7 +6,7 @@
 import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 
-const { makeBuyersphereLink } = useBuyersphereLinks()
+const { makeSwaypageLink } = useSwaypageLinks()
 
 const usersStore = useUsersStore()
 const { getMeCached } = storeToRefs(usersStore)
@@ -19,7 +19,7 @@ if (user?.buyersphereRole === 'admin') {
   const { apiFetch } = useNuxtApp()
   const { data } = await apiFetch('/v0.1/users/me/buyerspheres')
   // TODO what to do when there's no answer?
-  await navigateTo(makeBuyersphereLink(data.value[0]))
+  await navigateTo(makeSwaypageLink(data.value[0]))
 } else /* no user */ {
   await navigateTo('/login')
 }

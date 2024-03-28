@@ -58,7 +58,7 @@
 <script setup>
 import { format } from 'v-money3';
 import { useModal } from 'vue-final-modal'
-import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
+import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import lodash_pkg from 'lodash';
 const { groupBy, map } = lodash_pkg;
 
@@ -118,7 +118,7 @@ const oppsGrouped = computed(() =>
 )
 
 const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
-  component: AddEditBuyersphereModal,
+  component: AddEditSwaypageModal,
   attrs: {
     onClose () {
       closeModal()
@@ -127,7 +127,7 @@ const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = 
   }
 })
 
-function createBuyersphere(oppty) {
+function createSwaypage(oppty) {
   patchModalOptions({ attrs: {
     dealAmount: oppty.amount,
     buyer: oppty.accountName,

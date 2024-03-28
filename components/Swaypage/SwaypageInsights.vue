@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { concat, filter, map, orderBy } = lodash_pkg;
@@ -29,11 +29,11 @@ const { concat, filter, map, orderBy } = lodash_pkg;
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
 
 const [buyerActivity] = await Promise.all([
-  getBuyersphereBuyerActivityByIdCached.value(buyersphereId),
+  getSwaypageBuyerActivityByIdCached.value(buyersphereId),
 ])
 
 const dayjs = useDayjs()

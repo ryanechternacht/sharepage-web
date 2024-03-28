@@ -98,7 +98,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useTemplatesStore } from '@/stores/templates'
 import { Money3Component } from 'v-money3';
 import lodash_pkg from 'lodash';
@@ -120,7 +120,7 @@ const emit = defineEmits(['close'])
 
 const editMode = ref(!!props.buyersphere.id)
 
-const store = useBuyerspheresStore()
+const store = useSwaypagesStore()
 
 const templatesStore = useTemplatesStore()
 const pageTemplates = ref([])
@@ -130,7 +130,7 @@ if (!editMode.value) {
 
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
-    await store.saveBuyersphereSettings({
+    await store.saveSwaypageSettings({
       buyersphereId: props.buyersphere.id,
       buyer,
       subname,
@@ -143,7 +143,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     })
     emit('close', { buyersphereId: props.buyersphere.id })
   } else {
-    const buyersphereId = await store.createBuyersphere({ 
+    const buyersphereId = await store.createSwaypage({ 
       buyer,
       subname,
       buyerLogo,

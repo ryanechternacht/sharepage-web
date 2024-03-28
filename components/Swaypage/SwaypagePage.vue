@@ -178,7 +178,7 @@
 <script setup>
 import lodash_pkg from 'lodash';
 const { debounce, find, first, some } = lodash_pkg;
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
@@ -186,14 +186,14 @@ import { storeToRefs } from 'pinia'
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
 const [buyersphere, pages, hasUser, isSeller, user] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+  getSwaypageByIdCached.value(buyersphereId),
   getSwaypagePagesByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
@@ -225,7 +225,7 @@ const isABuyerForThisBuyersphere = user && some(buyersphere.buyerTeam, p => p.em
 const canUserRespond = isSeller || isABuyerForThisBuyersphere
 
 const router = useRouter()
-const { makeBuyersphereLink } = useBuyersphereLinks()
+const { makeSwaypageLink } = useSwaypageLinks()
 
 router.beforeEach(async () => {
   if (isDirty.value) {
@@ -234,7 +234,7 @@ router.beforeEach(async () => {
 })
 
 setTimeout(() => router.replace({
-  path: makeBuyersphereLink(buyersphere, page.id)
+  path: makeSwaypageLink(buyersphere, page.id)
 }), 100)
 
 const sections = ref(page.body.sections)

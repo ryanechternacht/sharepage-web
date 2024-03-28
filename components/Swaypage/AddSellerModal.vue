@@ -26,7 +26,7 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 import { useUsersStore } from '@/stores/users'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { find } = lodash_pkg;
@@ -37,14 +37,14 @@ const { buyersphereId } = defineProps({
 
 const emit = defineEmits(['close'])
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { getUsersCached } = storeToRefs(usersStore)
 
 const [buyersphere, users] = await Promise.all([
-  getBuyersphereByIdCached.value(buyersphereId),
+  getSwaypageByIdCached.value(buyersphereId),
   getUsersCached.value()
 ])
 

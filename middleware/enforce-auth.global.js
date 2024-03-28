@@ -1,20 +1,20 @@
 import { useUsersStore } from '@/stores/users';
 import { useOrganizationStore } from '@/stores/organization'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia' 
 
 export default defineNuxtRouteMiddleware(async (to, _) => {
   if (to.path === '/test') {
     return;
   } else if (to.matched[0]?.name === 'swaypage') {
-    const buyersphereStore = useBuyerspheresStore()
-    const { getBuyersphereByIdCached } = storeToRefs(buyersphereStore)
+    const buyersphereStore = useSwaypagesStore()
+    const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
 
     const usersStore = useUsersStore()
     const { isUserSeller } = storeToRefs(usersStore)
 
     const [buyersphere, isSeller] = await Promise.all([
-      getBuyersphereByIdCached.value(to.params.id),
+      getSwaypageByIdCached.value(to.params.id),
       isUserSeller.value(),
     ])
 

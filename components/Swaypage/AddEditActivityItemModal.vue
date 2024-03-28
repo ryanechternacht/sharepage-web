@@ -75,7 +75,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useBuyerspheresStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/buyerspheres'
 import { useOrganizationStore } from '@/stores/organization'
 import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'
@@ -94,8 +94,8 @@ const globalMode = ref(!props.buyersphereId && !props.isTemplate)
 
 const emit = defineEmits(['activity-created', 'activity-edited', 'close'])
 
-const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyersphereMilestonesByIdCached } = storeToRefs(buyersphereStore)
+const buyersphereStore = useSwaypagesStore()
+const { getSwaypageByIdCached, getSwaypageMilestonesByIdCached } = storeToRefs(buyersphereStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -117,8 +117,8 @@ const milestones = ref([])
 async function updateValuesFromBuyersphere() {
   if (buyersphereId.value) {
     const [bs, ms] = await Promise.all([
-      getBuyersphereByIdCached.value(buyersphereId.value),
-      getBuyersphereMilestonesByIdCached.value(buyersphereId.value)
+      getSwaypageByIdCached.value(buyersphereId.value),
+      getSwaypageMilestonesByIdCached.value(buyersphereId.value)
     ])
     buyersphere.value = bs
     milestones.value = ms
