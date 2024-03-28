@@ -95,9 +95,9 @@ import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
-import AddSwaypagePageModal from '@/components/Buyersphere/AddSwaypagePageModal'
-import AnonymousViewModal from '@/components/Buyersphere/AnonymousViewModal';
-import RequireLoginModal from '@/components/Buyersphere/RequireLoginModal';
+import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
+import AnonymousViewModal from '@/components/Swaypage/AnonymousViewModal';
+import RequireLoginModal from '@/components/Swaypage/RequireLoginModal';
 import ShareLinkModal from '@/components/ShareLinkModal';
 import { format } from 'v-money3'
 import lodash_pkg from 'lodash';

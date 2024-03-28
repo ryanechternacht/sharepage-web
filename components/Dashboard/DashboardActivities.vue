@@ -69,7 +69,7 @@ import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy } = lodash_pkg;
-import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal.vue';
+import AddEditActivityItemModal from '@/components/Swaypage/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
 const { makeBuyersphereLink } = useBuyersphereLinks()

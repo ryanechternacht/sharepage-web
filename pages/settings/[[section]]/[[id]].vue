@@ -54,7 +54,7 @@ import lodash_pkg from 'lodash';
 const { find, startCase } = lodash_pkg;
 import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'
-import AddSwaypagePageModal from '@/components/Buyersphere/AddSwaypagePageModal'
+import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
 import { useModal } from 'vue-final-modal'
 
 const templatesStore = useTemplatesStore()

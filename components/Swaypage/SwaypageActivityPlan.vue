@@ -41,8 +41,8 @@ import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { filter, find, orderBy, map } = lodash_pkg;
-import AddEditActivityItemModal from '@/components/Buyersphere/AddEditActivityItemModal';
-import AddEditActivityMilestoneModal from '@/components/Buyersphere/AddEditActivityMilestoneModal';
+import AddEditActivityItemModal from '@/components/Swaypage/AddEditActivityItemModal';
+import AddEditActivityMilestoneModal from '@/components/Swaypage/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
 // import { VueDraggable } from 'vue-draggable-plus'
 
