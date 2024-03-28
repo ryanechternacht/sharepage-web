@@ -76,13 +76,12 @@
       <!-- These return the center and center-header sections -->
       <SwaypageActivityPlan v-if="page === 'activity-plan'"
         @require-login="requireLogin" />
-      <BuyersphereTeam v-else-if="page === 'team'" />
+      <SwaypageTeam v-else-if="page === 'team'" />
       <SwaypageInsights v-else-if="page === 'insights'" />
       <SwaypageAssets v-else-if="page === 'assets'" />
-      <BuyerspherePage v-else
+      <SwaypagePage v-else
         :key="route.params.page"
         @require-login="requireLogin" />
-      <!-- <BuyersphereNotes v-else-if="page === 'notes'" /> -->
 
       <div class="[grid-area:footer] h-20" />
     </div>
@@ -113,14 +112,14 @@ const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyerspherePagesByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyerspherePagesByIdCached.value(buyersphereId),
+  getSwaypagePagesByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
@@ -214,8 +213,8 @@ function editBuyersphere() {
 }
 
 const { 
-  open: openBuyerspherePageModal,
-  close: closeBuyerspherePageModal
+  open: openSwaypagePageModal,
+  close: closeSwaypagePageModal
 } = useModal({
   component: AddSwaypagePageModal,
   attrs: {
@@ -227,13 +226,13 @@ const {
           path: makeBuyersphereLink(buyersphere, props.pageId)
         })
       }
-      closeBuyerspherePageModal()
+      closeSwaypagePageModal()
     }
   }
 })
 
 function createNewPage () {
-  openBuyerspherePageModal()
+  openSwaypagePageModal()
 }
 
 const { 

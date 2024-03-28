@@ -187,14 +187,14 @@ const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useBuyerspheresStore()
-const { getBuyersphereByIdCached, getBuyerspherePagesByIdCached } = storeToRefs(buyersphereStore)
+const { getBuyersphereByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
 const [buyersphere, pages, hasUser, isSeller, user] = await Promise.all([
   getBuyersphereByIdCached.value(buyersphereId),
-  getBuyerspherePagesByIdCached.value(buyersphereId),
+  getSwaypagePagesByIdCached.value(buyersphereId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getMeCached.value(),

@@ -37,8 +37,8 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
       await state.fetchBuyersphereBuyerActivity({ buyersphereId })
       return state.buyerActivity[buyersphereId]?.content
     },
-    getBuyerspherePagesByIdCached: (state) => async (buyersphereId) => {
-      await state.fetchBuyerspherePages({ buyersphereId })
+    getSwaypagePagesByIdCached: (state) => async (buyersphereId) => {
+      await state.fetchSwaypagePages({ buyersphereId })
       return state.pages[buyersphereId]?.content
     },
   },
@@ -498,7 +498,7 @@ export const useBuyerspheresStore = defineStore('buyerspheres', {
 
       this.buyerspheres[buyersphereId].content.sellerTeam = data.value
     },
-    async fetchBuyerspherePages({ buyersphereId, forceRefresh }) {
+    async fetchSwaypagePages({ buyersphereId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 

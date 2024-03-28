@@ -11,7 +11,7 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereTeamSection
+    <SwaypageTeamSection
       id="buyer"
       :users="buyersphere.buyerTeam"
       :header="buyersphere.buyer"
@@ -20,7 +20,7 @@
       @update:user="editBuyer"
       @delete:user="removeUser" />
 
-    <BuyersphereTeamSection
+    <SwaypageTeamSection
       id="seller"
       :users="buyersphere.sellerTeam"
       :header="organization.name"
