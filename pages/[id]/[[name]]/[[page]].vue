@@ -74,7 +74,7 @@
       </div>
 
       <!-- These return the center and center-header sections -->
-      <BuyersphereActivityPlan v-if="page === 'activity-plan'"
+      <SwaypageActivityPlan v-if="page === 'activity-plan'"
         @require-login="requireLogin" />
       <BuyersphereTeam v-else-if="page === 'team'" />
       <BuyersphereInsights v-else-if="page === 'insights'" />
@@ -96,7 +96,7 @@ import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddEditBuyersphereModal from '@/components/AddEditBuyersphereModal'
-import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
+import AddSwaypagePageModal from '@/components/Buyersphere/AddSwaypagePageModal'
 import AnonymousViewModal from '@/components/Buyersphere/AnonymousViewModal';
 import RequireLoginModal from '@/components/Buyersphere/RequireLoginModal';
 import ShareLinkModal from '@/components/ShareLinkModal';
@@ -217,7 +217,7 @@ const {
   open: openBuyerspherePageModal,
   close: closeBuyerspherePageModal
 } = useModal({
-  component: AddBuyerspherePageModal,
+  component: AddSwaypagePageModal,
   attrs: {
     buyersphereId,
     page: {},

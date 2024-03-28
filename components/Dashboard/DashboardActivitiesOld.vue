@@ -40,7 +40,7 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereActivityPlanSectionOld v-if="overdueItems.length"
+    <SwaypageActivityPlanSectionOld v-if="overdueItems.length"
       id="overdue"
       is-global-list
       overdue
@@ -49,7 +49,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSectionOld v-if="next7DaysItems.length"
+    <SwaypageActivityPlanSectionOld v-if="next7DaysItems.length"
       id="next-7-days"
       is-global-list
       :activities="next7DaysItems"
@@ -57,7 +57,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSectionOld v-if="next30DaysItems.length"
+    <SwaypageActivityPlanSectionOld v-if="next30DaysItems.length"
       id="next-30-days"
       is-global-list
       :activities="next30DaysItems"
@@ -65,7 +65,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSectionOld v-if="next90DaysItems.length"
+    <SwaypageActivityPlanSectionOld v-if="next90DaysItems.length"
       id="next-90-days"
       is-global-list
       :activities="next90DaysItems"
@@ -73,7 +73,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSectionOld v-if="beyondItems.length"
+    <SwaypageActivityPlanSectionOld v-if="beyondItems.length"
       id="beyond"
       is-global-list
       :activities="beyondItems"

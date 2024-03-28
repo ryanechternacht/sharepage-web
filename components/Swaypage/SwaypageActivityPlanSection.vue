@@ -41,7 +41,7 @@
       handle=".drag-handle"
     > -->
     <div class="mt-[2rem] flex flex-col gap-4">
-      <BuyersphereActivityItem
+      <SwaypageActivityItem
         v-for="activity in activities"
         :key="activity.id"
         :activity="activity"

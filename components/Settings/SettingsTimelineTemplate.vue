@@ -14,7 +14,7 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereActivityPlanSection
+    <SwaypageActivityPlanSection
       v-for="milestoneTemplate in groups"
       :id="milestoneTemplate.title"
       :milestone="milestoneTemplate"

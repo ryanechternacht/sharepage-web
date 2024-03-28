@@ -34,7 +34,7 @@
   </div>
 
   <div class="[grid-area:center] page-center" v-scroll-spy>
-    <BuyersphereActivityPlanSection
+    <SwaypageActivityPlanSection
       v-if="overdueActivities.length"
       :activities="overdueActivities"
       is-global-list
@@ -42,7 +42,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection
+    <SwaypageActivityPlanSection
       v-if="next7DaysActivities.length"
       :activities="next7DaysActivities"
       is-global-list
@@ -50,7 +50,7 @@
       @click:activity="goToActivity"
       @resolve:activity="resolveActivity" />
 
-    <BuyersphereActivityPlanSection
+    <SwaypageActivityPlanSection
       v-if="next30DaysActivities.length"
       :activities="next30DaysActivities"
       is-global-list

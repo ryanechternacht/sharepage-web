@@ -54,7 +54,7 @@ import lodash_pkg from 'lodash';
 const { find, startCase } = lodash_pkg;
 import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'
-import AddBuyerspherePageModal from '@/components/Buyersphere/AddBuyerspherePageModal'
+import AddSwaypagePageModal from '@/components/Buyersphere/AddSwaypagePageModal'
 import { useModal } from 'vue-final-modal'
 
 const templatesStore = useTemplatesStore()
@@ -87,7 +87,7 @@ const header = computed(() => {
 
 const router = useRouter()
 const { open, close } = useModal({
-  component: AddBuyerspherePageModal,
+  component: AddSwaypagePageModal,
   attrs: {
     page: {},
     isTemplate: true,
