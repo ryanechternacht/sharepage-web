@@ -75,7 +75,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { useOrganizationStore } from '@/stores/organization'
 import { useTemplatesStore } from '@/stores/templates'
 import { storeToRefs } from 'pinia'

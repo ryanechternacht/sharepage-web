@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { concat, filter, map, orderBy } = lodash_pkg;

@@ -56,7 +56,7 @@ import { useModal } from 'vue-final-modal'
 import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 
 const buyersphereStore = useSwaypagesStore()
 

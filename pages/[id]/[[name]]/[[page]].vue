@@ -89,7 +89,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'

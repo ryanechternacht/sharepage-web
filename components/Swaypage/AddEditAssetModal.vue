@@ -29,7 +29,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 
 const props = defineProps({
   asset: { type: Object, default: {} },

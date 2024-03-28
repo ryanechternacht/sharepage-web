@@ -47,7 +47,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
 
 const props = defineProps({

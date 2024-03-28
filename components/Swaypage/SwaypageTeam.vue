@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { useOrganizationStore } from '@/stores/organization'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'

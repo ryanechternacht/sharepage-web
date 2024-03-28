@@ -26,7 +26,7 @@
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
 import { useUsersStore } from '@/stores/users'
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { find } = lodash_pkg;

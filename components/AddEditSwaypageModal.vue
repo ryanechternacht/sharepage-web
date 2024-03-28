@@ -98,7 +98,7 @@
 
 <script setup>
 import { VueFinalModal } from 'vue-final-modal'
-import { useSwaypagesStore } from '@/stores/buyerspheres'
+import { useSwaypagesStore } from '@/stores/swaypages'
 import { useTemplatesStore } from '@/stores/templates'
 import { Money3Component } from 'v-money3';
 import lodash_pkg from 'lodash';
