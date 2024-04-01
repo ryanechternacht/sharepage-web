@@ -19,7 +19,7 @@
 
   <div class="[grid-area:center] page-center">
     <template v-if="pageView === 'View'">
-      <template v-for="section in sections">
+      <template v-for="section in body.sections">
         <div class="section"
           v-if="section.type === 'simple-text'">
           <div class="group-header">
@@ -85,7 +85,7 @@
         </template>
       </div>
 
-      <template v-for="(section, index) in sections">
+      <template v-for="(section, index) in body.sections">
         <div class="section"
           v-if="section.type === 'simple-text'">
           <input class="group-header-input"
@@ -186,7 +186,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { debounce, find, first, some } = lodash_pkg;
+const { cloneDeep, debounce, find, first, some } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
@@ -246,7 +246,7 @@ setTimeout(() => router.replace({
   path: makeSwaypageLink(buyersphere, page.id)
 }), 100)
 
-const sections = ref(page.body.sections)
+const body = ref(cloneDeep(page.body))
 const title = ref(page.title)
 const canBuyerEdit = ref(page.canBuyerEdit)
 
@@ -277,6 +277,7 @@ if (process.client) {
 async function save() {
   page.title = title.value
   page.canBuyerEdit = canBuyerEdit.value
+  page.body = body.value
   await buyersphereStore.updatePage({ swaypageId: buyersphereId, pageId, page })
   isDirty.value = false
 }
@@ -292,7 +293,7 @@ const saveReadyText = computed(() => isDirty.value ? "Save Changes" : "Saved")
 const saveSubmittingText = "Saving Changes"
 const saveErrorText = "Save Failed. Try Again"
 
-watch(sections.value, () => {
+watch(body.value, () => {
   isDirty.value = true
   debouncedSave()
 })
@@ -317,7 +318,7 @@ function clickActivity(asset) {
 }
 
 function addNewTextSection () {
-  sections.value.push({
+  body.value.sections.push({
     type: "simple-text",
     title: "",
     body: {
@@ -329,7 +330,7 @@ function addNewTextSection () {
 }
 
 function addNewListSection () {
-  sections.value.push({
+  body.value.sections.push({
     type: "simple-list",
     title: "",
     body: {
@@ -348,7 +349,7 @@ function addNewListSection () {
 }
 
 function addNewAssetSection () {
-  sections.value.push({
+  body.value.sections.push({
     type: "simple-asset",
     title: "",
     body: {
@@ -362,7 +363,7 @@ function addNewAssetSection () {
 }
 
 function deleteSection(index) {
-  sections.value.splice(index, 1)
+  body.value.sections.splice(index, 1)
 }
 </script>
 
