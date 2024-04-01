@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <div class="group-header">
-      <div class="h-[1.5rem]">{{ !isGlobalList ? milestone.title : header }}</div> 
+      <div class="h2">{{ !isGlobalList ? milestone.title : header }}</div> 
       <div v-if="milestone?.resolved" class="italic tag">
         (Completed)</div>
       <template v-if="!isGlobalList && hasUser">

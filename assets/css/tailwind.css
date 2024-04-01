@@ -142,12 +142,8 @@
 
     .group-header {
       @apply h2;
-      @apply p-2 flex flex-row gap-2 items-center mr-auto rounded-md 
+      @apply p-2 flex flex-row gap-2 items-end mr-auto rounded-md 
         mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white;
-
-      > * {
-        @apply h2;
-      }
     }
 
     .group-header-input {

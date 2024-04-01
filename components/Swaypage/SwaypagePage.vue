@@ -22,7 +22,10 @@
       <template v-for="section in sections">
         <div class="section"
           v-if="section.type === 'simple-text'">
-          <div class="group-header">{{ section.title }}</div>
+          <div class="group-header">
+            {{ section.title }}
+            <div class="tag">{{ section.body.showAnswer ? "Input" : "Info" }}</div>
+          </div>
           <div class="mt-4 inline-html" v-html="section.body.question" />
           
           <AutoSaveTipTapTextarea v-if="section.body.showAnswer"
@@ -35,7 +38,10 @@
 
         <div class="section"
           v-else-if="section.type === 'simple-list'">
-          <div class="group-header">{{ section.title }}</div>
+          <div class="group-header">
+            {{ section.title }}
+            <div class="tag">Multi-select</div>
+          </div>
           <div class="mt-4 inline-html" v-html="section.body.question" />
           <div class="flex flex-col gap-4 mt-6">
             <div v-for="(c, i) in section.body.choices"
@@ -49,7 +55,10 @@
 
         <div class="section"
           v-else-if="section.type === 'simple-asset'">
-          <div class="group-header">{{ section.title }}</div>
+          <div class="group-header">
+            {{ section.title }}
+            <div class="tag">Asset</div>
+          </div>
           <div v-if="section.body.description?.length > 0"
             class="mt-4 inline-html" v-html="section.body.description" />
           <a class="asset-link"
