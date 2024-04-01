@@ -1,7 +1,7 @@
 <template>
   <div v-if="unknown"
     :class="[ sizeClass ]">
-    <HelpCircleIcon class="w-auto h-auto" />
+    <UserIcon class="w-auto h-auto" />
   </div>
   <img v-else-if="user.image"
     :class="[ sizeClass ]"
