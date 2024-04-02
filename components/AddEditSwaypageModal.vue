@@ -80,8 +80,11 @@
           placeholder="Opportunity ID in CRM">
       </div>
       <div v-if="editMode">
-        <h3>Publicly Visible?</h3>
-        <input type="checkbox" v-model="isPublic" class="!w-auto">
+        <h3>Visibility</h3>
+        <select v-model="isPublic" class="flex-grow">
+          <option :value="true">Public</option>
+          <option :value="false">Private</option>
+        </select>
       </div>
       <SubmitButton
         class="self-center"
