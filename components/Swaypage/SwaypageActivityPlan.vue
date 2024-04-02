@@ -30,7 +30,7 @@
       @resolve:activity="resolveActivity"
       @delete:activity="deleteActivity"
     />
-    <div class="bottom-cover" />
+    <div class="bottom-cover mt-[-1rem]" />
     <div class="vertical-bar" />
   </div>
 </template>
