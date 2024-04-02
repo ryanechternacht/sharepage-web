@@ -92,8 +92,10 @@
         :animation="200"
         :scroll="true"
         class="flex flex-col gap-8"
+        handle=".drag-handle"
       >
-        <template v-for="(section, index) in body.sections">
+        <div v-for="(section, index) in body.sections"
+          class="flex flex-row flex-start gap-4">
           <div class="section"
             v-if="section.type === 'simple-text'">
             <input class="group-header-input"
@@ -140,7 +142,7 @@
                 <DeleteButton @click="section.body.choices.splice(i, 1)" />
               </div>
             </div>
-            <NewButton class="section-add-button"
+            <NewButton class="section-add-button page-section-add-button"
               @click="section.body.choices.push({text: ''})" />
           </div>
 
@@ -163,7 +165,9 @@
                 :value="r">{{ r.title }}</option>
             </select>
           </div>
-        </template>
+
+          <MenuIcon class="drag-handle mt-2" />
+        </div>
       </VueDraggable>
 
       <div class="section">
@@ -415,5 +419,10 @@ function deleteSection(index) {
   background: #c8ebfb;
   /* background-color: red; */
   /* border: 4px solid black; */
+}
+
+.page-section-add-button {
+  /* midway - btn width - center right margin - extra for drag handle */
+  margin-right: calc(50vw - 3.5rem - 3rem - (.5rem + 14px));
 }
 </style>

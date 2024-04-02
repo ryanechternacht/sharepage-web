@@ -134,7 +134,7 @@
   }
 
   .section {
-    @apply p-4 mt-4 border border-gray-border rounded-md flex flex-col bg-white;
+    @apply p-4 mt-4 w-full border border-gray-border rounded-md flex flex-col bg-white;
   
     h4 {
       @apply mb-2 mt-4;
@@ -168,10 +168,10 @@
     .section-add-button {
       @apply mt-4 mb-[-2rem] bg-white;
 
-      /* midway - left sidebar - btn width - center left margin*/
+      /* midway - left sidebar - btn width - center left margin */
       margin-left: calc(50vw - 220px - 3.5rem - .75rem);
 
-      /* midway - btn width - center right margin*/
+      /* midway - btn width - center right margin */
       margin-right: calc(50vw - 3.5rem - 3rem);
     }
   }
