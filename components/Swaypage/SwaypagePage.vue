@@ -79,9 +79,10 @@
         <input class="mt-1" v-model="title" placeholder="Page Title">
         <template v-if="isSeller">
           <h3 class="mt-4">Can Buyer Edit?</h3>
-          <input v-model="canBuyerEdit" 
-            type="checkbox"
-            class="mt-1 self-start">
+          <select v-model="canBuyerEdit" class="flex-grow">
+            <option :value="true">Yes</option>
+            <option :value="false">No</option>
+          </select>
         </template>
       </div>
 
