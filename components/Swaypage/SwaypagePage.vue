@@ -214,9 +214,9 @@ const pageViews = computed(() => [
   {text: 'Edit', active: true},
 ])
 const pageView = ref('View')
-function updatePageView ({ option }) {
+async function updatePageView ({ option }) {
   if (pageView.value === 'Edit') {
-    debouncedSave.flush()
+    await debouncedSave.flush()
   }
 
   pageView.value = option.text
