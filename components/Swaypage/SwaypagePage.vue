@@ -86,77 +86,85 @@
         </template>
       </div>
 
-      <template v-for="(section, index) in body.sections">
-        <div class="section"
-          v-if="section.type === 'simple-text'">
-          <input class="group-header-input"
-            v-model="section.title"
-            placeholder="Enter Text Block Title">
-          <div class="item-count">
-            <DeleteButton @click="deleteSection(index)" />
-          </div>
+      <VueDraggable
+        v-model="body.sections"
+        ghost-class="ghost"
+        :animation="200"
+        :scroll="true"
+        class="flex flex-col gap-8"
+      >
+        <template v-for="(section, index) in body.sections">
+          <div class="section"
+            v-if="section.type === 'simple-text'">
+            <input class="group-header-input"
+              v-model="section.title"
+              placeholder="Enter Text Block Title">
+            <div class="item-count">
+              <DeleteButton @click="deleteSection(index)" />
+            </div>
 
-          <TipTapTextarea
-            class="w-full mt-6"
-            v-model="section.body.question"
-            placeholder="Enter Text Block body text" />
-          <div class="w-full mt-6">
-            <input v-model="section.body.showAnswer"
-              id="hide-pricing" 
-              type="checkbox"
-              class="mr-2">
-              <label for="hide-pricing">Show Answer Box?</label>
-          </div>
-        </div>
-
-        <div class="section"
-          v-else-if="section.type === 'simple-list'">
-          <input class="group-header-input"
-            v-model="section.title"
-            placeholder="Enter List Block Title">
-          <div class="item-count">
-            <DeleteButton @click="deleteSection(index)" />
-          </div>
-          
-          <TipTapTextarea
-            class="w-full mt-6"
-            v-model="section.body.question"
-            placeholder="Enter List Block body text" />
-
-          <h4>Answer Choices:</h4>
-          <div class="flex flex-col gap-1">
-            <div v-for="(c, i) in section.body.choices"
-              class="flex flex-row gap-2">
-              <input v-model="c.text"
-                class="w-full"
-                placeholder="Enter answer choice text">
-              <DeleteButton @click="section.body.choices.splice(i, 1)" />
+            <TipTapTextarea
+              class="w-full mt-6"
+              v-model="section.body.question"
+              placeholder="Enter Text Block body text" />
+            <div class="w-full mt-6">
+              <input v-model="section.body.showAnswer"
+                id="hide-pricing"
+                type="checkbox"
+                class="mr-2">
+                <label for="hide-pricing">Show Answer Box?</label>
             </div>
           </div>
-          <NewButton class="section-add-button"
-            @click="section.body.choices.push({text: ''})" />
-        </div>
 
-        <div class="section"
-          v-if="section.type === 'simple-asset'">
-          <input class="group-header-input"
-            v-model="section.title"
-            placeholder="Enter Asset Block Title">
-          <div class="item-count">
-            <DeleteButton @click="deleteSection(index)" />
+          <div class="section"
+            v-else-if="section.type === 'simple-list'">
+            <input class="group-header-input"
+              v-model="section.title"
+              placeholder="Enter List Block Title">
+            <div class="item-count">
+              <DeleteButton @click="deleteSection(index)" />
+            </div>
+            
+            <TipTapTextarea
+              class="w-full mt-6"
+              v-model="section.body.question"
+              placeholder="Enter List Block body text" />
+
+            <h4>Answer Choices:</h4>
+            <div class="flex flex-col gap-1">
+              <div v-for="(c, i) in section.body.choices"
+                class="flex flex-row gap-2">
+                <input v-model="c.text"
+                  class="w-full"
+                  placeholder="Enter answer choice text">
+                <DeleteButton @click="section.body.choices.splice(i, 1)" />
+              </div>
+            </div>
+            <NewButton class="section-add-button"
+              @click="section.body.choices.push({text: ''})" />
           </div>
 
-          <TipTapTextarea
-            class="w-full mt-6"
-            v-model="section.body.description"
-            placeholder="Enter Asset Block description (optional)" />
-          <select v-model="section.body.asset"
-            class="mt-6">
-            <option v-for="r in buyersphere.resources"
-              :value="r">{{ r.title }}</option>
-          </select>
-        </div>
-      </template>
+          <div class="section"
+            v-if="section.type === 'simple-asset'">
+            <input class="group-header-input"
+              v-model="section.title"
+              placeholder="Enter Asset Block Title">
+            <div class="item-count">
+              <DeleteButton @click="deleteSection(index)" />
+            </div>
+
+            <TipTapTextarea
+              class="w-full mt-6"
+              v-model="section.body.description"
+              placeholder="Enter Asset Block description (optional)" />
+            <select v-model="section.body.asset"
+              class="mt-6">
+              <option v-for="r in buyersphere.resources"
+                :value="r">{{ r.title }}</option>
+            </select>
+          </div>
+        </template>
+      </VueDraggable>
 
       <div class="section">
         <div class="group-header">Add New Block</div>
@@ -179,7 +187,7 @@
         </div>
       </div>
     </template>
-
+    
     <div class="bottom-cover" />
     <div class="vertical-bar" />
   </div>
@@ -192,6 +200,7 @@ import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
+import { VueDraggable } from 'vue-draggable-plus'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -399,5 +408,12 @@ function deleteSection(index) {
 .asset-link {
   @apply mt-4 border border-gray-border rounded-md hover:bg-gray-hover 
     px-2 py-1 flex flex-row gap-2 items-center;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+  /* background-color: red; */
+  /* border: 4px solid black; */
 }
 </style>

@@ -44,7 +44,6 @@ const { filter, find, orderBy, map } = lodash_pkg;
 import AddEditActivityItemModal from '@/components/Swaypage/AddEditActivityItemModal';
 import AddEditActivityMilestoneModal from '@/components/Swaypage/AddEditActivityMilestoneModal';
 import { useModal } from 'vue-final-modal'
-// import { VueDraggable } from 'vue-draggable-plus'
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
