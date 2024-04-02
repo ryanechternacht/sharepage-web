@@ -108,6 +108,8 @@ definePageMeta({
   key: route => route.params.id,
 })
 
+const { embedly } = useEmbedly()
+
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 

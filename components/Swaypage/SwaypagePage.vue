@@ -68,6 +68,13 @@
             <BookIcon class="w-[1rem] h-[1rem]" />
             <span>{{ section.body.asset.title }}</span>
           </a>
+
+          <a :href="section.body.asset.link" 
+            class="embedly-card"
+            data-card-align="left"
+            data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
+            {{ section.body.asset.title }}
+          </a>
         </div>
       </template>
     </template>
