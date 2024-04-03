@@ -69,7 +69,8 @@
             <span>Link - {{ section.body.asset.title }}</span>
           </a>
 
-          <a :href="section.body.asset.link" 
+          <a v-if="!section.body.hidePreview"
+            :href="section.body.asset.link" 
             class="embedly-card"
             data-card-align="left"
             data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
@@ -171,7 +172,13 @@
               <option v-for="r in buyersphere.resources"
                 :value="r">{{ r.title }}</option>
             </select>
-          </div>
+
+            <h4>Hide Preview?</h4>
+              <select v-model="section.body.hidePreview">
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
+              </select>
+            </div>
 
           <MenuIcon class="drag-handle mt-2" />
         </div>
