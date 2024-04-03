@@ -61,12 +61,12 @@
           </div>
           <div v-if="section.body.description?.length > 0"
             class="mt-4 inline-html" v-html="section.body.description" />
-          <a class="asset-link"
+          <a class="asset-link mb-2"
             :href="section.body.asset.link"
             target="_blank"
             @click="clickActivity(section.body.asset)">
             <BookIcon class="w-[1rem] h-[1rem]" />
-            <span>{{ section.body.asset.title }}</span>
+            <span>Link - {{ section.body.asset.title }}</span>
           </a>
 
           <a :href="section.body.asset.link" 
@@ -212,6 +212,8 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+
+useEmbedly()
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)

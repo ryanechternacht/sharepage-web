@@ -39,11 +39,18 @@
           <div class="group-header">{{ section.title }}</div>
           <div v-if="section.body.description?.length > 0"
             class="mt-4 inline-html" v-html="section.body.description" />
-          <a class="asset-link"
+          <a class="asset-link mb-2"
             :href="section.body.asset.link"
             target="_blank">
             <BookIcon class="w-[1rem] h-[1rem]" />
-            <span>{{ section.body.asset.title }}</span>
+            <span>Link - {{ section.body.asset.title }}</span>
+          </a>
+
+          <a :href="section.body.asset.link" 
+            class="embedly-card"
+            data-card-align="left"
+            data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
+            {{ section.body.asset.title }}
           </a>
         </div>
       </template>
@@ -179,6 +186,8 @@ const { debounce, find, first } = lodash_pkg;
 import { useTemplatesStore } from '@/stores/templates'
 import { useResourcesStore } from '@/stores/resources'
 import { storeToRefs } from 'pinia'
+
+useEmbedly()
 
 const templatesStore = useTemplatesStore()
 const { getPageTemplatesCached } = storeToRefs(templatesStore)
