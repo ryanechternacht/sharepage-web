@@ -7,8 +7,7 @@
   </div>
 
   <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12">
-    <SubmitButton 
-      v-if="pageView === 'Edit'"
+    <SubmitButton v-if="pageView === 'Edit'"
       :ready-text="saveReadyText"
       :submitting-text="saveSubmittingText"
       :error-text="saveErrorText"
@@ -203,6 +202,16 @@
             <ListIcon />
           </BsButton>
         </div>
+      </div>
+
+      <div class="flex flex-row-reverse">
+        <SubmitButton 
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
       </div>
     </template>
     
