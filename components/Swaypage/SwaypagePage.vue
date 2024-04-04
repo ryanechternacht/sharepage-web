@@ -68,13 +68,19 @@
             <span>Link - {{ section.body.asset.title }}</span>
           </a>
 
-          <a v-if="!section.body.hidePreview"
-            :href="section.body.asset.link" 
-            class="embedly-card"
-            data-card-align="left"
-            data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
-            {{ section.body.asset.title }}
-          </a>
+          <template v-if="!section.body.hidePreview && !autoHideAsset(section.body.asset.link)">
+            <a v-if="!isGoogleDriveFile(section.body.asset.link)"
+              :href="section.body.asset.link" 
+              class="embedly-card"
+              data-card-align="left"
+              data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
+              {{ section.body.asset.title }}
+            </a>
+            <iframe :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
+              width="640"
+              height="480"
+              allow="autoplay" />
+          </template>
         </div>
       </template>
     </template>
@@ -297,6 +303,20 @@ function selectListIem ({ section, choice, index }) {
   } else {
     emit('require-login')
   }
+}
+
+function autoHideAsset (link) {
+  // google docs require special steps by the user to preview. for now
+  // we will just hide
+  return link.includes('docs.google.com/document')
+}
+
+function isGoogleDriveFile (link) {
+  return link.includes('drive.google.com/file')
+}
+
+function rewriteLinkForGoogleDrivePreview (link) {
+  return link.replace(/view/, 'preview')
 }
 
 if (process.client) {
