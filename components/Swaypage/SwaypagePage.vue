@@ -7,8 +7,7 @@
   </div>
 
   <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12">
-    <SubmitButton 
-      v-if="pageView === 'Edit'"
+    <SubmitButton v-if="pageView === 'Edit'"
       :ready-text="saveReadyText"
       :submitting-text="saveSubmittingText"
       :error-text="saveErrorText"
@@ -61,13 +60,27 @@
           </div>
           <div v-if="section.body.description?.length > 0"
             class="mt-4 inline-html" v-html="section.body.description" />
-          <a class="asset-link"
+          <a class="asset-link mb-2"
             :href="section.body.asset.link"
             target="_blank"
             @click="clickActivity(section.body.asset)">
             <BookIcon class="w-[1rem] h-[1rem]" />
-            <span>{{ section.body.asset.title }}</span>
+            <span>Link - {{ section.body.asset.title }}</span>
           </a>
+
+          <template v-if="!section.body.hidePreview && !autoHideAsset(section.body.asset.link)">
+            <a v-if="!isGoogleDriveFile(section.body.asset.link)"
+              :href="section.body.asset.link" 
+              class="embedly-card"
+              data-card-align="left"
+              data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
+              {{ section.body.asset.title }}
+            </a>
+            <iframe :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
+              width="640"
+              height="480"
+              allow="autoplay" />
+          </template>
         </div>
       </template>
     </template>
@@ -164,7 +177,13 @@
               <option v-for="r in buyersphere.resources"
                 :value="r">{{ r.title }}</option>
             </select>
-          </div>
+
+            <h4>Hide Preview?</h4>
+              <select v-model="section.body.hidePreview">
+                <option :value="false">No</option>
+                <option :value="true">Yes</option>
+              </select>
+            </div>
 
           <MenuIcon class="drag-handle mt-2" />
         </div>
@@ -190,6 +209,16 @@
           </BsButton>
         </div>
       </div>
+
+      <div class="flex flex-row-reverse">
+        <SubmitButton 
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
+      </div>
     </template>
     
     <div class="bottom-cover" />
@@ -205,6 +234,8 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+
+useEmbedly()
 
 const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
@@ -272,6 +303,20 @@ function selectListIem ({ section, choice, index }) {
   } else {
     emit('require-login')
   }
+}
+
+function autoHideAsset (link) {
+  // google docs require special steps by the user to preview. for now
+  // we will just hide
+  return link.includes('docs.google.com/document')
+}
+
+function isGoogleDriveFile (link) {
+  return link.includes('drive.google.com/file')
+}
+
+function rewriteLinkForGoogleDrivePreview (link) {
+  return link.replace(/view/, 'preview')
 }
 
 if (process.client) {

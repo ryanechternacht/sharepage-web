@@ -5,9 +5,19 @@
       @update:option="updatePageView" />
   </div>
 
+  <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12">
+    <SubmitButton v-if="pageView === 'Edit'"
+      :ready-text="saveReadyText"
+      :submitting-text="saveSubmittingText"
+      :error-text="saveErrorText"
+      :submission-state="saveSubmissionState"
+      :disabled="!isDirty"
+      @click="saveSubmitFn" />
+  </div>
+
   <div class="[grid-area:center] page-center">
     <template v-if="pageView === 'View'">
-      <template v-for="section in sections">
+      <template v-for="section in body.sections">
         <div class="section"
           v-if="section.type === 'simple-text'">
           <div class="group-header">{{ section.title }}</div>
@@ -39,102 +49,125 @@
           <div class="group-header">{{ section.title }}</div>
           <div v-if="section.body.description?.length > 0"
             class="mt-4 inline-html" v-html="section.body.description" />
-          <a class="asset-link"
+          <a class="asset-link mb-2"
             :href="section.body.asset.link"
             target="_blank">
             <BookIcon class="w-[1rem] h-[1rem]" />
-            <span>{{ section.body.asset.title }}</span>
+            <span>Link - {{ section.body.asset.title }}</span>
           </a>
+
+          <template v-if="!section.body.hidePreview && !autoHideAsset(section.body.asset.link)">
+            <a v-if="!isGoogleDriveFile(section.body.asset.link)"
+              :href="section.body.asset.link" 
+              class="embedly-card"
+              data-card-align="left"
+              data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
+              {{ section.body.asset.title }}
+            </a>
+            <iframe :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
+              width="640"
+              height="480"
+              allow="autoplay" />
+          </template>
         </div>
       </template>
     </template>
 
     <template v-else-if="pageView === 'Edit'">
-      <div class="flex flex-row-reverse">
-        <SubmitButton 
-          :ready-text="saveReadyText"
-          :submitting-text="saveSubmittingText"
-          :error-text="saveErrorText"
-          :submission-state="saveSubmissionState"
-          :disabled="!isDirty"
-          @click="saveSubmitFn" />
-      </div>
-
       <div class="section">
         <div class="group-header">Page Title</div>
         <input v-model="title" class="mt-4">
       </div>
-      <template v-for="section in sections">
-        <div class="section"
-          v-if="section.type === 'simple-text'">
-          <input class="group-header-input"
-            v-model="section.title"
-            placeholder="Enter section title">
-          <div class="item-count">
-            <DeleteButton @click="deleteSection(index)" />
-          </div>
 
-          <TipTapTextarea
-            class="w-full mt-6"
-            v-model="section.body.question"
-            placeholder="Enter section body text" />
-          <div class="w-full mt-6">
-            <input v-model="section.body.showAnswer"
-              id="hide-pricing" 
-              type="checkbox"
-              class="mr-2">
-              <label for="hide-pricing">Show Answer Box?</label>
-          </div>
-        </div>
+      <VueDraggable
+        v-model="body.sections"
+        ghost-class="ghost"
+        :animation="200"
+        :scroll="true"
+        class="flex flex-col gap-8"
+        handle=".drag-handle"
+      >
+        <div v-for="(section, index) in body.sections"
+            class="flex flex-row flex-start gap-4">
+          <div class="section"
+            v-if="section.type === 'simple-text'">
+            <input class="group-header-input"
+              v-model="section.title"
+              placeholder="Enter section title">
+            <div class="item-count">
+              <DeleteButton @click="deleteSection(index)" />
+            </div>
 
-        <div class="section"
-          v-else-if="section.type === 'simple-list'">
-          <input class="group-header-input"
-            v-model="section.title"
-            placeholder="Enter section title">
-          <div class="item-count">
-            <DeleteButton @click="deleteSection(index)" />
-          </div>
-
-          <TipTapTextarea
-            class="w-full mt-6"
-            v-model="section.body.question"
-            placeholder="Enter section body text" />
-
-          <h4>Answer Choices:</h4>
-          <div class="flex flex-col gap-1">
-            <div v-for="(c, i) in section.body.choices"
-              class="flex flex-row gap-2">
-              <input v-model="c.text"
-                class="w-full"
-                placeholder="Enter answer choice text">
-              <DeleteButton @click="section.body.choices.splice(i, 1)" />
+            <TipTapTextarea
+              class="w-full mt-6"
+              v-model="section.body.question"
+              placeholder="Enter section body text" />
+            <div class="w-full mt-6">
+              <input v-model="section.body.showAnswer"
+                id="hide-pricing" 
+                type="checkbox"
+                class="mr-2">
+                <label for="hide-pricing">Show Answer Box?</label>
             </div>
           </div>
-          <NewButton class="section-add-button"
-            @click="section.body.choices.push({text: ''})" />
-        </div>
 
-        <div class="section"
-          v-if="section.type === 'simple-asset'">
-          <input class="group-header-input"
-            v-model="section.title"
-            placeholder="Enter Asset Block Title">
-          <div class="item-count">
-            <DeleteButton @click="deleteSection(index)" />
+          <div class="section"
+            v-else-if="section.type === 'simple-list'">
+            <input class="group-header-input"
+              v-model="section.title"
+              placeholder="Enter section title">
+            <div class="item-count">
+              <DeleteButton @click="deleteSection(index)" />
+            </div>
+
+            <TipTapTextarea
+              class="w-full mt-6"
+              v-model="section.body.question"
+              placeholder="Enter section body text" />
+
+            <h4>Answer Choices:</h4>
+            <div class="flex flex-col gap-1">
+              <div v-for="(c, i) in section.body.choices"
+                class="flex flex-row gap-2">
+                <input v-model="c.text"
+                  class="w-full"
+                  placeholder="Enter answer choice text">
+                <DeleteButton @click="section.body.choices.splice(i, 1)" />
+              </div>
+            </div>
+            <NewButton class="section-add-button"
+              @click="section.body.choices.push({text: ''})" />
           </div>
 
-          <TipTapTextarea
-            class="w-full mt-6"
-            v-model="section.body.description"
-            placeholder="Enter Asset Block description (optional)" />
-          <select v-model="section.body.asset"
-            class="mt-6">
-            <option v-for="r in assetTemplates"
-              :value="r">{{ r.title }}</option>
-          </select>
+          <div class="section"
+            v-if="section.type === 'simple-asset'">
+            <input class="group-header-input"
+              v-model="section.title"
+              placeholder="Enter Asset Block Title">
+            <div class="item-count">
+              <DeleteButton @click="deleteSection(index)" />
+            </div>
+
+            <TipTapTextarea
+              class="w-full mt-6"
+              v-model="section.body.description"
+              placeholder="Enter Asset Block description (optional)" />
+            <select v-model="section.body.asset"
+              class="mt-6">
+              <option v-for="r in assetTemplates"
+                :value="r">{{ r.title }}</option>
+            </select>
+
+            <h4>Hide Preview?</h4>
+            <select v-model="section.body.hidePreview">
+              <option :value="false">No</option>
+              <option :value="true">Yes</option>
+            </select>
+          </div>
+
+          <MenuIcon class="drag-handle mt-2" />
         </div>
-      </template>
+      </VueDraggable>
 
       <div class="section">
         <div class="group-header">Add New Block</div>
@@ -175,10 +208,13 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { debounce, find, first } = lodash_pkg;
+const { cloneDeep, debounce, find, first } = lodash_pkg;
 import { useTemplatesStore } from '@/stores/templates'
 import { useResourcesStore } from '@/stores/resources'
 import { storeToRefs } from 'pinia'
+import { VueDraggable } from 'vue-draggable-plus'
+
+useEmbedly()
 
 const templatesStore = useTemplatesStore()
 const { getPageTemplatesCached } = storeToRefs(templatesStore)
@@ -212,12 +248,12 @@ const pageTemplate = pageTemplateId
 
 const router = useRouter()
 router.beforeEach(async () => {
-  if (isDirty) {
+  if (isDirty.value) {
     await debouncedSave.flush()
   }
 })
 
-const sections = ref(pageTemplate.body.sections)
+const body = ref(cloneDeep(pageTemplate.body))
 const title = ref(pageTemplate.title)
 
 function selectListIem ({ section, choice, index }) {
@@ -225,9 +261,23 @@ function selectListIem ({ section, choice, index }) {
   section.body.answer.index = index
 }
 
+function autoHideAsset (link) {
+  // google docs require special steps by the user to preview. for now
+  // we will just hide
+  return link.includes('docs.google.com/document')
+}
+
+function isGoogleDriveFile (link) {
+  return link.includes('drive.google.com/file')
+}
+
+function rewriteLinkForGoogleDrivePreview (link) {
+  return link.replace(/view/, 'preview')
+}
+
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {
-    if (isDirty) {
+    if (isDirty.value) {
       debouncedSave.flush()
       e.preventDefault()
     }
@@ -236,33 +286,34 @@ if (process.client) {
 
 async function save() {
   pageTemplate.title = title.value
+  pageTemplate.body = body.value
   await templatesStore.updatePageTemplate({ id: pageTemplateId, pageTemplate })
-  isDirty = false
+  isDirty.value = false
 }
 
-const debouncedSave = debounce(save, 5000, { leading: false, trailing: true })
-let isDirty = false
+const debouncedSave = debounce(save, 2000, { leading: false, trailing: true })
+const isDirty = ref(false)
 
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   save()
 })
 
-const saveReadyText = "Save Changes"
+const saveReadyText = computed(() => isDirty.value ? "Save Changes" : "Saved")
 const saveSubmittingText = "Saving Changes"
 const saveErrorText = "Save Failed. Try Again"
 
-watch(sections.value, () => {
-  isDirty = true
+watch(body.value, () => {
+  isDirty.value = true
   debouncedSave()
 })
 
 watch(title, () => {
-  isDirty = true
+  isDirty.value = true
   debouncedSave()
 })
 
 function addNewTextBlock () {
-  sections.value.push({
+  body.value.sections.push({
     type: "simple-text",
     title: "",
     body: {
@@ -274,7 +325,7 @@ function addNewTextBlock () {
 }
 
 function addNewListBlock () {
-  sections.value.push({
+  body.value.sections.push({
     type: "simple-list",
     title: "",
     body: {
@@ -293,7 +344,7 @@ function addNewListBlock () {
 }
 
 function addNewAssetSection () {
-  sections.value.push({
+  body.value.sections.push({
     type: "simple-asset",
     title: "",
     body: {
@@ -302,12 +353,13 @@ function addNewAssetSection () {
         link: "",
       },
       description: "",
+      hidePreview: false,
     },
   })
 }
 
 function deleteSection(index) {
-  sections.value.splice(index, 1)
+  body.value.sections.splice(index, 1)
 }
 </script>
 
