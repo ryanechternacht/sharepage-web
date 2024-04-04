@@ -96,7 +96,7 @@ import { storeToRefs } from 'pinia'
 import { useModal } from 'vue-final-modal'
 import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
-import AnonymousViewModal from '@/components/Swaypage/AnonymousViewModal';
+// import AnonymousViewModal from '@/components/Swaypage/AnonymousViewModal';
 import RequireLoginModal from '@/components/Swaypage/RequireLoginModal';
 import ShareLinkModal from '@/components/ShareLinkModal';
 import { format } from 'v-money3'
@@ -127,25 +127,33 @@ const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
 const { cookies } = useAppConfig()
 const linkedName = useCookie('linked-name', { domain: cookies.domain })
 const enteredName = useCookie('entered-name', { domain: cookies.domain })
+const anonymousId = useCookie('anonymous-id', { domain: cookies.domain })
 
-const { 
-  open: openAnonymousViewerModal,
-  close: closeAnonymousViewerModal,
-} = useModal({
-  component: AnonymousViewModal,
-  attrs: {
-    buyersphereName: buyersphere.buyer,
-    linkedName,
-    onClose ({ name }) {
-      closeAnonymousViewerModal()
-      enteredName.value = name
-    }
-  }
-})
+// TODO removing for now
+// const {
+//   open: openAnonymousViewerModal,
+//   close: closeAnonymousViewerModal,
+// } = useModal({
+//   component: AnonymousViewModal,
+//   attrs: {
+//     buyersphereName: buyersphere.buyer,
+//     linkedName,
+//     onClose ({ name }) {
+//       closeAnonymousViewerModal()
+//       enteredName.value = name
+//     }
+//   }
+// })
 
 if (!hasUser && !enteredName.value) {
   linkedName.value = route.query['sent-to']
-  openAnonymousViewerModal()
+  // openAnonymousViewerModal()
+}
+
+if (!anonymousId.value && process.client) {
+  anonymousId.value = crypto?.randomUUID
+    ? crypto.randomUUID()
+    : Math.floor(Math.random() * 1000000).toString()
 }
 
 const buyerActivityStore = useBuyerActivityStore()
