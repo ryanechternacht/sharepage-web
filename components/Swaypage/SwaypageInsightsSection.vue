@@ -21,8 +21,9 @@
             {{ item.user.firstName}} {{ item.user.lastName }}
           </div>
           <!-- <div v-else> -->
-          <div v-else-if="item.anonymousUser.enteredName">
-            {{ item.anonymousUser.enteredName }}</div>
+          <div v-else-if="item.anonymousUser.linkedName">
+            {{ item.anonymousUser.linkedName }}
+          </div>
             <!-- <div v-if="item.anonymousUser.linkedName && item.anonymousUser.enteredName != item.anonymousUser.linkedName">
               ({{ item.anonymousUser.linkedName }})
             </div>

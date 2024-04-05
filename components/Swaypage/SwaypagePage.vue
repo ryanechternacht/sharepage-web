@@ -76,7 +76,8 @@
               data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
               {{ section.body.asset.title }}
             </a>
-            <iframe :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
+            <iframe v-else
+              :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
               width="640"
               height="480"
               allow="autoplay" />
