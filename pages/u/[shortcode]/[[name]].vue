@@ -13,7 +13,7 @@ const store = useSwaypagesStore()
 const swaypage = await store.getSwaypageByShortcode({ shortcode })
 
 if (swaypage) {
-  await navigateTo(`/${swaypage.id}?sent-to=${name}`)
+  await navigateTo(`/${swaypage.id}?sent-to=${name}`, { redirectCode: 301 })
 } else {
   // this should send them somewhere meaningful based on role
   await navigateTo('/') 

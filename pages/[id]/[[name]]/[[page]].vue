@@ -124,6 +124,19 @@ const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
   isUserSeller.value(),
 ])
 
+const metaTitle = `Discover ${buyersphere.buyer}`
+const metaDescription = `Learn more about what ${buyersphere.buyer} has to offer`
+
+useSeoMeta({
+  title: metaTitle,
+  description: metaDescription,
+  ogTitle: metaTitle,
+  ogDescription: metaDescription,
+  twitterCard: 'summary',
+  twitterTitle: metaTitle,
+  twitterDescription: metaDescription,
+})
+
 const { cookies } = useAppConfig()
 const linkedName = useCookie('linked-name', { domain: cookies.domain })
 const enteredName = useCookie('entered-name', { domain: cookies.domain })
