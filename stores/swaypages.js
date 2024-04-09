@@ -157,6 +157,11 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
       }
     },
+    async getSwaypageByShortcode({ shortcode }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/buyersphere/shortcode/${shortcode}`)
+      return data?.value
+    },
     async fetchSwaypageMilestones({ swaypageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()

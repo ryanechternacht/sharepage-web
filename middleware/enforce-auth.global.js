@@ -6,6 +6,8 @@ import { storeToRefs } from 'pinia'
 export default defineNuxtRouteMiddleware(async (to, _) => {
   if (to.path === '/test') {
     return;
+  } if (to.path.startsWith('/u/') || to.path.startsWith('/c/')) { 
+    return; // these will redirect and have permissions handled later
   } else if (to.matched[0]?.name === 'swaypage') {
     const buyersphereStore = useSwaypagesStore()
     const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
