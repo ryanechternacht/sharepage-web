@@ -280,7 +280,7 @@ const isABuyerForThisBuyersphere = user && some(buyersphere.buyerTeam, p => p.em
 const canUserRespond = isSeller || isABuyerForThisBuyersphere
 
 const router = useRouter()
-const { makeSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 router.beforeEach(async () => {
   if (isDirty.value) {
@@ -289,7 +289,7 @@ router.beforeEach(async () => {
 })
 
 setTimeout(() => router.replace({
-  path: makeSwaypageLink(buyersphere, page.id)
+  path: makeInternalSwaypageLink(buyersphere, page.id)
 }), 100)
 
 const body = ref(cloneDeep(page.body))

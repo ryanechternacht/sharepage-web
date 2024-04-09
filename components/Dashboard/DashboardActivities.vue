@@ -72,7 +72,7 @@ const { filter, find, orderBy } = lodash_pkg;
 import AddEditActivityItemModal from '@/components/Swaypage/AddEditActivityItemModal.vue';
 import { useModal } from 'vue-final-modal'
 
-const { makeSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 const activitiesStore = useActivitiesStore()
 const { getActivitiesForOrganization } = storeToRefs(activitiesStore)
@@ -162,7 +162,7 @@ const next30DaysActivities = computed(() =>
 )
 
 function goToActivity({ activity }) {
-  navigateTo(makeSwaypageLink({ 
+  navigateTo(makeInternalSwaypageLink({ 
     id: activity.buyersphereId, 
     buyer: activity.buyer.name,
   }, 'activity-plan'))

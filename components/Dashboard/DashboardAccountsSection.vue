@@ -7,7 +7,7 @@
     <div class="mt-[2rem] flex flex-col gap-4">
       <div v-for="a in accounts"
         class="item-list-row"
-        @click="navigateTo(makeSwaypageLink(a))">
+        @click="navigateTo(makeInternalSwaypageLink(a))">
         <Logo :src="a.buyerLogo" />
 
         <!-- this is to align the 2 text sizes to baseline to look better -->
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-const { makeSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 const props = defineProps({ 
   accounts: { type: Array, required: true },

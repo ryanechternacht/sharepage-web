@@ -15,7 +15,8 @@
           class="w-[8rem] mt-4"
           color="blue"
           hover-color="blue"
-          :buyersphere-id="buyersphereId" />
+          :swaypage-shortcode="buyersphere.shortcode"
+          :company-name="buyersphere.buyer" />
       </div>
       <div>
         <h3>Send a Personalized Link</h3>
@@ -26,7 +27,7 @@
           class=" w-[8rem] mt-4"
           color="blue"
           hover-color="blue"
-          :buyersphere-id="buyersphereId"
+          :swaypage-shortcode="buyersphere.shortcode"
           :recipient="name" />
       </div>
 
@@ -35,7 +36,7 @@
           NOTE: Because this Swaypage isn't publicly viewable, it can only be 
           viewed users with a login.
         </div>
-        <NuxtLink :to="makeSwaypageLink(buyersphere, 'team')" 
+        <NuxtLink :to="makeInternalSwaypageLink(buyersphere, 'team')" 
           class="block mt-2"
           @click="emit('close')">
           <div class="italic tag underline">Invite Users to this Swaypage</div>
@@ -64,7 +65,7 @@ const emit = defineEmits(['close'])
 
 const name = ref(props.linkedName)
 
-const { makeSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 </script>
 
 <style lang="postcss" scoped>

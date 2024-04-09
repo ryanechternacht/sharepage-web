@@ -49,7 +49,7 @@
           <NuxtLink v-for="p in pages"
             class="page-link"
             :class="{underline: `${p.id}` === page}"
-            :to="makeSwaypageLink(buyersphere, p.id)">
+            :to="makeInternalSwaypageLink(buyersphere, p.id)">
             {{ p.title }}
           </NuxtLink>
           <NewButton v-if="isSeller" @click="createNewPage" />
@@ -58,17 +58,17 @@
 
           <h3 class="mb-4">Directory</h3>
           <NuxtLink class="page-link"
-            :to="makeSwaypageLink(buyersphere, 'activity-plan')"
+            :to="makeInternalSwaypageLink(buyersphere, 'activity-plan')"
             :class="{underline: page === 'activity-plan'}">Activity Plan</NuxtLink>
           <NuxtLink class="page-link"
-            :to="makeSwaypageLink(buyersphere, 'team')"
+            :to="makeInternalSwaypageLink(buyersphere, 'team')"
             :class="{underline: page === 'team'}">Team</NuxtLink>
           <NuxtLink class="page-link"
-            :to="makeSwaypageLink(buyersphere, 'assets')"
+            :to="makeInternalSwaypageLink(buyersphere, 'assets')"
             :class="{underline: page === 'assets'}">Assets</NuxtLink>
           <NuxtLink v-if="isSeller"
             class="page-link"
-            :to="makeSwaypageLink(buyersphere, 'insights')"
+            :to="makeInternalSwaypageLink(buyersphere, 'insights')"
             :class="{underline: page === 'insights'}">Insights</NuxtLink>
         </div>
       </div>
@@ -170,7 +170,7 @@ const moneyConfig = {
 
 // update the url of the page to the latest name of the buyersphere
 const router = useRouter()
-const { makeSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 if (pages.length === 0) {
   await buyersphereStore.createPage({ swaypageId: buyersphereId, page: { title: 'New Page'} })
@@ -180,7 +180,7 @@ const page = computed(() => route.params.page || first(pages).id)
 
 watch(() => buyersphere.buyer, () => {
   router.replace({ 
-    path: makeSwaypageLink(buyersphere, page.value)
+    path: makeInternalSwaypageLink(buyersphere, page.value)
   })
 })
 
@@ -231,7 +231,7 @@ const {
     async onClose (props) {
       if (props?.pageId) {
         await router.replace({ 
-          path: makeSwaypageLink(buyersphere, props.pageId)
+          path: makeInternalSwaypageLink(buyersphere, props.pageId)
         })
       }
       closeSwaypagePageModal()
