@@ -4,7 +4,7 @@ import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia' 
 
 export default defineNuxtRouteMiddleware(async (to, _) => {
-  if (to.path === '/test') {
+  if (to.path === '/test' || to.path === '/page-rework') {
     return;
   } if (to.path.startsWith('/u/') || to.path.startsWith('/c/')) { 
     return; // these will redirect and have permissions handled later
