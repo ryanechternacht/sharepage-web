@@ -6,14 +6,14 @@
       <div v-if="showText"
         class="mr-2 body-header text-white">
         Copied
-      </div> 
+      </div>
       <CheckCircleIcon />
     </template>
     <template v-else>
       <div v-if="showText"
         class="mr-2 body-header text-white">
         Share
-      </div> 
+      </div>
       <ShareIcon />
     </template>
   </BsButton>
@@ -28,17 +28,25 @@ const props = defineProps({
   color: String,
   hoverColor: String,
   showText: { type: Boolean, default: true },
-  buyersphereId: { type: Number, required: true },
+  swaypageShortcode: { type: String, required: true },
+  companyName: { type: String },
   recipient: { type: String }
 })
+
+const { makeExternalSwaypageLink, makePersonalizedExternalSwaypageLink } = useSwaypageLinks()
 
 async function copyToClipboard() {
   clearTimeout(lastTimeout.value)
 
-  const url = new URL(window.location.href)
-  if (props.recipient) {
-    url.search = `sent-to=${props.recipient}`
-  }
+  const path = props.recipient
+    ? makePersonalizedExternalSwaypageLink(props.swaypageShortcode, props.recipient)
+    : makeExternalSwaypageLink(props.swaypageShortcode, props.companyName)
+
+  const u = useRequestURL()
+  const urlBase =  u.protocol + '//' + u.host;
+
+  const url = new URL(path, urlBase)
+
   if (navigator?.clipboard) {
     await navigator.clipboard.writeText(url.href)
   } else {

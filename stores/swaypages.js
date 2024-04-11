@@ -409,7 +409,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
       }
     },
-    async deleteResource({ swaypageId, pageId }) {
+    async deletePage({ swaypageId, pageId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
         `/v0.1/buyerspheres/${swaypageId}/page/${pageId}`,
