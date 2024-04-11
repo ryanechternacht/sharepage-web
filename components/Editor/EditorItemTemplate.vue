@@ -4,6 +4,7 @@
       :class="{ 'show-menu': isDropdownOpen }">
       <dropdown-menu
         :overlay="false"
+        :class="{ '!hidden': readonly }"
         with-dropdown-closer
         @opened="isDropdownOpen = true"
         @closed="isDropdownOpen = false">
@@ -19,7 +20,7 @@
         </template>
       </dropdown-menu>
     </div>
-      <div class="content">
+      <div class="content" :class="{ readonly }">
         <slot name="content" />
       </div>
   </div>
@@ -55,7 +56,11 @@ const emit = defineEmits(['delete:item'])
 }
 
 .component:hover .content {
-  @apply border-l-gray-border;
+  @apply border-l-gray-subtext;
+
+  &.readonly {
+    @apply border-l-gray-border;
+  }
 }
 
 .dropdown-item {

@@ -1,10 +1,11 @@
 <template>
-  <EditorItemTemplate
+  <EditorItemTemplate :readonly="readonly"
     @delete:item="emit('delete:item')">
     <template #content>
-      <div class="p-2 border border-gray-border rounded-md">
-        <input v-model="value"
-          class="p-0 border-0 rounded-none w-full"
+      <div class="">
+        <input v-if="!readonly" 
+          v-model="value"
+          class="p-0 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
           placeholder="Enter Link"
           @blur="valueChanged">
         <div v-for="link in fakeLinkArray"
@@ -46,7 +47,6 @@ const { embedly } = useEmbedly()
 const fakeLinkArray = ref([value.value])
 
 function valueChanged () {
-  console.log(value.value)
   emit('update:modelValue', value.value);
   fakeLinkArray.value[0] = value.value
 }

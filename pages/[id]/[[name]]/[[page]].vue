@@ -79,7 +79,7 @@
       <SwaypageTeam v-else-if="page === 'team'" />
       <SwaypageInsights v-else-if="page === 'insights'" />
       <SwaypageAssets v-else-if="page === 'assets'" />
-      <SwaypagePage v-else
+      <SwaypagePageRework v-else
         :key="route.params.page"
         @require-login="requireLogin" />
 

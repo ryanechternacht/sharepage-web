@@ -1,5 +1,5 @@
 <template>
-  <EditorItemTemplate
+  <EditorItemTemplate :readonly="readonly"
     @delete:item="emit('delete:item')">
     <!-- For some reason, setting height on this element and height: 100% on the
       inner .ProseMirror element makes the prose mirror set it's height correctly,
@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
 import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
 
@@ -32,6 +33,9 @@ const editor = useEditor({
     StarterKit.configure({
       dropcursor: false,
     }),
+    Placeholder.configure({
+      placeholder: "Start writing...",
+    })
   ],
   onBlur() {
     emit('update:modelValue', editor.value.getHTML())
@@ -49,6 +53,10 @@ watch(() => props.modelValue, (newModelValue) => {
   editor.value.commands.setContent(newModelValue, false)
 })
 
+watch(() => props.readonly, (newReadonly) => {
+  editor.value.setOptions({ editable: !newReadonly })
+})
+
 function focus () {
   editor.value.commands.focus()
 }
@@ -64,6 +72,14 @@ defineExpose({ focus })
 
   li p {
     display: inline;
+  }
+
+  .ProseMirror p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
   }
 
   p, div, span, .body, b {

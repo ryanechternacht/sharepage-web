@@ -25,14 +25,13 @@
       </template>
     </VueDraggable>
 
-    <dropdown-menu
+    <dropdown-menu class="add-button"
       :overlay="false"
       with-dropdown-closer
       @opened="isDropdownOpen = true"
       @closed="isDropdownOpen = false">
       <template #trigger>
-        <NewButton hover-color="gray"
-          class="add-button">Add</NewButton>
+        <NewButton hover-color="gray">Add</NewButton>
       </template>
       <template #body>
         <div class="flex flex-col gap-2 p-1">
@@ -84,15 +83,18 @@ function updateSection (section) {
 
   if (section.type === "simple-text") {
     section.type = 'text'
-    section.text = section.body.question
+    section.text = (section.title ? `<p>${section.title}</p>` : '')
+      + section.body.question
       + section.body.answer
     // TODO unset section.body
   }
 
   if (section.type === 'simple-list') {
     section.type = 'text'
-    section.text = section.body.question
-      + '<ul>' + map(section.body.choices, c => `<li>${c.text}</li>`).join('')
+    section.text = (section.title ? `<p>${section.title}</p>` : '')
+      + section.body.question
+      + '<ul>' 
+      + map(section.body.choices, c => `<li>${c.text}</li>`).join('')
       + '</ul>'
     // TODO unset section.body
   }

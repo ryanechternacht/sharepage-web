@@ -1,9 +1,11 @@
 <template>
-  <EditorItemTemplate
+  <EditorItemTemplate :readonly="readonly"
     @delete:item="emit('delete:item')">
     <template #content>
       <input v-model="value"
         class="p-0 border-0 rounded-none text-lg text-black w-full"
+        :class="{ 'hide-placeholder': readonly }"
+        placeholder="Header"
         @blur="emit('update:modelValue', value)">
     </template>
   </EditorItemTemplate>
@@ -28,4 +30,7 @@ watch(() => props.modelValue, (newModelValue) => {
 </script>
 
 <style lang="postcss" scoped>
+.hide-placeholder::placeholder {
+  color: transparent;
+}
 </style>
