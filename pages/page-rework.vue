@@ -9,39 +9,45 @@
       group="sections"
       handle=".drag-handle"
     >
-      <EditorTextArea v-for="(section, index) in body.sections"
-        v-model="section.text"
-        :key="section.key"
-        @delete:item="removeItem(index)" />
+      <template v-for="(section, index) in body.sections"
+        :key="section.key">
+        <EditorTextArea v-if="section.type === 'text'"
+          v-model="section.text"
+          @delete:item="removeItem(index)" />
+        
+        <EditorHeader v-if="section.type === 'header'"
+          v-model="section.text"
+          @delete:item="removeItem(index)" />
+
+        <EditorAsset v-if="section.type === 'asset'"
+          v-model="section.link"
+          @delete:item="removeItem(index)" />
+      </template>
     </VueDraggable>
 
     <dropdown-menu
-        :overlay="false"
-        with-dropdown-closer
-        @opened="isDropdownOpen = true"
-        @closed="isDropdownOpen = false">
-        <template #trigger>
-          <NewButton hover-color="gray">Add</NewButton>
-        </template>
-        <template #body>
-          <div class="flex flex-col gap-2 p-1">
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="newTextBlock">Text Block</div>
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="newHeader">Header</div>
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="newAsset">Asset</div>
-          </div>
-        </template>
-      </dropdown-menu>
-
-    <br>
-    <br>
-    {{ body }}
-    <br>
+      :overlay="false"
+      with-dropdown-closer
+      @opened="isDropdownOpen = true"
+      @closed="isDropdownOpen = false">
+      <template #trigger>
+        <NewButton hover-color="gray"
+          class="add-button">Add</NewButton>
+      </template>
+      <template #body>
+        <div class="flex flex-col gap-2 p-1">
+          <div class="dropdown-item"
+            dropdown-closer
+            @click="newTextBlock">Text Block</div>
+          <div class="dropdown-item"
+            dropdown-closer
+            @click="newHeader">Header</div>
+          <div class="dropdown-item"
+            dropdown-closer
+            @click="newAsset">Asset</div>
+        </div>
+      </template>
+    </dropdown-menu>
   </div>
 </template>
 
@@ -52,7 +58,7 @@ import { VueDraggable } from 'vue-draggable-plus'
 import lodash_pkg from 'lodash';
 const { map, max, find, cloneDeep } = lodash_pkg;
 
-const swaypageId = 76
+const swaypageId = 81
 
 const swaypageStore = useSwaypagesStore()
 const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(swaypageStore)
@@ -62,8 +68,7 @@ const [swaypage, pages] = await Promise.all([
   getSwaypagePagesByIdCached.value(swaypageId),
 ])
 
-
-const pageId = 88
+const pageId = 94
 const page = pageId
   ? find(pages, p => p.id === pageId)
   : first(pages)
@@ -93,8 +98,8 @@ function updateSection (section) {
   }
 
   if (section.type === 'simple-asset') {
-    // TODO
-    section.text = `i'm an asset! ${section.body.asset.link}`
+    section.type = 'asset'
+    section.link = section.body.asset.link
     // TODO unset section.body
   }
 
@@ -111,7 +116,27 @@ function newTextBlock () {
   body.value.sections.push({
     type: "text",
     body: {
-      text: "", // TODO
+      text: "",
+      key: nextKey++,
+    },
+  })
+}
+
+function newHeader () {
+  body.value.sections.push({
+    type: "header",
+    body: {
+      text: "",
+      key: nextKey++,
+    },
+  })
+}
+
+function newAsset () {
+  body.value.sections.push({
+    type: "asset",
+    body: {
+      link: "",
       key: nextKey++,
     },
   })
@@ -126,5 +151,10 @@ function newTextBlock () {
     @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
       cursor-pointer;
   }
+}
+
+.add-button {
+  @apply mt-2;
+  margin-left: calc(2.25rem + 1px);
 }
 </style>
