@@ -6,6 +6,7 @@
         class="p-0 border-0 rounded-none text-lg text-black w-full"
         :class="{ 'hide-placeholder': readonly }"
         placeholder="Header"
+        :readonly="readonly"
         @blur="emit('update:modelValue', value)">
     </template>
   </EditorItemTemplate>

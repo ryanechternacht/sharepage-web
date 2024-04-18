@@ -12,7 +12,9 @@
         <div v-for="link in fakeLinkArray"
           :key="link">
           <a v-if="isGoogleDocFile(link)"
-            :href="link">
+            :href="link"
+            @click="emit('click:item')"
+            target="_blank">
             <div class="text-[#5f6368]">
               Google Doc
             </div>
@@ -24,13 +26,21 @@
             width="640"
             height="480"
             allow="autoplay" />
-          <a v-else
-            :href="link" 
-            class="embedly-card mt-1 text-white"
-            data-card-align="left"
-            data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
-            {{ link }}
-          </a>
+          <!-- TODO the click handlers below don't work since
+               embedly sticks a new element in that we can't easily
+               access to attach the handler -->
+          <div v-else
+            @click="clickHandler"
+            class="track-me">
+            <a
+              :href="link" 
+              class="embedly-card mt-1 text-white"
+              data-card-align="left"
+              data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4"
+              @click="emit('click:item')">
+              {{ link }}
+            </a>
+          </div>
         </div>
       </div>
     </template>
@@ -38,6 +48,10 @@
 </template>
 
 <script setup>
+function clickHandler () {
+  console.log('me!')
+}
+
 import lodash_pkg from 'lodash';
 const { clone } = lodash_pkg;
 
@@ -46,7 +60,7 @@ const props = defineProps({
   readonly: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['update:modelValue', 'delete:item'])
+const emit = defineEmits(['update:modelValue', 'delete:item', 'click:item'])
 
 const value = ref(clone(props.modelValue))
 

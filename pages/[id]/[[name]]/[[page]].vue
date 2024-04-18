@@ -79,9 +79,7 @@
       <SwaypageTeam v-else-if="page === 'team'" />
       <SwaypageInsights v-else-if="page === 'insights'" />
       <SwaypageAssets v-else-if="page === 'assets'" />
-      <SwaypagePageRework v-else
-        :key="route.params.page"
-        @require-login="requireLogin" />
+      <SwaypagePage v-else :key="route.params.page" />
 
       <div class="[grid-area:footer] h-20" />
     </div>
