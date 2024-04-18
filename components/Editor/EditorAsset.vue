@@ -5,12 +5,26 @@
       <div class="">
         <input v-if="!readonly" 
           v-model="value"
-          class="p-0 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
+          class="p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
           placeholder="Enter Link"
-          @blur="valueChanged">
+          @blur="valueChanged"
+          @keypress.enter="valueChanged">
         <div v-for="link in fakeLinkArray"
           :key="link">
-          <a
+          <a v-if="isGoogleDocFile(link)"
+            :href="link">
+            <div class="text-[#5f6368]">
+              Google Doc
+            </div>
+            <img src="/svg/google-docs-logo.svg"
+              class="max-h-[6rem]" />
+          </a>
+          <iframe v-else-if="isGoogleDriveFile(link)"
+            :src="rewriteLinkForGoogleDrivePreview(link)"
+            width="640"
+            height="480"
+            allow="autoplay" />
+          <a v-else
             :href="link" 
             class="embedly-card mt-1 text-white"
             data-card-align="left"
@@ -49,6 +63,22 @@ const fakeLinkArray = ref([value.value])
 function valueChanged () {
   emit('update:modelValue', value.value);
   fakeLinkArray.value[0] = value.value
+}
+
+function isGoogleDocFile (link) {
+  // google docs require special steps by the user to preview. for now
+  // we will just replace with a static placeholder
+  return link.includes('docs.google.com/document')
+}
+
+function isGoogleDriveFile (link) {
+  return link.includes('drive.google.com/file')
+}
+
+function rewriteLinkForGoogleDrivePreview (link) {
+  // google docs require special steps by the user to preview. for now
+  // we will just replace with a static placeholder
+  return link.replace(/\/view/, '/preview')
 }
 </script>
 
