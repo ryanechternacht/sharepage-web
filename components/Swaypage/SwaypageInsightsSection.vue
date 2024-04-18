@@ -126,6 +126,11 @@ const activityMap = {
     label: 'Opened Asset',
     detailsFn: (activityData) => activityData?.title,
   },
+  'open-asset-v2': {
+    icon: '/svg/eye.svg',
+    label: 'Opened Asset',
+    detailsFn: (activityData) => activityData?.link,
+  },
   'click-share': { 
     icon: '/svg/eye.svg', 
     label: 'Clicked the Share Button',
