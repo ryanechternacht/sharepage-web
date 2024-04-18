@@ -1,170 +1,84 @@
 <template>
-  <div class="[grid-area:center-header] center-header">
-    <BsButtonGroup
-      v-if="canEdit"
-      :options="pageViews"
-      @update:option="updatePageView" />
-  </div>
-
-  <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12">
-    <SubmitButton v-if="pageView === 'Edit'"
+  <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12 gap-2 whitespace-nowrap">
+    <SubmitButton v-if="canEdit"
       :ready-text="saveReadyText"
       :submitting-text="saveSubmittingText"
       :error-text="saveErrorText"
       :submission-state="saveSubmissionState"
       :disabled="!isDirty"
       @click="saveSubmitFn" />
+    
+    <EditButton v-if="isSeller"
+      show-text
+      edit-text="Page Settings"
+      @click="openSettingsModal" />
   </div>
 
   <!-- remove !overflow-y-visible when we remove overflow-y-hidden from .page-center -->
   <div class="[grid-area:center] page-center !overflow-y-visible">
-    <!-- <template v-if="pageView === 'View'">
-      <template v-for="section in body.sections">
-        <div class="section"
-          v-if="section.type === 'simple-text'">
-          <div class="group-header">
-            {{ section.title }}
-            <div class="tag">{{ section.body.showAnswer ? "Input" : "Info" }}</div>
-          </div>
-          <div class="mt-4 inline-html" v-html="section.body.question" />
-          
-          <AutoSaveTipTapTextarea v-if="section.body.showAnswer"
-            :model-value="section.body.answer"
-            class="w-full mt-6"
-            placeholder="Please enter an answer here"
-            :readonly="!canUserRespond"
-            :on-update-fn="(text) => section.body.answer = text" />
-        </div>
+    <VueDraggable
+      v-model="body.sections"
+      ghost-class="ghost"
+      :animation="200"
+      :scroll="true"
+      class="flex flex-col gap-2"
+      group="sections"
+      handle=".drag-handle"
+    >
+      <template v-for="(section, index) in body.sections"
+        :key="section.key">
+        <EditorTextArea v-if="section.type === 'text'"
+          v-model="section.text"
+          :readonly="!canEdit"
+          @delete:item="removeItem(index)" />
+        
+        <EditorHeader v-if="section.type === 'header'"
+          v-model="section.text"
+          :readonly="!canEdit"
+          @delete:item="removeItem(index)" />
 
-        <div class="section"
-          v-else-if="section.type === 'simple-list'">
-          <div class="group-header">
-            {{ section.title }}
-            <div class="tag">Multi-select</div>
-          </div>
-          <div class="mt-4 inline-html" v-html="section.body.question" />
-          <div class="flex flex-col gap-4 mt-6">
-            <div v-for="(c, i) in section.body.choices"
-              class="item-list-row"
-              :class="{'selected': i === section.body.answer.index}"
-              @click="selectListIem({ section, choice: c, index: i })">
-              <div class="main-content">{{ c.text }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section"
-          v-else-if="section.type === 'simple-asset'">
-          <div class="group-header">
-            {{ section.title }}
-            <div class="tag">Asset</div>
-          </div>
-          <div v-if="section.body.description?.length > 0"
-            class="mt-4 inline-html" v-html="section.body.description" />
-          <a class="asset-link mb-2"
-            :href="section.body.asset.link"
-            target="_blank"
-            @click="clickActivity(section.body.asset)">
-            <BookIcon class="w-[1rem] h-[1rem]" />
-            <span>Link - {{ section.body.asset.title }}</span>
-          </a>
-
-          <template v-if="!section.body.hidePreview && !autoHideAsset(section.body.asset.link)">
-            <a v-if="!isGoogleDriveFile(section.body.asset.link)"
-              :href="section.body.asset.link" 
-              class="embedly-card"
-              data-card-align="left"
-              data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
-              {{ section.body.asset.title }}
-            </a>
-            <iframe v-else
-              :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
-              width="640"
-              height="480"
-              allow="autoplay" />
-          </template>
-        </div>
+        <EditorAsset v-if="section.type === 'asset'"
+          v-model="section.link"
+          :readonly="!canEdit"
+          @delete:item="removeItem(index)" />
       </template>
-    </template> -->
+    </VueDraggable>
 
-    <!-- <template v-else-if="pageView === 'Edit'"> -->
-      <div v-if="pageView === 'Edit'" 
-        class="section align-content-left">
-        <div class="group-header">Page Settings</div>
-        <h3 class="mt-4">Page Title</h3>
-        <input class="mt-1" v-model="title" placeholder="Page Title">
-        <template v-if="isSeller">
-          <h3 class="mt-4">Can Buyer Edit?</h3>
-          <select v-model="canBuyerEdit" class="flex-grow">
-            <option :value="true">Yes</option>
-            <option :value="false">No</option>
-          </select>
-        </template>
+    <template v-if="canEdit">
+      <div>
+        <dropdown-menu class="align-content-left"
+          :overlay="false"
+          with-dropdown-closer
+          @opened="isDropdownOpen = true"
+          @closed="isDropdownOpen = false">
+          <template #trigger>
+            <NewButton hover-color="gray">Add</NewButton>
+          </template>
+          <template #body>
+            <div class="flex flex-col gap-2 p-1">
+              <div class="dropdown-item"
+                dropdown-closer
+                @click="newTextBlock">Text Block</div>
+              <div class="dropdown-item"
+                dropdown-closer
+                @click="newHeader">Header</div>
+              <div class="dropdown-item"
+                dropdown-closer
+                @click="newAsset">Asset</div>
+            </div>
+          </template>
+        </dropdown-menu>
       </div>
 
-      <VueDraggable
-        v-model="body.sections"
-        ghost-class="ghost"
-        :animation="200"
-        :scroll="true"
-        class="flex flex-col gap-2"
-        group="sections"
-        handle=".drag-handle"
-      >
-        <template v-for="(section, index) in body.sections"
-          :key="section.key">
-          <EditorTextArea v-if="section.type === 'text'"
-            v-model="section.text"
-            :readonly="pageView === 'View'"
-            @delete:item="removeItem(index)" />
-          
-          <EditorHeader v-if="section.type === 'header'"
-            v-model="section.text"
-            :readonly="pageView === 'View'"
-            @delete:item="removeItem(index)" />
-
-          <EditorAsset v-if="section.type === 'asset'"
-            v-model="section.link"
-            :readonly="pageView === 'View'"
-            @delete:item="removeItem(index)" />
-        </template>
-      </VueDraggable>
-
-      <template v-if="pageView === 'Edit'">
-        <div>
-          <dropdown-menu class="align-content-left"
-            :overlay="false"
-            with-dropdown-closer
-            @opened="isDropdownOpen = true"
-            @closed="isDropdownOpen = false">
-            <template #trigger>
-              <NewButton hover-color="gray">Add</NewButton>
-            </template>
-            <template #body>
-              <div class="flex flex-col gap-2 p-1">
-                <div class="dropdown-item"
-                  dropdown-closer
-                  @click="newTextBlock">Text Block</div>
-                <div class="dropdown-item"
-                  dropdown-closer
-                  @click="newHeader">Header</div>
-                <div class="dropdown-item"
-                  dropdown-closer
-                  @click="newAsset">Asset</div>
-              </div>
-            </template>
-          </dropdown-menu>
-        </div>
-
-        <div class="flex flex-row-reverse">
-          <SubmitButton 
-            :ready-text="saveReadyText"
-            :submitting-text="saveSubmittingText"
-            :error-text="saveErrorText"
-            :submission-state="saveSubmissionState"
-            :disabled="!isDirty"
-            @click="saveSubmitFn" />
-        </div>
+      <div class="flex flex-row-reverse">
+        <SubmitButton
+          :ready-text="saveReadyText"
+          :submitting-text="saveSubmittingText"
+          :error-text="saveErrorText"
+          :submission-state="saveSubmissionState"
+          :disabled="!isDirty"
+          @click="saveSubmitFn" />
+      </div>
     </template>
   </div>
 </template>
@@ -177,11 +91,13 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+import { useModal } from 'vue-final-modal'
+import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 
 useEmbedly()
 
 const route = useRoute()
-const buyersphereId = parseInt(route.params.id)
+const swaypageId = parseInt(route.params.id)
 
 const buyersphereStore = useSwaypagesStore()
 const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
@@ -190,25 +106,12 @@ const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
 const [buyersphere, pages, hasUser, isSeller, user] = await Promise.all([
-  getSwaypageByIdCached.value(buyersphereId),
-  getSwaypagePagesByIdCached.value(buyersphereId),
+  getSwaypageByIdCached.value(swaypageId),
+  getSwaypagePagesByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getMeCached.value(),
 ])
-
-const pageViews = computed(() => [
-  {text: 'View', active: true},
-  {text: 'Edit', active: true},
-])
-const pageView = ref('View')
-async function updatePageView ({ option }) {
-  if (pageView.value === 'Edit') {
-    await debouncedSave.flush()
-  }
-
-  pageView.value = option.text
-}
 
 const pageId = parseInt(route.params.page)
 const page = pageId
@@ -222,7 +125,7 @@ const isABuyerForThisBuyersphere = user && some(buyersphere.buyerTeam, p => p.em
 const canUserRespond = isSeller || isABuyerForThisBuyersphere
 
 const router = useRouter()
-const { makeSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 router.beforeEach(async () => {
   if (isDirty.value) {
@@ -231,7 +134,7 @@ router.beforeEach(async () => {
 })
 
 setTimeout(() => router.replace({
-  path: makeSwaypageLink(buyersphere, page.id)
+  path: makeInternalSwaypageLink(buyersphere, page.id)
 }), 100)
 
 const keys = map(page.body.sections, s => s.key || 0)
@@ -272,8 +175,6 @@ function updateSection (section) {
 
 // const body = ref(cloneDeep(page.body))
 const body = ref({ sections: map(page.body.sections , updateSection) })
-const title = ref(page.title)
-const canBuyerEdit = ref(page.canBuyerEdit)
 
 const emit = defineEmits(['require-login'])
 function selectListIem ({ section, choice, index }) {
@@ -314,10 +215,8 @@ if (process.client) {
 // these components as pages. This is probably worth doing when we do a larger
 // layout/styling rework
 async function save() {
-  page.title = title.value
-  page.canBuyerEdit = canBuyerEdit.value
   page.body = body.value
-  await buyersphereStore.updatePage({ swaypageId: buyersphereId, pageId, page })
+  await buyersphereStore.updatePage({ swaypageId, pageId, page })
   isDirty.value = false
 }
 
@@ -337,20 +236,10 @@ watch(body.value, () => {
   debouncedSave()
 })
 
-watch(title, () => {
-  isDirty.value = true
-  debouncedSave()
-})
-
-watch(canBuyerEdit, () => {
-  isDirty.value = true
-  debouncedSave()
-})
-
 const buyerActivityStore = useBuyerActivityStore()
 function clickActivity(asset) {
   buyerActivityStore.captureBuyerActivity({
-    buyersphereId,
+    buyersphereId: swaypageId,
     activity: "open-asset",
     activityData: { title: asset.title, id: asset.id }
   })
@@ -362,31 +251,40 @@ function removeItem (index) {
 function newTextBlock () {
   body.value.sections.push({
     type: "text",
-    body: {
-      text: "",
-      key: nextKey++,
-    },
+    text: "",
+    key: nextKey++,
   })
 }
 
 function newHeader () {
   body.value.sections.push({
     type: "header",
-    body: {
-      text: "",
-      key: nextKey++,
-    },
+    text: "",
+    key: nextKey++,
   })
 }
 
 function newAsset () {
   body.value.sections.push({
     type: "asset",
-    body: {
-      link: "",
-      key: nextKey++,
-    },
+    link: "",
+    key: nextKey++,
   })
+}
+
+const { open, close, patchOptions } = useModal({
+  component: EditPageSettingsModal,
+  attrs: {
+    swaypageId,
+    onClose () {
+      close()
+    }
+  }
+})
+
+function openSettingsModal () {
+  patchOptions({ attrs: { page }})
+  open()
 }
 </script>
 
