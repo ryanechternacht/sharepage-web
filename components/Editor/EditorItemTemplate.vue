@@ -12,10 +12,21 @@
           <MoreVerticalIcon class="mt-1" />
         </template>
         <template #body>
-          <div class="flex flex-col gap-2 p-1">
+          <div class="flex flex-col gap-.5 p-1">
             <div class="dropdown-item"
               dropdown-closer
               @click="emit('delete:item')">Delete</div>
+            <hr class="border-gray-border">
+            <h4 class="dropdown-description p-[.125rem]">Insert Below:</h4>
+            <div class="dropdown-item"
+              dropdown-closer
+              @click="emit('insert:text')">Text</div>
+            <div class="dropdown-item"
+              dropdown-closer
+              @click="emit('insert:header')">Header</div>
+            <div class="dropdown-item"
+              dropdown-closer
+              @click="emit('insert:asset')">Asset</div>
           </div>
         </template>
       </dropdown-menu>
@@ -33,7 +44,7 @@ const props = defineProps({
 
 const isDropdownOpen = ref(false)
 
-const emit = defineEmits(['delete:item'])
+const emit = defineEmits(['delete:item', 'insert:text', 'insert:header', 'insert:asset'])
 </script>
 
 <style lang="postcss" scoped>
@@ -64,7 +75,7 @@ const emit = defineEmits(['delete:item'])
 }
 
 .dropdown-item {
-  @apply p-.5;
+  @apply p-[.125rem];
   
   &:hover {
     @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]

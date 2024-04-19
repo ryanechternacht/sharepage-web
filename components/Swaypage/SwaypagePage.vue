@@ -30,16 +30,25 @@
         <EditorTextArea v-if="section.type === 'text'"
           v-model="section.text"
           :readonly="!canEdit"
+          @insert:text="newTextBlock(index)"
+          @insert:header="newHeader(index)"
+          @insert:asset="newAsset(index)"
           @delete:item="removeItem(index)" />
         
         <EditorHeader v-if="section.type === 'header'"
           v-model="section.text"
           :readonly="!canEdit"
+          @insert:text="newTextBlock(index)"
+          @insert:header="newHeader(index)"
+          @insert:asset="newAsset(index)"
           @delete:item="removeItem(index)" />
 
         <EditorAsset v-if="section.type === 'asset'"
           v-model="section.link"
           :readonly="!canEdit"
+          @insert:text="newTextBlock(index)"
+          @insert:header="newHeader(index)"
+          @insert:asset="newAsset(index)"
           @click:item="assetClick(section.link)"
           @delete:item="removeItem(index)" />
       </template>
@@ -227,28 +236,46 @@ function removeItem (index) {
   body.value.sections.splice(index, 1)
 }
 
-function newTextBlock () {
-  body.value.sections.push({
+function newTextBlock (index) {
+  const newBlock = {
     type: "text",
     text: "",
     key: nextKey++,
-  })
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
 }
 
-function newHeader () {
-  body.value.sections.push({
+function newHeader (index) {
+  const newBlock = {
     type: "header",
     text: "",
     key: nextKey++,
-  })
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
 }
 
-function newAsset () {
-  body.value.sections.push({
+function newAsset (index) {
+  const newBlock = {
     type: "asset",
     link: "",
     key: nextKey++,
-  })
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
 }
 
 const { open, close, patchOptions } = useModal({
