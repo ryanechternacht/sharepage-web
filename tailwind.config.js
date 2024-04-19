@@ -52,7 +52,13 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      rajdhani: ['Rajdhani', 'sans-serif']
+      // rajdhani: ['Rajdhani', 'sans-serif']
+    },
+    fontSize: {
+      primary: ['1.625rem', { fontWeight: '800'} ],
+      secondary: ['1rem', { fontWeight: '600'} ],
+      body: ['.875rem', { fontWeight: '500'} ],
+      subtext: ['.75rem', { fontWeight: '800'} ],
     },
     extend: {
       spacing: {

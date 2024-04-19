@@ -4,17 +4,22 @@
 
 @layer base {
   h1, .h1 {
-    @apply font-rajdhani font-bold text-gray-body;
-    font-size: 2rem; /* 32px */
-    /* line-height: 2.5rem; 38px */
+    @apply font-sans text-primary text-black;
   }
 
   h2, .h2 {
-    @apply font-sans font-bold text-gray-body;
-    font-size: 1rem; /* 16px */
-    /* line-height: 1.8125rem; 29px */
+    @apply font-sans text-secondary text-gray-darker;
   }
 
+  p, div, span, .body {
+    @apply font-sans text-body text-gray-dark;
+  }
+
+  .subtext {
+    @apply font-sans text-subtext text-gray-medium;
+  }
+
+  /* remove below */
   h3, .h3, .body-header {
     @apply font-sans font-semibold text-gray-body;
     font-size: .875rem; /* 14px */
@@ -23,11 +28,6 @@
   h4, .h4, .tag-header {
     @apply font-sans font-medium text-gray-body;
     font-size: .75rem; /* 12px */
-  }
-
-  p, div, span, .body {
-    @apply font-sans font-normal text-gray-body;
-    font-size: .875rem; /* 14px */
   }
 
   svg {
