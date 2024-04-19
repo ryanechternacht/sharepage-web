@@ -63,13 +63,13 @@
           <div class="flex flex-col gap-2 p-1">
             <div class="dropdown-item"
               dropdown-closer
-              @click="newTextBlock">Text Block</div>
+              @click="newTextBlock()">Text Block</div>
             <div class="dropdown-item"
               dropdown-closer
-              @click="newHeader">Header</div>
+              @click="newHeader()">Header</div>
             <div class="dropdown-item"
               dropdown-closer
-              @click="newAsset">Asset</div>
+              @click="newAsset()">Asset</div>
           </div>
         </template>
       </dropdown-menu>
@@ -253,5 +253,18 @@ function openSettingsModal () {
 .asset-link {
   @apply mt-4 border border-gray-border rounded-md hover:bg-gray-hover 
     px-2 py-1 flex flex-row gap-2 items-center;
+}
+
+.align-content-left {
+  margin-left: calc(2.25rem + 1px);
+}
+
+.dropdown-item {
+  @apply p-.5;
+  
+  &:hover {
+    @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
+      cursor-pointer;
+  }
 }
 </style>
