@@ -184,7 +184,7 @@ function updateSection (section) {
 }
 
 // const body = ref(cloneDeep(page.body))
-const body = ref({ sections: map(page.body.sections , updateSection) })
+const body = ref({ sections: map(page.body.sections, updateSection) })
 
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {
@@ -224,7 +224,6 @@ watch(body.value, () => {
 
 const buyerActivityStore = useBuyerActivityStore()
 function assetClick(link) {
-  console.log('assetClick')
   buyerActivityStore.captureBuyerActivity({
     buyersphereId: swaypageId,
     activity: "open-asset-v2",
@@ -284,7 +283,7 @@ const { open, close, patchOptions } = useModal({
     swaypageId,
     onClose () {
       close()
-    }
+    },
   }
 })
 

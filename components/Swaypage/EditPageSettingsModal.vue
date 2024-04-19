@@ -14,7 +14,7 @@
           class="w-full"
           placeholder="Page Title">
       </div>
-      <div class="w-full">
+      <div v-if="!isTemplate" class="w-full">
         <h3>Can Buyer Edit?</h3>
         <select v-model="canBuyerEdit" class="flex-grow">
           <option :value="true">Yes</option>
@@ -42,6 +42,8 @@ import { useTemplatesStore } from '@/stores/templates'
 const props = defineProps({
   page: { type: Object, default: {} },
   swaypageId: { type: Number },
+  pageTemplateId: { type: Number },
+  isTemplate: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['close'])
@@ -50,13 +52,20 @@ const title = ref(props.page?.title)
 const canBuyerEdit = ref(props.page?.canBuyerEdit)
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  const swaypageStore = useSwaypagesStore()
-  await swaypageStore.updatePage({ 
-    swaypageId: props.swaypageId,
-    pageId: props.page.id,
-    page: { title, canBuyerEdit }
-  })
-
+  if (props.isTemplate) {
+    const templateStore = useTemplatesStore()
+    await templateStore.updatePageTemplate({ 
+      id: props.pageTemplateId,
+      pageTemplate: { title }
+    })
+  } else {
+    const swaypageStore = useSwaypagesStore()
+    await swaypageStore.updatePage({ 
+      swaypageId: props.swaypageId,
+      pageId: props.page.id,
+      page: { title, canBuyerEdit }
+    })
+  }
   emit('close')
 })
 

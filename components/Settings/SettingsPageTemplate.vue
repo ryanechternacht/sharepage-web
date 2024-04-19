@@ -1,245 +1,109 @@
 <template>
-  <div class="[grid-area:center-header] center-header">
-    <BsButtonGroup 
-      :options="pageViews"
-      @update:option="updatePageView" />
-  </div>
-
-  <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12">
-    <SubmitButton v-if="pageView === 'Edit'"
+  <div class="[grid-area:right-header] flex flex-row-reverse items-center pr-12 gap-2 whitespace-nowrap">
+    <SubmitButton
       :ready-text="saveReadyText"
       :submitting-text="saveSubmittingText"
       :error-text="saveErrorText"
       :submission-state="saveSubmissionState"
       :disabled="!isDirty"
       @click="saveSubmitFn" />
+    
+    <EditButton
+      show-text
+      edit-text="Page Settings"
+      @click="openSettingsModal" />
   </div>
 
-  <div class="[grid-area:center] page-center">
-    <template v-if="pageView === 'View'">
-      <template v-for="section in body.sections">
-        <div class="section"
-          v-if="section.type === 'simple-text'">
-          <div class="group-header">{{ section.title }}</div>
-          <div class="mt-4 inline-html" v-html="section.body.question" />
-          
-          <AutoSaveTipTapTextarea v-if="section.body.showAnswer"
-            :model-value="section.body.answer"
-            class="w-full mt-6"
-            placeholder="Please enter an answer here"
-            :on-update-fn="(text) => section.body.answer = text" />
-        </div>
+  <div class="[grid-area:center] page-center !overflow-y-visible">
+    <VueDraggable
+      v-model="body.sections"
+      ghost-class="ghost"
+      :animation="200"
+      :scroll="true"
+      class="flex flex-col gap-2"
+      group="sections"
+      handle=".drag-handle"
+    >
+      <template v-for="(section, index) in body.sections"
+        :key="section.key">
+        <EditorTextArea v-if="section.type === 'text'"
+          v-model="section.text"
+          @insert:text="newTextBlock(index)"
+          @insert:header="newHeader(index)"
+          @insert:asset="newAsset(index)"
+          @delete:item="removeItem(index)" />
+        
+        <EditorHeader v-if="section.type === 'header'"
+          v-model="section.text"
+          @insert:text="newTextBlock(index)"
+          @insert:header="newHeader(index)"
+          @insert:asset="newAsset(index)"
+          @delete:item="removeItem(index)" />
 
-        <div class="section"
-          v-else-if="section.type === 'simple-list'">
-          <div class="group-header">{{ section.title }}</div>
-          <div class="mt-4 inline-html" v-html="section.body.question" />
-          <div class="flex flex-col gap-4 mt-6">
-            <div v-for="(c, i) in section.body.choices"
-              class="item-list-row"
-              :class="{'selected': i === section.body.answer.index}"
-              @click="selectListIem({ section, choice: c, index: i })">
-              <div class="main-content">{{ c.text }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section"
-          v-else-if="section.type === 'simple-asset'">
-          <div class="group-header">{{ section.title }}</div>
-          <div v-if="section.body.description?.length > 0"
-            class="mt-4 inline-html" v-html="section.body.description" />
-          <a class="asset-link mb-2"
-            :href="section.body.asset.link"
-            target="_blank">
-            <BookIcon class="w-[1rem] h-[1rem]" />
-            <span>Link - {{ section.body.asset.title }}</span>
-          </a>
-
-          <template v-if="!section.body.hidePreview && !autoHideAsset(section.body.asset.link)">
-            <a v-if="!isGoogleDriveFile(section.body.asset.link)"
-              :href="section.body.asset.link" 
-              class="embedly-card"
-              data-card-align="left"
-              data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4">
-              {{ section.body.asset.title }}
-            </a>
-            <iframe v-else
-              :src="rewriteLinkForGoogleDrivePreview(section.body.asset.link)"
-              width="640"
-              height="480"
-              allow="autoplay" />
-          </template>
-        </div>
+        <EditorAsset v-if="section.type === 'asset'"
+          v-model="section.link"
+          @insert:text="newTextBlock(index)"
+          @insert:header="newHeader(index)"
+          @insert:asset="newAsset(index)"
+          @click:item="assetClick(section.link)"
+          @delete:item="removeItem(index)" />
       </template>
-    </template>
+    </VueDraggable>
 
-    <template v-else-if="pageView === 'Edit'">
-      <div class="section">
-        <div class="group-header">Page Title</div>
-        <input v-model="title" class="mt-4">
-      </div>
-
-      <VueDraggable
-        v-model="body.sections"
-        ghost-class="ghost"
-        :animation="200"
-        :scroll="true"
-        class="flex flex-col gap-8"
-        handle=".drag-handle"
-      >
-        <div v-for="(section, index) in body.sections"
-            class="flex flex-row flex-start gap-4">
-          <div class="section"
-            v-if="section.type === 'simple-text'">
-            <input class="group-header-input"
-              v-model="section.title"
-              placeholder="Enter section title">
-            <div class="item-count">
-              <DeleteButton @click="deleteSection(index)" />
-            </div>
-
-            <TipTapTextarea
-              class="w-full mt-6"
-              v-model="section.body.question"
-              placeholder="Enter section body text" />
-            <div class="w-full mt-6">
-              <input v-model="section.body.showAnswer"
-                id="hide-pricing" 
-                type="checkbox"
-                class="mr-2">
-                <label for="hide-pricing">Show Answer Box?</label>
-            </div>
+    <div>
+      <dropdown-menu class="align-content-left"
+        :overlay="false"
+        with-dropdown-closer
+        @opened="isDropdownOpen = true"
+        @closed="isDropdownOpen = false">
+        <template #trigger>
+          <NewButton hover-color="gray">Add</NewButton>
+        </template>
+        <template #body>
+          <div class="flex flex-col gap-2 p-1">
+            <div class="dropdown-item"
+              dropdown-closer
+              @click="newTextBlock">Text Block</div>
+            <div class="dropdown-item"
+              dropdown-closer
+              @click="newHeader">Header</div>
+            <div class="dropdown-item"
+              dropdown-closer
+              @click="newAsset">Asset</div>
           </div>
+        </template>
+      </dropdown-menu>
+    </div>
 
-          <div class="section"
-            v-else-if="section.type === 'simple-list'">
-            <input class="group-header-input"
-              v-model="section.title"
-              placeholder="Enter section title">
-            <div class="item-count">
-              <DeleteButton @click="deleteSection(index)" />
-            </div>
-
-            <TipTapTextarea
-              class="w-full mt-6"
-              v-model="section.body.question"
-              placeholder="Enter section body text" />
-
-            <h4>Answer Choices:</h4>
-            <div class="flex flex-col gap-1">
-              <div v-for="(c, i) in section.body.choices"
-                class="flex flex-row gap-2">
-                <input v-model="c.text"
-                  class="w-full"
-                  placeholder="Enter answer choice text">
-                <DeleteButton @click="section.body.choices.splice(i, 1)" />
-              </div>
-            </div>
-            <NewButton class="section-add-button"
-              @click="section.body.choices.push({text: ''})" />
-          </div>
-
-          <div class="section"
-            v-if="section.type === 'simple-asset'">
-            <input class="group-header-input"
-              v-model="section.title"
-              placeholder="Enter Asset Block Title">
-            <div class="item-count">
-              <DeleteButton @click="deleteSection(index)" />
-            </div>
-
-            <TipTapTextarea
-              class="w-full mt-6"
-              v-model="section.body.description"
-              placeholder="Enter Asset Block description (optional)" />
-            <select v-model="section.body.asset"
-              class="mt-6">
-              <option v-for="r in assetTemplates"
-                :value="r">{{ r.title }}</option>
-            </select>
-
-            <h4>Hide Preview?</h4>
-            <select v-model="section.body.hidePreview">
-              <option :value="false">No</option>
-              <option :value="true">Yes</option>
-            </select>
-          </div>
-
-          <MenuIcon class="drag-handle mt-2" />
-        </div>
-      </VueDraggable>
-
-      <div class="section">
-        <div class="group-header">Add New Block</div>
-        <div class="mt-4 flex flex-row gap-4">
-          <BsButton hover-color="blue"
-              @click="addNewTextBlock">
-            <div class="body-header mr-2">Text Block</div> 
-            <TypeIcon />
-          </BsButton>
-          <BsButton hover-color="blue"
-              @click="addNewListBlock">
-            <div class="body-header mr-2">List Block</div> 
-            <ListIcon />
-          </BsButton>
-          <BsButton hover-color="blue"
-              @click="addNewAssetSection">
-            <div class="body-header mr-2">Asset Block</div> 
-            <ListIcon />
-          </BsButton>
-        </div>
-      </div>
-
-      <div class="flex flex-row-reverse">
-        <SubmitButton 
-          :ready-text="saveReadyText"
-          :submitting-text="saveSubmittingText"
-          :error-text="saveErrorText"
-          :submission-state="saveSubmissionState"
-          :disabled="!isDirty"
-          @click="saveSubmitFn" />
-      </div>
-    </template>
-
-    <div class="bottom-cover" />
-    <div class="vertical-bar" />
+    <div class="flex flex-row-reverse">
+      <SubmitButton
+        :ready-text="saveReadyText"
+        :submitting-text="saveSubmittingText"
+        :error-text="saveErrorText"
+        :submission-state="saveSubmissionState"
+        :disabled="!isDirty"
+        @click="saveSubmitFn" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { cloneDeep, debounce, find, first } = lodash_pkg;
+const { cloneDeep, debounce, find, first, map, max, some } = lodash_pkg;
 import { useTemplatesStore } from '@/stores/templates'
-import { useResourcesStore } from '@/stores/resources'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+import { useModal } from 'vue-final-modal'
+import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 
 useEmbedly()
 
 const templatesStore = useTemplatesStore()
 const { getPageTemplatesCached } = storeToRefs(templatesStore)
 
-const resourcesStore = useResourcesStore()
-const { getResourcesCached } = storeToRefs(resourcesStore)
-
-const [pageTemplates, assetTemplates] = await Promise.all([
+const [pageTemplates] = await Promise.all([
   getPageTemplatesCached.value(),
-  getResourcesCached.value(),
 ])
-
-const pageViews = computed(() => [
-  {text: 'View', active: true},
-  {text: 'Edit', active: true},
-])
-const pageView = ref('View')
-function updatePageView ({ option }) {
-  if (pageView.value === 'Edit') {
-    debouncedSave.flush()
-  }
-
-  pageView.value = option.text
-}
 
 const route = useRoute()
 const pageTemplateId = parseInt(route.params.id)
@@ -254,27 +118,43 @@ router.beforeEach(async () => {
   }
 })
 
-const body = ref(cloneDeep(pageTemplate.body))
-const title = ref(pageTemplate.title)
+const keys = map(pageTemplate.body.sections, s => s.key || 0)
+let nextKey = (max(keys) || 0) + 1
 
-function selectListIem ({ section, choice, index }) {
-  section.body.answer.text = choice.text
-  section.body.answer.index = index
+function updateSection (section) {
+  const s = cloneDeep(section)
+  if (!s.key) {
+    s.key = nextKey++
+  }
+
+  if (section.type === "simple-text") {
+    section.type = 'text'
+    section.text = (section.title ? `<p>${section.title}</p>` : '')
+      + section.body.question
+      + section.body.answer
+    // TODO unset section.body
+  }
+
+  if (section.type === 'simple-list') {
+    section.type = 'text'
+    section.text = (section.title ? `<p>${section.title}</p>` : '')
+      + section.body.question
+      + '<ul>' 
+      + map(section.body.choices, c => `<li>${c.text}</li>`).join('')
+      + '</ul>'
+    // TODO unset section.body
+  }
+
+  if (section.type === 'simple-asset') {
+    section.type = 'asset'
+    section.link = section.body.asset.link
+    // TODO unset section.body
+  }
+
+  return s
 }
 
-function autoHideAsset (link) {
-  // google docs require special steps by the user to preview. for now
-  // we will just hide
-  return link.includes('docs.google.com/document')
-}
-
-function isGoogleDriveFile (link) {
-  return link.includes('drive.google.com/file')
-}
-
-function rewriteLinkForGoogleDrivePreview (link) {
-  return link.replace(/view/, 'preview')
-}
+const body = ref({ sections: map(pageTemplate.body.sections, updateSection) })
 
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {
@@ -286,7 +166,6 @@ if (process.client) {
 }
 
 async function save() {
-  pageTemplate.title = title.value
   pageTemplate.body = body.value
   await templatesStore.updatePageTemplate({ id: pageTemplateId, pageTemplate })
   isDirty.value = false
@@ -296,7 +175,7 @@ const debouncedSave = debounce(save, 2000, { leading: false, trailing: true })
 const isDirty = ref(false)
 
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
-  save()
+  await debouncedSave.flush()
 })
 
 const saveReadyText = computed(() => isDirty.value ? "Save Changes" : "Saved")
@@ -307,60 +186,66 @@ watch(body.value, () => {
   isDirty.value = true
   debouncedSave()
 })
+function removeItem (index) {
+  body.value.sections.splice(index, 1)
+}
 
-watch(title, () => {
-  isDirty.value = true
-  debouncedSave()
+function newTextBlock (index) {
+  const newBlock = {
+    type: "text",
+    text: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+function newHeader (index) {
+  const newBlock = {
+    type: "header",
+    text: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+function newAsset (index) {
+  const newBlock = {
+    type: "asset",
+    link: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+const { open, close, patchOptions } = useModal({
+  component: EditPageSettingsModal,
+  attrs: {
+    pageTemplateId,
+    isTemplate: true,
+    onClose () {
+      close()
+    },
+  }
 })
 
-function addNewTextBlock () {
-  body.value.sections.push({
-    type: "simple-text",
-    title: "",
-    body: {
-      question: "",
-      showAnswer: false,
-      answer: "",
-    }
-  })
-}
-
-function addNewListBlock () {
-  body.value.sections.push({
-    type: "simple-list",
-    title: "",
-    body: {
-      question: "",
-      choices: [
-        { text: "" },
-        { text: "" },
-        { text: "" },
-      ],
-      answer: {
-        index: null,
-        text: "",
-      },
-    },
-  })
-}
-
-function addNewAssetSection () {
-  body.value.sections.push({
-    type: "simple-asset",
-    title: "",
-    body: {
-      asset: {
-        title: "",
-        link: "",
-      },
-      description: "",
-      hidePreview: false,
-    },
-  })
-}
-
-function deleteSection(index) {
-  body.value.sections.splice(index, 1)
+function openSettingsModal () {
+  patchOptions({ attrs: { page: pageTemplate }})
+  open()
 }
 </script>
 
