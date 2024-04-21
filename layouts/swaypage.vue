@@ -1,7 +1,17 @@
 <template>
   <div>
-    <TopNav />
-    <div class="page-grid">
+    <TopNavNew>
+      <template #action-button>
+        <!-- TODO click handler -->
+       <SpButton>
+        <template #icon>
+          <Link2Icon />
+        </template>
+        Share
+       </SpButton>
+      </template>
+    </TopNavNew>
+    <div class="mt-6 page-grid">
       <div class="mr-4">
         <div class="sticky top-8">
           <div class="header-grid">
@@ -18,14 +28,14 @@
               <div class="icon-header center-xy">
                 <component :is="p.icon" class="icon-menu" />
               </div>
-              <div class="text-subtext">{{ p.title }}</div>
+              <div>{{ p.title }}</div>
             </div>
             <div class="sidebar-item"
               @click="newPage">
               <div class="icon-header center-xy">
-                <PlusCircleIcon class="text-gray-medium" />
+                <PlusSquareIcon class="text-gray-medium" />
               </div>
-              <div class="subtext">New Page</div>
+              <div class="text-gray-medium">New Page</div>
             </div>
           </div>
         </div>

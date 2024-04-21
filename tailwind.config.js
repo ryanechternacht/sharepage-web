@@ -13,7 +13,8 @@ module.exports = {
         primary: '#36597c',
         secondary: '#5f8cb9',
         background: '#DFE8F1',
-        great: '#007FFF', // new
+        great: '#41A0FF', // new
+        brand: '#007FFF', // new
       },
       black: '#040506', // new
       purple: {
