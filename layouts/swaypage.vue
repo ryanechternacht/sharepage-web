@@ -40,20 +40,20 @@
 const pages = ref([
   {
     title: "Call Follow-up",
-    icon: resolveComponent("ArrowRightCircleIcon"),
+    icon: shallowRef(resolveComponent("ArrowRightCircleIcon")),
   }, {
     title: "Guides (c. product best prac guide)",
-    icon: resolveComponent("MapIcon"),
+    icon: shallowRef(resolveComponent("MapIcon")),
     selected: true,
   }, {
     title: "Discusion Doc (c. partner planning)",
-    icon: resolveComponent("MessageCircleIcon"),
+    icon: shallowRef(resolveComponent("MessageCircleIcon")),
   }, {
     title: "Business Case",
-    icon: resolveComponent("FileTextIcon"),
+    icon: shallowRef(resolveComponent("FileTextIcon")),
   }, {
     title: "Notes (such as research notes)",
-    icon: resolveComponent("ClipboardIcon"),
+    icon: shallowRef(resolveComponent("ClipboardIcon")),
   }
 ])
 
@@ -93,11 +93,5 @@ function newPage () {
   /* TODO, I can probably improve these a bit using some minmax() */
   /* ideal is ~350 710 220 */
   grid-template-columns: 3fr 6.5fr 2fr;
-
-  :deep() > :nth-child(2) {
-    @apply border border-gray-border rounded-md px-2 py-1;
-    /* TODO this is based on the current top nav height */
-    min-height: calc(100vh - 5rem);
-  }
 }
 </style>
