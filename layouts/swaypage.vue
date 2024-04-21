@@ -2,25 +2,94 @@
   <div>
     <TopNav />
     <div class="page-grid">
-      <div class="flex flex-col gap-2">
-        <div>Pied Piper</div>
-        <div>Feed</div>
-        <div>Activities</div>
-        <div>Page 1</div>
-        <div>Page 2</div>
-        <div>Page 3</div>
+      <div class="mr-4">
+        <div class="sticky top-8">
+          <div class="header-grid">
+            <img src="/house_greyjoy.jpeg" class="icon-header">
+            <h2>House Greyjoy</h2>
+            <StarIcon class="icon-menu justify-self-center" />
+            <div class="subtext">Sales Division</div>
+          </div>
+          <div class="mt-[2.25rem] flex flex-col">
+            <div v-for="p in pages"
+              class="sidebar-item"
+              :class="{ selected: p.selected }"
+              @click="nav(p)">
+              <div class="icon-header center-xy">
+                <component :is="p.icon" class="icon-menu" />
+              </div>
+              <div class="text-subtext">{{ p.title }}</div>
+            </div>
+            <div class="sidebar-item"
+              @click="newPage">
+              <div class="icon-header center-xy">
+                <PlusCircleIcon class="text-gray-medium" />
+              </div>
+              <div class="subtext">New Page</div>
+            </div>
+          </div>
+        </div>
       </div>
+
       <slot />
     </div>
   </div>
 </template>
 
 <script setup>
+const pages = ref([
+  {
+    title: "Call Follow-up",
+    icon: resolveComponent("ArrowRightCircleIcon"),
+  }, {
+    title: "Guides (c. product best prac guide)",
+    icon: resolveComponent("MapIcon"),
+    selected: true,
+  }, {
+    title: "Discusion Doc (c. partner planning)",
+    icon: resolveComponent("MessageCircleIcon"),
+  }, {
+    title: "Business Case",
+    icon: resolveComponent("FileTextIcon"),
+  }, {
+    title: "Notes (such as research notes)",
+    icon: resolveComponent("ClipboardIcon"),
+  }
+])
+
+function nav(page) {
+  pages.value.forEach(p => p.selected = false)
+  page.selected = true
+}
+
+function newPage () {
+  pages.value.push({
+    title: "Notes (such as research notes)",
+    icon: resolveComponent("WifiIcon"),
+  })
+}
 </script>
 
 <style lang="postcss" scoped>
+.header-grid {
+  @apply grid items-center gap-x-2 gap-y-2;
+  grid-template-columns: auto 1fr;
+}
+
+.sidebar-item {
+  @apply py-2 my-1 cursor-pointer flex flex-row gap-2 items-center;
+
+  &.selected {
+    @apply bg-gray-background rounded-md py-3 my-0 px-2 -mx-2;
+
+    .text-subtext {
+      @apply font-semibold;
+    }
+  }
+}
+
 .page-grid {
-  @apply mx-8 grid;
+  @apply grid mx-8;
   /* TODO, I can probably improve these a bit using some minmax() */
   /* ideal is ~350 710 220 */
   grid-template-columns: 3fr 6.5fr 2fr;

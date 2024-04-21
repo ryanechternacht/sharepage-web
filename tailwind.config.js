@@ -58,7 +58,7 @@ module.exports = {
       primary: ['1.625rem', { fontWeight: '800'} ],
       secondary: ['1rem', { fontWeight: '600'} ],
       body: ['.875rem', { fontWeight: '500'} ],
-      subtext: ['.75rem', { fontWeight: '800'} ],
+      subtext: ['.75rem', { fontWeight: '500'} ],
     },
     extend: {
       spacing: {

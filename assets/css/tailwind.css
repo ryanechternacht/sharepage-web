@@ -38,6 +38,18 @@
     }
   }
 
+  .icon-header {
+    @apply max-w-[1.875rem] max-h-[1.875rem] w-full h-full;
+  }
+
+  .icon-menu {
+    @apply max-w-[.875rem] max-h-[.875rem] w-full h-full;
+  }
+
+  .icon-submenu {
+    @apply max-w-[.625rem] max-h-[.625rem] w-full h-full;
+  }
+
   .tag {
     @apply font-sans font-normal text-gray-subtext;
     font-size: .75rem; /* 12px */
