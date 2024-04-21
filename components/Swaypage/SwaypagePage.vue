@@ -132,7 +132,6 @@ const canEdit = isSeller || page.canBuyerEdit
 
 // TODO should this just come from the backend?
 const isABuyerForThisBuyersphere = user && some(buyersphere.buyerTeam, p => p.email === user.email)
-const canUserRespond = isSeller || isABuyerForThisBuyersphere
 
 const router = useRouter()
 const { makeInternalSwaypageLink } = useSwaypageLinks()

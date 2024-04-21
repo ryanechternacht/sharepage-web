@@ -1,10 +1,9 @@
 <template>
   <div class="component p-1 w-full flex flex-row flex-start gap-2">
-    <div class="w-[1rem] drag-handle"
+    <div v-if="!readonly" class="w-[1rem] drag-handle"
       :class="{ 'show-menu': isDropdownOpen }">
       <dropdown-menu
         :overlay="false"
-        :class="{ '!hidden': readonly }"
         with-dropdown-closer
         @opened="isDropdownOpen = true"
         @closed="isDropdownOpen = false">
