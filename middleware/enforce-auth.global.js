@@ -3,12 +3,18 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia' 
 
+// TODO this whole page should be replaced with route middleware
+// at the page level. Moving towards layouts + pages 
+// (instead of pages + components) should make this much easier
+
 export default defineNuxtRouteMiddleware(async (to, _) => {
+  console.log('to', to)
   if (to.path === '/test' || to.path === '/swaypage-demo') {
     return;
   } if (to.path.startsWith('/u/') || to.path.startsWith('/c/')) { 
     return; // these will redirect and have permissions handled later
-  } else if (to.matched[0]?.name === 'swaypage') {
+  } else if (to.matched[0]?.name === 'swaypage'
+      || to.matched[0]?.name === 'swaypageOld') {
     const buyersphereStore = useSwaypagesStore()
     const { getSwaypageByIdCached } = storeToRefs(buyersphereStore)
 

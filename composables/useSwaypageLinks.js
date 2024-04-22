@@ -12,14 +12,14 @@ function simplifyName (name) {
 
 function makeInternalSwaypageLink (swaypage, page) {
   return page
-    ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
-    : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
+    ? `/old/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
+    : `/old/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
-function makeDemoSwaypageLink (swaypage, page) {
+function makeNewSwaypageLink (swaypage, page) {
   return page
-    ? `/demo/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
-    : `/demo/${swaypage.id}/${simplifyName(swaypage.buyer)}`
+    ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
+    : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
 function makePersonalizedExternalSwaypageLink (shortcode, name) {
@@ -34,5 +34,5 @@ export const useSwaypageLinks = () => ({
   makeInternalSwaypageLink,
   makeExternalSwaypageLink,
   makePersonalizedExternalSwaypageLink,
-  makeDemoSwaypageLink,
+  makeNewSwaypageLink,
 })

@@ -22,7 +22,7 @@
           </div>
           <div class="mt-[2.25rem] flex flex-col">
             <NuxtLink v-for="p in pages"
-              :href="makeDemoSwaypageLink(swaypage, p.id)"
+              :href="makeNewSwaypageLink(swaypage, p.id)"
               class="sidebar-item">
               <!-- TODO reimplement custom icons -->
               <!-- <div class="icon-header center-xy">
@@ -72,7 +72,7 @@ const [swaypage, pages, hasUser, isSeller] = await Promise.all([
 
 const router = useRouter()
 // switch back to makeInternalSwaypageLink
-const { makeDemoSwaypageLink } = useSwaypageLinks()
+const { makeNewSwaypageLink } = useSwaypageLinks()
 
 function nav(page) {
   pages.value.forEach(p => p.selected = false)
