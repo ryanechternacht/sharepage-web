@@ -19,12 +19,12 @@
         <div class="sticky top-8">
           <div class="header-grid">
             <img src="/house_greyjoy.jpeg" class="icon-header">
-            <h2>House Greyjoy</h2>
+            <h2>{{ swaypage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
               <!-- <StarIcon class="icon-menu justify-self-center text-gray-medium" /> -->
             </div>
-            <div class="subtext">Sales Division</div>
+            <div class="subtext">{{ swaypage.subname }}</div>
           </div>
           <div>
             <div class="mt-[2.25rem] mb-1 text-gray-medium">Pages</div>
