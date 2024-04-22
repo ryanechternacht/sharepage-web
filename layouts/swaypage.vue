@@ -21,15 +21,16 @@
             <div class="subtext">Sales Division</div>
           </div>
           <div class="mt-[2.25rem] flex flex-col">
-            <div v-for="p in pages"
-              class="sidebar-item"
-              :class="{ selected: p.selected }"
-              @click="nav(p)">
-              <div class="icon-header center-xy">
+            <NuxtLink v-for="p in pages"
+              :href="makeDemoSwaypageLink(swaypage, p.id)"
+              class="sidebar-item">
+              <!-- TODO reimplement custom icons -->
+              <!-- <div class="icon-header center-xy">
                 <component :is="p.icon" class="icon-menu" />
-              </div>
+              </div> -->
+              <FileIcon class="icon-menu" />
               <div>{{ p.title }}</div>
-            </div>
+            </NuxtLink>
             <div class="sidebar-item"
               @click="newPage">
               <div class="icon-header center-xy">
@@ -43,29 +44,57 @@
 
       <slot />
     </div>
+
+    <div class="h-[5rem]" /> <!-- bottom spacer -->
   </div>
 </template>
 
 <script setup>
-const pages = ref([
-  {
-    title: "Call Follow-up",
-    icon: shallowRef(resolveComponent("ArrowRightCircleIcon")),
-  }, {
-    title: "Guides (c. product best prac guide)",
-    icon: shallowRef(resolveComponent("MapIcon")),
-    selected: true,
-  }, {
-    title: "Discusion Doc (c. partner planning)",
-    icon: shallowRef(resolveComponent("MessageCircleIcon")),
-  }, {
-    title: "Business Case",
-    icon: shallowRef(resolveComponent("FileTextIcon")),
-  }, {
-    title: "Notes (such as research notes)",
-    icon: shallowRef(resolveComponent("ClipboardIcon")),
-  }
+import { useSwaypagesStore } from '@/stores/swaypages'
+import { useUsersStore } from '@/stores/users'
+import { storeToRefs } from 'pinia'
+
+const route = useRoute()
+const swaypageId = parseInt(route.params.id)
+
+const swaypageStore = useSwaypagesStore()
+const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(swaypageStore)
+
+const usersStore = useUsersStore()
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
+
+const [swaypage, pages, hasUser, isSeller] = await Promise.all([
+  getSwaypageByIdCached.value(swaypageId),
+  getSwaypagePagesByIdCached.value(swaypageId),
+  isUserLoggedIn.value(),
+  isUserSeller.value(),
 ])
+
+const router = useRouter()
+// switch back to makeInternalSwaypageLink
+const { makeDemoSwaypageLink } = useSwaypageLinks()
+
+
+
+// const pages = ref([
+//   {
+//     title: "Call Follow-up",
+//     icon: shallowRef(resolveComponent("ArrowRightCircleIcon")),
+//   }, {
+//     title: "Guides (c. product best prac guide)",
+//     icon: shallowRef(resolveComponent("MapIcon")),
+//     selected: true,
+//   }, {
+//     title: "Discusion Doc (c. partner planning)",
+//     icon: shallowRef(resolveComponent("MessageCircleIcon")),
+//   }, {
+//     title: "Business Case",
+//     icon: shallowRef(resolveComponent("FileTextIcon")),
+//   }, {
+//     title: "Notes (such as research notes)",
+//     icon: shallowRef(resolveComponent("ClipboardIcon")),
+//   }
+// ])
 
 function nav(page) {
   pages.value.forEach(p => p.selected = false)
@@ -89,7 +118,7 @@ function newPage () {
 .sidebar-item {
   @apply py-2 my-1 cursor-pointer flex flex-row gap-2 items-center;
 
-  &.selected {
+  &.router-link-active {
     @apply bg-gray-background rounded-md py-3 my-0 px-2 -mx-2;
 
     .text-subtext {

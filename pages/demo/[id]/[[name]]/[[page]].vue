@@ -42,43 +42,73 @@
         <!-- <div>synced</div> -->
       </div>
       <div class="page-area">
-      <VueDraggable
-        v-model="body.sections"
-        ghost-class="ghost"
-        :animation="200"
-        :scroll="true"
-        class="flex flex-col gap-2"
-        group="sections"
-        handle=".drag-handle"
-      >
-        <template v-for="(section, index) in body.sections"
-          :key="section.key">
-          <EditorTextArea v-if="section.type === 'text'"
-            v-model="section.text"
-            :readonly="!canEdit"
-            @insert:text="newTextBlock(index)"
-            @insert:header="newHeader(index)"
-            @insert:asset="newAsset(index)"
-            @delete:item="removeItem(index)" />
-          
-          <EditorHeader v-if="section.type === 'header'"
-            v-model="section.text"
-            :readonly="!canEdit"
-            @insert:text="newTextBlock(index)"
-            @insert:header="newHeader(index)"
-            @insert:asset="newAsset(index)"
-            @delete:item="removeItem(index)" />
+        <VueDraggable
+          v-model="body.sections"
+          ghost-class="ghost"
+          :animation="200"
+          :scroll="true"
+          class="flex flex-col gap-2"
+          group="sections"
+          handle=".drag-handle"
+        >
+          <template v-for="(section, index) in body.sections"
+            :key="section.key">
+            <EditorTextArea v-if="section.type === 'text'"
+              v-model="section.text"
+              :readonly="!canEdit"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:asset="newAsset(index)"
+              @delete:item="removeItem(index)" />
+            
+            <EditorHeader v-if="section.type === 'header'"
+              v-model="section.text"
+              :readonly="!canEdit"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:asset="newAsset(index)"
+              @delete:item="removeItem(index)" />
 
-          <EditorAsset v-if="section.type === 'asset'"
-            v-model="section.link"
-            :readonly="!canEdit"
-            @insert:text="newTextBlock(index)"
-            @insert:header="newHeader(index)"
-            @insert:asset="newAsset(index)"
-            @click:item="assetClick(section.link)"
-            @delete:item="removeItem(index)" />
-        </template>
-      </VueDraggable>
+            <EditorAsset v-if="section.type === 'asset'"
+              v-model="section.link"
+              :readonly="!canEdit"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:asset="newAsset(index)"
+              @click:item="assetClick(section.link)"
+              @delete:item="removeItem(index)" />
+          </template>
+        </VueDraggable>
+
+        <div v-if="canEdit">
+          <dropdown-menu class="align-content-left"
+            :overlay="false"
+            with-dropdown-closer
+            @opened="isDropdownOpen = true"
+            @closed="isDropdownOpen = false">
+            <template #trigger>
+              <div class="mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
+                <PlusSquareIcon class="text-gray-medium icon-menu" />
+                <div class="subtext">New</div>
+              </div>
+            </template>
+            <template #body>
+              <div class="flex flex-col gap-2 p-1">
+                <div class="dropdown-item"
+                  dropdown-closer
+                  @click="newTextBlock()">Text Block</div>
+                <div class="dropdown-item"
+                  dropdown-closer
+                  @click="newHeader()">Header</div>
+                <div class="dropdown-item"
+                  dropdown-closer
+                  @click="newAsset()">Asset</div>
+              </div>
+            </template>
+          </dropdown-menu>
+        </div>
+
+        <div class="h-[2rem]" /> <!-- bottom spacer -->
       </div>
     </div>
 
@@ -338,5 +368,18 @@ function addNewLink () {
 .rightbar-link {
   @apply flex flex-row-reverse items-center gap-3;
 
+}
+
+.align-content-left {
+  margin-left: calc(2.25rem + 1px);
+}
+
+.dropdown-item {
+  @apply p-.5;
+  
+  &:hover {
+    @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
+      cursor-pointer;
+  }
 }
 </style>
