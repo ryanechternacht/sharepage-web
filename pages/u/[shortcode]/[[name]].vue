@@ -12,8 +12,6 @@ const name = route.params.name
 const store = useSwaypagesStore()
 const swaypage = await store.getSwaypageByShortcode({ shortcode })
 
-console.log('swaypage', swaypage)
-
 if (swaypage) {
   await navigateTo(`/${swaypage.id}?sent-to=${name}`, { redirectCode: 301 })
 } else {

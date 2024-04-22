@@ -16,7 +16,7 @@
         <div class="flex-grow" />
           <!-- TODO implement -->
         <!-- <div>active</div> -->
-        <div class="flex flex-row items-center gap-2">
+        <div v-if="canEdit" class="flex flex-row items-center gap-2">
           <template v-if="swaypage.isPublic">
             <EyeIcon class="text-green-good icon-submenu" />
             <div class="subtext">Public</div>
@@ -42,6 +42,12 @@
         <!-- <div>synced</div> -->
       </div>
       <div class="page-area">
+        <input v-if="canEdit"
+          v-model="title"
+          type="text"
+          class="h1 mt-10 mb-6 align-content-left border-0 p-0">
+        <h1 v-else class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
+
         <VueDraggable
           v-model="body.sections"
           ghost-class="ghost"
@@ -145,8 +151,8 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-import { useModal } from 'vue-final-modal'
 import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
+import { useModal } from 'vue-final-modal'
 
 useEmbedly()
 
@@ -230,6 +236,7 @@ function updateSection (section) {
 }
 
 const body = ref({ sections: map(page.body.sections, updateSection) })
+const title = ref(page.title)
 
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {
@@ -249,6 +256,7 @@ if (process.client) {
 // layout/styling rework
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   page.body = body.value
+  page.title = title.value
   await swaypageStore.updatePage({ swaypageId, pageId, page })
   isDirty.value = false
 })
@@ -257,6 +265,11 @@ const debouncedSave = debounce(saveSubmitFn, 2000, { leading: false, trailing: t
 const isDirty = ref(false)
 
 watch(body.value, () => {
+  isDirty.value = true
+  debouncedSave()
+})
+
+watch(title, () => {
   isDirty.value = true
   debouncedSave()
 })
@@ -372,7 +385,7 @@ function addNewLink () {
 }
 
 .align-content-left {
-  margin-left: calc(2.25rem + 1px);
+  margin-left: calc(2.25rem + 2px);
 }
 
 .dropdown-item {

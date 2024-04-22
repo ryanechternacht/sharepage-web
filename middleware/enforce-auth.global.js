@@ -8,7 +8,6 @@ import { storeToRefs } from 'pinia'
 // (instead of pages + components) should make this much easier
 
 export default defineNuxtRouteMiddleware(async (to, _) => {
-  console.log('to', to)
   if (to.path === '/test' || to.path === '/swaypage-demo') {
     return;
   } if (to.path.startsWith('/u/') || to.path.startsWith('/c/')) { 

@@ -27,7 +27,7 @@
             <div class="subtext">Sales Division</div>
           </div>
           <div>
-            <div class="mt-[2.25rem] mb-4 text-gray-medium">Pages</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-medium">Pages</div>
             <div class="flex flex-col">
               <NuxtLink v-for="p in pages"
                 :href="makeNewSwaypageLink(swaypage, p.id)"
@@ -39,11 +39,10 @@
                 <FileIcon class="icon-menu" />
                 <div>{{ p.title }}</div>
               </NuxtLink>
-              <div class="sidebar-item"
-                @click="newPage">
-                <div class="icon-header center-xy">
-                  <PlusSquareIcon class="text-gray-medium" />
-                </div>
+              <div v-if="isSeller" 
+                class="sidebar-item"
+                @click="createNewPage">
+                <PlusSquareIcon class="text-gray-medium" />
                 <div class="text-gray-medium">New Page</div>
               </div>
             </div>
@@ -63,6 +62,7 @@ import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import ShareLinkModal from '@/components/ShareLinkModal';
+import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
 import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
@@ -87,6 +87,7 @@ const { makeNewSwaypageLink } = useSwaypageLinks()
 
 const linkToPage = useRequestURL().href
 
+// TODO for making a new "sharing" modal
 // const path = props.recipient
 //   ? makePersonalizedExternalSwaypageLink(props.swaypageShortcode, props.recipient)
 //   : makeExternalSwaypageLink(props.swaypageShortcode, props.companyName)
@@ -95,18 +96,6 @@ const linkToPage = useRequestURL().href
 // const urlBase =  u.protocol + '//' + u.host;
 
 // const url = new URL(path, urlBase)
-
-function nav(page) {
-  pages.value.forEach(p => p.selected = false)
-  page.selected = true
-}
-
-function newPage () {
-  pages.value.push({
-    title: "Notes (such as research notes)",
-    icon: resolveComponent("WifiIcon"),
-  })
-}
 
 const { 
   open: openShareModal,
@@ -122,6 +111,29 @@ const {
     }
   }
 })
+
+const { 
+  open: openSwaypagePageModal,
+  close: closeSwaypagePageModal
+} = useModal({
+  component: AddSwaypagePageModal,
+  attrs: {
+    buyersphereId: swaypage.id,
+    page: {},
+    async onClose (props) {
+      if (props?.pageId) {
+        await router.replace({ 
+          path: makeNewSwaypageLink(swaypage, props.pageId)
+        })
+      }
+      closeSwaypagePageModal()
+    }
+  }
+})
+
+function createNewPage () {
+  openSwaypagePageModal()
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -131,7 +143,7 @@ const {
 }
 
 .sidebar-item {
-  @apply py-2 my-1 cursor-pointer flex flex-row gap-2 items-center;
+  @apply py-2 my-1 cursor-pointer flex flex-row gap-4 items-center;
 
   &.router-link-active {
     @apply bg-gray-background rounded-md py-3 my-0 px-2 -mx-2;
