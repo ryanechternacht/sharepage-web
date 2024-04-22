@@ -74,28 +74,6 @@ const router = useRouter()
 // switch back to makeInternalSwaypageLink
 const { makeDemoSwaypageLink } = useSwaypageLinks()
 
-
-
-// const pages = ref([
-//   {
-//     title: "Call Follow-up",
-//     icon: shallowRef(resolveComponent("ArrowRightCircleIcon")),
-//   }, {
-//     title: "Guides (c. product best prac guide)",
-//     icon: shallowRef(resolveComponent("MapIcon")),
-//     selected: true,
-//   }, {
-//     title: "Discusion Doc (c. partner planning)",
-//     icon: shallowRef(resolveComponent("MessageCircleIcon")),
-//   }, {
-//     title: "Business Case",
-//     icon: shallowRef(resolveComponent("FileTextIcon")),
-//   }, {
-//     title: "Notes (such as research notes)",
-//     icon: shallowRef(resolveComponent("ClipboardIcon")),
-//   }
-// ])
-
 function nav(page) {
   pages.value.forEach(p => p.selected = false)
   page.selected = true
