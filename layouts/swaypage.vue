@@ -18,7 +18,7 @@
       <div class="mr-4">
         <div class="sticky top-8">
           <div class="header-grid">
-            <img src="/house_greyjoy.jpeg" class="icon-header">
+            <img :src="swaypage.buyerLogo" class="icon-header">
             <h2>{{ swaypage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
