@@ -186,6 +186,19 @@ definePageMeta({
   layout: 'swaypage',
 })
 
+const metaTitle = `Discover ${swaypage.buyer}`
+const metaDescription = `Learn more about what ${swaypage.buyer} has to offer`
+
+useSeoMeta({
+  title: metaTitle,
+  description: metaDescription,
+  ogTitle: metaTitle,
+  ogDescription: metaDescription,
+  twitterCard: 'summary',
+  twitterTitle: metaTitle,
+  twitterDescription: metaDescription,
+})
+
 const router = useRouter()
 router.beforeEach(async () => {
   if (isDirty.value) {
