@@ -56,7 +56,7 @@ const editor = useEditor({
 
 const debouncedUpdate = debounce(
   () => emit('update:modelValue', editor.value.getHTML()), 
-  2000,
+  1000,
   { leading: false, trailing: true }
 )
 

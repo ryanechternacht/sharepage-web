@@ -16,6 +16,12 @@ function makeInternalSwaypageLink (swaypage, page) {
     : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
+function makeDemoSwaypageLink (swaypage, page) {
+  return page
+    ? `/demo/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
+    : `/demo/${swaypage.id}/${simplifyName(swaypage.buyer)}`
+}
+
 function makePersonalizedExternalSwaypageLink (shortcode, name) {
   return `/u/${shortcode}/${name}`
 }
@@ -28,4 +34,5 @@ export const useSwaypageLinks = () => ({
   makeInternalSwaypageLink,
   makeExternalSwaypageLink,
   makePersonalizedExternalSwaypageLink,
+  makeDemoSwaypageLink,
 })
