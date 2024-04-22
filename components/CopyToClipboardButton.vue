@@ -52,6 +52,7 @@ async function copyToClipboard() {
   } else {
     console.log(`can't find navigator, but would copy ${url.href}`)
   }
+  
   recentlyClicked.value = true
   lastTimeout.value = setTimeout(() => recentlyClicked.value = false, 3000)
 

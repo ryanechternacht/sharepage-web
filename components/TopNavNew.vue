@@ -3,9 +3,9 @@
     <NuxtLink to="/" class="mr-4">
       <img src="/svg/logo-blue.svg" class="icon-header">
     </NuxtLink>
-    <template v-if="user?.buyersphereRole === 'admin'">
+    <template v-if="isSeller">
       <!-- TOOD point this to the correct route -->
-      <NuxtLink to="" class="link">
+      <NuxtLink to="/dashboard/insights" class="link">
         <RadioIcon class="icon-menu" />
         <span>Feed</span>
       </NuxtLink>
@@ -14,14 +14,15 @@
         <span>Swaypages</span>
       </NuxtLink>
       <!-- TOOD point this to the correct route -->
-      <NuxtLink to="/swaypage-demo" class="link">
+      <!-- <NuxtLink to="/swaypage-demo" class="link">
         <ZapIcon class="icon-menu" />
         <span>Leads</span>
-      </NuxtLink>
-      <NuxtLink to="/dashboard/insights" class="link">
+      </NuxtLink> -->
+      <!-- TOOD point this to the correct route -->
+      <!-- <NuxtLink to="" class="link">
         <SendIcon class="icon-menu" />
         <span>Campaigns</span>
-      </NuxtLink>
+      </NuxtLink> -->
       <NuxtLink to="/dashboard/activities" class="link">
         <CheckCircleIcon class="icon-menu" />
         <span>Activities</span>
@@ -36,8 +37,12 @@
       <UserAvatar :user="user" size="large" />
     </div>
     <div v-else>
-      <BsButton color="blue" hover-color="blue"
-        @click="goToLogin">Login</BsButton>
+      <SpButton @click="goToLogin">
+        <template #icon>
+          <LogInIcon class="icon-menu" />
+        </template>
+        Login
+      </SpButton>
     </div>
   </div>
 </template>
@@ -47,9 +52,13 @@ import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
 const usersStore = useUsersStore()
-const { hasUser, getMeCached } = storeToRefs(usersStore)
+const {getMeCached, isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const user = await getMeCached.value()
+const [user, hasUser, isSeller] = await Promise.all([
+  getMeCached.value(),
+  isUserLoggedIn.value(),
+  isUserSeller.value(),
+])
 
 async function goToLogin () {
   await navigateTo('/login')

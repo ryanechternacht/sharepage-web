@@ -9,7 +9,7 @@
             size="small"
             :user="s" />
           <!-- TODO this text should be better -->
-          <div class="ml-4">Made by 
+          <div class="ml-4">Made by
             <span v-for="(s, i) in swaypage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
           </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="subtext">Private</div>
           </template>
         </div>
-        <div class="flex flex-row items-center gap-2">
+        <div v-if="canEdit" class="flex flex-row items-center gap-2">
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
           <div :class="{'text-blue-great': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
                         'text-orange-neutral': saveSubmissionState === 'submitting'}">

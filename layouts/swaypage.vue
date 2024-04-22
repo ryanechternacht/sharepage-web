@@ -2,13 +2,16 @@
   <div>
     <TopNavNew>
       <template #action-button>
-        <!-- TODO click handler -->
-       <SpButton>
-        <template #icon>
-          <Link2Icon />
-        </template>
-        Share
-       </SpButton>
+        <SpButton v-if="isSeller"
+          @click="openShareModal">
+          <template #icon>
+            <Link2Icon class="icon-menu" />
+          </template>
+          Share
+        </SpButton>
+        <CopyToClipboardNew v-else
+          :url="linkToPage"
+          :swaypage-id="swaypage.id" />
       </template>
     </TopNavNew>
     <div class="mt-6 page-grid">
@@ -17,26 +20,32 @@
           <div class="header-grid">
             <img src="/house_greyjoy.jpeg" class="icon-header">
             <h2>House Greyjoy</h2>
-            <StarIcon class="icon-menu justify-self-center" />
+            <div>
+              <!-- TODO restore this icon -->
+              <!-- <StarIcon class="icon-menu justify-self-center text-gray-medium" /> -->
+            </div>
             <div class="subtext">Sales Division</div>
           </div>
-          <div class="mt-[2.25rem] flex flex-col">
-            <NuxtLink v-for="p in pages"
-              :href="makeNewSwaypageLink(swaypage, p.id)"
-              class="sidebar-item">
-              <!-- TODO reimplement custom icons -->
-              <!-- <div class="icon-header center-xy">
-                <component :is="p.icon" class="icon-menu" />
-              </div> -->
-              <FileIcon class="icon-menu" />
-              <div>{{ p.title }}</div>
-            </NuxtLink>
-            <div class="sidebar-item"
-              @click="newPage">
-              <div class="icon-header center-xy">
-                <PlusSquareIcon class="text-gray-medium" />
+          <div>
+            <div class="mt-[2.25rem] mb-4 text-gray-medium">Pages</div>
+            <div class="flex flex-col">
+              <NuxtLink v-for="p in pages"
+                :href="makeNewSwaypageLink(swaypage, p.id)"
+                class="sidebar-item">
+                <!-- TODO reimplement custom icons -->
+                <!-- <div class="icon-header center-xy">
+                  <component :is="p.icon" class="icon-menu" />
+                </div> -->
+                <FileIcon class="icon-menu" />
+                <div>{{ p.title }}</div>
+              </NuxtLink>
+              <div class="sidebar-item"
+                @click="newPage">
+                <div class="icon-header center-xy">
+                  <PlusSquareIcon class="text-gray-medium" />
+                </div>
+                <div class="text-gray-medium">New Page</div>
               </div>
-              <div class="text-gray-medium">New Page</div>
             </div>
           </div>
         </div>
@@ -53,6 +62,8 @@
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
+import ShareLinkModal from '@/components/ShareLinkModal';
+import { useModal } from 'vue-final-modal'
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
@@ -74,6 +85,17 @@ const router = useRouter()
 // switch back to makeInternalSwaypageLink
 const { makeNewSwaypageLink } = useSwaypageLinks()
 
+const linkToPage = useRequestURL().href
+
+// const path = props.recipient
+//   ? makePersonalizedExternalSwaypageLink(props.swaypageShortcode, props.recipient)
+//   : makeExternalSwaypageLink(props.swaypageShortcode, props.companyName)
+
+// const u = useRequestURL()
+// const urlBase =  u.protocol + '//' + u.host;
+
+// const url = new URL(path, urlBase)
+
 function nav(page) {
   pages.value.forEach(p => p.selected = false)
   page.selected = true
@@ -85,6 +107,21 @@ function newPage () {
     icon: resolveComponent("WifiIcon"),
   })
 }
+
+const { 
+  open: openShareModal,
+  close: closeShareModal
+} = useModal({
+  component: ShareLinkModal,
+  attrs: {
+    buyersphereId: swaypage.id,
+    isBuyerspherePublic: swaypage.isPublic,
+    page: {},
+    async onClose () {
+      closeShareModal()
+    }
+  }
+})
 </script>
 
 <style lang="postcss" scoped>

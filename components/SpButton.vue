@@ -1,8 +1,8 @@
 <template>
   <div class="bs-button center-xy gap-3 shrink-0"
     :class="[colorClasses]">
-    <slot />
     <slot name="icon" :class="colorClasses" class="icon-menu" />
+    <slot />
   </div>
 </template>
 
