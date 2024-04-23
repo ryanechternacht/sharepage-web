@@ -49,7 +49,6 @@
 
 <script setup>
 function clickHandler () {
-  console.log('me!')
 }
 
 import lodash_pkg from 'lodash';

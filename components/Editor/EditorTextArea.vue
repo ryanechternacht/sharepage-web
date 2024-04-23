@@ -18,6 +18,8 @@
 import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
 import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
+import lodash_pkg from 'lodash'
+const { debounce } = lodash_pkg;
 
 const props = defineProps({ 
   modelValue: { type: String },
@@ -37,9 +39,12 @@ const editor = useEditor({
       placeholder: "Start writing...",
     })
   ],
-  onBlur() {
-    emit('update:modelValue', editor.value.getHTML())
-  }, 
+  async onBlur() {
+    await debouncedUpdate.flush()
+  },
+  async onUpdate() {
+    await debouncedUpdate()
+  },
   editorProps: {
     handleDOMEvents: {
       // prevents accidentally dropping text into editors when
@@ -48,6 +53,12 @@ const editor = useEditor({
     }
   }
 })
+
+const debouncedUpdate = debounce(
+  () => emit('update:modelValue', editor.value.getHTML()), 
+  1000,
+  { leading: false, trailing: true }
+)
 
 watch(() => props.modelValue, (newModelValue) => {
   editor.value.commands.setContent(newModelValue, false)

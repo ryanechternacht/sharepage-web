@@ -7,13 +7,16 @@ module.exports = {
         primary: '#057A6F',
         secondary: '#09DCC8',
         background: '#DDECEA',
+        good: '#68D391', // new
       },
       blue: {
         primary: '#36597c',
         secondary: '#5f8cb9',
         background: '#DFE8F1',
+        great: '#41A0FF', // new
+        brand: '#007FFF', // new
       },
-      black: '#040404',
+      black: '#040506', // new
       purple: {
         secondary: '#AC44A8',
         background: '#EAE6F2',
@@ -22,13 +25,21 @@ module.exports = {
         primary: '#753d3d',
         secondary: '#B06868',
         background: '#F2E6E6',
+        alert: '#FF6B6B', // new
       },
       orange: {
         primary: '#935420',
         secondary: '#DFA16C',
         background: '#FCF6F1',
+        neutral: '#FFC658', // new
       },
       gray: {
+        darker: '#131920', // new
+        dark: '#2D3D4D', // new
+        medium: '#7C8C9C', // new
+        background: '#ECEFF4', // new
+        'border-dark': '#ECEFF4', // new
+        'border-light': '#F6F7F8', // new
         headline: '#273333',
         body: '#364141',
         subtext: '#515E5F',
@@ -42,7 +53,13 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      rajdhani: ['Rajdhani', 'sans-serif']
+      // rajdhani: ['Rajdhani', 'sans-serif']
+    },
+    fontSize: {
+      primary: ['1.625rem', { fontWeight: '800'} ],
+      secondary: ['1rem', { fontWeight: '600'} ],
+      body: ['.875rem', { fontWeight: '500'} ],
+      subtext: ['.75rem', { fontWeight: '500'} ],
     },
     extend: {
       spacing: {

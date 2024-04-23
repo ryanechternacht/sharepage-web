@@ -68,13 +68,13 @@
             <div class="flex flex-col gap-2 p-1">
               <div class="dropdown-item"
                 dropdown-closer
-                @click="newTextBlock()">Text Block</div>
-              <div class="dropdown-item"
-                dropdown-closer
                 @click="newHeader()">Header</div>
               <div class="dropdown-item"
                 dropdown-closer
-                @click="newAsset()">Asset</div>
+                @click="newTextBlock()">Text Block</div>
+              <div class="dropdown-item"
+                dropdown-closer
+                @click="newAsset()">Asset Link</div>
             </div>
           </template>
         </dropdown-menu>
@@ -132,7 +132,6 @@ const canEdit = isSeller || page.canBuyerEdit
 
 // TODO should this just come from the backend?
 const isABuyerForThisBuyersphere = user && some(buyersphere.buyerTeam, p => p.email === user.email)
-const canUserRespond = isSeller || isABuyerForThisBuyersphere
 
 const router = useRouter()
 const { makeInternalSwaypageLink } = useSwaypageLinks()

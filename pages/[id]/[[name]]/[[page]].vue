@@ -1,129 +1,193 @@
 <template>
-  <div @click="debouncedTrackUserAction">
-    <TopNav />
-    <div class="page-layout">
-      <div class="[grid-area:top] page-top bg-purple-background"
-        :class="{ 'grayscale-top': !isActive }">
-        <div class="flex flex-col gap-4 items-center">
-          <div class="flex flex-row items-center gap-2">
-            <Logo v-if="buyersphere.buyerLogo" 
-              :src="buyersphere.buyerLogo" />
-            <h1>{{ buyersphere.buyer }}</h1>
-          </div>
-          <div v-if="buyersphere.subname || (isSeller && buyersphere.dealAmount > 0)">
-            <span v-if="buyersphere.subname" class="tag">
-              {{ buyersphere.subname }}
-            </span>
-            <span v-if="isSeller && buyersphere.dealAmount > 0 && buyersphere.subname"
-              class="mx-2 tag">
-              | 
-            </span>
-            <span v-if="isSeller && buyersphere.dealAmount > 0" class="tag">
-              {{ format(buyersphere.dealAmount, moneyConfig) }}
-            </span>
+  <div class="grid custom-subgrid col-span-2">
+    <!-- TODO reimplment right sidebar -->
+    <div class="col-span-2">
+      <div class="h-[2.375rem] flex flex-row items-center gap-6">
+        <div class="flex flex-row">
+          <UserAvatar v-for="s in swaypage.sellerTeam" 
+            class="-mr-.5"
+            size="small"
+            :user="s" />
+          <!-- TODO this text should be better -->
+          <div class="ml-4">Made by
+            <span v-for="(s, i) in swaypage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
           </div>
         </div>
-      </div>
-
-      <div class="[grid-area:left-header] left-header">
-        <div class="flex flex-row items-end gap-2 h-full">
-          <BsButton @click="openShareModal">
-            <div class="mr-2 body-header"> Share</div> 
-            <ShareIcon />
-          </BsButton> 
-          <template v-if="hasUser">
-            <EditButton v-if="isSeller"
-              show-text
-              @click="editBuyersphere" />
-            <ReactivateButton v-else-if="buyersphere.status === 'on-hold'"
-              @click="reactivate" />
-            <PutOnHoldButton v-else
-              @click="putOnHold" />
+        <div class="flex-grow" />
+          <!-- TODO implement -->
+        <!-- <div>active</div> -->
+        <div v-if="canEdit" class="flex flex-row items-center gap-2">
+          <template v-if="swaypage.isPublic">
+            <EyeIcon class="text-green-good icon-submenu" />
+            <div class="subtext">Public</div>
+          </template>
+          <template v-else>
+            <EyeOffIcon class="text-orange-neutral icon-submenu" />
+            <div class="subtext">Private</div>
           </template>
         </div>
+        <div v-if="canEdit" class="flex flex-row items-center gap-2">
+          <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
+          <div :class="{'text-blue-great': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
+                        'text-orange-neutral': saveSubmissionState === 'submitting'}">
+            <FileIcon class="icon-submenu" />
+          </div>  
+          <div class="subtext w-[3.25rem]">
+            {{ !isDirty ? "Saved" :
+                saveSubmissionState === 'submitting' ? "Saving" :
+                saveSubmissionState === 'submitted' ? "Saved" :
+                saveSubmissionState === 'ready' ? "Changes" : "??" }}
+          </div>
+        </div>
+        <!-- <div>synced</div> -->
       </div>
+      <div class="page-area">
+        <input v-if="canEdit"
+          v-model="title"
+          type="text"
+          class="h1 mt-10 mb-6 align-content-left border-0 p-0">
+        <h1 v-else class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
 
-      <div class="[grid-area:left]">
-        <div class="left-sidebar">
-          <h3 class="mb-4">Pages</h3>
-          <NuxtLink v-for="p in pages"
-            class="page-link"
-            :class="{underline: `${p.id}` === page}"
-            :to="makeInternalSwaypageLink(buyersphere, p.id)">
-            {{ p.title }}
-          </NuxtLink>
-          <NewButton v-if="isSeller" @click="createNewPage" />
+        <VueDraggable
+          v-model="body.sections"
+          ghost-class="ghost"
+          :animation="200"
+          :scroll="true"
+          class="flex flex-col gap-2"
+          group="sections"
+          handle=".drag-handle"
+        >
+          <template v-for="(section, index) in body.sections"
+            :key="section.key">
+            <EditorTextArea v-if="section.type === 'text'"
+              v-model="section.text"
+              :readonly="!canEdit"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:asset="newAsset(index)"
+              @delete:item="removeItem(index)" />
+            
+            <EditorHeader v-if="section.type === 'header'"
+              v-model="section.text"
+              :readonly="!canEdit"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:asset="newAsset(index)"
+              @delete:item="removeItem(index)" />
 
-          <div class="h-[80px]" />
+            <EditorAsset v-if="section.type === 'asset'"
+              v-model="section.link"
+              :readonly="!canEdit"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:asset="newAsset(index)"
+              @click:item="assetClick(section.link)"
+              @delete:item="removeItem(index)" />
+          </template>
+        </VueDraggable>
 
-          <h3 class="mb-4">Directory</h3>
-          <NuxtLink class="page-link"
-            :to="makeInternalSwaypageLink(buyersphere, 'activity-plan')"
-            :class="{underline: page === 'activity-plan'}">Activity Plan</NuxtLink>
-          <NuxtLink class="page-link"
-            :to="makeInternalSwaypageLink(buyersphere, 'team')"
-            :class="{underline: page === 'team'}">Team</NuxtLink>
-          <NuxtLink class="page-link"
-            :to="makeInternalSwaypageLink(buyersphere, 'assets')"
-            :class="{underline: page === 'assets'}">Assets</NuxtLink>
-          <NuxtLink v-if="isSeller"
-            class="page-link"
-            :to="makeInternalSwaypageLink(buyersphere, 'insights')"
-            :class="{underline: page === 'insights'}">Insights</NuxtLink>
+        <div v-if="canEdit">
+          <dropdown-menu class="align-content-left"
+            :overlay="false"
+            with-dropdown-closer
+            @opened="isDropdownOpen = true"
+            @closed="isDropdownOpen = false">
+            <template #trigger>
+              <div class="mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
+                <PlusSquareIcon class="text-gray-medium icon-menu" />
+                <div class="subtext">New</div>
+              </div>
+            </template>
+            <template #body>
+              <div class="flex flex-col gap-2 p-1">
+                <div class="dropdown-item"
+                  dropdown-closer
+                  @click="newHeader()">Header</div>
+                <div class="dropdown-item"
+                  dropdown-closer
+                  @click="newTextBlock()">Text Block</div>
+                <div class="dropdown-item"
+                  dropdown-closer
+                  @click="newAsset()">Asset Link</div>
+              </div>
+            </template>
+          </dropdown-menu>
+        </div>
+
+        <div class="h-[2rem]" /> <!-- bottom spacer -->
+      </div>
+    </div>
+
+    <!-- <div class="ml-2">
+      <div class="sticky top-[5.75rem]">
+        <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
+          <div class="text-gray-medium">Key Links</div>
+          <a v-for="link in links"
+            class="rightbar-link"
+            :href="link.link">
+            <ExternalLinkIcon class="icon-menu" />
+            <div class="text-right">{{ link.text }}</div>
+          </a>
+          <div class="rightbar-link cursor-pointer">
+            <MessageCircleIcon class="icon-menu" />
+            <div class="text-right">Please Opt Me Out</div>
+          </div>
+          <div class="rightbar-link cursor-pointer"
+            @click="addNewLink">
+            <PlusSquareIcon class="icon-menu text-gray-medium" />
+            <div class="text-gray-medium text-right">New Link</div>
+          </div>
         </div>
       </div>
-
-      <!-- These return the center and center-header sections -->
-      <SwaypageActivityPlan v-if="page === 'activity-plan'"
-        @require-login="requireLogin" />
-      <SwaypageTeam v-else-if="page === 'team'" />
-      <SwaypageInsights v-else-if="page === 'insights'" />
-      <SwaypageAssets v-else-if="page === 'assets'" />
-      <SwaypagePage v-else :key="route.params.page" />
-
-      <div class="[grid-area:footer] h-20" />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup>
+import lodash_pkg from 'lodash';
+const { cloneDeep, debounce, find, first, map, max, some } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
+import { VueDraggable } from 'vue-draggable-plus'
+import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 import { useModal } from 'vue-final-modal'
-import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
-import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
-// import AnonymousViewModal from '@/components/Swaypage/AnonymousViewModal';
-import RequireLoginModal from '@/components/Swaypage/RequireLoginModal';
-import ShareLinkModal from '@/components/ShareLinkModal';
-import { format } from 'v-money3'
-import lodash_pkg from 'lodash';
-const { debounce, first } = lodash_pkg;
+
+useEmbedly()
+
+// /demo/65/123445566/60
+const route = useRoute()
+const swaypageId = parseInt(route.params.id)
+
+const swaypageStore = useSwaypagesStore()
+const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(swaypageStore)
+
+const usersStore = useUsersStore()
+const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
+
+const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
+  getSwaypageByIdCached.value(swaypageId),
+  getSwaypagePagesByIdCached.value(swaypageId),
+  isUserLoggedIn.value(),
+  isUserSeller.value(),
+  getMeCached.value(),
+])
+
+const pageId = parseInt(route.params.page)
+const page = pageId
+  ? find(pages, p => p.id === pageId)
+  : first(pages)
+
+const canEdit = isSeller || page.canBuyerEdit
 
 definePageMeta({
   name: 'swaypage',
-  key: route => route.params.id,
+  layout: 'swaypage',
 })
 
-const route = useRoute()
-const buyersphereId = parseInt(route.params.id)
-
-const buyersphereStore = useSwaypagesStore()
-const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(buyersphereStore)
-
-const usersStore = useUsersStore()
-const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
-
-const [buyersphere, pages, hasUser, isSeller] = await Promise.all([
-  getSwaypageByIdCached.value(buyersphereId),
-  getSwaypagePagesByIdCached.value(buyersphereId),
-  isUserLoggedIn.value(),
-  isUserSeller.value(),
-])
-
-const metaTitle = `Discover ${buyersphere.buyer}`
-const metaDescription = `Learn more about what ${buyersphere.buyer} has to offer`
+const metaTitle = `Discover ${swaypage.buyer}`
+const metaDescription = `Learn more about what ${swaypage.buyer} has to offer`
 
 useSeoMeta({
   title: metaTitle,
@@ -135,208 +199,214 @@ useSeoMeta({
   twitterDescription: metaDescription,
 })
 
-const { cookies } = useAppConfig()
-const linkedName = useCookie('linked-name', { domain: cookies.domain })
-const enteredName = useCookie('entered-name', { domain: cookies.domain })
-const anonymousId = useCookie('anonymous-id', { domain: cookies.domain })
-
-// TODO removing for now
-// const {
-//   open: openAnonymousViewerModal,
-//   close: closeAnonymousViewerModal,
-// } = useModal({
-//   component: AnonymousViewModal,
-//   attrs: {
-//     buyersphereName: buyersphere.buyer,
-//     linkedName,
-//     onClose ({ name }) {
-//       closeAnonymousViewerModal()
-//       enteredName.value = name
-//     }
-//   }
-// })
-
-if (!hasUser && !enteredName.value) {
-  linkedName.value = route.query['sent-to']
-  // openAnonymousViewerModal()
-}
-
-if (!anonymousId.value && process.client) {
-  anonymousId.value = crypto?.randomUUID
-    ? crypto.randomUUID()
-    : Math.floor(Math.random() * 1000000).toString()
-}
-
-const buyerActivityStore = useBuyerActivityStore()
-
-const isActive = computed(() => buyersphere.status === 'active')
-
-const moneyConfig = {
-  precision: 0,
-  prefix: '$ ',
-  disableNegative: true,
-  thousands: ',',
-  suffix: ''
-}
-
-// update the url of the page to the latest name of the buyersphere
 const router = useRouter()
-const { makeInternalSwaypageLink } = useSwaypageLinks()
-
-if (pages.length === 0) {
-  await buyersphereStore.createPage({ swaypageId: buyersphereId, page: { title: 'New Page'} })
-}
-
-const page = computed(() => route.params.page || first(pages).id)
-
-watch(() => buyersphere.buyer, () => {
-  router.replace({ 
-    path: makeInternalSwaypageLink(buyersphere, page.value)
-  })
-})
-
-async function putOnHold() {
-  const answer = confirm(`Are you sure you'd like to put this buying process on hold?`)
-
-  if (answer) {
-    await buyersphereStore.updateBuyerInput({ swaypageId: buyersphereId, status: "on-hold" })
-    buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "hold-deal" })
-  }
-}
-
-async function reactivate() {
-  const answer = confirm(`Are you sure you want to reactive the buying process?`)
-  
-  if (answer) {
-    await buyersphereStore.updateBuyerInput({ swaypageId: buyersphereId, status: "active" })
-    buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "reactivate-deal" })
-  }
-}
-
-const { 
-  open: openBuyersphereModal,
-  close: closeBuyersphereModal,
-  patchOptions: patchBuyersphereModalOptions
-} = useModal({
-  component: AddEditSwaypageModal,
-  attrs: {
-    onClose () {
-      closeBuyersphereModal()
-    }
+router.beforeEach(async () => {
+  if (isDirty.value) {
+    await debouncedSave.flush()
   }
 })
 
-function editBuyersphere() {
-  patchBuyersphereModalOptions({ attrs: { buyersphere }})
-  openBuyersphereModal()
-}
+// switch back to makeInternalSwaypageLink
+const { makeNewSwaypageLink } = useSwaypageLinks()
+setTimeout(() => router.replace({
+  path: makeNewSwaypageLink(swaypage, page.id)
+}), 100)
 
-const { 
-  open: openSwaypagePageModal,
-  close: closeSwaypagePageModal
-} = useModal({
-  component: AddSwaypagePageModal,
-  attrs: {
-    buyersphereId,
-    page: {},
-    async onClose (props) {
-      if (props?.pageId) {
-        await router.replace({ 
-          path: makeInternalSwaypageLink(buyersphere, props.pageId)
-        })
-      }
-      closeSwaypagePageModal()
-    }
+const keys = map(page.body.sections, s => s.key || 0)
+let nextKey = (max(keys) || 0) + 1
+
+function updateSection (section) {
+  const s = cloneDeep(section)
+  if (!s.key) {
+    s.key = nextKey++
   }
-})
 
-function createNewPage () {
-  openSwaypagePageModal()
-}
-
-const { 
-  open: openLoginModal,
-  close: closeLoginModal
-} = useModal({
-  component: RequireLoginModal,
-  attrs: {
-    buyersphere,
-    page: {},
-    async onClose () {
-      closeLoginModal()
-    }
+  if (section.type === "simple-text") {
+    section.type = 'text'
+    section.text = (section.title ? `<p>${section.title}</p>` : '')
+      + section.body.question
+      + section.body.answer
+    // TODO unset section.body
   }
-})
 
-function requireLogin () {
-  openLoginModal()
-}
-
-const { 
-  open: openShareModal,
-  close: closeShareModal
-} = useModal({
-  component: ShareLinkModal,
-  attrs: {
-    buyersphereId,
-    isBuyerspherePublic: buyersphere.isPublic,
-    page: {},
-    async onClose () {
-      closeShareModal()
-    }
+  if (section.type === 'simple-list') {
+    section.type = 'text'
+    section.text = (section.title ? `<p>${section.title}</p>` : '')
+      + section.body.question
+      + '<ul>' 
+      + map(section.body.choices, c => `<li>${c.text}</li>`).join('')
+      + '</ul>'
+    // TODO unset section.body
   }
-})
 
-function trackUserAction () {
-  buyerActivityStore.captureBuyerActivity({ buyersphereId, activity: "site-activity" })
+  if (section.type === 'simple-asset') {
+    section.type = 'asset'
+    section.link = section.body.asset.link
+    // TODO unset section.body
+  }
+
+  return s
 }
 
-const oneMinute = 60 * 1000;
-const debouncedTrackUserAction = debounce(
-  trackUserAction, 
-  oneMinute, 
-  { leading: true, trailing: false, maxWait: oneMinute },
-)
+const body = ref({ sections: map(page.body.sections, updateSection) })
+const title = ref(page.title)
 
 if (process.client) {
-  onMounted(() => {
-    window.addEventListener('scroll', debouncedTrackUserAction)
+  window.addEventListener('beforeunload', (e) => {
+    if (isDirty.value) {
+      debouncedSave.flush()
+      e.preventDefault()
+    }
   })
-  onUnmounted(() => {
-    window.removeEventListener('scroll', debouncedTrackUserAction)
+}
+
+// TODO get this working now that we're doing this correctly!
+
+// Ideally we could use a middleware (vs. a manual route guard) to implement
+// the save on route, but middlewares can only be registered on pages. This
+// would require us to make the current page a layout, and then implement
+// these components as pages. This is probably worth doing when we do a larger
+// layout/styling rework
+const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
+  page.body = body.value
+  page.title = title.value
+  await swaypageStore.updatePage({ swaypageId, pageId, page })
+  isDirty.value = false
+})
+
+const debouncedSave = debounce(saveSubmitFn, 2000, { leading: false, trailing: true })
+const isDirty = ref(false)
+
+watch(body.value, () => {
+  isDirty.value = true
+  debouncedSave()
+})
+
+watch(title, () => {
+  isDirty.value = true
+  debouncedSave()
+})
+
+const buyerActivityStore = useBuyerActivityStore()
+function assetClick(link) {
+  buyerActivityStore.captureBuyerActivity({
+    buyersphereId: swaypageId,
+    activity: "open-asset-v2",
+    activityData: { link }
+  })
+}
+
+function removeItem (index) {
+  body.value.sections.splice(index, 1)
+}
+
+function newTextBlock (index) {
+  const newBlock = {
+    type: "text",
+    text: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+function newHeader (index) {
+  const newBlock = {
+    type: "header",
+    text: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+function newAsset (index) {
+  const newBlock = {
+    type: "asset",
+    link: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+const { open, close, patchOptions } = useModal({
+  component: EditPageSettingsModal,
+  attrs: {
+    swaypageId,
+    onClose () {
+      close()
+    },
+  }
+})
+
+function openSettingsModal () {
+  patchOptions({ attrs: { page }})
+  open()
+}
+
+const links = ref([
+  {
+    text: 'Schedule a Call',
+    link: 'https://www.google.com',
+  },
+  {
+    text: 'Connect on LinkedIn',
+    link: 'https://www.yahoo.com',
+  },
+  {
+    text: 'See our Testemonials',
+    link: 'https://www.microsoft.com',
+  },
+])
+
+function addNewLink () {
+  links.value.push({
+    text: 'New Link',
+    link: 'https://www.facebook.com',
   })
 }
 </script>
 
 <style lang="postcss" scoped>
-.page-top.grayscale-top {
-  @apply bg-gray-border;
+.page-area {
+  @apply border border-gray-border-dark rounded-md px-2 py-1;
+  /* TODO this is based on the current top nav height */
+  min-height: calc(100vh - 5rem);
 }
 
-.white-box {
-  @apply p-1 px-2 bg-white rounded-md text-gray-subtext;
+/* should be grid-cols-subgrid, but we need a newer tailwind */
+.custom-subgrid {
+  grid-template-columns: subgrid;
 }
 
-.milestone {
-  @apply grid;
-  grid-template-areas: 
-    "step icon"
-    "date icon";
+.rightbar-link {
+  @apply flex flex-row-reverse items-center gap-3;
+
+}
+
+.align-content-left {
+  margin-left: calc(2.25rem + 2px);
+}
+
+.dropdown-item {
+  @apply p-.5;
   
-  &.selected {
-    @apply bg-gray-hover rounded-md mr-[-.25rem] pr-1;
-  }
-
-  .milestone-step {
-    @apply [grid-area:step] text-right px-2;
-  }
-
-  .milestone-date {
-    @apply [grid-area:date] text-right tag px-2;
-  }
-
-  .milestone-icon {
-    @apply [grid-area:icon] self-center px-1 w-[1.375rem];
+  &:hover {
+    @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
+      cursor-pointer;
   }
 }
 </style>
