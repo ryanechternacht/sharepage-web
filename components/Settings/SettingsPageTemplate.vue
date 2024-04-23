@@ -60,7 +60,7 @@
           <NewButton hover-color="gray">Add</NewButton>
         </template>
         <template #body>
-          <div class="flex flex-col gap-2 p-1">
+          <div class="dropdown-menu">
             <div class="dropdown-item"
               dropdown-closer
               @click="newHeader()">Header</div>

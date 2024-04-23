@@ -225,4 +225,17 @@
   .left-sidebar {
     @apply sticky top-[2rem] py-2 pl-12 pr-3;
   }
+
+  .dropdown-menu {
+    @apply flex flex-col gap-.5 p-1
+  }
+
+  .dropdown-item {
+    @apply p-[.125rem];
+    
+    &:hover {
+      @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
+        cursor-pointer;
+    }
+  }
 }

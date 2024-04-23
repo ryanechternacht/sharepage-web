@@ -39,6 +39,23 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
+        <dropdown-menu
+          direction="right"
+          :overlay="false"
+          with-dropdown-closer
+          @opened="isDropdownOpen = true"
+          @closed="isDropdownOpen = false">
+          <template #trigger>
+            <MoreVerticalIcon class="-ml-4" />
+          </template>
+          <template #body>
+            <div class="dropdown-menu">
+              <div class="dropdown-item"
+                dropdown-closer
+                @click="editBuyersphere()">Edit Settings</div>
+            </div>
+          </template>
+        </dropdown-menu>
         <!-- <div>synced</div> -->
       </div>
       <div class="page-area">
@@ -151,6 +168,7 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 import { useModal } from 'vue-final-modal'
 
@@ -377,6 +395,24 @@ function addNewLink () {
     text: 'New Link',
     link: 'https://www.facebook.com',
   })
+}
+
+const { 
+  open: openBuyersphereModal,
+  close: closeBuyersphereModal,
+  patchOptions: patchBuyersphereModalOptions
+} = useModal({
+  component: AddEditSwaypageModal,
+  attrs: {
+    onClose () {
+      closeBuyersphereModal()
+    }
+  }
+})
+
+function editBuyersphere() {
+  patchBuyersphereModalOptions({ attrs: { buyerspher: swaypage }})
+  openBuyersphereModal()
 }
 </script>
 
