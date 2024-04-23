@@ -73,7 +73,7 @@ const { open, close } = useModal({
       if (props?.buyersphereId) {
         const router = useRouter()
         await router.replace({
-          path: `/${props.buyersphereId}`
+          path: `/old/${props.buyersphereId}`
         })
       }
       close()
