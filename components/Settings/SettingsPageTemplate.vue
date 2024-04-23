@@ -127,28 +127,28 @@ function updateSection (section) {
     s.key = nextKey++
   }
 
-  if (section.type === "simple-text") {
-    section.type = 'text'
-    section.text = (section.title ? `<p>${section.title}</p>` : '')
-      + section.body.question
-      + section.body.answer
-    // TODO unset section.body
+  if (s.type === "simple-text") {
+    s.type = 'text'
+    s.text = (s.title ? `<p>${s.title}</p>` : '')
+      + s.body.question
+      + s.body.answer
+    // TODO unset s.body
   }
 
-  if (section.type === 'simple-list') {
-    section.type = 'text'
-    section.text = (section.title ? `<p>${section.title}</p>` : '')
-      + section.body.question
+  if (s.type === 'simple-list') {
+    s.type = 'text'
+    s.text = (s.title ? `<p>${s.title}</p>` : '')
+      + s.body.question
       + '<ul>' 
-      + map(section.body.choices, c => `<li>${c.text}</li>`).join('')
+      + map(s.body.choices, c => `<li>${c.text}</li>`).join('')
       + '</ul>'
-    // TODO unset section.body
+    // TODO unset s.body
   }
 
-  if (section.type === 'simple-asset') {
-    section.type = 'asset'
-    section.link = section.body.asset.link
-    // TODO unset section.body
+  if (s.type === 'simple-asset') {
+    s.type = 'asset'
+    s.link = s.body.asset.link
+    // TODO unset s.body
   }
 
   return s
