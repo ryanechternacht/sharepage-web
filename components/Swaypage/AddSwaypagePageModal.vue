@@ -3,16 +3,17 @@
     class="center-xy"
     content-class="p-4 bg-white rounded-md"
   >
+    <!-- TODO combine this with EditPageSettingsModal -->
     <div class="flex flex-col w-[36rem] gap-2">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">Add New {{ pageType }}</h3>
+        <h3 class="flex-grow">Add New {{ pageOrTemplate }}</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <div class="w-full">
         <h3>Page Title</h3>
         <input v-model="title"
           class="w-full"
-          :placeholder="`${pageType} Title`">
+          :placeholder="`${pageOrTemplate} Title`">
       </div>
       <div v-if="!props.isTemplate" class="w-full">
         <h3>Page Template</h3>
@@ -23,11 +24,22 @@
             :value="pt.id">{{ pt.title }}</option>
         </select>
       </div>
-      <SubmitButton 
+      <div v-if="!isTemplate" class="w-full">
+        <h3>Page Type</h3>
+        <select v-model="pageType" class="flex-grow">
+          <option value="general">General Page</option>
+          <option value="follow-up">Follow-up Page</option>
+          <option value="guide">Guide</option>
+          <option value="discussion">Discusion Doc</option>
+          <option value="business-case">Business Case</option>
+          <option value="notes">Notes</option>
+        </select>
+      </div>
+      <SubmitButton
         class="self-center"
-        :ready-text="`${editMode ? 'Edit' : 'Add'} ${pageType}`"
-        :submitting-text="`${editMode ? 'Editing' : 'Adding'} ${pageType}`"
-        :submitted-text="`${pageType} ${editMode ? 'Edited' : 'Added'}`"
+        :ready-text="`${editMode ? 'Edit' : 'Add'} ${pageOrTemplate}`"
+        :submitting-text="`${editMode ? 'Editing' : 'Adding'} ${pageOrTemplate}`"
+        :submitted-text="`${pageOrTemplate} ${editMode ? 'Edited' : 'Added'}`"
         :error-text="`${editMode ? 'Editing' : 'Adding'} Failed`"
         :disabled="needsMoreInput"
         :submission-state="submissionState"
@@ -53,8 +65,9 @@ const emit = defineEmits(['close'])
 
 const title = ref(props.page?.title)
 const pageTemplateId = ref(-1)
+const pageType = ref('general')
 
-const pageType = props.isTemplate ? 'Page Template' : 'Page'
+const pageOrTemplate = props.isTemplate ? 'Page Template' : 'Page'
 
 const templatesStore = useTemplatesStore()
 
@@ -80,7 +93,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     const buyersphereStore = useSwaypagesStore()
     pageId = await buyersphereStore.createPage({
       swaypageId: props.buyersphereId, 
-      page: { title, pageTemplateId },
+      page: { title, pageTemplateId, pageType },
     })
   }
   emit('close', { pageId })

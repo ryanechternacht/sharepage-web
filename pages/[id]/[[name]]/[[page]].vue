@@ -52,7 +52,10 @@
             <div class="dropdown-menu">
               <div class="dropdown-item"
                 dropdown-closer
-                @click="openSettingsModal()">Edit Settings</div>
+                @click="openPageSettingsModal()">Edit Page Settings</div>
+              <div class="dropdown-item"
+                dropdown-closer
+                @click="openSwaypageSettingsModal()">Edit SwayPage Settings</div>
             </div>
           </template>
         </dropdown-menu>
@@ -168,6 +171,7 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 import { useModal } from 'vue-final-modal'
 
@@ -369,32 +373,51 @@ const { open, close, patchOptions } = useModal({
   }
 })
 
-function openSettingsModal () {
+function openPageSettingsModal () {
   patchOptions({ attrs: { page }})
   open()
 }
 
-const links = ref([
-  {
-    text: 'Schedule a Call',
-    link: 'https://www.google.com',
-  },
-  {
-    text: 'Connect on LinkedIn',
-    link: 'https://www.yahoo.com',
-  },
-  {
-    text: 'See our Testemonials',
-    link: 'https://www.microsoft.com',
-  },
-])
+const { 
+  open: openSwaypageModal,
+  close: closeSwaypageModal,
+  patchOptions: patchSwaypageModalOptions
+} = useModal({
+  component: AddEditSwaypageModal,
+  attrs: {
+    onClose () {
+      closeSwaypageModal()
+    }
+  }
+})
 
-function addNewLink () {
-  links.value.push({
-    text: 'New Link',
-    link: 'https://www.facebook.com',
-  })
+function openSwaypageSettingsModal() {
+  patchSwaypageModalOptions({ attrs: { buyersphere: swaypage }})
+  openSwaypageModal()
 }
+
+// TODO re-add
+// const links = ref([
+//   {
+//     text: 'Schedule a Call',
+//     link: 'https://www.google.com',
+//   },
+//   {
+//     text: 'Connect on LinkedIn',
+//     link: 'https://www.yahoo.com',
+//   },
+//   {
+//     text: 'See our Testemonials',
+//     link: 'https://www.microsoft.com',
+//   },
+// ])
+
+// function addNewLink () {
+//   links.value.push({
+//     text: 'New Link',
+//     link: 'https://www.facebook.com',
+//   })
+// }
 </script>
 
 <style lang="postcss" scoped>

@@ -3,6 +3,7 @@
     class="center-xy"
     content-class="p-4 bg-white rounded-md"
   >
+    <!-- TODO combine this with AddSwaypagePadeModal -->
     <div class="flex flex-col w-[36rem] gap-2">
       <div class="flex flex-row items-center mb-3">
         <h3 class="flex-grow">Edit settings for {{ page.title }}</h3>
