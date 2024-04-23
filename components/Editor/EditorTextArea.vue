@@ -40,11 +40,12 @@ const editor = useEditor({
     })
   ],
   async onBlur() {
-    await debouncedUpdate.flush()
+    debouncedUpdate()
+    // await debouncedUpdate.flush()
   },
-  async onUpdate() {
-    await debouncedUpdate()
-  },
+  // async onUpdate() {
+  //   await debouncedUpdate()
+  // },
   editorProps: {
     handleDOMEvents: {
       // prevents accidentally dropping text into editors when
