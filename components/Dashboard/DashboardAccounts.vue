@@ -73,6 +73,7 @@ const { open, close } = useModal({
       if (props?.buyersphereId) {
         const router = useRouter()
         await router.replace({
+          // TODO change when we get rid of the old pages
           path: `/old/${props.buyersphereId}`
         })
       }
