@@ -62,7 +62,7 @@
         <input v-if="canEdit"
           v-model="title"
           type="text"
-          class="h1 mt-10 mb-6 align-content-left border-0 p-0">
+          class="w-full p-0 pl-[calc(2.25rem+2px)] h1 mt-10 mb-6 border-0">
         <h1 v-else class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
 
         <VueDraggable
