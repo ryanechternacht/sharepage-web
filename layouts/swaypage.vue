@@ -32,11 +32,12 @@
               <NuxtLink v-for="p in pages"
                 :href="makeNewSwaypageLink(swaypage, p.id)"
                 class="sidebar-item">
-                <!-- TODO reimplement custom icons -->
-                <!-- <div class="icon-header center-xy">
-                  <component :is="p.icon" class="icon-menu" />
-                </div> -->
-                <FileIcon class="icon-menu" />
+                <FileIcon v-if="p.pageType === 'general'" class="icon-menu" />
+                <ArrowRightCircleIcon v-else-if="p.pageType === 'follow-up'" class="icon-menu" />
+                <MapIcon v-else-if="p.pageType === 'guide'" class=" icon-menu" />
+                <MessageCircleIcon v-else-if="p.pageType === 'discussion'" class="icon-menu" />
+                <FileTextIcon v-else-if="p.pageType === 'business-case'" class="icon-menu" />
+                <ClipboardIcon v-else-if="p.pageType === 'notes'" class="icon-menu" />
                 <div>{{ p.title }}</div>
               </NuxtLink>
               <div v-if="isSeller" 

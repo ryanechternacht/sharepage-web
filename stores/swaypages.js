@@ -407,6 +407,9 @@ export const useSwaypagesStore = defineStore('swaypages', {
         if (data.value.canBuyerEdit !== undefined) {
           p.canBuyerEdit = data.value.canBuyerEdit
         }
+        if (data.value.pageType !== undefined) {
+          p.pageType = data.value.pageType
+        }
       }
     },
     async deletePage({ swaypageId, pageId }) {

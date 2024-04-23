@@ -15,6 +15,17 @@
           placeholder="Page Title">
       </div>
       <div v-if="!isTemplate" class="w-full">
+        <h3>Page Type</h3>
+        <select v-model="pageType" class="flex-grow">
+          <option value="general">General Page</option>
+          <option value="follow-up">Follow-up Page</option>
+          <option value="guide">Guide</option>
+          <option value="discussion">Discusion Doc</option>
+          <option value="business-case">Business Case</option>
+          <option value="notes">Notes</option>
+        </select>
+      </div>
+      <div v-if="!isTemplate" class="w-full">
         <h3>Can Buyer Edit?</h3>
         <select v-model="canBuyerEdit" class="flex-grow">
           <option :value="true">Yes</option>
@@ -50,6 +61,7 @@ const emit = defineEmits(['close'])
 
 const title = ref(props.page?.title)
 const canBuyerEdit = ref(props.page?.canBuyerEdit)
+const pageType = ref(props.page?.pageType)
 
 const { submissionState, submitFn } = useSubmit(async () => {
   if (props.isTemplate) {
@@ -63,7 +75,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     await swaypageStore.updatePage({ 
       swaypageId: props.swaypageId,
       pageId: props.page.id,
-      page: { title, canBuyerEdit }
+      page: { title, canBuyerEdit, pageType }
     })
   }
   emit('close')
