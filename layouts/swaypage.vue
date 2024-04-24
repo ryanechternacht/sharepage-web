@@ -18,7 +18,12 @@
       <div class="mr-4">
         <div class="sticky top-8">
           <div class="header-grid">
-            <img :src="swaypage.buyerLogo" class="icon-header">
+            <img v-if="swaypage.roomType === 'deal-room'"
+              :src="swaypage.buyerLogo"
+              class="icon-header">
+            <img v-else-if="swaypage.roomType === 'discovery-room'"
+              :src="organization.logo"
+              class="icon-header">
             <h2>{{ swaypage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
@@ -61,6 +66,7 @@
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
+import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import ShareLinkModal from '@/components/ShareLinkModal';
 import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
@@ -75,11 +81,15 @@ const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(swaypa
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
-const [swaypage, pages, hasUser, isSeller] = await Promise.all([
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const [swaypage, pages, hasUser, isSeller, organization] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
+  getOrganizationCached.value(),
 ])
 
 const router = useRouter()
