@@ -6,23 +6,23 @@
     <div class="flex flex-col gap-2 w-[36rem]"
       @click="showClearbit = false">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">{{ editMode ? "Edit this" : "Create a new" }} Account</h3>
+        <h3 class="flex-grow">{{ editMode ? "Edit this" : "Create a new" }} {{ roomType }}</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <div>
-        <h3>Account Name (required)</h3>
+        <h3>{{ roomType }} Name (required)</h3>
         <input v-model="buyer"
           class="flex-grow mb-2"
           placeholder="Buyer Name">
       </div>
       <div>
-        <h3>Group Name within Account</h3>
+        <h3>{{ isDiscoveryRoom ? "Subname" : "Group Name within Account" }}</h3>
         <input v-model="subname"
           class="flex-grow mb-2"
           placeholder="Group Name">
       </div>
-      <div class="mb-4">
-        <h3>Account Logo (required)</h3>
+      <div v-if="!isDiscoveryRoom" class="mb-4">
+        <h3>{{ roomType }} Logo (required)</h3>
         <input v-model="buyerLogo" 
           class="flex-grow"
           placeholder="Enter url or start typing to search"
@@ -54,22 +54,22 @@
         </select>
       </div>
       <div v-if="editMode">
-        <h3>Deal Status</h3>
+        <h3>{{ roomType }} Status</h3>
         <select v-model="status"
           class="flex-grow">
           <option value="active">Active</option>
-          <option value="on-hold">On Hold</option>
+          <option v-if="!isDiscoveryRoom" value="on-hold">On Hold</option>
           <option value="opt-out">Archive</option>
         </select>
       </div>
-      <div>
+      <div v-if="!isDiscoveryRoom">
         <h3>Deal Amount</h3>
         <Money3Component
           v-model.number="dealAmount"
           class="flex-grow"
           v-bind="moneyConfig" />
       </div>
-      <div>
+      <div v-if="!isDiscoveryRoom">
         <h3>CRM Opportunity ID</h3>
         <input v-model="crmOpportunityId" 
           class="flex-grow mb-2"
@@ -84,10 +84,10 @@
       </div>
       <SubmitButton
         class="self-center"
-        :ready-text="`${editMode ? 'Edit' : 'Add'} Account`"
-        :submitting-text="`${editMode ? 'Editing' : 'Adding'} Account`"
-        :submitted-text="`Account ${editMode ? 'Edited' : 'Added'}`"
-        :error-text="`${editMode ? 'Editing' : 'Adding'} Account`"
+        :ready-text="`${editMode ? 'Edit' : 'Add'} ${roomType}`"
+        :submitting-text="`${editMode ? 'Editing' : 'Adding'} ${roomType}`"
+        :submitted-text="`${roomType} ${editMode ? 'Edited' : 'Added'}`"
+        :error-text="`${editMode ? 'Editing' : 'Adding'} ${roomType}`"
         :submission-state="submissionState"
         :disabled="needsMoreInput"
         @click="submitFn" />
@@ -105,6 +105,7 @@ const { debounce } = lodash_pkg;
 
 const props = defineProps({
   buyersphere: { type: Object, default: {}},
+  forDiscoveryRoom: { type: Boolean, default: false }
 })
 
 const moneyConfig = {
@@ -118,6 +119,8 @@ const moneyConfig = {
 const emit = defineEmits(['close'])
 
 const editMode = ref(!!props.buyersphere.id)
+const isDiscoveryRoom = ref(props.forDiscoveryRoom || props.buyersphere?.roomType === 'discovery-room')
+const roomType = isDiscoveryRoom.value ? "Discovery Room" : "Account"
 
 const store = useSwaypagesStore()
 
@@ -127,30 +130,46 @@ if (!editMode.value) {
   pageTemplates.value = await templatesStore.getPageTemplatesCached()
 }
 
-const { submissionState, submitFn } = useSubmit(async () => {
+const { submissionState, submitFn, error } = useSubmit(async () => {
   if (editMode.value) {
-    await store.saveSwaypageSettings({
-      swaypageId: props.buyersphere.id,
-      buyer,
-      subname,
-      buyerLogo,
-      status,
-      dealAmount,
-      crmOpportunityId,
-      isPublic,
-    })
+    isDiscoveryRoom.value
+      ? await store.saveSwaypageSettings({
+          swaypageId: props.buyersphere.id,
+          buyer,
+          subname,
+          status,
+          isPublic,
+        })
+      : await store.saveSwaypageSettings({
+          swaypageId: props.buyersphere.id,
+          buyer,
+          subname,
+          buyerLogo,
+          status,
+          dealAmount,
+          crmOpportunityId,
+          isPublic,
+        })
     emit('close', { buyersphereId: props.buyersphere.id })
   } else {
-    const buyersphereId = await store.createSwaypage({ 
-      buyer,
-      subname,
-      buyerLogo,
-      dealAmount,
-      crmOpportunityId,
-      pageTemplateId: pageTemplateId ?? null, // if id = 0, send null
-      pageTitle,
-      roomType: 'general',
-    })
+    const buyersphereId = isDiscoveryRoom.value
+    ? await store.createSwaypage({ 
+        buyer,
+        subname,
+        pageTemplateId: pageTemplateId ?? null, // if id = 0, send null
+        pageTitle,
+        roomType: 'discovery-room',
+      })
+    : await store.createSwaypage({ 
+        buyer,
+        subname,
+        buyerLogo,
+        dealAmount,
+        crmOpportunityId,
+        pageTemplateId: pageTemplateId ?? null, // if id = 0, send null
+        pageTitle,
+        roomType: 'deal-room',
+      })
     emit('close', { buyersphereId })
   }
 })
@@ -165,7 +184,8 @@ const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
 const isPublic = ref(props.buyersphere.isPublic)
 
-const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value
+const needsMoreInput = computed(() => !buyer.value 
+  || (!isDiscoveryRoom.value && !buyerLogo.value)
   || (!editMode.value && (!pageTitle.value || pageTemplateId.value < 0)))
 
 function isValidUrl (string) {

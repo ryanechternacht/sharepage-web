@@ -363,19 +363,23 @@ function newAsset (index) {
   }
 }
 
-const { open, close, patchOptions } = useModal({
+const { 
+  open: openPageModal, 
+  close: closePageModal, 
+  patchOptions: patchPageModalOptions,
+} = useModal({
   component: EditPageSettingsModal,
   attrs: {
     swaypageId,
     onClose () {
-      close()
+      closePageModal()
     },
   }
 })
 
 function openPageSettingsModal () {
-  patchOptions({ attrs: { page }})
-  open()
+  patchPageModalOptions({ attrs: { page }})
+  openPageModal()
 }
 
 const { 

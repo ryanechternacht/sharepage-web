@@ -40,7 +40,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
   actions: {
     async createSwaypage({ 
       buyer, subname, buyerLogo, crmOpportunityId, dealAmount,
-      pageTemplateId, pageTitle 
+      pageTemplateId, pageTitle, roomType
     }) {
       const { apiFetch } = useNuxtApp()
       const { data } =  await apiFetch(
@@ -55,6 +55,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
             dealAmount,
             pageTemplateId,
             pageTitle,
+            roomType,
           } 
         }
       )
@@ -406,9 +407,6 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
         if (data.value.canBuyerEdit !== undefined) {
           p.canBuyerEdit = data.value.canBuyerEdit
-        }
-        if (data.value.pageType !== undefined) {
-          p.pageType = data.value.pageType
         }
       }
     },

@@ -24,7 +24,7 @@
             @click.stop="changeDealStatus(a, 'active')">
             <span class="tag-header">Reactivate</span>
           </BsButton>
-          <BsButton v-if="a.status !== 'on-hold'"
+          <BsButton v-if="!isDiscoveryRooms && a.status !== 'on-hold'"
             hover-color="red"
             @click.stop="changeDealStatus(a, 'on-hold')">
             <span class="tag-header">Put on Hold</span>
@@ -45,7 +45,8 @@ const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 const props = defineProps({ 
   accounts: { type: Array, required: true },
-  header: { type: String, default: "Accounts" }
+  header: { type: String, default: "Accounts" },
+  isDiscoveryRooms: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:deal-status'])
