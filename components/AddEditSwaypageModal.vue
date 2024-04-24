@@ -62,10 +62,6 @@
           <option value="opt-out">Archive</option>
         </select>
       </div>
-      <div v-if="editMode">
-        <h3>Show Pricing?</h3>
-        <input type="checkbox" v-model="showPricing" class="!w-auto">
-      </div>
       <div>
         <h3>Deal Amount</h3>
         <Money3Component
@@ -139,7 +135,6 @@ const { submissionState, submitFn } = useSubmit(async () => {
       subname,
       buyerLogo,
       status,
-      showPricing,
       dealAmount,
       crmOpportunityId,
       isPublic,
@@ -154,6 +149,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       crmOpportunityId,
       pageTemplateId: pageTemplateId ?? null, // if id = 0, send null
       pageTitle,
+      roomType: 'general',
     })
     emit('close', { buyersphereId })
   }
@@ -167,7 +163,6 @@ const pageTitle = ref('')
 const pageTemplateId = ref(-1)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
-const showPricing = ref(props.buyersphere.showPricing)
 const isPublic = ref(props.buyersphere.isPublic)
 
 const needsMoreInput = computed(() => !buyer.value || !buyerLogo.value
