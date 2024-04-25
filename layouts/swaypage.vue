@@ -35,7 +35,7 @@
             <div class="mt-[2.25rem] mb-1 text-gray-medium">Pages</div>
             <!-- <div class="flex flex-col -ml-6"> -->
             <VueDraggable
-              v-model="pages"
+              v-model="activePages"
               ghost-class="ghost"
               :animation="200"
               :scroll="false"
@@ -167,12 +167,12 @@ function refreshPages () {
 refreshPages()
 
 async function savePageOrdering() {
-  swaypageStore.reorderPages({ swaypageId, pages })
+  await swaypageStore.reorderPages({ swaypageId, pages: activePages })
 }
 
-const debouncedReorder = debounce(savePageOrdering, 5000, { leading: false, trailing: true })
+const debouncedReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
 
-watch(pages, () => {
+watch(activePages, () => {
   debouncedReorder()
 })
 
@@ -201,10 +201,10 @@ const {
     page: {},
     async onClose (props) {
       if (props?.pageId) {
+        refreshPages()
         await router.replace({ 
           path: makeNewSwaypageLink(swaypage, props.pageId)
         })
-        refreshPages()
       }
       closeSwaypagePageModal()
     }
@@ -225,7 +225,6 @@ async function removePage(page, status) {
     pageId: page.id,
     page: { status }
   })
-  refreshPages()
 
   const currentPageId = parseInt(route.params.page)
   if (page.id === currentPageId) {
