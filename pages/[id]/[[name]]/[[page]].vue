@@ -5,6 +5,17 @@
       There are no pages in this Swaypage. Create a New Page on the left
     </h2>
     <div v-else class="col-span-2">
+      <div v-if="page.status === 'archived'"
+        class="p-2 rounded-md bg-gray-background flex flex-row items-center">
+        <div>This page is currently archived.</div>
+        <div class="flex-grow" />
+        <SpButton @click="restorePage">
+          <template #icon>
+            <CornerUpLeftIcon class="icon-menu text-white" />
+          </template>
+          <div class="text-white">Restore Page</div>
+        </SpButton>
+      </div>
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
         <div class="flex flex-row">
           <UserAvatar v-for="s in swaypage.sellerTeam" 
@@ -401,6 +412,15 @@ const {
 function openSwaypageSettingsModal() {
   patchSwaypageModalOptions({ attrs: { buyersphere: swaypage }})
   openSwaypageModal()
+}
+
+async function restorePage() {
+  await swaypageStore.updatePage({
+    swaypageId,
+    pageId,
+    page: { status: 'active' }
+  })
+  await swaypageStore.fetchSwaypagePages({ swaypageId, forceRefresh: true })
 }
 
 // TODO re-add
