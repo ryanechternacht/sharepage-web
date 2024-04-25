@@ -142,14 +142,17 @@
                       <div class="dropdown-menu">
                         <div class="dropdown-item"
                           dropdown-closer
+                          @click="editLink(l)">Edit</div>
+                        <div class="dropdown-item"
+                          dropdown-closer
                           @click="deleteLink(l)">Delete</div>
                       </div>
                     </template>
                   </dropdown-menu>
                 </div>
-                <a
-                  class="rightbar-link"
-                  :href="l.linkUrl">
+                <a class="rightbar-link"
+                  :href="l.linkUrl"
+                  target="_blank">
                   <ExternalLinkIcon class="icon-menu" />
                   <div class="text-right">{{ l.title }}</div>
                 </a>
@@ -161,7 +164,7 @@
               </div> -->
               <div v-if="isSeller"
                 class="rightbar-link"
-                @click="addNewLink">
+                @click="createNewLink">
                 <PlusSquareIcon class="icon-menu text-gray-medium mr-6" />
                 <div class="text-gray-medium text-right">New Link</div>
               </div>
@@ -183,6 +186,7 @@ import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/ShareLinkModal';
 import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
+import AddEditSwaypageLinkModal from '@/components/Swaypage/AddEditSwaypageLinkModal';
 import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
@@ -333,6 +337,36 @@ async function deleteLink(link) {
     swaypageId,
     linkId: link.id,
   })
+}
+
+const { 
+  open: openSwaypageLinkModal,
+  close: closeSwaypageLinkModal,
+  patchOptions: patchSwaypageLinkModalOptions,
+} = useModal({
+  component: AddEditSwaypageLinkModal,
+  attrs: {
+    swaypageId: swaypage.id,
+    async onClose (props) {
+      if (props?.pageId) {
+        refreshPages()
+        await router.replace({ 
+          path: makeNewSwaypageLink(swaypage, props.pageId)
+        })
+      }
+      closeSwaypageLinkModal()
+    }
+  }
+})
+
+function createNewLink () {
+  patchSwaypageLinkModalOptions({ attrs: { link: null }})
+  openSwaypageLinkModal()
+}
+
+function editLink (link) {
+  patchSwaypageLinkModalOptions({ attrs: { link, linkId: link.id }})
+  openSwaypageLinkModal()
 }
 </script>
 
