@@ -53,9 +53,7 @@
     <div>
       <dropdown-menu class="align-content-left"
         :overlay="false"
-        with-dropdown-closer
-        @opened="isDropdownOpen = true"
-        @closed="isDropdownOpen = false">
+        with-dropdown-closer>
         <template #trigger>
           <NewButton hover-color="gray">Add</NewButton>
         </template>

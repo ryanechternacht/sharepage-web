@@ -16,7 +16,7 @@
     </TopNavNew>
     <div class="mt-6 page-grid">
       <div class="mr-4">
-        <div class="sticky top-8">
+        <div class="sticky top-8 min-h-[calc(100vh-6.5rem)] flex flex-col">
           <div class="header-grid">
             <img v-if="swaypage.roomType === 'deal-room'"
               :src="swaypage.buyerLogo"
@@ -39,7 +39,7 @@
               ghost-class="ghost"
               :animation="200"
               :scroll="false"
-              class="flex flex-col -ml-6"
+              class="flex flex-col -ml-6 h-full"
               group="pages"
               handle=".drag-handle"
             >
@@ -48,9 +48,7 @@
                 <div class="w-[1.5rem] flex-shrink-0 drag-handle">
                   <dropdown-menu
                     :overlay="false"
-                    with-dropdown-closer
-                    @opened="isDropdownOpen = true"
-                    @closed="isDropdownOpen = false">
+                    with-dropdown-closer>
                     <template #trigger>
                       <MoreVerticalIcon class="icon-menu cursor-pointer hidden group-hover/sidebar-item:block" />
                     </template>
@@ -87,6 +85,30 @@
               </div>
             </VueDraggable>
             <!-- </div> -->
+          </div>
+
+          <div class="flex-grow" />
+
+          <div class="mt-16 mb-4 w-full">
+            <dropdown-menu
+              :overlay="false"
+              with-dropdown-closer
+              dropup>
+              <template #trigger>
+                <div v-if="isSeller" 
+                  class="cursor-pointer flex flex-row gap-4 items-center">
+                  <ArchiveIcon class="text-gray-medium" />
+                  <div class="text-gray-medium">Archive</div>
+                </div>
+              </template>
+              <template #body>
+                <div class="dropdown-menu">
+                  <NuxtLink v-for="p in archivedPages" 
+                    class="dropdown-item"
+                    :href="makeNewSwaypageLink(swaypage, p.id)">{{ p.title }}</NuxtLink>
+                </div>
+              </template>
+            </dropdown-menu>
           </div>
         </div>
       </div>
@@ -250,6 +272,9 @@ async function removePage(page, status) {
       @apply font-semibold;
     }
   }
+}
+.show-menu :deep() > * {
+  @apply block;
 }
 
 .page-grid {
