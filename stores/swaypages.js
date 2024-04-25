@@ -14,6 +14,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
     activities: {},
     buyerActivity: {},
     pages: {},
+    links: {},
   }),
   getters: {
     getSwaypageByIdCached: (state) => async (swaypageId) => {
@@ -38,6 +39,10 @@ export const useSwaypagesStore = defineStore('swaypages', {
     getSwaypagePagesByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypagePages({ swaypageId })
       return state.pages[swaypageId]?.content
+    },
+    getSwaypageLinksByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypageLinks({ swaypageId })
+      return state.links[swaypageId]?.content
     },
   },
   actions: {
@@ -436,6 +441,71 @@ export const useSwaypagesStore = defineStore('swaypages', {
         content: data.value,
         generatedAt: dayjs().toJSON()
       }
-    }
+    },
+    async fetchSwaypageLinks({ swaypageId, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.links[swaypageId]?.content
+          || forceRefresh
+          || is10MinutesOld(this.links[swaypageId]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/links`)
+        this.links[swaypageId] = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async createLink({ swaypageId, link }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/links`,
+        { method: 'POST', body: link }
+      )
+      this.links[swaypageId].content.push(data.value)
+      return data.value.id
+    },
+    async updateLink({ swaypageId, linkId, link }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/link/${linkId}`,
+        { method: 'PATCH', body: link }
+      )
+      
+      const l = find(this.links[swaypageId].content, l => l.id === linkId)
+      if (l) {
+        if (data.value.title !== undefined) {
+          l.title = data.value.title
+        }
+        if (data.value.linkUrl !== undefined) {
+          l.linkUrl = data.value.linkUrl
+        }
+        if (data.value.ordering !== undefined) {
+          l.ordering = data.value.ordering
+        }
+      }
+    },
+    async deleteLink({ swaypageId, linkId }) {
+      const { apiFetch } = useNuxtApp()
+      await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/link/${linkId}`,
+        { method: 'DELETE' }
+      )
+
+      remove(this.links[swaypageId].content, l => l.id === linkId)
+    },
+    async reorderLinks({ swaypageId, links }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/links/ordering`,
+        { method: 'PATCH', body: links }
+      )
+      this.links[swaypageId] = {
+        content: data.value,
+        generatedAt: dayjs().toJSON()
+      }
+    },
   },
 })

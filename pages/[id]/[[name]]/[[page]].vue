@@ -1,10 +1,10 @@
 <template>
-  <div class="grid custom-subgrid col-span-2">
+  <div>
     <!-- TODO reimplment right sidebar -->
-    <h2 v-if="!page" class="col-span-2">
+    <h2 v-if="!page">
       There are no pages in this Swaypage. Create a New Page on the left
     </h2>
-    <div v-else class="col-span-2">
+    <div v-else>
       <div v-if="page.status === 'archived'"
         class="p-2 rounded-md bg-gray-background flex flex-row items-center">
         <div>This page is currently archived.</div>
@@ -151,29 +151,6 @@
         <div class="h-[2rem]" /> <!-- bottom spacer -->
       </div>
     </div>
-
-    <!-- <div class="ml-2">
-      <div class="sticky top-[5.75rem]">
-        <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
-          <div class="text-gray-medium">Key Links</div>
-          <a v-for="link in links"
-            class="rightbar-link"
-            :href="link.link">
-            <ExternalLinkIcon class="icon-menu" />
-            <div class="text-right">{{ link.text }}</div>
-          </a>
-          <div class="rightbar-link cursor-pointer">
-            <MessageCircleIcon class="icon-menu" />
-            <div class="text-right">Please Opt Me Out</div>
-          </div>
-          <div class="rightbar-link cursor-pointer"
-            @click="addNewLink">
-            <PlusSquareIcon class="icon-menu text-gray-medium" />
-            <div class="text-gray-medium text-right">New Link</div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -196,7 +173,10 @@ const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
 const swaypageStore = useSwaypagesStore()
-const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(swaypageStore)
+const { 
+  getSwaypageByIdCached, 
+  getSwaypagePagesByIdCached, 
+} = storeToRefs(swaypageStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
@@ -422,29 +402,6 @@ async function restorePage() {
   })
   await swaypageStore.fetchSwaypagePages({ swaypageId, forceRefresh: true })
 }
-
-// TODO re-add
-// const links = ref([
-//   {
-//     text: 'Schedule a Call',
-//     link: 'https://www.google.com',
-//   },
-//   {
-//     text: 'Connect on LinkedIn',
-//     link: 'https://www.yahoo.com',
-//   },
-//   {
-//     text: 'See our Testemonials',
-//     link: 'https://www.microsoft.com',
-//   },
-// ])
-
-// function addNewLink () {
-//   links.value.push({
-//     text: 'New Link',
-//     link: 'https://www.facebook.com',
-//   })
-// }
 </script>
 
 <style lang="postcss" scoped>
@@ -457,11 +414,6 @@ async function restorePage() {
 /* should be grid-cols-subgrid, but we need a newer tailwind */
 .custom-subgrid {
   grid-template-columns: subgrid;
-}
-
-.rightbar-link {
-  @apply flex flex-row-reverse items-center gap-3;
-
 }
 
 .align-content-left {

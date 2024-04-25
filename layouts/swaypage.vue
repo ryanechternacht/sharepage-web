@@ -114,6 +114,61 @@
       </div>
 
       <slot />
+
+      <div class="ml-2">
+        <div class="sticky top-[5.75rem]">
+          <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
+            <div class="text-gray-medium">Key Links</div>
+            <VueDraggable
+              v-model="links"
+              ghost-class="ghost"
+              :animation="200"
+              :scroll="false"
+              class="flex flex-col -mr-6"
+              group="pages"
+              handle=".drag-handle"
+            >
+              <div v-for="l in links"
+                class="group/link-item flex flex-row-reverse items-center">
+                <div class="w-[1.5rem] flex-shrink-0 drag-handle text-right">
+                  <dropdown-menu
+                    direction="right"
+                    :overlay="false"
+                    with-dropdown-closer>
+                    <template #trigger>
+                      <MoreVerticalIcon class="icon-menu cursor-pointer hidden group-hover/link-item:block" />
+                    </template>
+                    <template #body>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item"
+                          dropdown-closer
+                          @click="deleteLink(l)">Delete</div>
+                      </div>
+                    </template>
+                  </dropdown-menu>
+                </div>
+                <a
+                  class="rightbar-link"
+                  :href="l.linkUrl">
+                  <ExternalLinkIcon class="icon-menu" />
+                  <div class="text-right">{{ l.title }}</div>
+                </a>
+              </div>
+              
+              <!-- <div class="rightbar-link cursor-pointer">
+                <MessageCircleIcon class="icon-menu" />
+                <div class="text-right">Please Opt Me Out</div>
+              </div> -->
+              <div v-if="isSeller"
+                class="rightbar-link"
+                @click="addNewLink">
+                <PlusSquareIcon class="icon-menu text-gray-medium mr-6" />
+                <div class="text-gray-medium text-right">New Link</div>
+              </div>
+            </VueDraggable>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="h-[5rem]" /> <!-- bottom spacer -->
@@ -130,23 +185,27 @@ import ShareLinkModal from '@/components/ShareLinkModal';
 import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
 import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
-const { debounce, filter, findIndex, orderBy } = lodash_pkg;
+const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
 const swaypageStore = useSwaypagesStore()
-const { getSwaypageByIdCached, getSwaypagePagesByIdCached } = storeToRefs(swaypageStore)
-
+const { 
+  getSwaypageByIdCached, 
+  getSwaypagePagesByIdCached, 
+  getSwaypageLinksByIdCached,
+} = storeToRefs(swaypageStore)
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [swaypage, pages, hasUser, isSeller, organization] = await Promise.all([
+const [swaypage, pages, linksSource, hasUser, isSeller, organization] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
+  getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getOrganizationCached.value(),
@@ -195,7 +254,7 @@ async function savePageOrdering() {
 const debouncedReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
 
 watch(activePages, () => {
-  debouncedReorder()
+  debouncedPageReorder()
 })
 
 const { 
@@ -254,6 +313,27 @@ async function removePage(page, status) {
   }
 }
 
+const links = ref(cloneDeep(linksSource))
+
+async function saveLinkOrdering() {
+  await swaypageStore.reorderLinks({ swaypageId, links })
+}
+
+const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
+
+watch(links, () => {
+  dbounceLinkReorder()
+})
+
+async function deleteLink(link) {
+  const i = findIndex(links.value, l => l.id === link.id)
+  links.value.splice(i, 1)
+
+  await swaypageStore.deleteLink({
+    swaypageId,
+    linkId: link.id,
+  })
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -282,5 +362,13 @@ async function removePage(page, status) {
   /* TODO, I can probably improve these a bit using some minmax() */
   /* ideal is ~350 710 220 */
   grid-template-columns: 3fr 6.5fr 2fr;
+}
+
+.rightbar-link {
+  @apply py-2 w-full flex flex-row-reverse cursor-pointer items-center gap-3;
+}
+
+:deep() .v-dropdown-menu__container {
+  @apply min-w-[100px];
 }
 </style>
