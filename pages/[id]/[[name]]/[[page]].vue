@@ -1,7 +1,10 @@
 <template>
   <div class="grid custom-subgrid col-span-2">
     <!-- TODO reimplment right sidebar -->
-    <div class="col-span-2">
+    <h2 v-if="!page" class="col-span-2">
+      There are no pages in this Swaypage. Create a New Page on the left
+    </h2>
+    <div v-else class="col-span-2">
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
         <div class="flex flex-row">
           <UserAvatar v-for="s in swaypage.sellerTeam" 
@@ -165,7 +168,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { cloneDeep, debounce, find, first, map, max, some } = lodash_pkg;
+const { cloneDeep, debounce, filter, find, first, map, max, some } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerActivityStore } from '@/stores/buyer-activity';
@@ -198,7 +201,7 @@ const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
 const pageId = parseInt(route.params.page)
 const page = pageId
   ? find(pages, p => p.id === pageId)
-  : first(pages)
+  : first(filter(pages, p => p.status === 'active'))
 
 const canEdit = isSeller || page.canBuyerEdit
 
@@ -233,7 +236,7 @@ setTimeout(() => router.replace({
   path: makeNewSwaypageLink(swaypage, page.id)
 }), 100)
 
-const keys = map(page.body.sections, s => s.key || 0)
+const keys = map(page?.body.sections, s => s.key || 0)
 let nextKey = (max(keys) || 0) + 1
 
 function updateSection (section) {
@@ -269,8 +272,8 @@ function updateSection (section) {
   return s
 }
 
-const body = ref({ sections: map(page.body.sections, updateSection) })
-const title = ref(page.title)
+const body = ref({ sections: map(page?.body.sections, updateSection) })
+const title = ref(page?.title)
 
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {

@@ -32,6 +32,9 @@ export const useSwaypagesStore = defineStore('swaypages', {
       await state.fetchSwaypageBuyerActivity({ swaypageId })
       return state.buyerActivity[swaypageId]?.content
     },
+    // TODO can we separate active from archived here without 
+    // double fetching? I thihnk we double fetch user data in 
+    // when trying to load multiple getters in parallel 
     getSwaypagePagesByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypagePages({ swaypageId })
       return state.pages[swaypageId]?.content
@@ -408,6 +411,9 @@ export const useSwaypagesStore = defineStore('swaypages', {
         if (data.value.canBuyerEdit !== undefined) {
           p.canBuyerEdit = data.value.canBuyerEdit
         }
+        if (data.value.status !== undefined) {
+          p.status = data.value.status
+        }
       }
     },
     async deletePage({ swaypageId, pageId }) {
@@ -419,5 +425,17 @@ export const useSwaypagesStore = defineStore('swaypages', {
 
       remove(this.pages[swaypageId].content, p => p.id === pageId)
     },
+    async reorderPages({ swaypageId, pages }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyerspheres/${swaypageId}/pages/ordering`,
+        { method: 'PATCH', body: pages }
+      )
+      this.pages[swaypageId] = {
+        content: data.value,
+        generatedAt: dayjs().toJSON()
+      }
+    }
   },
 })

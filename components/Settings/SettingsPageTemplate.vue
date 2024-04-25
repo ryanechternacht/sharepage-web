@@ -186,6 +186,7 @@ watch(body.value, () => {
   isDirty.value = true
   debouncedSave()
 })
+
 function removeItem (index) {
   body.value.sections.splice(index, 1)
 }
