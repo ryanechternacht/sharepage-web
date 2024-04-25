@@ -131,13 +131,14 @@
             >
               <div v-for="l in links"
                 class="group/link-item flex flex-row-reverse items-center">
-                <div class="w-[1.5rem] flex-shrink-0 drag-handle text-right">
+                <div class="w-[1.5rem] flex-shrink-0 text-right">
                   <dropdown-menu
                     direction="right"
                     :overlay="false"
                     with-dropdown-closer>
                     <template #trigger>
-                      <MoreVerticalIcon class="icon-menu cursor-pointer hidden group-hover/link-item:block" />
+                      <MoreVerticalIcon v-if="isSeller"
+                        class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block" />
                     </template>
                     <template #body>
                       <div class="dropdown-menu">
