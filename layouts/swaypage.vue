@@ -403,8 +403,4 @@ function editLink (link) {
 .rightbar-link {
   @apply py-2 w-full flex flex-row-reverse cursor-pointer items-center gap-3;
 }
-
-:deep() .v-dropdown-menu__container {
-  @apply min-w-[100px];
-}
 </style>

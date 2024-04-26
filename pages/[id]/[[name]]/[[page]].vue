@@ -60,7 +60,7 @@
           @opened="isDropdownOpen = true"
           @closed="isDropdownOpen = false">
           <template #trigger>
-            <MoreVerticalIcon class="-ml-4" />
+            <MoreVerticalIcon v-if="canEdit" class="-ml-4" />
           </template>
           <template #body>
             <div class="dropdown-menu">
