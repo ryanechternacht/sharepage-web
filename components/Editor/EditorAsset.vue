@@ -2,7 +2,7 @@
   <EditorItemTemplate :readonly="readonly"
     @delete:item="emit('delete:item')">
     <template #content>
-      <div class="">
+      <div>
         <input v-if="!readonly" 
           v-model="value"
           class="p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
