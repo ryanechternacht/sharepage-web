@@ -168,7 +168,25 @@ import { useModal } from 'vue-final-modal'
 
 useEmbedly()
 
-// /demo/65/123445566/60
+const { timeMe } = useNuxtApp()
+
+if (process.client) {
+  // timeMe.startTimer('page1')
+
+  // let priorTime = 0
+
+  // setInterval(() => {
+  //   // console.log('on page', timeMe.getTimeOnCurrentPageInSeconds())
+  //   let timeOnPage = Math.floor(timeMe.getTimeOnCurrentPageInSeconds())
+  //   if (timeOnPage > priorTime) {
+  //     console.log('more time', timeOnPage)
+  //     priorTime = timeOnPage
+  //   } else {
+  //     console.log('no change')
+  //   }
+  // }, 5000)
+}
+
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
@@ -181,13 +199,27 @@ const {
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
+const buyerActivityStore = useBuyerActivityStore()
+const { shouldTrackUserActivity } = storeToRefs(buyerActivityStore)
+
+const [swaypage, pages, hasUser, isSeller, user, shouldTrack] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getMeCached.value(),
+  shouldTrackUserActivity.value(swaypageId),
 ])
+
+console.log('shouldTrack', shouldTrack)
+
+// if (shouldTrack) {
+//   console.log('shouldTrack!')
+//   buyerActivityStore.capturePageTiming()
+// }
+
+// buyerActivityStore.capturePageTiming({ swaypageId, page: 'page2', timeOnPage: 10 })
+// buyerActivityStore.capturePageTiming({ swaypageId, page: 'page2', timeOnPage: 15 })
 
 const pageId = parseInt(route.params.page)
 const page = pageId
@@ -302,7 +334,6 @@ watch(title, () => {
   debouncedSave()
 })
 
-const buyerActivityStore = useBuyerActivityStore()
 function assetClick(link) {
   buyerActivityStore.captureBuyerActivity({
     buyersphereId: swaypageId,

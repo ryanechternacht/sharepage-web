@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useUsersStore } from './users'
 
 function is10MinutesOld(jsonTimestamp) {
   const dayjs = useDayjs()
@@ -8,12 +9,21 @@ function is10MinutesOld(jsonTimestamp) {
 export const useBuyerActivityStore = defineStore('buyer-activity', {
   state: () => ({ 
     buyerActivity: {},
+    session: {},
   }),
   getters: {
     getBuyerActivityForOrganizationCached: (state) => async () => {
       await state.fetchBuyerActivity()
       return state.buyerActivity?.content
-    }
+    },
+    shouldTrackUserActivity: (state) => async (swaypageId) =>  {
+      const usersStore = useUsersStore()
+      const shouldTrack = !(await usersStore.isUserSeller())
+      if (shouldTrack && !state.session.id) {
+        await state.generateActivitySession({ swaypageId })
+      }
+      return shouldTrack
+    },
   },
   actions: {
     async fetchBuyerActivity({ forceRefresh } = {}) {
@@ -32,7 +42,7 @@ export const useBuyerActivityStore = defineStore('buyer-activity', {
     },
     async captureBuyerActivity({ buyersphereId, activity, activityData }) {
       const { apiFetch } = useNuxtApp()
-      await apiFetch(`/v0.1/buyer-activity`,
+      await apiFetch('/v0.1/buyer-activity',
         { 
           method: 'POST', 
           body: {
@@ -42,6 +52,35 @@ export const useBuyerActivityStore = defineStore('buyer-activity', {
           },
         }
       )
-    }
+    },
+    async generateActivitySession({ swaypageId }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/session`, 
+        { method: 'POST' },
+        )
+      console.log('returned session', data)
+      this.session.id = data.value.id
+    },
+    async capturePageTiming({ swaypageId, page, timeOnPage}) {
+      if (process.client) {
+        console.log('client')
+        console.log('session', this.session, this.session.id)
+      } else {
+        console.log('not client')
+        console.log('session', this.session, this.session.id)
+      }
+      console.log('session', this.session, this.session.id)
+      const { apiFetch } = useNuxtApp()
+      const { data, error } = await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/session/${this.session.id}/timing`,
+        { 
+          method: 'POST',
+          body: { page, timeOnPage },
+        }
+      )
+      console.log('data', data)
+      console.log('error', error)
+    },
   }
 })
