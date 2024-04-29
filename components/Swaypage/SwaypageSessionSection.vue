@@ -17,7 +17,7 @@
         <!-- TODO anonymous shape? -->
         <div class="min-w-[9.5rem] flex flex-row items-center gap-2">
           <div>
-            {{ item[0]?.anonymousUser?.linkedName }}
+            {{ item?.linkedName }}
           </div>
         </div>
 
