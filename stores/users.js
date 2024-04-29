@@ -11,11 +11,8 @@ function is10MinutesOld(jsonTimestamp) {
   return dayjs.duration(dayjs().diff(jsonTimestamp)).asMinutes() >= 10
 }
 
-// TODO cache that we failed to find a user 
-// (right now we keep re-requesting on the no-user flow)
-
 export const useUsersStore = defineStore('users', {
-  state: () => ({ me: null, users: {} }),
+  state: () => ({ me: undefined, noUser: null, users: {} }),
   getters: {
     getMeCached: (state) => async () => {
       await state.fetchMe()
@@ -47,7 +44,7 @@ export const useUsersStore = defineStore('users', {
     async fetchMe({ forceRefresh } = {}) {
       const { apiFetch } = useNuxtApp()
 
-      if (!this.me || forceRefresh) {
+      if (this.me === undefined || forceRefresh) {
         const { data } = await apiFetch('/v0.1/users/me')
         this.me = data.value
       }

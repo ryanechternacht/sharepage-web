@@ -159,7 +159,7 @@ import lodash_pkg from 'lodash';
 const { cloneDeep, debounce, filter, find, first, map, max, some } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
-import { useBuyerActivityStore } from '@/stores/buyer-activity';
+import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
@@ -168,24 +168,6 @@ import { useModal } from 'vue-final-modal'
 
 useEmbedly()
 
-const { timeMe } = useNuxtApp()
-
-if (process.client) {
-  // timeMe.startTimer('page1')
-
-  // let priorTime = 0
-
-  // setInterval(() => {
-  //   // console.log('on page', timeMe.getTimeOnCurrentPageInSeconds())
-  //   let timeOnPage = Math.floor(timeMe.getTimeOnCurrentPageInSeconds())
-  //   if (timeOnPage > priorTime) {
-  //     console.log('more time', timeOnPage)
-  //     priorTime = timeOnPage
-  //   } else {
-  //     console.log('no change')
-  //   }
-  // }, 5000)
-}
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
@@ -199,32 +181,22 @@ const {
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const buyerActivityStore = useBuyerActivityStore()
-const { shouldTrackUserActivity } = storeToRefs(buyerActivityStore)
 
-const [swaypage, pages, hasUser, isSeller, user, shouldTrack] = await Promise.all([
+const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getMeCached.value(),
-  shouldTrackUserActivity.value(swaypageId),
 ])
-
-console.log('shouldTrack', shouldTrack)
-
-// if (shouldTrack) {
-//   console.log('shouldTrack!')
-//   buyerActivityStore.capturePageTiming()
-// }
-
-// buyerActivityStore.capturePageTiming({ swaypageId, page: 'page2', timeOnPage: 10 })
-// buyerActivityStore.capturePageTiming({ swaypageId, page: 'page2', timeOnPage: 15 })
 
 const pageId = parseInt(route.params.page)
 const page = pageId
   ? find(pages, p => p.id === pageId)
   : first(filter(pages, p => p.status === 'active'))
+
+const buyerSessionStore = useBuyerSessionStore()
+buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 
 const canEdit = isSeller || page.canBuyerEdit
 
