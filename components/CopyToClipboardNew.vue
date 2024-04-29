@@ -22,7 +22,6 @@ const store = useBuyerActivityStore()
 const props = defineProps({ 
   color: String,
   hoverColor: String,
-  swaypageShortcode: { type: String, required: true },
   url: { type: String, required: true },
   swaypageId: { type: Number, required: true },
 })

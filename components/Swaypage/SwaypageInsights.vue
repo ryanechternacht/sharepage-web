@@ -1,5 +1,9 @@
 <template>
   <div class="[grid-area:center] page-center" v-scroll-spy>
+    <SwaypageSessionSection
+      :items="buyerSessions"
+    />
+
     <SwaypageInsightsSection 
       id="last-7-days"
       :items="last7DaysItems"
@@ -30,10 +34,14 @@ const route = useRoute()
 const buyersphereId = parseInt(route.params.id)
 
 const buyersphereStore = useSwaypagesStore()
-const { getSwaypageBuyerActivityByIdCached } = storeToRefs(buyersphereStore)
+const {
+  getSwaypageBuyerActivityByIdCached,
+  getSwaypageBuyerSessionsByIdCached,
+} = storeToRefs(buyersphereStore)
 
-const [buyerActivity] = await Promise.all([
+const [buyerActivity, buyerSessions] = await Promise.all([
   getSwaypageBuyerActivityByIdCached.value(buyersphereId),
+  getSwaypageBuyerSessionsByIdCached.value(buyersphereId),
 ])
 
 const dayjs = useDayjs()

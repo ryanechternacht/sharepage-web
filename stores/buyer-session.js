@@ -3,7 +3,7 @@ import { useUsersStore } from './users'
 
 export const useBuyerSessionStore = defineStore('buyer-session', {
   state: () => ({ 
-    sessoinId: null,
+    sessionId: null,
     currentPage: null,
   }),
   getters: {

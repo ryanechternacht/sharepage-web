@@ -168,7 +168,6 @@ import { useModal } from 'vue-final-modal'
 
 useEmbedly()
 
-
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
@@ -181,7 +180,6 @@ const {
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-
 const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
@@ -189,6 +187,20 @@ const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
   isUserSeller.value(),
   getMeCached.value(),
 ])
+
+const { cookies } = useAppConfig()
+const linkedName = useCookie('linked-name', { domain: cookies.domain })
+const anonymousId = useCookie('anonymous-id', { domain: cookies.domain })
+
+if (!hasUser && !linkedName.value) {
+  linkedName.value = route.query['sent-to']
+}
+
+if (!anonymousId.value && process.client) {
+  anonymousId.value = crypto?.randomUUID
+    ? crypto.randomUUID()
+    : Math.floor(Math.random() * 1000000).toString()
+}
 
 const pageId = parseInt(route.params.page)
 const page = pageId

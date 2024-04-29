@@ -15,6 +15,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
     buyerActivity: {},
     pages: {},
     links: {},
+    buyerSessions: {},
   }),
   getters: {
     getSwaypageByIdCached: (state) => async (swaypageId) => {
@@ -43,6 +44,10 @@ export const useSwaypagesStore = defineStore('swaypages', {
     getSwaypageLinksByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypageLinks({ swaypageId })
       return state.links[swaypageId]?.content
+    },
+    getSwaypageBuyerSessionsByIdCached: (state) => async (swaypageId) => {
+      await state.fetchSwaypageBuyerSessions({ swaypageId })
+      return state.buyerSessions[swaypageId]?.content
     },
   },
   actions: {
@@ -505,6 +510,21 @@ export const useSwaypagesStore = defineStore('swaypages', {
       this.links[swaypageId] = {
         content: data.value,
         generatedAt: dayjs().toJSON()
+      }
+    },
+    async fetchSwaypageBuyerSessions({ swaypageId, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.buyerSessions[swaypageId]?.content
+          || forceRefresh
+          || is10MinutesOld(this.buyerSessions[swaypageId]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/sessions`)
+        this.buyerSessions[swaypageId] = {
+          content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
       }
     },
   },
