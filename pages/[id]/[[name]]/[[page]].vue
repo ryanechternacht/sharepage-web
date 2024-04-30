@@ -31,11 +31,11 @@
         <!-- <div>active</div> -->
         <div v-if="canEdit" class="flex flex-row items-center gap-2">
           <template v-if="swaypage.isPublic">
-            <EyeIcon class="text-green-good icon-submenu" />
+            <EyeIcon class="text-green-good icon-menu" />
             <div class="subtext">Public</div>
           </template>
           <template v-else>
-            <EyeOffIcon class="text-orange-neutral icon-submenu" />
+            <EyeOffIcon class="text-orange-neutral icon-menu" />
             <div class="subtext">Private</div>
           </template>
         </div>
@@ -43,7 +43,7 @@
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
           <div :class="{'text-blue-great': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
                         'text-orange-neutral': saveSubmissionState === 'submitting'}">
-            <FileIcon class="icon-submenu" />
+            <FileIcon class="icon-menu" />
           </div>  
           <div class="subtext w-[3.25rem]">
             {{ !isDirty ? "Saved" :
