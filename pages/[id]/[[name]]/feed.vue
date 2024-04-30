@@ -32,14 +32,30 @@
     </div>
     <div class="page-area">
       <div class="feed-grid">
-        <h2>Lead</h2>
-        <h2>Event</h2>
-        <h2>Event Time</h2>
+        <h2 class="flex flex-row items-center">Lead</h2>
+        <h2 class="flex flex-row items-center">Event</h2>
+        <h2 class="flex flex-row items-center">Event Time</h2>
 
         <template v-for="session in buyerSessions">
-          <div>{{ session?.linkedName }}</div>
-          <div>{{ reformatView(session) }}</div>
-          <div>{{ session.createdAt }}</div>
+          <div class="cell">{{ session?.linkedName }}</div>
+          <div class="cell">
+            <div class="timing-grid">
+              <template v-for="event in session.events">
+                <div class="flex flex-row items-center">
+                  <SpTag>
+                    <template #icon>
+                      <EyeIcon />
+                    </template>
+                    {{ event.timeOnPage }}
+                  </SpTag>
+                </div>
+                <div class="flex flex-row items-center">
+                  <SwaypagePageTag :event="event" />
+                </div>
+              </template>
+            </div>
+          </div>
+          <div class="cell">{{ session.createdAt }}</div>
         </template>
       </div>
     </div>
@@ -89,15 +105,22 @@ function reformatView (item) {
 .feed-grid {
   @apply grid px-8 gap-x-8;
   grid-template-columns: auto 1fr auto;
-  grid-auto-rows: 3rem;
+  grid-auto-rows: minmax(3rem, auto);
 
-  div {
+  .cell {
     @apply relative;
   
     &::after {
-      @apply absolute bg-gray-border -start-12 h-[1px] w-screen;
+      @apply absolute bg-gray-border h-[1px] w-screen;
       content: '';
+      inset-inline-start: -5rem;
+      inset-block-start: 0;
     }
   }
+}
+
+.timing-grid {
+  @apply grid w-full gap-4;
+  grid-template-columns: 1fr 1fr;
 }
 </style>
