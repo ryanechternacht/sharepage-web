@@ -14,7 +14,7 @@
           :swaypage-id="swaypage.id" />
       </template>
     </TopNavNew>
-    <div class="mt-6 page-grid">
+    <div class="mt-6 layout-grid">
       <div class="mr-4">
         <div class="sticky top-8 min-h-[calc(100vh-6.5rem)] flex flex-col">
           <div class="header-grid">
@@ -43,6 +43,16 @@
               group="pages"
               handle=".drag-handle"
             >
+              <div v-if="isSeller" 
+                class="group/sidebar-item flex flex-row items-center">
+                <div class="w-[1.5rem] flex-shrink-0" />
+                <NuxtLink 
+                  :href="makeNewSwaypageLink(swaypage, 'feed')"
+                  class="sidebar-item">
+                  <RadioIcon />
+                  <div>Feed</div>
+                </NuxtLink>
+              </div>
               <div v-for="p in activePages"
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0">
@@ -115,65 +125,6 @@
       </div>
 
       <slot />
-
-      <div class="ml-2">
-        <div class="sticky top-[5.75rem]">
-          <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
-            <div class="text-gray-medium">Key Links</div>
-            <VueDraggable
-              v-model="links"
-              ghost-class="ghost"
-              :animation="200"
-              :scroll="false"
-              class="flex flex-col -mr-6"
-              group="pages"
-              handle=".drag-handle"
-            >
-              <div v-for="l in links"
-                class="group/link-item flex flex-row-reverse items-center">
-                <div class="w-[1.5rem] flex-shrink-0 text-right">
-                  <dropdown-menu
-                    direction="right"
-                    :overlay="false"
-                    with-dropdown-closer>
-                    <template #trigger>
-                      <MoreVerticalIcon v-if="isSeller"
-                        class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block" />
-                    </template>
-                    <template #body>
-                      <div class="dropdown-menu">
-                        <div class="dropdown-item"
-                          dropdown-closer
-                          @click="editLink(l)">Edit</div>
-                        <div class="dropdown-item"
-                          dropdown-closer
-                          @click="deleteLink(l)">Delete</div>
-                      </div>
-                    </template>
-                  </dropdown-menu>
-                </div>
-                <a class="rightbar-link"
-                  :href="l.linkUrl"
-                  target="_blank">
-                  <ExternalLinkIcon class="icon-menu" />
-                  <div class="text-right">{{ l.title }}</div>
-                </a>
-              </div>
-              
-              <!-- <div class="rightbar-link cursor-pointer">
-                <MessageCircleIcon class="icon-menu" />
-                <div class="text-right">Please Opt Me Out</div>
-              </div> -->
-              <div v-if="isSeller"
-                class="rightbar-link"
-                @click="createNewLink">
-                <PlusSquareIcon class="icon-menu text-gray-medium mr-6" />
-                <div class="text-gray-medium text-right">New Link</div>
-              </div>
-            </VueDraggable>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="h-[5rem]" /> <!-- bottom spacer -->
@@ -188,7 +139,6 @@ import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/ShareLinkModal';
 import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
-import AddEditSwaypageLinkModal from '@/components/Swaypage/AddEditSwaypageLinkModal';
 import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
@@ -200,7 +150,6 @@ const swaypageStore = useSwaypagesStore()
 const { 
   getSwaypageByIdCached, 
   getSwaypagePagesByIdCached, 
-  getSwaypageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
@@ -208,10 +157,9 @@ const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [swaypage, pages, linksSource, hasUser, isSeller, organization] = await Promise.all([
+const [swaypage, pages, hasUser, isSeller, organization] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
-  getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getOrganizationCached.value(),
@@ -318,61 +266,14 @@ async function removePage(page, status) {
     await navigateTo(`/${swaypageId}`)
   }
 }
-
-const links = ref(cloneDeep(linksSource))
-
-async function saveLinkOrdering() {
-  await swaypageStore.reorderLinks({ swaypageId, links })
-}
-
-const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
-
-watch(links, () => {
-  dbounceLinkReorder()
-})
-
-async function deleteLink(link) {
-  const i = findIndex(links.value, l => l.id === link.id)
-  links.value.splice(i, 1)
-
-  await swaypageStore.deleteLink({
-    swaypageId,
-    linkId: link.id,
-  })
-}
-
-const { 
-  open: openSwaypageLinkModal,
-  close: closeSwaypageLinkModal,
-  patchOptions: patchSwaypageLinkModalOptions,
-} = useModal({
-  component: AddEditSwaypageLinkModal,
-  attrs: {
-    swaypageId: swaypage.id,
-    async onClose (props) {
-      if (props?.pageId) {
-        refreshPages()
-        await router.replace({ 
-          path: makeNewSwaypageLink(swaypage, props.pageId)
-        })
-      }
-      closeSwaypageLinkModal()
-    }
-  }
-})
-
-function createNewLink () {
-  patchSwaypageLinkModalOptions({ attrs: { link: null }})
-  openSwaypageLinkModal()
-}
-
-function editLink (link) {
-  patchSwaypageLinkModalOptions({ attrs: { link, linkId: link.id }})
-  openSwaypageLinkModal()
-}
 </script>
 
 <style lang="postcss" scoped>
+.layout-grid {
+  @apply grid mx-8;
+  grid-template-columns: minmax(150px, 250px) 1fr;
+}
+
 .header-grid {
   @apply grid items-center gap-x-2 gap-y-2;
   grid-template-columns: auto 1fr;
@@ -391,16 +292,5 @@ function editLink (link) {
 }
 .show-menu :deep() > * {
   @apply block;
-}
-
-.page-grid {
-  @apply grid mx-8;
-  /* TODO, I can probably improve these a bit using some minmax() */
-  /* ideal is ~350 710 220 */
-  grid-template-columns: 3fr 6.5fr 2fr;
-}
-
-.rightbar-link {
-  @apply py-2 w-full flex flex-row-reverse cursor-pointer items-center gap-3;
 }
 </style>

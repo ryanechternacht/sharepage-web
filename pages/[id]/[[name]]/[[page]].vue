@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <!-- TODO reimplment right sidebar -->
+  <div class="page-grid">
     <h2 v-if="!page">
       There are no pages in this Swaypage. Create a New Page on the left
     </h2>
@@ -151,6 +150,62 @@
         <div class="h-[2rem]" /> <!-- bottom spacer -->
       </div>
     </div>
+    <div>
+      <div class="ml-2">
+        <div class="sticky top-[5.75rem]">
+          <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
+            <div class="text-gray-medium">Key Links</div>
+            <VueDraggable
+              v-model="links"
+              ghost-class="ghost"
+              :animation="200"
+              :scroll="false"
+              class="flex flex-col -mr-6"
+              group="pages"
+              handle=".drag-handle"
+            >
+              <div v-for="l in links"
+                class="group/link-item flex flex-row-reverse items-center">
+                <div class="w-[1.5rem] flex-shrink-0 text-right">
+                  <dropdown-menu
+                    direction="right"
+                    :overlay="false"
+                    with-dropdown-closer>
+                    <template #trigger>
+                      <MoreVerticalIcon v-if="isSeller"
+                        class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block" />
+                    </template>
+                    <template #body>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item"
+                          dropdown-closer
+                          @click="editLink(l)">Edit</div>
+                        <div class="dropdown-item"
+                          dropdown-closer
+                          @click="deleteLink(l)">Delete</div>
+                      </div>
+                    </template>
+                  </dropdown-menu>
+                </div>
+                <a class="rightbar-link"
+                  :href="l.linkUrl"
+                  target="_blank">
+                  <ExternalLinkIcon class="icon-menu" />
+                  <div class="text-right">{{ l.title }}</div>
+                </a>
+              </div>
+              
+              <div v-if="isSeller"
+                class="rightbar-link"
+                @click="createNewLink">
+                <PlusSquareIcon class="icon-menu text-gray-medium mr-6" />
+                <div class="text-gray-medium text-right">New Link</div>
+              </div>
+            </VueDraggable>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -164,6 +219,7 @@ import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
+import AddEditSwaypageLinkModal from '@/components/Swaypage/AddEditSwaypageLinkModal';
 import { useModal } from 'vue-final-modal'
 
 useEmbedly()
@@ -175,14 +231,16 @@ const swaypageStore = useSwaypagesStore()
 const { 
   getSwaypageByIdCached, 
   getSwaypagePagesByIdCached, 
+  getSwaypageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const [swaypage, pages, hasUser, isSeller, user] = await Promise.all([
+const [swaypage, pages, linksSource, hasUser, isSeller, user] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
+  getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getMeCached.value(),
@@ -417,6 +475,58 @@ async function restorePage() {
   })
   await swaypageStore.fetchSwaypagePages({ swaypageId, forceRefresh: true })
 }
+
+const links = ref(cloneDeep(linksSource))
+
+async function saveLinkOrdering() {
+  await swaypageStore.reorderLinks({ swaypageId, links })
+}
+
+const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
+
+watch(links, () => {
+  dbounceLinkReorder()
+})
+
+async function deleteLink(link) {
+  const i = findIndex(links.value, l => l.id === link.id)
+  links.value.splice(i, 1)
+
+  await swaypageStore.deleteLink({
+    swaypageId,
+    linkId: link.id,
+  })
+}
+
+const { 
+  open: openSwaypageLinkModal,
+  close: closeSwaypageLinkModal,
+  patchOptions: patchSwaypageLinkModalOptions,
+} = useModal({
+  component: AddEditSwaypageLinkModal,
+  attrs: {
+    swaypageId: swaypage.id,
+    async onClose (props) {
+      if (props?.pageId) {
+        refreshPages()
+        await router.replace({ 
+          path: makeNewSwaypageLink(swaypage, props.pageId)
+        })
+      }
+      closeSwaypageLinkModal()
+    }
+  }
+})
+
+function createNewLink () {
+  patchSwaypageLinkModalOptions({ attrs: { link: null }})
+  openSwaypageLinkModal()
+}
+
+function editLink (link) {
+  patchSwaypageLinkModalOptions({ attrs: { link, linkId: link.id }})
+  openSwaypageLinkModal()
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -427,8 +537,9 @@ async function restorePage() {
 }
 
 /* should be grid-cols-subgrid, but we need a newer tailwind */
-.custom-subgrid {
-  grid-template-columns: subgrid;
+.page-grid {
+  @apply grid;
+  grid-template-columns: 1fr minmax(150px, 220px);
 }
 
 .align-content-left {
@@ -442,5 +553,9 @@ async function restorePage() {
     @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
       cursor-pointer;
   }
+}
+
+.rightbar-link {
+  @apply py-2 w-full flex flex-row-reverse cursor-pointer items-center gap-3;
 }
 </style>
