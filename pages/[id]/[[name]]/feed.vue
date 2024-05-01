@@ -32,30 +32,26 @@
     </div>
     <div class="page-area">
       <div class="feed-grid">
-        <h2 class="flex flex-row items-center">Lead</h2>
-        <h2 class="flex flex-row items-center">Event</h2>
-        <h2 class="flex flex-row items-center">Event Time</h2>
+        <h2 class="h-[3rem] flex flex-row items-center">Lead</h2>
+        <h2 class="h-[3rem] flex flex-row items-center">Event</h2>
+        <h2 class="h-[3rem] flex flex-row items-center">Event Time</h2>
 
-        <template v-for="session in buyerSessions">
+        <template v-for="(session, index) in buyerSessions">
           <div class="cell">{{ session?.linkedName }}</div>
           <div class="cell">
             <div class="timing-grid">
-              <template v-for="event in session.events">
-                <div class="flex flex-row items-center">
-                  <SpTag>
-                    <template #icon>
-                      <EyeIcon />
-                    </template>
-                    {{ event.timeOnPage }}
-                  </SpTag>
+              <div v-for="timing in session.timings"
+                class="contents group">
+                <div class="p-2 group-hover:bg-gray-border-light flex flex-row items-center">
+                  <SwaypageTimingTag :timing="timing" />
                 </div>
-                <div class="flex flex-row items-center">
-                  <SwaypagePageTag :event="event" />
+                <div class="p-2 pr-8 group-hover:bg-gray-border-light flex flex-row items-center">
+                  <SwaypagePageTag :event="timing" />
                 </div>
-              </template>
+              </div>
             </div>
           </div>
-          <div class="cell">{{ session.createdAt }}</div>
+          <div class="cell">{{ prettyFormatDate(session.createdAt) }}</div>
         </template>
       </div>
     </div>
@@ -86,11 +82,24 @@ const [buyerSessions] = await Promise.all([
   getSwaypageBuyerSessionsByIdCached.value(swaypageId),
 ])
 
-function reformatView (item) {
-  return join(
-    map(item.timings, i => `${i.title}: ${i.timeOnPage} seconds`),
-    ' | '
-  )
+const dayjs = useDayjs()
+const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
+function prettyFormatDate(date) {
+  const d = dayjs(date)
+  const daysApart = d.diff(todayDayJs, 'days')
+
+  const dateFormat = 'MMM Do'
+  const timeFormat = 'h:mm a'
+
+  if (daysApart < -7) {
+    return d.format(dateFormat)
+  } else if (daysApart < -1) {
+    return `${-daysApart} days ago`
+  } else if (daysApart === -1) {
+    return `Yesterday, ${d.format(timeFormat)}`
+  } else if (daysApart === 0) {
+    return `Today, ${d.format(timeFormat)}`
+  }
 }
 </script>
 
@@ -105,10 +114,9 @@ function reformatView (item) {
 .feed-grid {
   @apply grid px-8 gap-x-8;
   grid-template-columns: auto 1fr auto;
-  grid-auto-rows: minmax(3rem, auto);
 
   .cell {
-    @apply relative;
+    @apply py-2 relative;
   
     &::after {
       @apply absolute bg-gray-border h-[1px] w-screen;
@@ -120,7 +128,7 @@ function reformatView (item) {
 }
 
 .timing-grid {
-  @apply grid w-full gap-4;
+  @apply grid w-full -my-2;
   grid-template-columns: 1fr 1fr;
 }
 </style>

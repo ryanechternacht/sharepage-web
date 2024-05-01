@@ -127,6 +127,7 @@ function prettyFormatDateFromToday(date) {
     return d.format(dateFormat)
   }
 }
+
 function isDateOverdue(date) {
   const d = dayjs(date)
   const daysApart = d.diff(todayDayJs, 'days')
