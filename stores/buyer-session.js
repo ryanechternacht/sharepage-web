@@ -2,9 +2,10 @@ import { defineStore } from 'pinia'
 import { useUsersStore } from './users'
 
 export const useBuyerSessionStore = defineStore('buyer-session', {
-  state: () => ({ 
+  state: () => ({
     sessionId: null,
     currentPage: null,
+    clientInitialized: false,
   }),
   getters: {
   },
@@ -37,10 +38,13 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
       const { timeMe } = useNuxtApp()
 
-      // setup
+      // setup server side
       if (!this.sessionId) {
         await this.generateActivitySession({ swaypageId })
-  
+      }
+
+      // setup client side
+      if (!this.clientInitialized && process.client) {
         timeMe.initialize({
           currentPageName: page,
           idleTimeoutInSeconds: 15,
@@ -62,21 +66,26 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
             })
           }
         }, 1000 * 10)
-      }
-      
-      // handle switching pages
-      if (this.currentPage !== page) {
-        timeMe.stopTimer(this.currentPage)
-        timeMe.setCurrentPageName(page)
 
-        await this.postActivityData({ 
-          swaypageId, 
-          body: timeMe.getTimeOnAllPagesInSeconds()
-        })
+        this.clientInitialized = true
       }
 
-      timeMe.startTimer(page)
-      this.currentPage = page
+      // track
+      if (process.client) {
+        // handle switching pages
+        if (this.currentPage !== page) {
+          timeMe.stopTimer(this.currentPage)
+          timeMe.setCurrentPageName(page)
+
+          await this.postActivityData({ 
+            swaypageId, 
+            body: timeMe.getTimeOnAllPagesInSeconds()
+          })
+        }
+
+        timeMe.startTimer(page)
+        this.currentPage = page
+      }
     },
   }
 })

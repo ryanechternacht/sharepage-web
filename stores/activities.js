@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import lodash_pkg from 'lodash';
 import { useSwaypagesStore } from './swaypages';
 
 function is10MinutesOld(jsonTimestamp) {
