@@ -87,5 +87,15 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
         this.currentPage = page
       }
     },
+    async capturePageEventIfAppropriate ({ swaypageId, page, eventType, eventData }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(
+        `/v0.1/buyersphere/${swaypageId}/session/${this.sessionId}/${page}/event`, 
+        { 
+          method: 'POST',
+          body: { eventType, eventData }
+        },
+      )
+    }
   }
 })

@@ -11,7 +11,8 @@
         </SpButton>
         <CopyToClipboardNew v-else
           :url="linkToPage"
-          :swaypage-id="swaypage.id" />
+          :swaypage-id="swaypage.id"
+          :page="swaypagePage" />
       </template>
     </TopNavNew>
     <div class="mt-6 layout-grid">
@@ -145,6 +146,7 @@ const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
+const swaypagePage = route.params.page
 
 const swaypageStore = useSwaypagesStore()
 const { 

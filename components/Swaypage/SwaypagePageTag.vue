@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-4 items-center">
+  <div class="border border-gray-border rounded-md py-.5 px-2 grid-layout">
     <FileIcon v-if="event.pageType === 'general'" class="icon-submenu gray-subtext" />
     <ArrowRightCircleIcon v-else-if="event.pageType === 'follow-up'" class="icon-submenu gray-subtext" />
     <MapIcon v-else-if="event.pageType === 'guide'" class=" icon-submenu gray-subtext" />
@@ -8,6 +8,16 @@
     <ClipboardIcon v-else-if="event.pageType === 'notes'" class="icon-submenu gray-subtext" />
     
     <div class="subtext">{{ event.title }}</div>
+    
+    <template v-if="event.eventType === 'click-link'">
+      <div><!-- empty --></div>
+      <div class="flex flex-row items-center">
+        <span class="mr-2 subtext">></span>
+        <div  class="subtext">
+          {{ event.eventData.linkText }}
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -18,4 +28,8 @@ const props = defineProps({
 </script>
 
 <style lang="postcss" scoped>
+.grid-layout {
+  @apply grid gap-x-2 gap-y-1 items-center;
+  grid-template-columns: auto auto;
+}
 </style>

@@ -42,11 +42,20 @@
             <div class="timing-grid">
               <div v-for="timing in session.timings"
                 class="contents group">
-                <div class="p-2 group-hover:bg-gray-border-light flex flex-row items-center">
+                <div class="p-2 group-hover:bg-gray-border-light flex flex-row items-start">
                   <SwaypageTimingTag :timing="timing" />
                 </div>
-                <div class="p-2 pr-8 group-hover:bg-gray-border-light flex flex-row items-center">
+                <div class="p-2 pr-8 group-hover:bg-gray-border-light flex flex-row items-start">
                   <SwaypagePageTag :event="timing" />
+                </div>
+              </div>
+              <div v-for="event in session.events"
+                class="contents group">
+                <div class="p-2 group-hover:bg-gray-border-light flex flex-row items-start">
+                  <SwaypageEventTag :event="event" />
+                </div>
+                <div class="p-2 pr-8 group-hover:bg-gray-border-light flex flex-row items-start">
+                  <SwaypagePageTag :event="event" />
                 </div>
               </div>
             </div>

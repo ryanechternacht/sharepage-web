@@ -15,15 +15,16 @@
 </template>
 
 <script setup>
-import { useBuyerActivityStore } from '@/stores/buyer-activity';
+import { useBuyerSessionStore } from '@/stores/buyer-session'
 
-const store = useBuyerActivityStore()
+const store = useBuyerSessionStore()
 
 const props = defineProps({ 
   color: String,
   hoverColor: String,
   url: { type: String, required: true },
   swaypageId: { type: Number, required: true },
+  page: { type: String, required: true },
 })
 
 const { makeExternalSwaypageLink, makePersonalizedExternalSwaypageLink } = useSwaypageLinks()
@@ -40,9 +41,10 @@ async function copyToClipboard() {
   recentlyClicked.value = true
   lastTimeout.value = setTimeout(() => recentlyClicked.value = false, 3000)
 
-  store.captureBuyerActivity({ 
-    activity: "click-share",
-    buyersphereId: props.swaypageId,
+  store.capturePageEventIfAppropriate({ 
+    eventType: "click-share",
+    swaypageId: props.swaypageId,
+    page: props.page,
   })
 }
 

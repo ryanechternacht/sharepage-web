@@ -189,7 +189,8 @@
                 </div>
                 <a class="rightbar-link"
                   :href="l.linkUrl"
-                  target="_blank">
+                  target="_blank"
+                  @click="trackLinkClick(l.title)">
                   <ExternalLinkIcon class="icon-menu" />
                   <div class="text-right">{{ l.title }}</div>
                 </a>
@@ -526,6 +527,15 @@ function createNewLink () {
 function editLink (link) {
   patchSwaypageLinkModalOptions({ attrs: { link, linkId: link.id }})
   openSwaypageLinkModal()
+}
+
+function trackLinkClick(linkText) {
+  buyerSessionStore.capturePageEventIfAppropriate({
+    eventType: "click-link",
+    eventData: { linkText },
+    swaypageId,
+    page: pageId,
+   })
 }
 </script>
 
