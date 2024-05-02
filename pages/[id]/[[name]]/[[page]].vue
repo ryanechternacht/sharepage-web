@@ -241,7 +241,6 @@ const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
 const buyerSessionStore = useBuyerSessionStore()
 
-
 const [swaypage, pages, linksSource, hasUser, isSeller, user, _] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),

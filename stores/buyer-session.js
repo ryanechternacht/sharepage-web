@@ -5,7 +5,6 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
   state: () => ({
     sessionId: null,
     currentPage: null,
-    clientInitialized: false,
   }),
   getters: {
   },
@@ -48,13 +47,10 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
       const { timeMe } = useNuxtApp()
 
-      // setup server side
+      // setup
       if (!this.sessionId) {
         await this.generateActivitySession({ swaypageId })
-      }
 
-      // setup client side
-      if (!this.clientInitialized) {
         timeMe.initialize({
           currentPageName: page,
           idleTimeoutInSeconds: 15,
@@ -76,8 +72,6 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
             })
           }
         }, 1000 * 10)
-
-        this.clientInitialized = true
       }
 
       // handle switching pages
