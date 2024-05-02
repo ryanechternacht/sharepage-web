@@ -227,6 +227,7 @@ useEmbedly()
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
+const pageId = parseInt(route.params.page)
 
 const swaypageStore = useSwaypagesStore()
 const { 
@@ -238,13 +239,17 @@ const {
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
 
-const [swaypage, pages, linksSource, hasUser, isSeller, user] = await Promise.all([
+const buyerSessionStore = useBuyerSessionStore()
+
+
+const [swaypage, pages, linksSource, hasUser, isSeller, user, _] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
   getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
   getMeCached.value(),
+  buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 ])
 
 const { cookies } = useAppConfig()
@@ -261,13 +266,9 @@ if (!anonymousId.value && process.client) {
     : Math.floor(Math.random() * 1000000).toString()
 }
 
-const pageId = parseInt(route.params.page)
 const page = pageId
   ? find(pages, p => p.id === pageId)
   : first(filter(pages, p => p.status === 'active'))
-
-const buyerSessionStore = useBuyerSessionStore()
-buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 
 const canEdit = isSeller || page.canBuyerEdit
 
