@@ -28,6 +28,7 @@ export default defineNuxtConfig({
   dayjs: {
     plugins: [
       'advancedFormat', 
+      'calendar',
       'duration', 
       'isSameOrAfter', 
       'relativeTime',

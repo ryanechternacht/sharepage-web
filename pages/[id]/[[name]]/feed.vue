@@ -94,21 +94,7 @@ const [buyerSessions] = await Promise.all([
 const dayjs = useDayjs()
 const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
 function prettyFormatDate(date) {
-  const d = dayjs(date)
-  const daysApart = d.diff(todayDayJs, 'days')
-
-  const dateFormat = 'MMM Do'
-  const timeFormat = 'h:mm a'
-
-  if (daysApart < -7) {
-    return d.format(dateFormat)
-  } else if (daysApart < -1) {
-    return `${-daysApart} days ago`
-  } else if (daysApart === -1) {
-    return `Yesterday, ${d.format(timeFormat)}`
-  } else if (daysApart === 0) {
-    return `Today, ${d.format(timeFormat)}`
-  }
+  return dayjs(date).calendar()
 }
 </script>
 
