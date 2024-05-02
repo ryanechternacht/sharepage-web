@@ -39,6 +39,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     // find a better way to achieve this
     requestOptions.watch = false
 
+    // This idea here is well supported online, but I think my pinia approach
+    // of caching would be better served by leveraging nuxt caching directly
     return await useFetch(apiUrl(path), requestOptions)
   }
 })

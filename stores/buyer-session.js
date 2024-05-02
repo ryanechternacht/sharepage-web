@@ -20,7 +20,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
     },
     async postActivityData({ swaypageId, body }) {
       const { apiFetch } = useNuxtApp()
-      const { data, error } = await apiFetch(
+      await apiFetch(
         `/v0.1/buyersphere/${swaypageId}/session/${this.sessionId}/timing`,
         { 
           method: 'POST',
@@ -29,6 +29,16 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
       )
     },
     async capturePageTimingIfAppropriate({ swaypageId, page }) {
+      // All of my attempts to create sessions server side and pass them
+      // to the client, to prevent (to save time client side), have failed
+      // miserably. It feels like it _should work_, but it appears to 
+      // not be for some reason. I think that reason is how I'm trying
+      // to use pinia as a cache, instead of using nuxt api fetching
+      // items as the cache
+      if (process.server) {
+        return;
+      }
+
       const usersStore = useUsersStore()
       const shouldTrack = !(await usersStore.isUserSeller())
 
@@ -44,7 +54,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
       }
 
       // setup client side
-      if (!this.clientInitialized && process.client) {
+      if (!this.clientInitialized) {
         timeMe.initialize({
           currentPageName: page,
           idleTimeoutInSeconds: 15,
@@ -70,26 +80,27 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
         this.clientInitialized = true
       }
 
-      // track
-      if (process.client) {
-        // handle switching pages
-        if (this.currentPage !== page) {
-          timeMe.stopTimer(this.currentPage)
-          timeMe.setCurrentPageName(page)
+      // handle switching pages
+      if (this.currentPage !== page) {
+        timeMe.stopTimer(this.currentPage)
+        timeMe.setCurrentPageName(page)
 
-          await this.postActivityData({ 
-            swaypageId, 
-            body: timeMe.getTimeOnAllPagesInSeconds()
-          })
-        }
-
-        timeMe.startTimer(page)
-        this.currentPage = page
+        await this.postActivityData({ 
+          swaypageId, 
+          body: timeMe.getTimeOnAllPagesInSeconds()
+        })
       }
+
+      timeMe.startTimer(page)
+      this.currentPage = page
     },
     async capturePageEventIfAppropriate ({ swaypageId, page, eventType, eventData }) {
+      if (!this.sessionId) {
+        return
+      }
+      
       const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
+       await apiFetch(
         `/v0.1/buyersphere/${swaypageId}/session/${this.sessionId}/${page}/event`, 
         { 
           method: 'POST',
