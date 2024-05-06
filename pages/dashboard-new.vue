@@ -52,7 +52,8 @@
         <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
-        <template v-for="swaypage in swaypages">
+        <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
+          :to="makeNewSwaypageLink(swaypage)">
           <div class="cell">{{ swaypage.buyer }}</div>
           <div class="cell subtext">{{ swaypage.subname }}</div>
           <div class="cell subtext">
@@ -67,7 +68,7 @@
           </div>
           <div class="cell"><!-- TODO Add this field--> Active</div>
           <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
-        </template>
+        </NuxtLink>
       </div>
     </div>
   </div>
@@ -83,6 +84,8 @@ const { apiFetch } = useNuxtApp()
 const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', { 
   // query
 })
+
+const { makeNewSwaypageLink } = useSwaypageLinks()
 
 const { 
   open: openSwaypageModal, 
@@ -152,6 +155,20 @@ function prettyFormatDate(date) {
       inset-inline-start: -5rem;
       inset-block-start: 0;
     }
+  }
+}
+
+.group:hover {
+  .cell {
+    @apply bg-gray-border-light -mx-4 px-4
+  }
+
+  .cell:first-child {
+    @apply -ml-8 pl-8
+  }
+
+  .cell:last-child {
+    @apply -mr-8 pr-8
   }
 }
 

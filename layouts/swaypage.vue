@@ -145,6 +145,7 @@ import lodash_pkg from 'lodash';
 const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
 
 const route = useRoute()
+console.log('route', route)
 const swaypageId = parseInt(route.params.id)
 const swaypagePage = route.params.page
 

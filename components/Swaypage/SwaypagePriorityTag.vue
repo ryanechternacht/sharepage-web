@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-2 items-center">
+  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-2 items-center bg-white">
     <div class="rounded small-text w-[.875rem] mx-auto text-center"
       :class="{'bg-blue-brand text-white': priority === 1,
                'bg-gray-subtext text-white': priority === 2,

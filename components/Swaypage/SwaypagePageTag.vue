@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 grid-layout">
+  <div class="border border-gray-border rounded-md py-.5 px-2 grid-layout bg-white">
     <FileIcon v-if="event.pageType === 'general'" class="icon-submenu gray-subtext" />
     <ArrowRightCircleIcon v-else-if="event.pageType === 'follow-up'" class="icon-submenu gray-subtext" />
     <MapIcon v-else-if="event.pageType === 'guide'" class=" icon-submenu gray-subtext" />

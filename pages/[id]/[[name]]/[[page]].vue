@@ -226,6 +226,7 @@ import { useModal } from 'vue-final-modal'
 useEmbedly()
 
 const route = useRoute()
+console.log('route', route)
 const swaypageId = parseInt(route.params.id)
 const pageId = parseInt(route.params.page)
 

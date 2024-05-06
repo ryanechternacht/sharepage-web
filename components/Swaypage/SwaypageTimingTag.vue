@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-4 items-center">
+  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-4 items-center bg-white">
     <EyeIcon class="icon-submenu gray-subtext" />
     <div class="subtext">{{ formatTime(timing.timeOnPage) }}</div>
   </div>
