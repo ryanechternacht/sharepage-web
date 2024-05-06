@@ -75,7 +75,6 @@ const { concat, filter, join, map, orderBy } = lodash_pkg;
 
 definePageMeta({
   name: 'feed',
-  layout: 'swaypage',
   // TODO middleware
 })
 

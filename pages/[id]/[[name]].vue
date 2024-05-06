@@ -125,7 +125,7 @@
         </div>
       </div>
 
-      <slot />
+      <NuxtPage />
     </div>
 
     <div class="h-[5rem]" /> <!-- bottom spacer -->
