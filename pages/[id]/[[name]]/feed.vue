@@ -36,7 +36,7 @@
         <h2 class="h-[3rem] flex flex-row items-center">Event</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Event Time</h2>
 
-        <template v-for="(session, index) in buyerSessions">
+        <template v-for="session in buyerSessions">
           <div class="cell">{{ session?.linkedName }}</div>
           <div class="cell">
             <div class="timing-grid">
@@ -92,7 +92,6 @@ const [buyerSessions] = await Promise.all([
 ])
 
 const dayjs = useDayjs()
-const todayDayJs = dayjs(new Date().setHours(0,0,0,0))
 function prettyFormatDate(date) {
   return dayjs(date).calendar()
 }
@@ -111,7 +110,7 @@ function prettyFormatDate(date) {
   grid-template-columns: auto 1fr auto;
 
   .cell {
-    @apply py-2 relative;
+    @apply py-2 relative flex flex-row items-center;
   
     &::after {
       @apply absolute bg-gray-border h-[1px] w-screen;
