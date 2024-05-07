@@ -5,11 +5,11 @@
     </NuxtLink>
     <template v-if="isSeller">
       <!-- TOOD point this to the correct route -->
-      <NuxtLink to="/dashboard/insights" class="link">
+      <NuxtLink to="/dashboard-new/feed" class="link">
         <RadioIcon class="icon-menu" />
         <span>Feed</span>
       </NuxtLink>
-      <NuxtLink to="/dashboard/accounts" class="link">
+      <NuxtLink to="/dashboard-new/swaypages" class="link">
         <FileIcon class="icon-menu" />
         <span>Swaypages</span>
       </NuxtLink>
@@ -23,10 +23,10 @@
         <SendIcon class="icon-menu" />
         <span>Campaigns</span>
       </NuxtLink> -->
-      <NuxtLink to="/dashboard/activities" class="link">
+      <!-- <NuxtLink to="/dashboard/activities" class="link">
         <CheckCircleIcon class="icon-menu" />
         <span>Activities</span>
-      </NuxtLink>
+      </NuxtLink> -->
     </template>
 
     <div class="flex-grow" />

@@ -37,7 +37,7 @@
       <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
-      <!-- <h2 class="h-[3rem] flex flex-row items-center">Status</h2> -->
+      <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
@@ -54,7 +54,11 @@
           <SwaypagePriorityTag :priority="swaypage.priority" />
         </div>
         <!-- TODO add this field -->
-        <!-- <div class="cell">Active</div> -->
+        <div class="cell">
+          <SwaypageStatusTag
+            :last-activity-date="swaypage.mostRecentBuyerActivity"
+            :isOnHold="swaypage.status === 'on-hold'" />
+        </div>
         <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
@@ -139,7 +143,7 @@ const roomTypeMap = {
 const activeRooms = computed(() => 
   orderBy(
     filter(swaypages.value, 
-      s => s.status === 'active' && s.roomType === 'deal-room'),
+      s => s.status !== 'archived' && s.roomType === 'deal-room'),
     ['updatedAt'],
     ['desc']
   )
@@ -148,7 +152,7 @@ const activeRooms = computed(() =>
 const templateRooms = computed(() => 
   orderBy(
     filter(swaypages.value, 
-      s => s.status === 'active' && s.roomType === 'template'),
+      s => s.status !== 'archived' && s.roomType === 'template'),
     ['updatedAt'],
     ['desc']
   )
@@ -178,7 +182,7 @@ function prettyFormatDate(date) {
   @apply grid px-8 gap-x-8 border border-gray-border rounded-md overflow-hidden;
   
   &.active-rooms {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
   }
 
   &.template-rooms {
