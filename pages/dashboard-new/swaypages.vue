@@ -10,28 +10,29 @@
         @closed="isDropdownOpen = false">
         <template #trigger>
           <div class="flex flex-row items-center gap-2">
-            <Component :is="roomType.icon" class="subtext" />
+            <Component :is="filterOption.icon" class="subtext" />
             <div class="subtext flex flex-row items-center cursor-pointer">
-              {{ roomType.text }} 
+              {{ filterOption.text }} 
               <ChevronDownIcon class="icon-submenu" />
             </div>
           </div>
         </template>
         <template #body>
           <div class="dropdown-menu">
-            <div v-for="roomType in roomTypes" 
+            <div v-for="filterOption in filterOptions" 
               class="dropdown-item"
               dropdown-closer
-              @click="setFilter(roomType.key)">
-              <Component :is="roomType.icon" class="icon-menu" />  
-              {{ roomType.text }}
+              @click="setFilter(filterOption.key)">
+              <Component :is="filterOption.icon" class="icon-menu" />  
+              {{ filterOption.text }}
             </div>
           </div>
         </template>
       </dropdown-menu>
     </div>
 
-    <div class="room-grid">
+    <div v-if="filterOption.key === 'active'" 
+      class="room-grid active-rooms">
       <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
@@ -39,7 +40,7 @@
       <!-- <h2 class="h-[3rem] flex flex-row items-center">Status</h2> -->
       <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
-      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
+      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
         :to="makeNewSwaypageLink(swaypage)">
         <div class="cell">{{ swaypage.buyer }}</div>
         <div class="cell subtext">{{ swaypage.subname }}</div>
@@ -57,12 +58,54 @@
         <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
+
+    <div v-else-if="filterOption.key === 'templates'" 
+      class="room-grid template-rooms">
+      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+
+      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
+        :to="makeNewSwaypageLink(swaypage)">
+        <div class="cell">{{ swaypage.buyer }}</div>
+        <div class="cell subtext">
+          <template v-if="swaypage.owner">
+            <UserAvatar :user="swaypage.owner" />
+            {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+          </template>
+        </div>
+        <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+      </NuxtLink>
+    </div>
+
+    <div v-if="filterOption.key === 'archive'" 
+      class="room-grid archive-rooms">
+      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Room Type</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+
+      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
+        :to="makeNewSwaypageLink(swaypage)">
+        <div class="cell">{{ swaypage.buyer }}</div>
+        <div class="cell subtext">{{ swaypage.subname }}</div>
+        <div class="cell subtext">
+          <template v-if="swaypage.owner">
+            <UserAvatar :user="swaypage.owner" />
+            {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+          </template>
+        </div>
+        <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
+        <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { find } = lodash_pkg;
+const { concat, filter, find, map, orderBy } = lodash_pkg;
 
 const { apiFetch } = useNuxtApp()
 const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', { 
@@ -71,7 +114,7 @@ const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', {
 
 const { makeNewSwaypageLink } = useSwaypageLinks()
 
-const roomTypes = [
+const filterOptions = [
   {
     text: 'Active',
     icon: markRaw(resolveComponent('FileIcon')),
@@ -86,10 +129,42 @@ const roomTypes = [
     key: 'archive',
   },
 ]
-const roomType = ref(roomTypes[0])
+const filterOption = ref(filterOptions[0])
+
+const roomTypeMap = {
+  'deal-room': 'Deal Room',
+  'template': 'Template'
+}
+
+const activeRooms = computed(() => 
+  orderBy(
+    filter(swaypages.value, 
+      s => s.status === 'active' && s.roomType === 'deal-room'),
+    ['updatedAt'],
+    ['desc']
+  )
+)
+
+const templateRooms = computed(() => 
+  orderBy(
+    filter(swaypages.value, 
+      s => s.status === 'active' && s.roomType === 'template'),
+    ['updatedAt'],
+    ['desc']
+  )
+)
+
+const archiveRooms = computed(() => 
+  orderBy(
+    filter(swaypages.value, 
+      s => s.status === 'archived'),
+    ['updatedAt'],
+    ['desc']
+  )
+)
 
 function setFilter (newType) {
-  roomType.value = find(roomTypes, rt => rt.key === newType)
+  filterOption.value = find(filterOptions, rt => rt.key === newType)
 }
 
 const dayjs = useDayjs()
@@ -101,18 +176,34 @@ function prettyFormatDate(date) {
 <style lang="postcss" scoped>
 .room-grid {
   @apply grid px-8 gap-x-8 border border-gray-border rounded-md overflow-hidden;
-  grid-template-columns: repeat(5, 1fr);
-
-  .cell {
-    @apply py-2 relative flex flex-row items-center gap-2;
   
-    &::after {
-      @apply absolute bg-gray-border h-[1px] w-screen;
-      content: '';
-      inset-inline-start: -5rem;
-      inset-block-start: 0;
-    }
+  &.active-rooms {
+    grid-template-columns: repeat(5, 1fr);
   }
+
+  &.template-rooms {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &.archive-rooms {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.cell {
+  @apply py-2 relative flex flex-row items-center gap-2;
+
+  &::after {
+    @apply absolute bg-gray-border h-[1px] w-screen;
+    content: '';
+    inset-inline-start: -5rem;
+    inset-block-start: 0;
+  }
+}
+
+.template-grid {
+  @apply grid px-8 gap-x-8 border border-gray-border rounded-md overflow-hidden;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .group:hover {
