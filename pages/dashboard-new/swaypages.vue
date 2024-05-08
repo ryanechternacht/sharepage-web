@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-row items-center gap-4">
-    <h1>Home</h1>
+      <h1>Home</h1>
       <!-- TODO use a real dropdown menu for this -->
       <dropdown-menu
         :overlay="false"
