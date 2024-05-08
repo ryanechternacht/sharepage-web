@@ -5,11 +5,11 @@
     </NuxtLink>
     <template v-if="isSeller">
       <!-- TOOD point this to the correct route -->
-      <NuxtLink to="/dashboard-new/feed" class="link">
+      <NuxtLink to="/dashboard/feed" class="link">
         <RadioIcon class="icon-menu" />
         <span>Feed</span>
       </NuxtLink>
-      <NuxtLink to="/dashboard-new/swaypages" class="link">
+      <NuxtLink to="/dashboard/swaypages" class="link">
         <FileIcon class="icon-menu" />
         <span>Swaypages</span>
       </NuxtLink>
