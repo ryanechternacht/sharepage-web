@@ -6,11 +6,11 @@
     <div class="flex flex-col gap-2 w-[36rem]"
       @click="showClearbit = false">
       <div class="flex flex-row items-center mb-3">
-        <h3 class="flex-grow">{{ editMode ? "Edit this" : "Create a new" }} {{ roomType }}</h3>
+        <h3 class="flex-grow">{{ editMode ? "Edit this" : "Create a new" }} {{ roomTypeLabel }}</h3>
         <BsButton @click="emit('close')">Cancel</BsButton>
       </div>
       <div>
-        <h3>{{ roomType }} Name (required)</h3>
+        <h3>{{ roomTypeLabel }} Name (required)</h3>
         <input v-model="buyer"
           class="flex-grow mb-2"
           placeholder="Buyer Name">
@@ -22,7 +22,7 @@
           placeholder="Group Name">
       </div>
       <div v-if="!isDiscoveryRoom" class="mb-4">
-        <h3>{{ roomType }} Logo (required)</h3>
+        <h3>{{ roomTypeLabel }} Logo (required)</h3>
         <input v-model="buyerLogo" 
           class="flex-grow"
           placeholder="Enter url or start typing to search"
@@ -54,7 +54,7 @@
         </select>
       </div>
       <div v-if="editMode">
-        <h3>{{ roomType }} Status</h3>
+        <h3>{{ roomTypeLabel }} Status</h3>
         <select v-model="status"
           class="flex-grow">
           <option value="active">Active</option>
@@ -80,6 +80,13 @@
         <select v-model="isPublic" class="flex-grow">
           <option :value="true">Public</option>
           <option :value="false">Private</option>
+        </select>
+      </div>
+      <div v-if="editMode">
+        <h3>Room Type</h3>
+        <select v-model="roomType" class="flex-grow">
+          <option value="deal-room">Swaypage</option>
+          <option value="template">Template</option>
         </select>
       </div>
       <SubmitButton
@@ -120,7 +127,7 @@ const emit = defineEmits(['close'])
 
 const editMode = ref(!!props.buyersphere.id)
 const isDiscoveryRoom = ref(props.forDiscoveryRoom || props.buyersphere?.roomType === 'discovery-room')
-const roomType = isDiscoveryRoom.value ? "Discovery Room" : "Account"
+const roomTypeLabel = isDiscoveryRoom.value ? "Discovery Room" : "Account"
 
 const store = useSwaypagesStore()
 
@@ -149,6 +156,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
           dealAmount,
           crmOpportunityId,
           isPublic,
+          roomType,
         })
     emit('close', { buyersphereId: props.buyersphere.id })
   } else {
@@ -168,7 +176,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
         crmOpportunityId,
         pageTemplateId: pageTemplateId ?? null, // if id = 0, send null
         pageTitle,
-        roomType: 'deal-room',
+        roomType,
       })
     emit('close', { buyersphereId })
   }
@@ -183,6 +191,7 @@ const pageTemplateId = ref(-1)
 const crmOpportunityId = ref(props.buyersphere?.crmOpportunityId)
 const dealAmount = ref(props.buyersphere?.dealAmount)
 const isPublic = ref(props.buyersphere.isPublic)
+const roomType = ref(props.buyersphere.roomType)
 
 const needsMoreInput = computed(() => !buyer.value 
   || (!isDiscoveryRoom.value && !buyerLogo.value)
