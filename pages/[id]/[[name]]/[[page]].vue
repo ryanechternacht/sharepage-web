@@ -16,20 +16,20 @@
         </SpButton>
       </div>
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
-        <div class="flex flex-row">
+        <div class="flex flex-row items-center">
           <UserAvatar v-for="s in swaypage.sellerTeam" 
-            class="-mr-.5"
+            class="-mr-.5 shrink-0"
             size="small"
             :user="s" />
           <!-- TODO this text should be better -->
-          <div class="ml-4">Made by
+          <div class="ml-4 shrink-0">Made by
             <span v-for="(s, i) in swaypage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
           </div>
         </div>
         <div class="flex-grow" />
           <!-- TODO implement -->
         <!-- <div>active</div> -->
-        <div v-if="canEdit" class="flex flex-row items-center gap-2">
+        <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="swaypage.isPublic">
             <EyeIcon class="text-green-good icon-menu" />
             <div class="subtext">Public</div>

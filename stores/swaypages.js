@@ -74,6 +74,24 @@ export const useSwaypagesStore = defineStore('swaypages', {
       )
       return data.value.id
     },
+    async createSwaypageFromTemplate({ 
+      templateId, buyer, subname, buyerLogo, templateData
+    }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } =  await apiFetch(
+        `/v0.1/buyerspheres/template/${templateId}`,
+        { 
+          method: 'POST', 
+          body: { 
+            buyer,
+            subname,
+            buyerLogo,
+            templateData
+          } 
+        }
+      )
+      return data.value.id
+    },
     async saveSwaypageSettings({
       swaypageId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing,  qualificationDate, 

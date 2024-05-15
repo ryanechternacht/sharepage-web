@@ -2,17 +2,28 @@
   <div>
     <TopNavNew>
       <template #action-button>
-        <SpButton v-if="isSeller"
-          @click="openShareModal">
-          <template #icon>
-            <Link2Icon class="icon-menu" />
-          </template>
-          Share
-        </SpButton>
-        <CopyToClipboardNew v-else
+        <template v-if="swaypage.roomType === 'template'">
+          <SpButton
+            @click="openCreateSwaypageFromTemplate">
+            <template #icon>
+              <FileIcon class="icon-menu" />
+            </template>
+            Create from Template
+          </SpButton>
+        </template>
+        <template v-else>
+          <SpButton v-if="isSeller"
+            @click="openShareModal">
+            <template #icon>
+              <Link2Icon class="icon-menu" />
+            </template>
+            Share
+          </SpButton>
+          <CopyToClipboardNew v-else
           :url="linkToPage"
           :swaypage-id="swaypage.id"
           :page="swaypagePage" />
+        </template>
       </template>
     </TopNavNew>
     <div class="mt-6 layout-grid">
@@ -25,22 +36,37 @@
             <img v-else-if="swaypage.roomType === 'discovery-room'"
               :src="organization.logo"
               class="icon-header">
+            <img v-else-if="swaypage.roomType === 'template'"
+              :src="organization.logo"
+              class="icon-header">
             <h2>{{ swaypage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
               <!-- <StarIcon class="icon-menu justify-self-center text-gray-medium" /> -->
             </div>
-            <div class="subtext">{{ swaypage.subname }}</div>
+            <div v-if="swaypage.roomType === 'template'" class="subtext">Template</div>
+            <div v-else class="subtext">{{ swaypage.subname }}</div>
           </div>
+
+          <div v-if="swaypage.roomType === 'template'">
+            <div class="mt-[2.25rem] mb-1 text-gray-medium">Template Items</div>
+            
+            <div class="flex flex-col gap-1">
+              <div v-for="item in templateItems">
+                {{ item.name }} 
+                <span class="subtext text-[.75rem]">{{ item.key }}</span>
+              </div>
+            </div>
+          </div>
+
           <div>
             <div class="mt-[2.25rem] mb-1 text-gray-medium">Pages</div>
-            <!-- <div class="flex flex-col -ml-6"> -->
             <VueDraggable
               v-model="activePages"
               ghost-class="ghost"
               :animation="200"
               :scroll="false"
-              class="flex flex-col -ml-6 h-full"
+              class="flex flex-col -ml-6"
               group="pages"
               handle=".drag-handle"
             >
@@ -139,13 +165,12 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/ShareLinkModal';
-import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
+import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
 import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
 
 const route = useRoute()
-console.log('route', route)
 const swaypageId = parseInt(route.params.id)
 const swaypagePage = route.params.page
 
@@ -208,11 +233,38 @@ async function savePageOrdering() {
   await swaypageStore.reorderPages({ swaypageId, pages: activePages })
 }
 
-const debouncedReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
+const debouncedPageReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
 
 watch(activePages, () => {
   debouncedPageReorder()
 })
+
+const templateItems = [
+  {
+    name: 'First Name',
+    key: 'first-name',
+  },
+  {
+    name: 'Last Name',
+    key: 'last-name',
+  },
+  {
+    name: 'Company',
+    key: 'company',
+  },
+  {
+    name: 'Data 1',
+    key: 'data-1',
+  },
+  {
+    name: 'Data 2',
+    key: 'data-2',
+  },
+  {
+    name: 'Data 3',
+    key: 'data-3',
+  },
+]
 
 const { 
   open: openShareModal,
@@ -230,27 +282,26 @@ const {
 })
 
 const { 
-  open: openSwaypagePageModal,
-  close: closeSwaypagePageModal
+  open: openCreateSwaypageFromTemplateModal,
+  close: closeCreateSwaypageFromTemplateModal,
 } = useModal({
-  component: AddSwaypagePageModal,
+  component: CreateSwaypageFromTemplateModal,
   attrs: {
-    buyersphereId: swaypage.id,
+    templateId: swaypage.id,
     page: {},
     async onClose (props) {
-      if (props?.pageId) {
-        refreshPages()
+      if (props?.swaypageId) {
         await router.replace({ 
-          path: makeNewSwaypageLink(swaypage, props.pageId)
+          path: `/${props.swaypageId}`
         })
       }
-      closeSwaypagePageModal()
+      closeCreateSwaypageFromTemplateModal()
     }
   }
 })
 
-function createNewPage () {
-  openSwaypagePageModal()
+function openCreateSwaypageFromTemplate () {
+  openCreateSwaypageFromTemplateModal()
 }
 
 async function removePage(page, status) {
