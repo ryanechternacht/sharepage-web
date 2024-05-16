@@ -11,7 +11,7 @@
 
 <script setup>
 const props = defineProps({
-  lastActivityDate: { type: Date, required: true },
+  lastActivityDate: { type: Date },
   isOnHold: { type: Boolean, default: false },
 })
 

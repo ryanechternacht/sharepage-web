@@ -53,7 +53,6 @@
         <div class="cell">
           <SwaypagePriorityTag :priority="swaypage.priority" />
         </div>
-        <!-- TODO add this field -->
         <div class="cell">
           <SwaypageStatusTag
             :last-activity-date="swaypage.mostRecentBuyerActivity"
