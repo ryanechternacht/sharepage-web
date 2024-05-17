@@ -232,7 +232,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { cloneDeep, debounce, filter, find, first, map, max, some } = lodash_pkg;
+const { cloneDeep, debounce, filter, find, findIndex, first, map, max, some } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
