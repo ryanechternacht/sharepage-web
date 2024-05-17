@@ -22,6 +22,10 @@
 import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import { useModal } from 'vue-final-modal'
 
+definePageMeta({
+  middleware: ['enforce-seller'],
+})
+
 const {
   open: openSwaypageModal, 
   close: closeSwaypageModal, 

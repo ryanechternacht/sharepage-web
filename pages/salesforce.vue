@@ -62,7 +62,9 @@ import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import lodash_pkg from 'lodash';
 const { groupBy, map } = lodash_pkg;
 
-
+definePageMeta({
+  middleware: ['dead-page'],
+})
 
 const { featureFlags } = useAppConfig()
 if (!featureFlags.salesforce) {

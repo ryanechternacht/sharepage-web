@@ -22,6 +22,10 @@ const { capitalize } = lodash_pkg;
 
 const route = useRoute()
 
+definePageMeta({
+  middleware: ['dead-page'],
+})
+
 const mainSection = computed(
   () => route.params.section ? route.params.section : 'activities')
 </script>

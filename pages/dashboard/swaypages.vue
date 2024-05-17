@@ -166,6 +166,7 @@ const archiveRooms = computed(() =>
   )
 )
 
+// TODO changing these should affect routing
 function setFilter (newType) {
   filterOption.value = find(filterOptions, rt => rt.key === newType)
 }

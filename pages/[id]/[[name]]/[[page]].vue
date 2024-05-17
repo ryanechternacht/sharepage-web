@@ -95,24 +95,40 @@
             <EditorTextArea v-if="section.type === 'text'"
               v-model="section.text"
               :readonly="!canEdit"
+              :include-ai-prompt="swaypage.roomType === 'template'"
               @insert:text="newTextBlock(index)"
               @insert:header="newHeader(index)"
+              @insert:ai-prompt="newAiBlock(index)"
               @insert:asset="newAsset(index)"
               @delete:item="removeItem(index)" />
             
             <EditorHeader v-if="section.type === 'header'"
               v-model="section.text"
               :readonly="!canEdit"
+              :include-ai-prompt="swaypage.roomType === 'template'"
               @insert:text="newTextBlock(index)"
               @insert:header="newHeader(index)"
+              @insert:ai-prompt="newAiBlock(index)"
+              @insert:asset="newAsset(index)"
+              @delete:item="removeItem(index)" />
+
+            <EditorAiPrompt v-if="section.type === 'ai-prompt'"
+              v-model="section.prompt"
+              :readonly="!canEdit"
+              :include-ai-prompt="swaypage.roomType === 'template'"
+              @insert:text="newTextBlock(index)"
+              @insert:header="newHeader(index)"
+              @insert:ai-prompt="newAiBlock(index)"
               @insert:asset="newAsset(index)"
               @delete:item="removeItem(index)" />
 
             <EditorAsset v-if="section.type === 'asset'"
               v-model="section.link"
               :readonly="!canEdit"
+              :include-ai-prompt="swaypage.roomType === 'template'"
               @insert:text="newTextBlock(index)"
               @insert:header="newHeader(index)"
+              @insert:ai-prompt="newAiBlock(index)"
               @insert:asset="newAsset(index)"
               @click:item="assetClick(section.link)"
               @delete:item="removeItem(index)" />
@@ -139,6 +155,10 @@
                 <div class="dropdown-item"
                   dropdown-closer
                   @click="newTextBlock()">Text Block</div>
+                <div v-if="swaypage.roomType === 'template'" 
+                  class="dropdown-item"
+                  dropdown-closer
+                  @click="newAiBlock()">AI Prompt Block</div>
                 <div class="dropdown-item"
                   dropdown-closer
                   @click="newAsset()">Asset Link</div>
@@ -271,10 +291,6 @@ const page = pageId
 
 const canEdit = isSeller || page.canBuyerEdit
 
-definePageMeta({
-  name: 'swaypage',
-})
-
 const metaTitle = `Discover ${swaypage.buyer}`
 const metaDescription = `Learn more about what ${swaypage.buyer} has to offer`
 
@@ -406,6 +422,20 @@ function newHeader (index) {
   const newBlock = {
     type: "header",
     text: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+function newAiBlock (index) {
+  const newBlock = {
+    type: "ai-prompt",
+    prompt: "",
     key: nextKey++,
   }
   

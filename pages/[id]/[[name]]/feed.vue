@@ -70,12 +70,10 @@
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
-import lodash_pkg from 'lodash';
-const { concat, filter, join, map, orderBy } = lodash_pkg;
 
 definePageMeta({
   name: 'feed',
-  // TODO middleware
+  middleware: ['enforce-seller'],
 })
 
 const route = useRoute()

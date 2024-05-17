@@ -8,9 +8,10 @@
       set the .ProseMirror height correctly. So we are going to flow a value down
       to the .ProseMirror -->
     <template #content>
+      <div>AI Prompt:</div>
       <editor-content
         :editor="editor"
-        class="editor" />
+        class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
     </template>
   </EditorItemTemplate>
 </template>

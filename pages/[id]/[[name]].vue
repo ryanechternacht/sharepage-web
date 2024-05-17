@@ -24,6 +24,10 @@
           :swaypage-id="swaypage.id"
           :page="swaypagePage" />
         </template>
+
+        <button
+          @click="changeRoute"
+          >test button</button>
       </template>
     </TopNavNew>
     <div class="mt-6 layout-grid">
@@ -117,7 +121,7 @@
 
               <div v-if="isSeller" 
                 class="ml-6 sidebar-item"
-                @click="createNewPage">
+                @click="openSwaypagePageModal">
                 <PlusSquareIcon class="text-gray-medium" />
                 <div class="text-gray-medium">New Page</div>
               </div>
@@ -165,10 +169,19 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/ShareLinkModal';
+import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
 import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
 import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
+
+async function changeRoute() {
+  await navigateTo(`/113`)
+}
+
+definePageMeta({
+  middleware: ['enforce-swaypage-visibility'],
+})
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
@@ -267,6 +280,25 @@ const templateItems = [
 ]
 
 const { 
+  open: openSwaypagePageModal,
+  close: closeSwaypagePageModal
+} = useModal({
+  component: AddSwaypagePageModal,
+  attrs: {
+    buyersphereId: swaypageId,
+    page: {},
+    async onClose (props) {
+      if (props?.pageId) {
+        await router.replace({ 
+          path: makeInternalSwaypageLink(buyersphere, props.pageId)
+        })
+      }
+      closeSwaypagePageModal()
+    }
+  }
+})
+
+const { 
   open: openShareModal,
   close: closeShareModal
 } = useModal({
@@ -291,9 +323,10 @@ const {
     page: {},
     async onClose (props) {
       if (props?.swaypageId) {
-        await router.replace({ 
-          path: `/${props.swaypageId}`
-        })
+        // await router.replace({ 
+        //   path: `/${props.swaypageId}`
+        // })
+        await navigateTo(`/${props.swaypageId}`)
       }
       closeCreateSwaypageFromTemplateModal()
     }

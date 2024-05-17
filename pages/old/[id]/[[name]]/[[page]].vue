@@ -52,7 +52,7 @@
             :to="makeInternalSwaypageLink(buyersphere, p.id)">
             {{ p.title }}
           </NuxtLink>
-          <NewButton v-if="isSeller" @click="createNewPage" />
+          <NewButton v-if="isSeller" @click="openSwaypagePageModal" />
 
           <div class="h-[80px]" />
 
@@ -104,6 +104,7 @@ const { debounce, first } = lodash_pkg;
 definePageMeta({
   name: 'swaypageOld',
   key: route => route.params.id,
+  middleware: ['dead-page'],
 })
 
 const route = useRoute()
@@ -249,10 +250,6 @@ const {
     }
   }
 })
-
-function createNewPage () {
-  openSwaypagePageModal()
-}
 
 const { 
   open: openLoginModal,

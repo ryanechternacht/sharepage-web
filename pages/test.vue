@@ -8,6 +8,10 @@
 <script setup>
 const { apiFetch } = useNuxtApp();
 
+definePageMeta({
+  middleware: ['dead-page'],
+})
+
 const status = ref('not tried')
 
 async function tryApi () {

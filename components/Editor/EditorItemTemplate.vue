@@ -23,6 +23,10 @@
             <div class="dropdown-item"
               dropdown-closer
               @click="emit('insert:text')">Text Block</div>
+            <div v-if="includeAiPrompt" 
+              class="dropdown-item"
+              dropdown-closer
+              @click="emit('insert:ai-prompt')">Ai Prompt</div>
             <div class="dropdown-item"
               dropdown-closer
               @click="emit('insert:asset')">Asset Link</div>
@@ -39,6 +43,7 @@
 <script setup>
 const props = defineProps({ 
   readonly: { type: Boolean, default: false },
+  includeAiPrompt: { type: Boolean, default: false },
 })
 
 const isDropdownOpen = ref(false)
