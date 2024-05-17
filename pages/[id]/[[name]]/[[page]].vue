@@ -112,7 +112,7 @@
               @insert:asset="newAsset(index)"
               @delete:item="removeItem(index)" />
 
-            <EditorAiPrompt v-if="section.type === 'ai-prompt'"
+            <EditorAiPromptTemplate v-if="section.type === 'ai-prompt'"
               v-model="section.prompt"
               :readonly="!canEdit"
               :include-ai-prompt="swaypage.roomType === 'template'"

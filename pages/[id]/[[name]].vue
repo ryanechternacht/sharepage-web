@@ -173,7 +173,7 @@ import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
 import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
 import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
-const { debounce, cloneDeep, filter, findIndex, orderBy } = lodash_pkg;
+const { debounce, filter, findIndex, orderBy } = lodash_pkg;
 
 async function changeRoute() {
   await navigateTo(`/113`)
