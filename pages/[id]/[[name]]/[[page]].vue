@@ -95,41 +95,41 @@
             <EditorTextArea v-if="section.type === 'text'"
               v-model="section.text"
               :readonly="!canEdit"
-              :include-ai-prompt="swaypage.roomType === 'template'"
-              @insert:text="newTextBlock(index)"
-              @insert:header="newHeader(index)"
-              @insert:ai-prompt="newAiBlock(index)"
-              @insert:asset="newAsset(index)"
+              :include-ai-prompt="swaypage.roomType !== 'template'"
+              :include-ai-prompt-template="swaypage.roomType === 'template'"
+              @insert:item="insertBlock"
               @delete:item="removeItem(index)" />
             
             <EditorHeader v-if="section.type === 'header'"
               v-model="section.text"
               :readonly="!canEdit"
-              :include-ai-prompt="swaypage.roomType === 'template'"
-              @insert:text="newTextBlock(index)"
-              @insert:header="newHeader(index)"
-              @insert:ai-prompt="newAiBlock(index)"
-              @insert:asset="newAsset(index)"
+              :include-ai-prompt-template="swaypage.roomType === 'template'"
+              :include-ai-prompt="swaypage.roomType !== 'template'"
+              @insert:item="insertBlock"
               @delete:item="removeItem(index)" />
 
-            <EditorAiPromptTemplate v-if="section.type === 'ai-prompt'"
+            <EditorAiPrompt v-if="section.type === 'ai-prompt'"
+              v-model="section"
+              :readonly="!canEdit"
+              :include-ai-prompt-template="swaypage.roomType === 'template'"
+              :include-ai-prompt="swaypage.roomType !== 'template'"
+              @insert:item="insertBlock"
+              @delete:item="removeItem(index)" />
+
+            <EditorAiPromptTemplate v-if="section.type === 'ai-prompt-template'"
               v-model="section.prompt"
               :readonly="!canEdit"
-              :include-ai-prompt="swaypage.roomType === 'template'"
-              @insert:text="newTextBlock(index)"
-              @insert:header="newHeader(index)"
-              @insert:ai-prompt="newAiBlock(index)"
-              @insert:asset="newAsset(index)"
+              :include-ai-prompt-template="swaypage.roomType === 'template'"
+              :include-ai-prompt="swaypage.roomType !== 'template'"
+              @insert:item="insertBlock"
               @delete:item="removeItem(index)" />
 
             <EditorAsset v-if="section.type === 'asset'"
               v-model="section.link"
               :readonly="!canEdit"
-              :include-ai-prompt="swaypage.roomType === 'template'"
-              @insert:text="newTextBlock(index)"
-              @insert:header="newHeader(index)"
-              @insert:ai-prompt="newAiBlock(index)"
-              @insert:asset="newAsset(index)"
+              :include-ai-prompt-template="swaypage.roomType === 'template'"
+              :include-ai-prompt="swaypage.roomType !== 'template'"
+              @insert:item="insertBlock"
               @click:item="assetClick(section.link)"
               @delete:item="removeItem(index)" />
           </template>
@@ -155,10 +155,14 @@
                 <div class="dropdown-item"
                   dropdown-closer
                   @click="newTextBlock()">Text Block</div>
-                <div v-if="swaypage.roomType === 'template'" 
+                <div v-if="swaypage.roomType !== 'template'" 
                   class="dropdown-item"
                   dropdown-closer
                   @click="newAiBlock()">AI Prompt Block</div>
+                <div v-if="swaypage.roomType === 'template'" 
+                  class="dropdown-item"
+                  dropdown-closer
+                  @click="newAiTemplateBlock()">AI Prompt Block</div>
                 <div class="dropdown-item"
                   dropdown-closer
                   @click="newAsset()">Asset Link</div>
@@ -404,6 +408,20 @@ function removeItem (index) {
   body.value.sections.splice(index, 1)
 }
 
+function insertBlock ({ item, index }) {
+  if (item === 'text') {
+    newTextBlock(index)
+  } else if (item === 'header') {
+    newHeader(index)
+  } else if (item === 'asset') {
+    newAsset(index)
+  } else if (item === 'ai-prompt') {
+    newAiBlock(index)
+  } else if (item === 'ai-prompt-template') {
+    newAiTemplateBlock(index)
+  }
+}
+
 function newTextBlock (index) {
   const newBlock = {
     type: "text",
@@ -435,6 +453,21 @@ function newHeader (index) {
 function newAiBlock (index) {
   const newBlock = {
     type: "ai-prompt",
+    prompt: "",
+    text: "",
+    key: nextKey++,
+  }
+  
+  if (index) {
+    body.value.sections.splice(index + 1, 0, newBlock)
+  } else {
+    body.value.sections.push(newBlock)
+  }
+}
+
+function newAiTemplateBlock (index) {
+  const newBlock = {
+    type: "ai-prompt-template",
     prompt: "",
     key: nextKey++,
   }

@@ -1,5 +1,6 @@
 <template>
   <EditorItemTemplate :readonly="readonly"
+    :include-ai-prompt-template="includeAiPromptTemplate"
     :include-ai-prompt="includeAiPrompt"
     @delete:item="emit('delete:item')">
     <template #content>
@@ -20,6 +21,7 @@ const { clone } = lodash_pkg;
 const props = defineProps({ 
   modelValue: { type: String },
   readonly: { type: Boolean, default: false },
+  includeAiPromptTemplate: { type: Boolean, default: false },
   includeAiPrompt: { type: Boolean, default: false },
 })
 

@@ -28,23 +28,17 @@
         :key="section.key">
         <EditorTextArea v-if="section.type === 'text'"
           v-model="section.text"
-          @insert:text="newTextBlock(index)"
-          @insert:header="newHeader(index)"
-          @insert:asset="newAsset(index)"
+          @insert:item="insertBlock"
           @delete:item="removeItem(index)" />
         
         <EditorHeader v-if="section.type === 'header'"
           v-model="section.text"
-          @insert:text="newTextBlock(index)"
-          @insert:header="newHeader(index)"
-          @insert:asset="newAsset(index)"
+          @insert:item="insertBlock"
           @delete:item="removeItem(index)" />
 
         <EditorAsset v-if="section.type === 'asset'"
           v-model="section.link"
-          @insert:text="newTextBlock(index)"
-          @insert:header="newHeader(index)"
-          @insert:asset="newAsset(index)"
+          @insert:item="insertBlock"
           @click:item="assetClick(section.link)"
           @delete:item="removeItem(index)" />
       </template>
@@ -187,6 +181,16 @@ watch(body.value, () => {
 
 function removeItem (index) {
   body.value.sections.splice(index, 1)
+}
+
+function insertBlock ({ item, index }) {
+  if (item === 'text') {
+    newTextBlock(index)
+  } else if (item === 'header') {
+    newHeader(index)
+  } else if (item === 'asset') {
+    newAsset(index)
+  }
 }
 
 function newTextBlock (index) {

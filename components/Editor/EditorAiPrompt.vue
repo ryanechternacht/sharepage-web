@@ -9,9 +9,25 @@
       set the .ProseMirror height correctly. So we are going to flow a value down
       to the .ProseMirror -->
     <template #content>
+      <div>AI Prompt:</div>
       <editor-content
-        :editor="editor"
-        class="editor" />
+        :editor="aiEditor"
+        class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
+
+      <SubmitButton
+        class="text-center"
+        ready-text="Generate Text"
+        submitting-text="Generating!"
+        submitted-text="See Text Below"
+        error-text="Please try again"
+        :submission-state="submissionState"
+        :disabled="needsMoreInput"
+        @click="submitFn" />
+      
+      <div>Output:</div>
+      <editor-content
+        :editor="outputEditor"
+        class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
     </template>
   </EditorItemTemplate>
 </template>
@@ -24,7 +40,7 @@ import lodash_pkg from 'lodash'
 const { debounce } = lodash_pkg;
 
 const props = defineProps({ 
-  modelValue: { type: String },
+  modelValue: { type: Object },
   readonly: { type: Boolean, default: false },
   includeAiPromptTemplate: { type: Boolean, default: false },
   includeAiPrompt: { type: Boolean, default: false },
@@ -32,7 +48,32 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'delete:item'])
 
-const editor = useEditor({
+const prompt = ref(modelValue.prompt)
+
+const aiEditor = useEditor({
+  editable: !props.readonly,
+  content: prompt.value,
+  extensions: [
+    StarterKit.configure({
+      dropcursor: false,
+    }),
+    Placeholder.configure({
+      placeholder: "Start writing...",
+    })
+  ],
+  async onBlur() {
+    prompt.value = aiEditor.value.getHTML()
+  },
+  editorProps: {
+    handleDOMEvents: {
+      // prevents accidentally dropping text into editors when
+      // using our current drag and drop solution
+      drop: (view, e) => { e.preventDefault() }
+    }
+  }
+})
+
+const outputEditor = useEditor({
   editable: !props.readonly,
   content: props.modelValue,
   extensions: [
@@ -74,6 +115,19 @@ function focus () {
 }
 
 defineExpose({ focus })
+
+const { submissionState, submitFn, error } = useSubmit(async () => {
+  const { apiFetch } = useNuxtApp()
+  const { data } = await apiFetch(
+    `/v0.1/buyersphere/${swaypageId}`,
+    { 
+      method: 'POST',
+      body: {
+        prompt: prompt
+      }
+    }
+  )
+})
 </script>
 
 <style lang="postcss" scoped>

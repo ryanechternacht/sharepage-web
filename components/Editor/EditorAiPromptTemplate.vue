@@ -1,5 +1,6 @@
 <template>
   <EditorItemTemplate :readonly="readonly"
+    :include-ai-prompt-template="includeAiPromptTemplate"
     :include-ai-prompt="includeAiPrompt"
     @delete:item="emit('delete:item')">
     <!-- For some reason, setting height on this element and height: 100% on the
@@ -26,6 +27,7 @@ const { debounce } = lodash_pkg;
 const props = defineProps({ 
   modelValue: { type: String },
   readonly: { type: Boolean, default: false },
+  includeAiPromptTemplate: { type: Boolean, default: false },
   includeAiPrompt: { type: Boolean, default: false },
 })
 

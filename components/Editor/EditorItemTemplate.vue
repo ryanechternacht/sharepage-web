@@ -19,17 +19,25 @@
             <h4 class="dropdown-description p-[.125rem]">Insert Below:</h4>
             <div class="dropdown-item"
               dropdown-closer
-              @click="emit('insert:header')">Header</div>
+              @click="emit('insert:item', { item: 'header' })">Header</div>
             <div class="dropdown-item"
               dropdown-closer
-              @click="emit('insert:text')">Text Block</div>
+              @click="emit('insert:item', { item: 'text' })">Text Block</div>
+            <div v-if="includeAiPromptTemplate" 
+              class="dropdown-item"
+              dropdown-closer
+              @click="emit('insert:item', { item: 'ai-prompt-template' })">
+              Ai Prompt
+            </div>
             <div v-if="includeAiPrompt" 
               class="dropdown-item"
               dropdown-closer
-              @click="emit('insert:ai-prompt')">Ai Prompt</div>
+              @click="emit('insert:item', { item: 'ai-prompt' })">
+              Ai Prompt
+            </div>
             <div class="dropdown-item"
               dropdown-closer
-              @click="emit('insert:asset')">Asset Link</div>
+              @click="emit('insert:item', { item: 'asset' })">Asset Link</div>
           </div>
         </template>
       </dropdown-menu>
@@ -43,6 +51,7 @@
 <script setup>
 const props = defineProps({ 
   readonly: { type: Boolean, default: false },
+  includeAiPromptTemplate: { type: Boolean, default: false },
   includeAiPrompt: { type: Boolean, default: false },
 })
 
