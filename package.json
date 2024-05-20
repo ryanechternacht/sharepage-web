@@ -15,7 +15,7 @@
     "@nuxtjs/tailwindcss": "^6.7.0",
     "@types/node": "^18",
     "dayjs-nuxt": "^1.1.2",
-    "nuxt": "^3.5.1",
+    "nuxt": "^3.11.2",
     "nuxt-lodash": "^2.4.1"
   },
   "dependencies": {
@@ -33,7 +33,6 @@
     "timeme.js": "^2.1.0",
     "v-dropdown-menu": "^2.0.4",
     "v-money3": "^3.24.0",
-    "vite-plugin-iso-import": "^1.0.0",
     "vue-draggable-plus": "^0.3.5",
     "vue-final-modal": "^4.4.5",
     "vue3-scroll-spy": "^1.0.8"

@@ -1,5 +1,3 @@
-import { isoImport } from 'vite-plugin-iso-import'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
@@ -63,7 +61,6 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [
-      isoImport()
     ]
   },
 
