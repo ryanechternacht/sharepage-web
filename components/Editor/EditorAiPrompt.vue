@@ -21,13 +21,16 @@
         submitted-text="See Text Below"
         error-text="Please try again"
         :submission-state="submissionState"
-        :disabled="needsMoreInput"
         @click="submitFn" />
       
       <div>Output:</div>
       <editor-content
         :editor="outputEditor"
         class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
+
+      <button @click="commit">save</button>
+        
+      {{ error }}
     </template>
   </EditorItemTemplate>
 </template>
@@ -37,7 +40,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
 import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
 import lodash_pkg from 'lodash'
-const { debounce } = lodash_pkg;
+const { cloneDeep, debounce } = lodash_pkg
 
 const props = defineProps({ 
   modelValue: { type: Object },
@@ -48,7 +51,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'delete:item'])
 
-const prompt = ref(modelValue.prompt)
+const prompt = ref(props.modelValue.prompt)
+const output = ref(props.modelValue.output)
 
 const aiEditor = useEditor({
   editable: !props.readonly,
@@ -62,7 +66,7 @@ const aiEditor = useEditor({
     })
   ],
   async onBlur() {
-    prompt.value = aiEditor.value.getHTML()
+    update()
   },
   editorProps: {
     handleDOMEvents: {
@@ -75,7 +79,7 @@ const aiEditor = useEditor({
 
 const outputEditor = useEditor({
   editable: !props.readonly,
-  content: props.modelValue,
+  content: output.value,
   extensions: [
     StarterKit.configure({
       dropcursor: false,
@@ -85,7 +89,7 @@ const outputEditor = useEditor({
     })
   ],
   async onBlur() {
-    debouncedUpdate()
+    update()
   },
   editorProps: {
     handleDOMEvents: {
@@ -96,38 +100,59 @@ const outputEditor = useEditor({
   }
 })
 
-const debouncedUpdate = debounce(
-  () => emit('update:modelValue', editor.value.getHTML()), 
-  1000,
-  { leading: false, trailing: true }
-)
+function update() {
+  const newSection = cloneDeep(props.modelValue)
+  newSection.prompt = aiEditor.value.getHTML()
+  newSection.output = outputEditor.value.getHTML()
+  emit('update:modelValue', newSection)
+}
+
+// const debouncedUpdate = debounce(
+//   () => {
+
+//     emit('update:modelValue', editor.value.getHTML())
+//   }, 
+//   1000,
+//   { leading: false, trailing: true }
+// )
 
 watch(() => props.modelValue, (newModelValue) => {
-  editor.value.commands.setContent(newModelValue, false)
+  aiEditor.value.commands.setContent(newModelValue.prompt, false)
+  outputEditor.value.commands.setContent(newModelValue.output, false)
 })
 
 watch(() => props.readonly, (newReadonly) => {
-  editor.value.setOptions({ editable: !newReadonly })
+  aiEditor.value.setOptions({ editable: !newReadonly })
+  outputEditor.value.setOptions({ editable: !newReadonly })
 })
 
 function focus () {
-  editor.value.commands.focus()
+  outputEditor.value.commands.focus()
 }
 
 defineExpose({ focus })
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   const { apiFetch } = useNuxtApp()
-  const { data } = await apiFetch(
-    `/v0.1/buyersphere/${swaypageId}`,
-    { 
-      method: 'POST',
-      body: {
-        prompt: prompt
-      }
+  const { data, error } = await apiFetch('/v0.1/templates/generate-text', { 
+    method: 'POST',
+    body: {
+      prompt
     }
-  )
+  })
+
+  console.log(data, error)
+
+  outputEditor.value.commands.setContent(data.value.text, false)
+  update()
 })
+
+function commit() {
+  const newSection = cloneDeep(props.modelValue)
+  newSection.type = 'text'
+  newSection.text = newSection.output
+  emit('update:modelValue', newSection)
+}
 </script>
 
 <style lang="postcss" scoped>

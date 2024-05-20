@@ -109,12 +109,13 @@
               @delete:item="removeItem(index)" />
 
             <EditorAiPrompt v-if="section.type === 'ai-prompt'"
-              v-model="section"
+              :modelValue="section"
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
               @insert:item="insertBlock"
-              @delete:item="removeItem(index)" />
+              @delete:item="removeItem(index)"
+              @update:modelValue="s => updateItem(index, s)" />
 
             <EditorAiPromptTemplate v-if="section.type === 'ai-prompt-template'"
               v-model="section.prompt"
@@ -454,7 +455,7 @@ function newAiBlock (index) {
   const newBlock = {
     type: "ai-prompt",
     prompt: "",
-    text: "",
+    output: "",
     key: nextKey++,
   }
   
@@ -491,6 +492,10 @@ function newAsset (index) {
   } else {
     body.value.sections.push(newBlock)
   }
+}
+
+function updateItem(index, newSection) {
+  body.value.sections[index] = newSection
 }
 
 const { 
