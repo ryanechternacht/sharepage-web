@@ -5,16 +5,16 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' }
   },
 
-  css: ['vue-final-modal/style.css'],
+  css: ['vue-final-modal/style.css', 'assets/css/tailwind.css'],
 
   modules: [
-    '@nuxtjs/tailwindcss', 
-    'nuxt-lodash', 
-    '@pinia/nuxt', 
+    'nuxt-lodash',
+    '@pinia/nuxt',
     '@nuxtjs/google-fonts',
     'dayjs-nuxt',
     'floating-vue/nuxt',
     'nuxt-feather-icons',
+    '@nuxt/ui',
   ],
 
   build: {

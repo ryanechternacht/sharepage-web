@@ -68,6 +68,8 @@ const lastTimeout = ref(null)
 
 <style lang="postcss">
 .v-popper__inner * {
-  @apply text-white tag;
+  /* ryan */
+  @apply text-white;
+  /* @apply text-white tag; */
 }
 </style>

@@ -178,8 +178,10 @@ const iconMap = {
 }
 
 .template-buyer-logo {
-  @apply w-[1.5rem] h-[1.5rem] max-w-[1.5rem] max-h-[1.5rem]
-    center-xy rounded-md;
+  /* @apply w-[1.5rem] h-[1.5rem] max-w-[1.5rem] max-h-[1.5rem]
+    center-xy rounded-md; */
+  @apply w-[1.5rem] h-[1.5rem] max-w-[1.5rem] max-h-[1.5rem] rounded-md;
+  /* ryan */
 }
 
 .circle {

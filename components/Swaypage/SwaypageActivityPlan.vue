@@ -268,7 +268,9 @@ async function unresolveMilestone({ milestone }) {
 
 <style lang="postcss" scoped>
 .estimated-finish {
-  @apply mx-auto p-2 rounded-md bg-purple-background text-purple-secondary center-xy;
+  /* ryan */
+  @apply mx-auto p-2 rounded-md bg-purple-background text-purple-secondary;
+  /* @apply mx-auto p-2 rounded-md bg-purple-background text-purple-secondary center-xy; */
 
   /* midway - left sidebar - btn width - center left margin*/
   margin-left: calc(50vw - 220px - 6.5rem - .75rem);

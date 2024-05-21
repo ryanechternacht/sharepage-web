@@ -95,7 +95,8 @@ defineExpose({ focus })
   }
 
   p, div, span, .body, b {
-    @apply gray;
+    /* @apply gray; */
+    /* ryan */
   }
 
   .ProseMirror {

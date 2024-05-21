@@ -225,6 +225,8 @@ function prettyFormatDate(date) {
 }
 
 .dropdown-item {
-  @apply flex flex-row items-center gap-2 subtext;
+  /* ryan */
+  @apply flex flex-row items-center gap-2;
+  /* @apply flex flex-row items-center gap-2 subtext; */
 }
 </style>

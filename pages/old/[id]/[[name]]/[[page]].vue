@@ -329,7 +329,9 @@ if (process.client) {
   }
 
   .milestone-date {
-    @apply [grid-area:date] text-right tag px-2;
+    /* ryan */
+    /* @apply [grid-area:date] text-right tag px-2; */
+    @apply [grid-area:date] text-right px-2;
   }
 
   .milestone-icon {
