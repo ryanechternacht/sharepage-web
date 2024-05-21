@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
+@layer base {
   h1, .h1 {
     @apply font-sans text-primary text-black;
   }
@@ -110,120 +110,6 @@
   
   .center-xy {
     @apply flex flex-row items-center justify-center;
-  }
-
-  /* LAYOUT */
-  .page-layout {
-    @apply grid gap-y-4;
-    grid-template-rows: auto auto 1fr auto;
-    grid-template-columns: 220px 1fr 220px;
-    grid-template-areas:
-      "top         top           top"
-      "left-header center-header right-header"
-      "left        center        center"
-      "footer      footer        footer";
-  }
-
-  .page-top {
-    @apply px-10 h-[7.5rem] center-xy;
-  }
-
-  .center-header {
-    @apply mx-auto;
-  }
-
-  .left-header {
-    @apply pl-12 pr-3;
-  }
-
-  .right-header {
-    @apply pl-3 pr-12;
-  }
-
-  .page-center {
-    @apply flex flex-col gap-8 relative pl-3 pr-12; 
-    @apply overflow-y-hidden; /* prevent bottom-cover from overflowing */
-  }
-
-  .section {
-    @apply p-4 mt-4 w-full border border-gray-border rounded-md flex flex-col bg-white;
-  
-    h4 {
-      @apply mb-2 mt-4;
-    }
-
-    .group-header {
-      @apply h2;
-      @apply p-2 flex flex-row gap-2 items-end mr-auto rounded-md 
-        mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white;
-    }
-
-    .group-header-input {
-      @apply h2;
-      @apply px-2 py-[.4375rem] ml-[-1px] /* -1px to account for border */
-
-        flex flex-row gap-2 items-center mr-auto rounded-md 
-        mt-[-2.25rem] /*-36px*/ mb-[-1rem] bg-white
-        w-[400px];
-    }
-
-    /* This needs to be created under the group header for the margin to be correct */
-    .item-count {
-      @apply bg-white tag-header p-2 ml-auto mb-[-1rem];
-      margin-top: calc(-1.25rem - 1px);
-
-      > * {
-        @apply tag-header;
-      }
-    }
-
-    .section-add-button {
-      @apply mt-4 mb-[-2rem] bg-white;
-
-      /* midway - left sidebar - btn width - center left margin */
-      margin-left: calc(50vw - 220px - 3.5rem - .75rem);
-
-      /* midway - btn width - center right margin */
-      margin-right: calc(50vw - 3.5rem - 3rem);
-    }
-  }
-
-  /* could this be auto-added with something like :last-child:after ? */
-  .vertical-bar {
-    @apply z-[-1] border border-gray-border absolute self-center
-      my-4;
-    height: calc(100% - 2rem);
-    left: calc(50vw - 220px); /* 220px is the width of the sidebars */
-  }
-
-  .bottom-cover {
-    @apply mt-[-2rem] h-full bg-white;
-  }
-
-  .page-link {
-    @apply block mb-4 cursor-pointer;
-  }
-  
-  .in-page-link {
-    @apply h4;
-    @apply py-2 pl-6 cursor-pointer rounded-md flex flex-row items-center;
-  
-    &.active {
-      @apply bg-gray-hover pl-[.375rem];
-  
-      &::before {
-        @apply h-[.875rem] max-h-[.875rem] mr-1;
-        content: url('/svg/compass.svg');
-      }
-    }
-  
-    &.inactive {
-      @apply text-gray-hover-active cursor-default;
-    }
-  }
-
-  .left-sidebar {
-    @apply sticky top-[2rem] py-2 pl-12 pr-3;
   }
 
   .dropdown-menu {
