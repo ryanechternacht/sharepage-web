@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     colors: {
       // New colors
+      // ryan
       green: {
         primary: '#057A6F',
         secondary: '#09DCC8',
@@ -15,6 +16,8 @@ module.exports = {
         background: '#DFE8F1',
         great: '#41A0FF', // new
         brand: '#007FFF', // new
+        // ryan
+        500: '#36597c',
       },
       black: '#040506', // new
       purple: {
@@ -25,7 +28,10 @@ module.exports = {
         primary: '#753d3d',
         secondary: '#B06868',
         background: '#F2E6E6',
-        alert: '#FF6B6B', // new
+        alert: '#FF6B6B', // new,
+        // ryan
+        500: 'red',
+        400: 'red',
       },
       orange: {
         primary: '#935420',
@@ -47,7 +53,9 @@ module.exports = {
         inactive: '#DEE1E1',
         border: '#E8E9ED',
         hover: '#F3F3F5',
-        'hover-active': '#f3f4f4'
+        'hover-active': '#f3f4f4',
+        // ryan
+        500: '#7C8C9C'
       },
       white: '#FFF'
     },

@@ -31,6 +31,9 @@
       </dropdown-menu>
     </div>
 
+    <UButton>hello world</UButton>
+    <div class="bg-primary-500 w-[1rem] h-[1rem]" />
+
     <div v-if="filterOption.key === 'active'" 
       class="room-grid active-rooms">
       <h2 class="h-[3rem] flex flex-row items-center">Name</h2>

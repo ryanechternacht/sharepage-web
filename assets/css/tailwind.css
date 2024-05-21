@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+@layer components {
   h1, .h1 {
     @apply font-sans text-primary text-black;
   }
