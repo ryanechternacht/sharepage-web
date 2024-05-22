@@ -80,8 +80,6 @@ async function lookupOnClearbit (query) {
 }
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  await new Promise(r => setTimeout(r, 5000));
-
   const swaypageId = await store.createSwaypage({
     buyer,
     subname,

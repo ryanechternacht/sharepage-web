@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import AddEditSwaypageModalNew from '@/components/AddEditSwaypageModalNew'
+import AddSwaypageModal from '@/components/AddSwaypageModal'
 
 definePageMeta({
   middleware: ['enforce-seller'],
@@ -26,7 +26,7 @@ definePageMeta({
 const modal = useModal()
 
 function openModal () {
-  modal.open(AddEditSwaypageModalNew, {
+  modal.open(AddSwaypageModal, {
     async onClose (props) {
       if (props?.swaypageId) {
         const router = useRouter()

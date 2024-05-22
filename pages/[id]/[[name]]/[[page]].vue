@@ -243,10 +243,11 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
-import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
-import AddEditSwaypageLinkModal from '@/components/Swaypage/AddEditSwaypageLinkModal';
-import { useModal } from 'vue-final-modal'
+// import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
+// import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
+// import AddEditSwaypageLinkModal from '@/components/Swaypage/AddEditSwaypageLinkModal';
+// import { useModal } from 'vue-final-modal'
+import EditSwaypageModal from '@/components/EditSwaypageModal'
 
 useEmbedly()
 
@@ -498,41 +499,53 @@ function updateItem(index, newSection) {
   body.value.sections[index] = newSection
 }
 
-const { 
-  open: openPageModal, 
-  close: closePageModal, 
-  patchOptions: patchPageModalOptions,
-} = useModal({
-  component: EditPageSettingsModal,
-  attrs: {
-    swaypageId,
-    onClose () {
-      closePageModal()
-    },
-  }
-})
+// const { 
+//   open: openPageModal, 
+//   close: closePageModal, 
+//   patchOptions: patchPageModalOptions,
+// } = useModal({
+//   component: EditPageSettingsModal,
+//   attrs: {
+//     swaypageId,
+//     onClose () {
+//       closePageModal()
+//     },
+//   }
+// })
 
-function openPageSettingsModal () {
-  patchPageModalOptions({ attrs: { page }})
-  openPageModal()
-}
+// function openPageSettingsModal () {
+//   patchPageModalOptions({ attrs: { page }})
+//   openPageModal()
+// }
 
-const { 
-  open: openSwaypageModal,
-  close: closeSwaypageModal,
-  patchOptions: patchSwaypageModalOptions
-} = useModal({
-  component: AddEditSwaypageModal,
-  attrs: {
-    onClose () {
-      closeSwaypageModal()
+// const { 
+//   open: openSwaypageModal,
+//   close: closeSwaypageModal,
+//   patchOptions: patchSwaypageModalOptions
+// } = useModal({
+//   component: AddEditSwaypageModal,
+//   attrs: {
+//     onClose () {
+//       closeSwaypageModal()
+//     }
+//   }
+// })
+
+// function openSwaypageSettingsModal() {
+//   patchSwaypageModalOptions({ attrs: { buyersphere: swaypage }})
+//   openSwaypageModal()
+// }
+
+const modal = useModal()
+
+function openSwaypageSettingsModal () {
+  // TODO map incoming values
+  modal.open(EditSwaypageModal, {
+    swaypage,
+    async onClose () {
+      modal.close()
     }
-  }
-})
-
-function openSwaypageSettingsModal() {
-  patchSwaypageModalOptions({ attrs: { buyersphere: swaypage }})
-  openSwaypageModal()
+  })
 }
 
 async function restorePage() {
@@ -566,35 +579,35 @@ async function deleteLink(link) {
   })
 }
 
-const { 
-  open: openSwaypageLinkModal,
-  close: closeSwaypageLinkModal,
-  patchOptions: patchSwaypageLinkModalOptions,
-} = useModal({
-  component: AddEditSwaypageLinkModal,
-  attrs: {
-    swaypageId: swaypage.id,
-    async onClose (props) {
-      if (props?.pageId) {
-        refreshPages()
-        await router.replace({ 
-          path: makeNewSwaypageLink(swaypage, props.pageId)
-        })
-      }
-      closeSwaypageLinkModal()
-    }
-  }
-})
+// const { 
+//   open: openSwaypageLinkModal,
+//   close: closeSwaypageLinkModal,
+//   patchOptions: patchSwaypageLinkModalOptions,
+// } = useModal({
+//   component: AddEditSwaypageLinkModal,
+//   attrs: {
+//     swaypageId: swaypage.id,
+//     async onClose (props) {
+//       if (props?.pageId) {
+//         refreshPages()
+//         await router.replace({ 
+//           path: makeNewSwaypageLink(swaypage, props.pageId)
+//         })
+//       }
+//       closeSwaypageLinkModal()
+//     }
+//   }
+// })
 
-function createNewLink () {
-  patchSwaypageLinkModalOptions({ attrs: { link: null }})
-  openSwaypageLinkModal()
-}
+// function createNewLink () {
+//   patchSwaypageLinkModalOptions({ attrs: { link: null }})
+//   openSwaypageLinkModal()
+// }
 
-function editLink (link) {
-  patchSwaypageLinkModalOptions({ attrs: { link, linkId: link.id }})
-  openSwaypageLinkModal()
-}
+// function editLink (link) {
+//   patchSwaypageLinkModalOptions({ attrs: { link, linkId: link.id }})
+//   openSwaypageLinkModal()
+// }
 
 function trackLinkClick(linkText) {
   buyerSessionStore.capturePageEventIfAppropriate({
