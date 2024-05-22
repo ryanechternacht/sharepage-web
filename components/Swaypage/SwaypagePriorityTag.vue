@@ -3,7 +3,7 @@
     <div class="rounded small-text w-[.875rem] mx-auto text-center"
       :class="{'bg-blue-brand text-white': priority === 1,
                'bg-gray-subtext text-white': priority === 2,
-               'bg-gray-border-dark text-subtext': priority === 3}">
+               'bg-gray-border-dark text-sm': priority === 3}">
                {{ priority }}
     </div>    
     <div class="subtext">{{ priorityTag[priority].text }}</div>

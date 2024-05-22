@@ -84,10 +84,11 @@ module.exports = {
       // rajdhani: ['Rajdhani', 'sans-serif']
     },
     fontSize: {
-      primary: ['1.625rem', { fontWeight: '800'} ],
-      secondary: ['1rem', { fontWeight: '600'} ],
-      body: ['.875rem', { fontWeight: '500'} ],
-      subtext: ['.875rem', { fontWeight: '500'} ],
+      xl: ['1.625rem', { fontWeight: '800'} ],
+      lg: ['1rem', { fontWeight: '600'} ],
+      base: ['.875rem', { fontWeight: '500'} ],
+      sm: ['.875rem', { fontWeight: '500'} ],
+      xs: ['.75rem', { fontWeight: '400'} ],
     },
     extend: {
       spacing: {

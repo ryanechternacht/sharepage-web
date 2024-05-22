@@ -372,7 +372,7 @@ async function removePage(page, status) {
   &.router-link-active {
     @apply bg-gray-background rounded-md py-3 my-0 px-2 -mx-2;
 
-    .text-subtext {
+    .text-sm {
       @apply font-semibold;
     }
   }

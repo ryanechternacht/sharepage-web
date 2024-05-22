@@ -4,19 +4,19 @@
 
 @layer base {
   h1, .h1 {
-    @apply font-sans text-primary text-black;
+    @apply font-sans text-xl text-black;
   }
 
   h2, .h2 {
-    @apply font-sans text-secondary text-gray-darker;
+    @apply font-sans text-lg text-gray-darker;
   }
 
   p, div, span, .body {
-    @apply font-sans text-body text-gray-dark;
+    @apply font-sans text-base text-gray-dark;
   }
 
   .subtext {
-    @apply font-sans text-subtext text-gray-medium;
+    @apply font-sans text-sm text-gray-medium;
   }
 
   /* remove below */
