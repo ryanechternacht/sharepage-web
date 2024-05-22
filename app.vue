@@ -5,6 +5,7 @@
       <NuxtPage />
     </NuxtLayout>
     <ModalsContainer />
+    <UModals />
   </div>
 </template>
 

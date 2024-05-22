@@ -11,7 +11,7 @@
     @apply font-sans text-lg text-gray-darker;
   }
 
-  p, div, span, .body {
+  .body {
     @apply font-sans text-base text-gray-dark;
   }
 

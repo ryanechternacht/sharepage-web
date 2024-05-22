@@ -42,7 +42,7 @@
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
         :to="makeNewSwaypageLink(swaypage)">
-        <div class="cell">{{ swaypage.buyer }}</div>
+        <div class="cell body">{{ swaypage.buyer }}</div>
         <div class="cell subtext">{{ swaypage.subname }}</div>
         <div class="cell subtext">
           <template v-if="swaypage.owner">
@@ -58,7 +58,7 @@
             :last-activity-date="swaypage.mostRecentBuyerActivity"
             :isOnHold="swaypage.status === 'on-hold'" />
         </div>
-        <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+        <div class="cell body">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
 
@@ -70,14 +70,14 @@
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
         :to="makeNewSwaypageLink(swaypage)">
-        <div class="cell">{{ swaypage.buyer }}</div>
+        <div class="cell body">{{ swaypage.buyer }}</div>
         <div class="cell subtext">
           <template v-if="swaypage.owner">
             <UserAvatar :user="swaypage.owner" />
             {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
           </template>
         </div>
-        <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+        <div class="cell body">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
 
@@ -91,7 +91,7 @@
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
         :to="makeNewSwaypageLink(swaypage)">
-        <div class="cell">{{ swaypage.buyer }}</div>
+        <div class="cell body">{{ swaypage.buyer }}</div>
         <div class="cell subtext">{{ swaypage.subname }}</div>
         <div class="cell subtext">
           <template v-if="swaypage.owner">
@@ -100,7 +100,7 @@
           </template>
         </div>
         <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
-        <div class="cell">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+        <div class="cell body">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
   </div>

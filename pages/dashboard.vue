@@ -2,13 +2,11 @@
   <div>
     <TopNavNew>
       <template #action-button>
-        <SpButton
-          @click="openCreateSwaypageModal">
-          <template #icon>
-            <FileIcon class="icon-menu" />
-          </template>
+        <UButton
+          icon="i-heroicons-document"
+          @click="openModal">
           New
-        </SpButton>
+        </UButton>
       </template>
     </TopNavNew>
 
@@ -19,37 +17,27 @@
 </template>
 
 <script setup>
-import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
-import { useModal } from 'vue-final-modal'
+import AddEditSwaypageModalNew from '@/components/AddEditSwaypageModalNew'
 
 definePageMeta({
   middleware: ['enforce-seller'],
 })
 
-const {
-  open: openSwaypageModal, 
-  close: closeSwaypageModal, 
-  patchOptions: patchSwaypageModalOptions,
-} = useModal({
-  component: AddEditSwaypageModal,
-  attrs: {
-    buyersphere: {},
+const modal = useModal()
+
+function openModal () {
+  modal.open(AddEditSwaypageModalNew, {
     async onClose (props) {
-      if (props?.buyersphereId) {
+      if (props?.swaypageId) {
         const router = useRouter()
         await router.replace({
           // TODO change when we get rid of the old pages
-          path: `/${props.buyersphereId}`
+          path: `/${props.swaypageId}`
         })
       }
-      closeSwaypageModal()
+      modal.close()
     }
-  }
-})
-
-function openCreateSwaypageModal ({ forDiscoveryRoom } = {}) {
-  patchSwaypageModalOptions({ attrs: { forDiscoveryRoom } })
-  openSwaypageModal()
+  })
 }
 </script>
 
