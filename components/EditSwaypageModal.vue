@@ -37,20 +37,23 @@
             placeholder="Sales Divison, Team, etc" 
             class="w-full" />
         </div>
-        <!-- status -->
+        <div>
+          <div class="text-sm text-gray-subtext mb-1">Status</div>
+          <USelect
+            v-model="status"
+            :options="statusOptions" />
+        </div>
         <div>
           <div class="text-sm text-gray-subtext mb-1">Visibility</div>
           <USelect
             v-model="isPublic"
             :options="visibilityOptions" />
         </div>
-        <!-- Visibility -->
-        <!-- Room Type? -->
         <SubmitButtonNew 
-          icon="i-heroicons-plus-circle"
-          ready-text="Create"
-          submitting-text="Creating"
-          submitted-text="Created"
+          icon="i-heroicons-pencil-square"
+          ready-text="Save"
+          submitting-text="Savings"
+          submitted-text="Saved"
           error-text="Try Again"
           :disabled="needsMoreInput"
           :submissionState="submissionState"
@@ -71,12 +74,12 @@ const emit = defineEmits(['close'])
 const store = useSwaypagesStore()
 
 const clearbitLoading = ref(false)
-const clearbitLogo = ref({ logo: props.swaypage.buyerLogo })
+const clearbitLogo = ref({ logo: props.swaypage?.buyerLogo })
 
-const buyer = ref(props.swaypage.buyer)
-const subname = ref(props.swaypage.subname)
+const buyer = ref(props.swaypage?.buyer)
+const subname = ref(props.swaypage?.subname)
 
-const isPublic = ref(props.swaypage.isPublic ? 'public' : 'private')
+const isPublic = ref(props.swaypage?.isPublic ? 'public' : 'private')
 const visibilityOptions = [
   {
     label: 'Public',
@@ -84,6 +87,20 @@ const visibilityOptions = [
   }, {
     label: 'Private',
     value: 'private',
+  },
+]
+
+const status = ref(props.swaypage?.status)
+const statusOptions = [
+  {
+    label: 'Active',
+    value: 'active',
+  }, {
+    label: 'On Hold',
+    value: 'on-hold',
+  }, {
+    label: 'Archive',
+    value: 'opt-out',
   },
 ]
 
@@ -102,7 +119,7 @@ async function lookupOnClearbit (query) {
   }
 }
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   await store.saveSwaypageSettings({
     swaypageId: props.swaypage.id,
     buyer,
@@ -110,7 +127,8 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     buyerLogo: clearbitLogo.value.logo,
     roomType: 'deal-room',
     isPublic: isPublic.value === 'public',
-    pageTitle: 'New Page'
+    pageTitle: 'New Page',
+    status,
   })
   emit('close')
 })
