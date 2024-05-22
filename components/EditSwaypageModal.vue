@@ -29,7 +29,6 @@
               </div>
             </template>
           </USelectMenu>
-          {{ clearbitLogo }}
         </div>
         <div>
           <div class="text-sm text-gray-subtext mb-1">Context</div>
@@ -43,8 +42,7 @@
           <div class="text-sm text-gray-subtext mb-1">Visibility</div>
           <USelect
             v-model="isPublic"
-            :options="visibilityOptions"
-             />
+            :options="visibilityOptions" />
         </div>
         <!-- Visibility -->
         <!-- Room Type? -->
@@ -78,14 +76,14 @@ const clearbitLogo = ref({ logo: props.swaypage.buyerLogo })
 const buyer = ref(props.swaypage.buyer)
 const subname = ref(props.swaypage.subname)
 
-const isPublic = ref(props.swaypage.isPublic)
+const isPublic = ref(props.swaypage.isPublic ? 'public' : 'private')
 const visibilityOptions = [
   {
     label: 'Public',
-    value: true,
+    value: 'public',
   }, {
     label: 'Private',
-    value: false,
+    value: 'private',
   },
 ]
 
@@ -111,6 +109,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     subname,
     buyerLogo: clearbitLogo.value.logo,
     roomType: 'deal-room',
+    isPublic: isPublic.value === 'public',
     pageTitle: 'New Page'
   })
   emit('close')
