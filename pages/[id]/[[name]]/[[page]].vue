@@ -243,11 +243,11 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-// import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 // import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 // import AddEditSwaypageLinkModal from '@/components/Swaypage/AddEditSwaypageLinkModal';
 // import { useModal } from 'vue-final-modal'
-import EditSwaypageModal from '@/components/EditSwaypageModal'
+import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
+import EditPageModal from '@/components/Modals/EditPageModal'
 
 useEmbedly()
 
@@ -499,44 +499,18 @@ function updateItem(index, newSection) {
   body.value.sections[index] = newSection
 }
 
-// const { 
-//   open: openPageModal, 
-//   close: closePageModal, 
-//   patchOptions: patchPageModalOptions,
-// } = useModal({
-//   component: EditPageSettingsModal,
-//   attrs: {
-//     swaypageId,
-//     onClose () {
-//       closePageModal()
-//     },
-//   }
-// })
-
-// function openPageSettingsModal () {
-//   patchPageModalOptions({ attrs: { page }})
-//   openPageModal()
-// }
-
-// const { 
-//   open: openSwaypageModal,
-//   close: closeSwaypageModal,
-//   patchOptions: patchSwaypageModalOptions
-// } = useModal({
-//   component: AddEditSwaypageModal,
-//   attrs: {
-//     onClose () {
-//       closeSwaypageModal()
-//     }
-//   }
-// })
-
-// function openSwaypageSettingsModal() {
-//   patchSwaypageModalOptions({ attrs: { buyersphere: swaypage }})
-//   openSwaypageModal()
-// }
-
 const modal = useModal()
+
+function openPageSettingsModal () {
+  modal.open(EditPageModal, {
+    swaypageId: swaypage.id,
+    page,
+    async onClose () {
+      modal.close()
+    }
+  })
+}
+
 
 function openSwaypageSettingsModal () {
   // TODO map incoming values

@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import AddSwaypageModal from '@/components/AddSwaypageModal'
+import AddSwaypageModal from '@/components/Modals/AddSwaypageModal'
 
 definePageMeta({
   middleware: ['enforce-seller'],
