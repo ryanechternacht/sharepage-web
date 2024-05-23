@@ -46,7 +46,6 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
-        {{ error }}
       </div>
     </UCard>
   </UModal>

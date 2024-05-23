@@ -16,7 +16,7 @@
           <div class="text-sm text-gray-subtext mb-1">Page Type *</div>
           <USelect
             v-model="pageType"
-            placeholder="Page Title" 
+            placeholder="Page Type" 
             :options="pageTypes"
             class="w-full" />
         </div>

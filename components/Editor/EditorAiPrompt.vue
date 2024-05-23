@@ -29,8 +29,6 @@
         class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
 
       <button @click="commit">save</button>
-        
-      {{ error }}
     </template>
   </EditorItemTemplate>
 </template>

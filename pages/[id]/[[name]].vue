@@ -12,13 +12,9 @@
           </SpButton>
         </template>
         <template v-else>
-          <SpButton v-if="isSeller"
-            @click="openShareModal">
-            <template #icon>
-              <Link2Icon class="icon-menu" />
-            </template>
-            Share
-          </SpButton>
+          <UButton v-if="isSeller"
+            icon="i-heroicons-link"
+            @click="openShareModal">Share</UButton>
           <CopyToClipboardNew v-else
           :url="linkToPage"
           :swaypage-id="swaypage.id"
@@ -164,7 +160,7 @@ import { useUsersStore } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-// import ShareLinkModal from '@/components/ShareLinkModal';
+import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
 // import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
 // import { useModal } from 'vue-final-modal'
@@ -281,6 +277,15 @@ function createNewPage() {
   modal.open(AddEditPageModal, {
     swaypageId: swaypage.id,
     page: null,
+    async onClose () {
+      modal.close()
+    }
+  })
+}
+
+function openShareModal () {
+  modal.open(ShareLinkModal, {
+    swaypage,
     async onClose () {
       modal.close()
     }

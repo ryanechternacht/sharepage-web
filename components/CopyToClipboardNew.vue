@@ -1,55 +1,37 @@
 <template>
-  <SpButton :color="color" :hover-color="hoverColor"
-    v-tooltip="'Copy to Clipboard'"
-    @click="copyToClipboard">
-    <template #icon>
-      <CheckCircleIcon v-if="recentlyClicked"
-        class="icon-menu text-white" />
-      <Link2Icon v-else
-        class="icon-menu text-white" />
+  <UPopover mode="hover">
+    <SubmitButtonNew 
+    icon="i-heroicons-link"
+    submitted-icon="i-heroicons-check-circle"
+    ready-text="Share"
+    submitting-text="Share"
+    submitted-text="Copied"
+    error-text="Try Again"
+    :submissionState="submissionState"
+    @click="submitFn" />
+
+    <template #panel>
+      <div class="p-2">
+        Copy to Clipboard
+      </div>
     </template>
-    <div class="text-white">
-      {{ recentlyClicked ? "Copied" : "Share" }}
-    </div>
-  </SpButton>
+  </UPopover>
 </template>
 
 <script setup>
-import { useBuyerSessionStore } from '@/stores/buyer-session'
-
-const store = useBuyerSessionStore()
-
 const props = defineProps({ 
   color: String,
   hoverColor: String,
   url: { type: String, required: true },
-  swaypageId: { type: Number, required: true },
-  page: { type: String, required: true },
 })
 
-const { makeExternalSwaypageLink, makePersonalizedExternalSwaypageLink } = useSwaypageLinks()
-
-async function copyToClipboard() {
-  clearTimeout(lastTimeout.value)
-
+const { submissionState, submitFn } = useSubmit(async () => {
   if (navigator?.clipboard) {
     await navigator.clipboard.writeText(props.url)
   } else {
     console.log(`can't find navigator, but would copy ${props.url}`)
   }
-  
-  recentlyClicked.value = true
-  lastTimeout.value = setTimeout(() => recentlyClicked.value = false, 3000)
-
-  store.capturePageEventIfAppropriate({ 
-    eventType: "click-share",
-    swaypageId: props.swaypageId,
-    page: props.page,
-  })
-}
-
-const recentlyClicked = ref(false)
-const lastTimeout = ref(null)
+})
 </script>
 
 <style lang="postcss">

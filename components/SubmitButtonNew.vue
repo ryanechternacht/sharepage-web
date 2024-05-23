@@ -1,7 +1,7 @@
 <template>
   <UButton 
-    :disabled="disabled"
-    :icon="icon"
+    :disabled="disabled || submissionState !== 'ready'"
+    :icon="currentIcon"
     :loading="submissionState === 'submitting'"
     block
     @click="emit('click')">
@@ -23,6 +23,22 @@ const props = defineProps({
   disabled: { type: Boolean, default: false },
   submissionState: { type: String, required: true },
   icon: { type: String },
+  readyIcon: { type: String },
+  submittingIcon: { type: String },
+  submittedIcon: { type: String },
+  errorIcon: { type: String },
+})
+
+const currentIcon = computed(() => {
+  if (props.submissionState === 'ready') {
+    return props.readyIcon ?? props.icon
+  } else if (props.submissionState === 'submitting') {
+    return props.submittingIcon ?? props.icon
+  } else if (props.submissionState === 'submitted') {
+    return props.submittedIcon ?? props.icon
+  } else if (props.submissionState === 'error') {
+    return props.errorIcon ?? props.icon
+  }
 })
 
 const emit = defineEmits(['click'])
