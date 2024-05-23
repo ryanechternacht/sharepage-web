@@ -117,7 +117,7 @@
   }
 
   .dropdown-item {
-    @apply p-[.125rem];
+    @apply p-[.125rem] text-sm;
     
     &:hover {
       @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]

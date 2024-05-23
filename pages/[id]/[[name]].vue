@@ -24,10 +24,6 @@
           :swaypage-id="swaypage.id"
           :page="swaypagePage" />
         </template>
-
-        <button
-          @click="changeRoute"
-          >test button</button>
       </template>
     </TopNavNew>
     <div class="mt-6 layout-grid">
@@ -64,7 +60,7 @@
           </div>
 
           <div>
-            <div class="mt-[2.25rem] mb-1 text-gray-medium">Pages</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-medium body">Pages</div>
             <VueDraggable
               v-model="activePages"
               ghost-class="ghost"
@@ -81,7 +77,7 @@
                   :href="makeNewSwaypageLink(swaypage, 'feed')"
                   class="sidebar-item">
                   <RadioIcon />
-                  <div>Feed</div>
+                  <div class="body">Feed</div>
                 </NuxtLink>
               </div>
               <div v-for="p in activePages"
@@ -115,15 +111,15 @@
                   <MessageCircleIcon v-else-if="p.pageType === 'discussion'" class="icon-menu" />
                   <FileTextIcon v-else-if="p.pageType === 'business-case'" class="icon-menu" />
                   <ClipboardIcon v-else-if="p.pageType === 'notes'" class="icon-menu" />
-                  <div>{{ p.title }}</div>
+                  <div class="text-sm">{{ p.title }}</div>
                 </NuxtLink>
               </div>
 
               <div v-if="isSeller" 
                 class="ml-6 sidebar-item"
-                @click="openSwaypagePageModal">
+                @click="createNewPage">
                 <PlusSquareIcon class="text-gray-medium" />
-                <div class="text-gray-medium">New Page</div>
+                <div class="text-gray-medium body">New Page</div>
               </div>
             </VueDraggable>
             <!-- </div> -->
@@ -168,10 +164,10 @@ import { useUsersStore } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-import ShareLinkModal from '@/components/ShareLinkModal';
-import AddSwaypagePageModal from '@/components/Swaypage/AddSwaypagePageModal'
-import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
-import { useModal } from 'vue-final-modal'
+// import ShareLinkModal from '@/components/ShareLinkModal';
+import AddEditPageModal from '@/components/Modals/AddEditPageModal'
+// import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
+// import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, orderBy } = lodash_pkg;
 
@@ -279,63 +275,56 @@ const templateItems = [
   },
 ]
 
-const { 
-  open: openSwaypagePageModal,
-  close: closeSwaypagePageModal
-} = useModal({
-  component: AddSwaypagePageModal,
-  attrs: {
-    buyersphereId: swaypageId,
-    page: {},
-    async onClose (props) {
-      if (props?.pageId) {
-        await router.replace({ 
-          path: makeInternalSwaypageLink(buyersphere, props.pageId)
-        })
-      }
-      closeSwaypagePageModal()
-    }
-  }
-})
+const modal = useModal()
 
-const { 
-  open: openShareModal,
-  close: closeShareModal
-} = useModal({
-  component: ShareLinkModal,
-  attrs: {
-    buyersphereId: swaypage.id,
-    isBuyerspherePublic: swaypage.isPublic,
-    page: {},
+function createNewPage() {
+  modal.open(AddEditPageModal, {
+    swaypageId: swaypage.id,
+    page: null,
     async onClose () {
-      closeShareModal()
+      modal.close()
     }
-  }
-})
-
-const { 
-  open: openCreateSwaypageFromTemplateModal,
-  close: closeCreateSwaypageFromTemplateModal,
-} = useModal({
-  component: CreateSwaypageFromTemplateModal,
-  attrs: {
-    templateId: swaypage.id,
-    page: {},
-    async onClose (props) {
-      if (props?.swaypageId) {
-        // await router.replace({ 
-        //   path: `/${props.swaypageId}`
-        // })
-        await navigateTo(`/${props.swaypageId}`)
-      }
-      closeCreateSwaypageFromTemplateModal()
-    }
-  }
-})
-
-function openCreateSwaypageFromTemplate () {
-  openCreateSwaypageFromTemplateModal()
+  })
 }
+
+// const { 
+//   open: openShareModal,
+//   close: closeShareModal
+// } = useModal({
+//   component: ShareLinkModal,
+//   attrs: {
+//     buyersphereId: swaypage.id,
+//     isBuyerspherePublic: swaypage.isPublic,
+//     page: {},
+//     async onClose () {
+//       closeShareModal()
+//     }
+//   }
+// })
+
+// const { 
+//   open: openCreateSwaypageFromTemplateModal,
+//   close: closeCreateSwaypageFromTemplateModal,
+// } = useModal({
+//   component: CreateSwaypageFromTemplateModal,
+//   attrs: {
+//     templateId: swaypage.id,
+//     page: {},
+//     async onClose (props) {
+//       if (props?.swaypageId) {
+//         // await router.replace({ 
+//         //   path: `/${props.swaypageId}`
+//         // })
+//         await navigateTo(`/${props.swaypageId}`)
+//       }
+//       closeCreateSwaypageFromTemplateModal()
+//     }
+//   }
+// })
+
+// function openCreateSwaypageFromTemplate () {
+//   openCreateSwaypageFromTemplateModal()
+// }
 
 async function removePage(page, status) {
   const i = findIndex(activePages.value,

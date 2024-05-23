@@ -22,7 +22,7 @@
             size="small"
             :user="s" />
           <!-- TODO this text should be better -->
-          <div class="ml-4 shrink-0">Made by
+          <div class="ml-4 shrink-0 text-sm">Made by
             <span v-for="(s, i) in swaypage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
           </div>
         </div>
@@ -179,7 +179,7 @@
       <div class="ml-2">
         <div class="sticky top-[5.75rem]">
           <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
-            <div class="text-gray-medium">Key Links</div>
+            <div class="text-gray-medium text-sm">Key Links</div>
             <VueDraggable
               v-model="links"
               ghost-class="ghost"
@@ -217,7 +217,7 @@
                   target="_blank"
                   @click="trackLinkClick(l.title)">
                   <ExternalLinkIcon class="icon-menu" />
-                  <div class="text-right">{{ l.title }}</div>
+                  <div class="text-right text-sm">{{ l.title }}</div>
                 </a>
               </div>
               
@@ -225,7 +225,7 @@
                 class="rightbar-link"
                 @click="createNewLink">
                 <PlusSquareIcon class="icon-menu text-gray-medium mr-6" />
-                <div class="text-gray-medium text-right">New Link</div>
+                <div class="text-gray-medium text-right text-sm">New Link</div>
               </div>
             </VueDraggable>
           </div>
@@ -246,7 +246,7 @@ import { VueDraggable } from 'vue-draggable-plus'
 // import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
 // import { useModal } from 'vue-final-modal'
 import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
-import EditPageModal from '@/components/Modals/EditPageModal'
+import AddEditPageModal from '@/components/Modals/AddEditPageModal'
 import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
 
 useEmbedly()
@@ -502,7 +502,7 @@ function updateItem(index, newSection) {
 const modal = useModal()
 
 function openPageSettingsModal () {
-  modal.open(EditPageModal, {
+  modal.open(AddEditPageModal, {
     swaypageId: swaypage.id,
     page,
     async onClose () {
@@ -540,8 +540,6 @@ function openSwaypageSettingsModal () {
     }
   })
 }
-
-
 
 async function restorePage() {
   await swaypageStore.updatePage({
@@ -602,7 +600,7 @@ function trackLinkClick(linkText) {
 }
 
 .dropdown-item {
-  @apply p-.5;
+  @apply p-.5 text-sm;
   
   &:hover {
     @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]

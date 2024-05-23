@@ -3,7 +3,7 @@
     <UCard>
       <div class="flex flex-col gap-4">
         <h2 class="mx-auto">
-          Edit Page Settings
+          {{ editMode ? 'Edit Page Settings' : 'New Page' }}
         </h2>
         <div>
           <div class="text-sm text-gray-subtext mb-1">Page Title *</div>
@@ -47,11 +47,13 @@ import { useSwaypagesStore } from '@/stores/swaypages'
 const store = useSwaypagesStore()
 
 const props = defineProps({
-  page: { type: Object, required: true },
+  page: { type: Object, default: {} },
   swaypageId: { type: Number, required: true },
 })
 
 const emit = defineEmits(['close'])
+
+const editMode = !!props.page?.id
 
 const title = ref(props.page?.title)
 
@@ -82,16 +84,28 @@ const pageTypes = [
 ]
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  await store.updatePage({
-    swaypageId: props.swaypageId,
-    pageId: props.page.id,
-    page: {
-      title,
-      pageType,
-      canBuyerEdit: canBuyerEdit.value === 'Yes',
-    },
-  })
-  emit('close')
+  let pageId = null
+  if (editMode) {
+    await store.updatePage({
+      swaypageId: props.swaypageId,
+      pageId: props.page.id,
+      page: {
+        title,
+        pageType,
+        canBuyerEdit: canBuyerEdit.value === 'Yes',
+      },
+    })
+  } else {
+    pageId = await store.createPage({
+      swaypageId: props.swaypageId,
+      page: {
+        title,
+        pageType,
+        canBuyerEdit: canBuyerEdit.value === 'Yes',
+      },      
+    })
+  }
+  emit('close', { pageId })
 })
 
 const needsMoreInput = computed(() => !title.value 
