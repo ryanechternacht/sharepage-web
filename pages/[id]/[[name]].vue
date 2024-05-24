@@ -293,21 +293,6 @@ function openShareModal () {
 }
 
 // const { 
-//   open: openShareModal,
-//   close: closeShareModal
-// } = useModal({
-//   component: ShareLinkModal,
-//   attrs: {
-//     buyersphereId: swaypage.id,
-//     isBuyerspherePublic: swaypage.isPublic,
-//     page: {},
-//     async onClose () {
-//       closeShareModal()
-//     }
-//   }
-// })
-
-// const { 
 //   open: openCreateSwaypageFromTemplateModal,
 //   close: closeCreateSwaypageFromTemplateModal,
 // } = useModal({
