@@ -243,8 +243,6 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-// import EditPageSettingsModal from '@/components/Swaypage/EditPageSettingsModal'
-// import { useModal } from 'vue-final-modal'
 import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
 import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
