@@ -6,8 +6,8 @@
        to the .ProseMirror -->
   <editor-content 
     :editor="editor"
-    class="editor p-2 body border border-gray-border rounded-md"
-    :class="[isDemo ? 'bg-gray-hover' : 'bg-white']" />
+    class="editor p-2 body border border-gray-200 rounded-md"
+    :class="[isDemo ? 'bg-gray-100' : 'bg-white']" />
 </template>
 
 <script setup>
@@ -69,8 +69,7 @@ defineExpose({ focus })
   }
 
   p, div, span, .body, b {
-    /* @apply gray; */
-    /* ryan */
+    @apply text-gray-700;
   }
 
   .ProseMirror {

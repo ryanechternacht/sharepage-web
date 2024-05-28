@@ -28,7 +28,7 @@
         :editor="outputEditor"
         class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
 
-      <button @click="commit">save</button>
+      <UButton @click="commit">Save</UButton>
     </template>
   </EditorItemTemplate>
 </template>
@@ -172,8 +172,7 @@ function commit() {
   }
 
   p, div, span, .body, b {
-    /* @apply gray; */
-    /* ryan */
+    @apply text-gray-700;
   }
 
   .ProseMirror {

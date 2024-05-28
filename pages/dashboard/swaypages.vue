@@ -179,7 +179,7 @@ function prettyFormatDate(date) {
 
 <style lang="postcss" scoped>
 .room-grid {
-  @apply grid px-8 gap-x-8 border border-gray-border rounded-md overflow-hidden;
+  @apply grid px-8 gap-x-8 border border-gray-200 rounded-md overflow-hidden;
   
   &.active-rooms {
     grid-template-columns: repeat(6, 1fr);
@@ -198,7 +198,7 @@ function prettyFormatDate(date) {
   @apply py-2 relative flex flex-row items-center gap-2;
 
   &::after {
-    @apply absolute bg-gray-border h-[1px] w-screen;
+    @apply absolute bg-gray-200 h-[1px] w-screen;
     content: '';
     inset-inline-start: -5rem;
     inset-block-start: 0;
@@ -206,13 +206,13 @@ function prettyFormatDate(date) {
 }
 
 .template-grid {
-  @apply grid px-8 gap-x-8 border border-gray-border rounded-md overflow-hidden;
+  @apply grid px-8 gap-x-8 border border-gray-200 rounded-md overflow-hidden;
   grid-template-columns: repeat(2, 1fr);
 }
 
 .group:hover {
   .cell {
-    @apply bg-gray-border-light -mx-4 px-4
+    @apply bg-gray-100 -mx-4 px-4
   }
 
   .cell:first-child {
@@ -225,8 +225,6 @@ function prettyFormatDate(date) {
 }
 
 .dropdown-item {
-  /* ryan */
-  @apply flex flex-row items-center gap-2 text-sm;
-  /* @apply flex flex-row items-center gap-2 subtext; */
+  @apply flex flex-row items-center gap-2 font-sans text-sm text-gray-400;
 }
 </style>

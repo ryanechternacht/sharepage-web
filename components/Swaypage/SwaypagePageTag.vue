@@ -1,11 +1,11 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 grid-layout bg-white">
-    <FileIcon v-if="event.pageType === 'general'" class="icon-submenu gray-subtext" />
-    <ArrowRightCircleIcon v-else-if="event.pageType === 'follow-up'" class="icon-submenu gray-subtext" />
-    <MapIcon v-else-if="event.pageType === 'guide'" class=" icon-submenu gray-subtext" />
-    <MessageCircleIcon v-else-if="event.pageType === 'discussion'" class="icon-submenu gray-subtext" />
-    <FileTextIcon v-else-if="event.pageType === 'business-case'" class="icon-submenu gray-subtext" />
-    <ClipboardIcon v-else-if="event.pageType === 'notes'" class="icon-submenu gray-subtext" />
+  <div class="border border-gray-200 rounded-md py-.5 px-2 grid-layout bg-white">
+    <FileIcon v-if="event.pageType === 'general'" class="icon-submenu gray-500" />
+    <ArrowRightCircleIcon v-else-if="event.pageType === 'follow-up'" class="icon-submenu gray-500" />
+    <MapIcon v-else-if="event.pageType === 'guide'" class=" icon-submenu gray-500" />
+    <MessageCircleIcon v-else-if="event.pageType === 'discussion'" class="icon-submenu gray-500" />
+    <FileTextIcon v-else-if="event.pageType === 'business-case'" class="icon-submenu gray-500" />
+    <ClipboardIcon v-else-if="event.pageType === 'notes'" class="icon-submenu gray-500" />
     
     <div class="subtext">{{ event.title }}</div>
     

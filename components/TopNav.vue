@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[5rem] w-full flex flex-row items-center gap-8 px-8 border-b border-gray-border-dark">
+  <div class="h-[5rem] w-full flex flex-row items-center gap-8 px-8 border-b border-gray-200">
     <NuxtLink to="/" class="mr-4">
       <img src="/svg/logo-blue.svg" class="icon-header">
     </NuxtLink>
@@ -68,11 +68,11 @@ async function goToLogin () {
   @apply flex flex-row items-center gap-1;
 
   *, :deep(*) {
-    @apply text-gray-medium;
+    @apply text-gray-400;
   }
 
   &.router-link-active {
-    @apply p-2 -mx-2 bg-gray-background rounded-md;
+    @apply p-2 -mx-2 bg-gray-200 rounded-md;
 
     *, :deep(*) {
       @apply text-blue-brand;

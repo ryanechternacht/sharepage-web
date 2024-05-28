@@ -27,12 +27,12 @@
 
     <div class="mx-auto w-[800px] flex flex-col gap-2">
       <div v-for="g in oppsGrouped"
-        class="border border-gray-hover-active rounded-md p-4 border-l-[10px]">
+        class="border border-gray-100-active rounded-md p-4 border-l-[10px]">
         <div class="flex flex-row items-center gap-5 mb-3">
           <img :src="g.logo" class="w-[1.5rem] max-h-6">
           <h3 class="w-[15rem] truncate">{{ g.accountName }}</h3>
           <!-- TODO wrong owner? -->
-          <Tag width="8.875rem" height="24px">{{ g.opportunities[0].ownerName }}</Tag>
+          <!-- <Tag width="8.875rem" height="24px">{{ g.opportunities[0].ownerName }}</Tag> -->
         </div>
 
         <div class="flex flex-col gap-3">
@@ -40,8 +40,8 @@
             class="flex flex-row ml-10 gap-4">
             <div>{{ o.buyersphereId ? "🪐" : "⭐️" }}</div>
             <div class="w-[15rem] truncate">{{ o.name }}</div>
-            <Tag color="blue" width="5rem">{{ formatDate(o.closeDate) }}</Tag>
-            <Tag color="teal" width="3rem">{{ format(o.amount / 1000, thousands) }}</Tag>
+            <!-- <Tag color="blue" width="5rem">{{ formatDate(o.closeDate) }}</Tag> -->
+            <!-- <Tag color="teal" width="3rem">{{ format(o.amount / 1000, thousands) }}</Tag> -->
             <div class="ml-auto">
               <UButton v-if="o.buyersphereId"
                 class="w-[4.25rem]">View</UButton>
@@ -142,10 +142,10 @@ const oppsGrouped = computed(() =>
 
 <style lang="postcss" scoped>
 .login-box {
-  @apply border border-gray-hover-active rounded-md p-1;
+  @apply border border-gray-100-active rounded-md p-1;
 
   &.need-to-login {
-    @apply border-0 bg-green-primary text-white;
+    @apply border-0 bg-green-[#057A6F] text-white;
   }
 }
 
@@ -157,7 +157,7 @@ const oppsGrouped = computed(() =>
     @apply contents;
 
     .header-cell {
-      @apply border-b border-gray-hover-active font-bold p-2;
+      @apply border-b border-gray-100-active font-bold p-2;
     }
   }
 
@@ -168,7 +168,7 @@ const oppsGrouped = computed(() =>
     @apply p-2 flex flex-row items-center;
   }
     &:hover .grid-cell {
-      @apply bg-gray-hover;
+      @apply bg-gray-100;
 
       .create-button {
         @apply block;

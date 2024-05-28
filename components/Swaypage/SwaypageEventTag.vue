@@ -1,6 +1,6 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-4 items-center bg-white">
-    <Link2Icon class="icon-submenu gray-subtext" />
+  <div class="border border-gray-200 rounded-md py-.5 px-2 flex flex-row gap-4 items-center bg-white">
+    <Link2Icon class="icon-submenu gray-500" />
     
     <div class="subtext">{{ eventMap[event.eventType].text }}</div>
   </div>

@@ -34,14 +34,14 @@
             <h2>{{ swaypage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
-              <!-- <StarIcon class="icon-menu justify-self-center text-gray-medium" /> -->
+              <!-- <StarIcon class="icon-menu justify-self-center text-gray-400" /> -->
             </div>
             <div v-if="swaypage.roomType === 'template'" class="subtext">Template</div>
             <div v-else class="subtext">{{ swaypage.subname }}</div>
           </div>
 
           <div v-if="swaypage.roomType === 'template'">
-            <div class="mt-[2.25rem] mb-1 text-gray-medium">Template Items</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-400">Template Items</div>
             
             <div class="flex flex-col gap-1">
               <div v-for="item in templateItems">
@@ -52,7 +52,7 @@
           </div>
 
           <div>
-            <div class="mt-[2.25rem] mb-1 text-gray-medium body">Pages</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-400 body">Pages</div>
             <VueDraggable
               v-model="activePages"
               ghost-class="ghost"
@@ -110,8 +110,8 @@
               <div v-if="isSeller" 
                 class="ml-6 sidebar-item"
                 @click="createNewPage">
-                <PlusSquareIcon class="text-gray-medium" />
-                <div class="text-gray-medium body">New Page</div>
+                <PlusSquareIcon class="text-gray-400" />
+                <div class="text-gray-400 body">New Page</div>
               </div>
             </VueDraggable>
             <!-- </div> -->
@@ -127,8 +127,8 @@
               <template #trigger>
                 <div v-if="isSeller" 
                   class="cursor-pointer flex flex-row gap-4 items-center">
-                  <ArchiveIcon class="text-gray-medium" />
-                  <div class="text-gray-medium">Archive</div>
+                  <ArchiveIcon class="text-gray-400" />
+                  <div class="text-gray-400">Archive</div>
                 </div>
               </template>
               <template #body>
@@ -336,7 +336,7 @@ async function removePage(page, status) {
   @apply w-full py-2 my-1 cursor-pointer flex flex-row gap-4 items-center;
 
   &.router-link-active {
-    @apply bg-gray-background rounded-md py-3 my-0 px-2 -mx-2;
+    @apply bg-gray-200 rounded-md py-3 my-0 px-2 -mx-2;
 
     .text-sm {
       @apply font-semibold;

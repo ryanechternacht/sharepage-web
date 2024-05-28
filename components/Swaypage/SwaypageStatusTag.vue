@@ -1,10 +1,10 @@
 <template>
-  <div class="border border-gray-border rounded-md py-.5 px-2 flex flex-row gap-2 items-center bg-white">
+  <div class="border border-gray-200 rounded-md py-.5 px-2 flex flex-row gap-2 items-center bg-white">
     <div class="rounded-full w-2 h-2"
-      :class="{'bg-blue-great': status === 'Engaged',
-               'bg-green-good': status === 'Active',
-               'bg-orange-neutral': status === 'On Hold',
-               'bg-red-alert': status === 'Inactive'}" />
+      :class="{'bg-blue-500': status === 'Engaged',
+               'bg-green-300': status === 'Active',
+               'bg-orange-300': status === 'On Hold',
+               'bg-red-400': status === 'Inactive'}" />
     <div class="subtext">{{ status }}</div>
   </div>
 </template>

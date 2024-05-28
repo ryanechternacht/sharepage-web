@@ -6,14 +6,14 @@
           Create Swaypage from this Template
         </h2>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Name *</div>
+          <div class="text-sm text-gray-500 mb-1">Name *</div>
           <UInput
             v-model="buyer"
             placeholder="Account Name" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Logo *</div>
+          <div class="text-sm text-gray-500 mb-1">Logo *</div>
           <USelectMenu
             v-model="clearbitLogo"
             :loading="clearbitLoading"
@@ -31,7 +31,7 @@
           </USelectMenu>
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Context</div>
+          <div class="text-sm text-gray-500 mb-1">Context</div>
           <UInput
             v-model="subname"
             placeholder="Sales Divison, Team, etc" 
@@ -39,32 +39,32 @@
         </div>
         <div>
           <h3 class="mb-2">Template Data</h3>
-          <div class="text-sm text-gray-subtext mb-1">First Name</div>
+          <div class="text-sm text-gray-500 mb-1">First Name</div>
           <UInput
             v-model="firstName"
             placeholder="First Name" 
             class="mb-2" />
-          <div class="text-sm text-gray-subtext mb-1">Last Name</div>
+          <div class="text-sm text-gray-500 mb-1">Last Name</div>
           <UInput
             v-model="lastName"
             placeholder="Last Name" 
             class="mb-2" />
-          <div class="text-sm text-gray-subtext mb-1">Company</div>
+          <div class="text-sm text-gray-500 mb-1">Company</div>
           <UInput
             v-model="company"
             placeholder="Company Name" 
             class="mb-2" />
-          <div class="text-sm text-gray-subtext mb-1">Data 1</div>
+          <div class="text-sm text-gray-500 mb-1">Data 1</div>
           <UInput
             v-model="data1"
             placeholder="Data 1" 
             class="mb-2" />
-          <div class="text-sm text-gray-subtext mb-1">Data 2</div>
+          <div class="text-sm text-gray-500 mb-1">Data 2</div>
           <UInput
             v-model="data2"
             placeholder="Data 2" 
             class="mb-2" />
-          <div class="text-sm text-gray-subtext mb-1">Data 3</div>
+          <div class="text-sm text-gray-500 mb-1">Data 3</div>
           <UInput
             v-model="data3"
             placeholder="Data 3" 

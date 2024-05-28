@@ -6,14 +6,14 @@
           {{ editMode ? "Edit" : "Add" }} Link
         </h2>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Link Title *</div>
+          <div class="text-sm text-gray-500 mb-1">Link Title *</div>
           <UInput
             v-model="title"
             placeholder="Link Title" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Link Url *</div>
+          <div class="text-sm text-gray-500 mb-1">Link Url *</div>
           <UInput
             v-model="linkUrl"
             placeholder="Link Url"

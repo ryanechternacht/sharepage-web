@@ -6,7 +6,7 @@
 
         <template v-if="selectedTab === 0">
           <div>
-            <div class="text-sm text-gray-subtext mb-1">Name *</div>
+            <div class="text-sm text-gray-500 mb-1">Name *</div>
             <UInput
               v-model="recipient"
               placeholder="Recipient's Name" 

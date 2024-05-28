@@ -6,14 +6,14 @@
           Edit Swaypage Settings
         </h2>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Name *</div>
+          <div class="text-sm text-gray-500 mb-1">Name *</div>
           <UInput
             v-model="buyer"
             placeholder="Account Name" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Logo *</div>
+          <div class="text-sm text-gray-500 mb-1">Logo *</div>
           <USelectMenu
             v-model="clearbitLogo"
             :loading="clearbitLoading"
@@ -31,20 +31,20 @@
           </USelectMenu>
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Context</div>
+          <div class="text-sm text-gray-500 mb-1">Context</div>
           <UInput
             v-model="subname"
             placeholder="Sales Divison, Team, etc" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Status</div>
+          <div class="text-sm text-gray-500 mb-1">Status</div>
           <USelect
             v-model="status"
             :options="statusOptions" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Visibility</div>
+          <div class="text-sm text-gray-500 mb-1">Visibility</div>
           <USelect
             v-model="isPublic"
             :options="visibilityOptions" />

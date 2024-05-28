@@ -33,9 +33,4 @@ const { submissionState, submitFn } = useSubmit(async () => {
 </script>
 
 <style lang="postcss">
-.v-popper__inner * {
-  /* @apply text-white tag; */
-  @apply text-white;
-  /* ryan */
-}
 </style>

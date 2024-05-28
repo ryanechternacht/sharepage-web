@@ -52,19 +52,19 @@
             <div class="timing-grid">
               <div v-for="timing in session.timings"
                 class="contents group">
-                <div class="p-2 group-hover:bg-gray-border-light flex flex-row items-start">
+                <div class="p-2 group-hover:bg-gray-100 flex flex-row items-start">
                   <SwaypageTimingTag :timing="timing" />
                 </div>
-                <div class="p-2 pr-8 group-hover:bg-gray-border-light flex flex-row items-start">
+                <div class="p-2 pr-8 group-hover:bg-gray-100 flex flex-row items-start">
                   <SwaypagePageTag :event="timing" />
                 </div>
               </div>
               <div v-for="event in session.events"
                 class="contents group">
-                <div class="p-2 group-hover:bg-gray-border-light flex flex-row items-start">
+                <div class="p-2 group-hover:bg-gray-100 flex flex-row items-start">
                   <SwaypageEventTag :event="event" />
                 </div>
-                <div class="p-2 pr-8 group-hover:bg-gray-border-light flex flex-row items-start">
+                <div class="p-2 pr-8 group-hover:bg-gray-100 flex flex-row items-start">
                   <SwaypagePageTag :event="event" />
                 </div>
               </div>
@@ -97,7 +97,7 @@ function prettyFormatDate(date) {
 
 <style lang="postcss" scoped>
 .page-area {
-  @apply border border-gray-border-dark rounded-md px-2 py-1;
+  @apply border border-gray-200 rounded-md px-2 py-1;
   /* TODO this is based on the current top nav height */
   min-height: calc(100vh - 5rem);
   overflow: hidden;
@@ -111,7 +111,7 @@ function prettyFormatDate(date) {
     @apply py-2 relative flex flex-row items-center;
   
     &::after {
-      @apply absolute bg-gray-border h-[1px] w-screen;
+      @apply absolute bg-gray-200 h-[1px] w-screen;
       content: '';
       inset-inline-start: -5rem;
       inset-block-start: 0;

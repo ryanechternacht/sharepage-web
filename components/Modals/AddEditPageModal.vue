@@ -6,14 +6,14 @@
           {{ editMode ? 'Edit Page Settings' : 'New Page' }}
         </h2>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Page Title *</div>
+          <div class="text-sm text-gray-500 mb-1">Page Title *</div>
           <UInput
             v-model="title"
             placeholder="Page Title" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Page Type *</div>
+          <div class="text-sm text-gray-500 mb-1">Page Type *</div>
           <USelect
             v-model="pageType"
             placeholder="Page Type" 
@@ -21,7 +21,7 @@
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-subtext mb-1">Can Buyer Edit *</div>
+          <div class="text-sm text-gray-500 mb-1">Can Buyer Edit *</div>
           <USelect
             v-model="canBuyerEdit"
             :options="canBuyerEditOptions"

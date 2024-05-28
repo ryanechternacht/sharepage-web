@@ -8,25 +8,25 @@
   }
 
   h2, .h2 {
-    @apply font-sans text-lg text-gray-darker;
+    @apply font-sans text-lg text-gray-800;
   }
 
   .body {
-    @apply font-sans text-base text-gray-dark;
+    @apply font-sans text-base text-gray-800;
   }
 
   .subtext {
-    @apply font-sans text-sm text-gray-medium;
+    @apply font-sans text-sm text-gray-400;
   }
 
   /* remove below */
   h3, .h3, .body-header {
-    @apply font-sans font-semibold text-gray-body;
+    @apply font-sans font-semibold text-gray-700;
     font-size: .875rem; /* 14px */
   }
 
   h4, .h4, .tag-header {
-    @apply font-sans font-medium text-gray-body;
+    @apply font-sans font-medium text-gray-700;
     font-size: .75rem; /* 12px */
   }
 
@@ -51,7 +51,7 @@
   }
 
   .tag {
-    @apply font-sans font-normal text-gray-subtext;
+    @apply font-sans font-normal text-gray-500;
     font-size: .75rem; /* 12px */
   }
 
@@ -60,23 +60,23 @@
   }
 
   .gray {
-    @apply text-gray-subtext;
+    @apply text-gray-500;
 
     * {
-      @apply text-gray-subtext;
+      @apply text-gray-500;
     }
   }
 
   .gray-italic {
-    @apply text-gray-subtext italic;
+    @apply text-gray-500 italic;
 
     * {
-      @apply text-gray-subtext;
+      @apply text-gray-500;
     }
   }
 
   input, select {
-    @apply p-2 body border border-gray-border rounded-md;
+    @apply p-2 body border border-gray-200 rounded-md;
     @apply gray;
 
     &:focus-visible {
@@ -120,7 +120,7 @@
     @apply p-[.125rem] text-sm;
     
     &:hover {
-      @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
+      @apply hover:bg-gray-100 hover:px-[.5rem] hover:mx-[-.375rem]
         cursor-pointer;
     }
   }

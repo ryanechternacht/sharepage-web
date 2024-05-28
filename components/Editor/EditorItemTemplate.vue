@@ -15,7 +15,7 @@
             <div class="dropdown-item"
               dropdown-closer
               @click="emit('delete:item')">Delete</div>
-            <hr class="border-gray-border">
+            <hr class="border-gray-200">
             <h4 class="dropdown-description p-[.125rem]">Insert Below:</h4>
             <div class="dropdown-item"
               dropdown-closer
@@ -80,10 +80,10 @@ const emit = defineEmits(['delete:item', 'insert:text', 'insert:header', 'insert
 }
 
 .component:hover .content {
-  @apply border-l-gray-subtext;
+  @apply border-l-gray-500;
 
   &.readonly {
-    @apply border-l-gray-border;
+    @apply border-l-gray-200;
   }
 }
 

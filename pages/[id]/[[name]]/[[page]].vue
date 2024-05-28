@@ -5,7 +5,7 @@
     </h2>
     <div v-else>
       <div v-if="page.status === 'archived'"
-        class="p-2 rounded-md bg-gray-background flex flex-row items-center">
+        class="p-2 rounded-md bg-gray-200 flex flex-row items-center">
         <div>This page is currently archived.</div>
         <div class="flex-grow" />
         <UButton icon="i-heroicons-arrow-uturn-left"
@@ -29,18 +29,18 @@
         <!-- <div>active</div> -->
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="swaypage.isPublic">
-            <EyeIcon class="text-green-good icon-menu" />
+            <EyeIcon class="text-green-300 icon-menu" />
             <div class="subtext">Public</div>
           </template>
           <template v-else>
-            <EyeOffIcon class="text-orange-neutral icon-menu" />
+            <EyeOffIcon class="text-orange-300 icon-menu" />
             <div class="subtext">Private</div>
           </template>
         </div>
         <div v-if="canEdit" class="flex flex-row items-center gap-2">
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
-          <div :class="{'text-blue-great': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
-                        'text-orange-neutral': saveSubmissionState === 'submitting'}">
+          <div :class="{'text-blue-500': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
+                        'text-orange-300': saveSubmissionState === 'submitting'}">
             <FileIcon class="icon-menu" />
           </div>  
           <div class="subtext w-[3.25rem]">
@@ -142,7 +142,7 @@
             @closed="isDropdownOpen = false">
             <template #trigger>
               <div class="mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
-                <PlusSquareIcon class="text-gray-medium icon-menu" />
+                <PlusSquareIcon class="text-gray-400 icon-menu" />
                 <div class="subtext">New</div>
               </div>
             </template>
@@ -177,7 +177,7 @@
       <div class="ml-2">
         <div class="sticky top-[5.75rem]">
           <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
-            <div class="text-gray-medium text-sm">Key Links</div>
+            <div class="text-gray-400 text-sm">Key Links</div>
             <VueDraggable
               v-model="links"
               ghost-class="ghost"
@@ -222,8 +222,8 @@
               <div v-if="isSeller"
                 class="rightbar-link"
                 @click="createNewLink">
-                <PlusSquareIcon class="icon-menu text-gray-medium mr-6" />
-                <div class="text-gray-medium text-right text-sm">New Link</div>
+                <PlusSquareIcon class="icon-menu text-gray-400 mr-6" />
+                <div class="text-gray-400 text-right text-sm">New Link</div>
               </div>
             </VueDraggable>
           </div>
@@ -580,7 +580,7 @@ function trackLinkClick(linkText) {
 
 <style lang="postcss" scoped>
 .page-area {
-  @apply border border-gray-border-dark rounded-md px-2 py-1;
+  @apply border border-gray-200 rounded-md px-2 py-1;
   /* TODO this is based on the current top nav height */
   min-height: calc(100vh - 5rem);
 }
@@ -599,7 +599,7 @@ function trackLinkClick(linkText) {
   @apply p-.5 text-sm;
   
   &:hover {
-    @apply hover:bg-gray-hover hover:px-[.5rem] hover:mx-[-.375rem]
+    @apply hover:bg-gray-100 hover:px-[.5rem] hover:mx-[-.375rem]
       cursor-pointer;
   }
 }

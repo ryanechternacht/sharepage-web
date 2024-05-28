@@ -13,7 +13,7 @@
       <div class="flex flex-row items-center justify-end gap-x-3">
         <!-- TODO add these login options back if we use this for more than login -->
         <NuxtLink to="/login" class="gray">LOG IN</NuxtLink>
-        <NuxtLink to="/signup" class="button">SIGNUP</NuxtLink>
+        <UButton to="/signup">SIGNUP</UButton>
       </div>
     </div>
     <!-- TODO get this height to center dynamically -->
@@ -24,11 +24,4 @@
 </template>
 
 <style lang="postcss" scoped>
-.button {
-  /* ryan */
-  @apply p-2 rounded-md bg-blue-primary text-center;
-  /* @apply p-2 rounded-md bg-blue-primary body text-center; */
-  @apply font-bold text-white;
-}
 </style>
-

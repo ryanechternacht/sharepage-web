@@ -2,78 +2,70 @@ module.exports = {
   content: ['./src/**/*.{html,js}'],
   theme: {
     colors: {
-      // New colors
-      // ryan
       green: {
-        primary: '#057A6F',
-        secondary: '#09DCC8',
-        background: '#DDECEA',
-        good: '#68D391', // new
+        '50': '#eefbf2',
+        '100': '#d6f5de',
+        '200': '#b0eac2',
+        '300': '#68d391', // good
+        '400': '#47c079',
+        '500': '#24a55e',
+        '600': '#16854b',
+        '700': '#126a3e',
+        '800': '#105532',
+        '900': '#0e462b',
+        '950': '#072718',
       },
       blue: {
-        primary: '#36597c',
-        secondary: '#5f8cb9',
-        background: '#DFE8F1',
-        great: '#41A0FF', // new
-        brand: '#007FFF', // new
-        // ryan
+        brand: '#007FFF',
         '50': '#eef8ff',
         '100': '#d9efff',
         '200': '#bce3ff',
         '300': '#8ed3ff',
         '400': '#59b8ff',
-        '500': '#41a0ff',
+        '500': '#41a0ff', // great
         '600': '#1b79f5',
         '700': '#1463e1',
         '800': '#174fb6',
         '900': '#19458f',
         '950': '#142b57',
       },
-      black: '#040506', // new
-      purple: {
-        secondary: '#AC44A8',
-        background: '#EAE6F2',
-      },
+      black: '#040506',
       red: {
-        primary: '#753d3d',
-        secondary: '#B06868',
-        background: '#F2E6E6',
-        alert: '#FF6B6B', // new,
-        // ryan
-        500: 'red',
-        400: 'red',
+        '50': '#fff1f1',
+        '100': '#ffe1e1',
+        '200': '#ffc7c7',
+        '300': '#ffa0a0',
+        '400': '#ff6b6b', // alert
+        '500': '#f83b3b',
+        '600': '#e51d1d',
+        '700': '#c11414',
+        '800': '#a01414',
+        '900': '#841818',
+        '950': '#480707',
       },
       orange: {
-        primary: '#935420',
-        secondary: '#DFA16C',
-        background: '#FCF6F1',
-        neutral: '#FFC658', // new
-      },
+        '50': '#fff9eb',
+        '100': '#ffeec6',
+        '200': '#ffda88',
+        '300': '#ffc658', // neutral
+        '400': '#ffa920',
+        '500': '#f98507',
+        '600': '#dd6002',
+        '700': '#b74006',
+        '800': '#94300c',
+        '900': '#7a290d',
+        '950': '#461302',
+    },
       gray: {
-        darker: '#131920', // new
-        dark: '#2D3D4D', // new
-        medium: '#7C8C9C', // new
-        background: '#ECEFF4', // new
-        'border-dark': '#ECEFF4', // new
-        'border-light': '#F6F7F8', // new
-        headline: '#273333',
-        body: '#364141',
-        subtext: '#515E5F',
-        'not-selected': '#929A9B',
-        inactive: '#DEE1E1',
-        border: '#E8E9ED',
-        hover: '#F3F3F5',
-        'hover-active': '#f3f4f4',
-        // ryan
         '50': '#f9fafb',
-        '100': '#f3f4f6',
-        '200': '#e5e7eb',
+        '100': '#f3f4f6', // border-light (#F6F7F8)
+        '200': '#e5e7eb', // border-dark (#ECEFF4)
         '300': '#d1d5db',
-        '400': '#9ca3af',
-        '500': '#6b7280',
+        '400': '#9ca3af', // medium (#7C8C9C)
+        '500': '#6b7280', // subtext (#7C8C9C)
         '600': '#4b5563',
-        '700': '#374151',
-        '800': '#1f2937',
+        '700': '#374151', // body (#364141)
+        '800': '#1f2937', // darker (#131920), dark (#2D3D4D)
         '900': '#111827',
         '950': '#030712',
       },
@@ -81,7 +73,6 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      // rajdhani: ['Rajdhani', 'sans-serif']
     },
     fontSize: {
       xl: ['1.625rem', { fontWeight: '800'} ],
@@ -94,7 +85,6 @@ module.exports = {
       spacing: {
         '.5': '.125rem'
       },
-      // TODO is it worth it to add max-w-XXX here like I use in icons?
     }
   },
 }
