@@ -1,4 +1,8 @@
 export default defineAppConfig({
+  ui: {
+    primary: 'blue',
+    gray: 'cool',
+  },
   stytch: {
     baseUrl: "https://api.stytch.swaypage.io",
     publicToken: "public-token-live-8c2b086c-f622-4dbe-8a04-5b623bad9300",
