@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' }
   },
 
-  css: ['vue-final-modal/style.css', 'assets/css/tailwind.css'],
+  css: ['assets/css/tailwind.css'],
 
   modules: [
     'nuxt-lodash',

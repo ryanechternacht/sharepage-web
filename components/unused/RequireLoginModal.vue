@@ -1,5 +1,6 @@
 <template>
-  <VueFinalModal
+  <div>placeholder</div>
+  <!-- <VueFinalModal
     class="center-xy"
     content-class="p-4 bg-white rounded-md"
   >
@@ -20,23 +21,23 @@
           @click="goToSignup">Signup</BsButton>
       </div>
     </div>
-  </VueFinalModal>
+  </VueFinalModal> -->
 </template>
 
 <script setup>
-import { VueFinalModal } from 'vue-final-modal'
+// import { VueFinalModal } from 'vue-final-modal'
 
-const props = defineProps({
-  buyersphere: { type: Object, required: true },
-})
+// const props = defineProps({
+//   buyersphere: { type: Object, required: true },
+// })
 
-const emit = defineEmits(['close'])
+// const emit = defineEmits(['close'])
 
-async function goToLogin () {
-  await navigateTo('/login')
-}
+// async function goToLogin () {
+//   await navigateTo('/login')
+// }
 
-async function goToSignup () {
-  await navigateTo(`/signup?swaypage-id=${props.buyersphere.id}`)
-}
+// async function goToSignup () {
+//   await navigateTo(`/signup?swaypage-id=${props.buyersphere.id}`)
+// }
 </script>

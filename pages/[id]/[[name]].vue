@@ -163,7 +163,6 @@ import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
-// import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, orderBy } = lodash_pkg;
 

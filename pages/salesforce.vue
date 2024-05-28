@@ -57,8 +57,8 @@
 
 <script setup>
 import { format } from 'v-money3';
-import { useModal } from 'vue-final-modal'
-import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
+// import { useModal } from 'vue-final-modal'
+// import AddEditSwaypageModal from '@/components/AddEditSwaypageModal'
 import lodash_pkg from 'lodash';
 const { groupBy, map } = lodash_pkg;
 
@@ -119,24 +119,24 @@ const oppsGrouped = computed(() =>
   )
 )
 
-const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
-  component: AddEditSwaypageModal,
-  attrs: {
-    onClose () {
-      closeModal()
-      refresh()
-    }
-  }
-})
+// const { open: openModal, close: closeModal, patchOptions: patchModalOptions } = useModal({
+//   component: AddEditSwaypageModal,
+//   attrs: {
+//     onClose () {
+//       closeModal()
+//       refresh()
+//     }
+//   }
+// })
 
-function createSwaypage(oppty) {
-  patchModalOptions({ attrs: {
-    dealAmount: oppty.amount,
-    buyer: oppty.accountName,
-    crmOpportunityId: oppty.id
-  }})
-  openModal()
-}
+// function createSwaypage(oppty) {
+//   patchModalOptions({ attrs: {
+//     dealAmount: oppty.amount,
+//     buyer: oppty.accountName,
+//     crmOpportunityId: oppty.id
+//   }})
+//   openModal()
+// }
 
 </script>
 

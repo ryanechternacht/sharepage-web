@@ -4,13 +4,11 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <ModalsContainer />
     <UModals />
   </div>
 </template>
 
 <script setup>
-import { ModalsContainer } from 'vue-final-modal'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
