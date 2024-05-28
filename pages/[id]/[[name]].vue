@@ -162,7 +162,7 @@ import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
-// import CreateSwaypageFromTemplateModal from '@/components/Swaypage/CreateSwaypageFromTemplateModal'
+import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 // import { useModal } from 'vue-final-modal'
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, orderBy } = lodash_pkg;
@@ -292,29 +292,17 @@ function openShareModal () {
   })
 }
 
-// const { 
-//   open: openCreateSwaypageFromTemplateModal,
-//   close: closeCreateSwaypageFromTemplateModal,
-// } = useModal({
-//   component: CreateSwaypageFromTemplateModal,
-//   attrs: {
-//     templateId: swaypage.id,
-//     page: {},
-//     async onClose (props) {
-//       if (props?.swaypageId) {
-//         // await router.replace({ 
-//         //   path: `/${props.swaypageId}`
-//         // })
-//         await navigateTo(`/${props.swaypageId}`)
-//       }
-//       closeCreateSwaypageFromTemplateModal()
-//     }
-//   }
-// })
-
-// function openCreateSwaypageFromTemplate () {
-//   openCreateSwaypageFromTemplateModal()
-// }
+function openCreateSwaypageFromTemplate () {
+  modal.open(CreateSwaypageFromTemplateModal, {
+    templateId: swaypage.id,
+    async onClose (props) {
+      modal.close()
+      if (props?.swaypageId) {
+        await navigateTo(`/${props.swaypageId}`)
+      }
+    }
+  })
+}
 
 async function removePage(page, status) {
   const i = findIndex(activePages.value,
