@@ -19,7 +19,7 @@
             placeholder="Link Url"
             class="w-full" />
         </div>
-        <SubmitButtonNew 
+        <SubmitButton
           :icon="editMode ? 'i-heroicons-pencil-square' : 'i-heroicons-plus-circle'"
           :ready-text="`${editMode ? 'Edit' : 'Add'} Link`"
           :submitting-text="`${editMode ? 'Editing' : 'Adding'} Link`"

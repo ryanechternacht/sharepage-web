@@ -1,27 +1,23 @@
 <template>
   <div>
-    <TopNavNew>
+    <TopNav>
       <template #action-button>
         <template v-if="swaypage.roomType === 'template'">
-          <SpButton
+          <UButton icon="i-heroicons-document"
             @click="openCreateSwaypageFromTemplate">
-            <template #icon>
-              <FileIcon class="icon-menu" />
-            </template>
             Create from Template
-          </SpButton>
+          </UButton>
         </template>
         <template v-else>
           <UButton v-if="isSeller"
             icon="i-heroicons-link"
             @click="openShareModal">Share</UButton>
-          <CopyToClipboardNew v-else
-          :url="linkToPage"
-          :swaypage-id="swaypage.id"
-          :page="swaypagePage" />
+          <CopyToClipboardButton v-else
+            :url="linkToPage"
+            @click="trackShare" />
         </template>
       </template>
-    </TopNavNew>
+    </TopNav>
     <div class="mt-6 layout-grid">
       <div class="mr-4">
         <div class="sticky top-8 min-h-[calc(100vh-6.5rem)] flex flex-col">
@@ -212,6 +208,10 @@ const linkToPage = useRequestURL().href
 // const urlBase =  u.protocol + '//' + u.host;
 
 // const url = new URL(path, urlBase)
+
+async function trackShare () {
+  // TODO implement
+}
 
 const activePages = ref([])
 const archivedPages = ref([])

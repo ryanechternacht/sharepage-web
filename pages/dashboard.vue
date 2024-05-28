@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNavNew>
+    <TopNav>
       <template #action-button>
         <UButton
           icon="i-heroicons-document"
@@ -8,7 +8,7 @@
           New
         </UButton>
       </template>
-    </TopNavNew>
+    </TopNav>
 
     <div class="p-10">
       <NuxtPage />

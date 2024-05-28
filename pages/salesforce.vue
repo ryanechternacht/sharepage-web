@@ -43,10 +43,10 @@
             <Tag color="blue" width="5rem">{{ formatDate(o.closeDate) }}</Tag>
             <Tag color="teal" width="3rem">{{ format(o.amount / 1000, thousands) }}</Tag>
             <div class="ml-auto">
-              <BsButton v-if="o.buyersphereId"
-                class="w-[4.25rem]">View</BsButton>
-              <BsButton v-else
-                class="w-[4.25rem]">+ Create</BsButton>
+              <UButton v-if="o.buyersphereId"
+                class="w-[4.25rem]">View</UButton>
+              <UButton v-else
+                class="w-[4.25rem]">+ Create</UButton>
             </div>
           </div>
         </div>

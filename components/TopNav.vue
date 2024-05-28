@@ -37,12 +37,10 @@
       <UserAvatar :user="user" size="large" />
     </div>
     <div v-else>
-      <SpButton @click="goToLogin">
-        <template #icon>
-          <LogInIcon class="icon-menu" />
-        </template>
+      <UButton icon="i-heroicons-arrow-right-end-on-rectangle"
+        @click="goToLogin">
         Login
-      </SpButton>
+      </UButton>
     </div>
   </div>
 </template>

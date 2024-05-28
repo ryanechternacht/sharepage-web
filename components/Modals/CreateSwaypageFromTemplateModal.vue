@@ -70,7 +70,7 @@
             placeholder="Data 3" 
             class="mb-2" />
         </div>
-        <SubmitButtonNew 
+        <SubmitButton 
           icon="i-heroicons-plus-circle"
           ready-text="Create"
           submitting-text="Creating"

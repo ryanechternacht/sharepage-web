@@ -27,7 +27,7 @@
             :options="canBuyerEditOptions"
             class="w-full" />
         </div>
-        <SubmitButtonNew 
+        <SubmitButton
           icon="i-heroicons-pencil-square"
           ready-text="Save"
           submitting-text="Savings"

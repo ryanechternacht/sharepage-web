@@ -37,7 +37,7 @@
             placeholder="Sales Divison, Team, etc" 
             class="w-full" />
         </div>
-        <SubmitButtonNew 
+        <SubmitButton
           icon="i-heroicons-plus-circle"
           ready-text="Create"
           submitting-text="Creating"

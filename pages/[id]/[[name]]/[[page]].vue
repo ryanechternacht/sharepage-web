@@ -8,12 +8,10 @@
         class="p-2 rounded-md bg-gray-background flex flex-row items-center">
         <div>This page is currently archived.</div>
         <div class="flex-grow" />
-        <SpButton @click="restorePage">
-          <template #icon>
-            <CornerUpLeftIcon class="icon-menu text-white" />
-          </template>
-          <div class="text-white">Restore Page</div>
-        </SpButton>
+        <UButton icon="i-heroicons-arrow-uturn-left"
+          @click="restorePage">
+          Restore Page
+        </UButton>
       </div>
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
         <div class="flex flex-row items-center">

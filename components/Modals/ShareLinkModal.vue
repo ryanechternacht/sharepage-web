@@ -12,14 +12,13 @@
               placeholder="Recipient's Name" 
               class="w-full" />
           </div>
-          <CopyToClipboardNew
+          <CopyToClipboardButton
             :url="personalizedLink"
             :swaypage-id="swaypage.id" />
         </template>
 
         <template v-else-if="selectedTab === 1">
-          <CopyToClipboardNew
-            :url="generalLink"/>
+          <CopyToClipboardButton :url="generalLink"/>
         </template>
       </div>
     </UCard>

@@ -49,7 +49,7 @@
             v-model="isPublic"
             :options="visibilityOptions" />
         </div>
-        <SubmitButtonNew 
+        <SubmitButton
           icon="i-heroicons-pencil-square"
           ready-text="Save"
           submitting-text="Savings"
