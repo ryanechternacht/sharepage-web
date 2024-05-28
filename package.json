@@ -32,7 +32,6 @@
     "timeme.js": "^2.1.0",
     "v-dropdown-menu": "^2.0.4",
     "v-money3": "^3.24.0",
-    "vue-draggable-plus": "^0.3.5",
-    "vue3-scroll-spy": "^1.0.8"
+    "vue-draggable-plus": "^0.3.5"
   }
 }
