@@ -12,8 +12,8 @@
           <div class="flex flex-row items-center gap-2">
             <Component :is="filterOption.icon" class="subtext" />
             <div class="subtext flex flex-row items-center cursor-pointer">
-              {{ filterOption.text }} 
-              <ChevronDownIcon class="icon-submenu" />
+              {{ filterOption.text }}
+              <UIcon class="icon-submenu" name="i-heroicons-chevron-down" />
             </div>
           </div>
         </template>
@@ -225,6 +225,6 @@ function prettyFormatDate(date) {
 }
 
 .dropdown-item {
-  @apply flex flex-row items-center gap-2 font-sans text-sm text-gray-400;
+  @apply flex flex-row items-center gap-2 font-sans text-sm text-gray-500;
 }
 </style>

@@ -29,11 +29,11 @@
         <!-- <div>active</div> -->
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="swaypage.isPublic">
-            <EyeIcon class="text-green-300 icon-menu" />
+            <UIcon class="icon-menu text-green-300" name="i-heroicons-eye" />
             <div class="subtext">Public</div>
           </template>
           <template v-else>
-            <EyeOffIcon class="text-orange-300 icon-menu" />
+            <UIcon class="icon-menu text-orange-300" name="i-heroicons-eye-slash" />
             <div class="subtext">Private</div>
           </template>
         </div>
@@ -41,7 +41,7 @@
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
           <div :class="{'text-blue-500': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
                         'text-orange-300': saveSubmissionState === 'submitting'}">
-            <FileIcon class="icon-menu" />
+            <UIcon class="icon-menu" name="i-heroicons-document" />
           </div>  
           <div class="subtext w-[3.25rem]">
             {{ !isDirty ? "Saved" :
@@ -57,7 +57,9 @@
           @opened="isDropdownOpen = true"
           @closed="isDropdownOpen = false">
           <template #trigger>
-            <MoreVerticalIcon v-if="canEdit" class="-ml-4" />
+            <UIcon v-if="canEdit"
+              class="-ml-4"
+              name="i-heroicons-ellipsis-vertical" />
           </template>
           <template #body>
             <div class="dropdown-menu">
@@ -142,7 +144,9 @@
             @closed="isDropdownOpen = false">
             <template #trigger>
               <div class="mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
-                <PlusSquareIcon class="text-gray-400 icon-menu" />
+                <UIcon v-if="isSeller" 
+                  class="text-gray-500 icon-menu" 
+                  name="i-heroicons-plus" />
                 <div class="subtext">New</div>
               </div>
             </template>
@@ -177,7 +181,7 @@
       <div class="ml-2">
         <div class="sticky top-[5.75rem]">
           <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
-            <div class="text-gray-400 text-sm">Key Links</div>
+            <div class="text-gray-500 text-sm">Key Links</div>
             <VueDraggable
               v-model="links"
               ghost-class="ghost"
@@ -195,8 +199,9 @@
                     :overlay="false"
                     with-dropdown-closer>
                     <template #trigger>
-                      <MoreVerticalIcon v-if="isSeller"
-                        class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block" />
+                      <UIcon v-if="isSeller"
+                        class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
+                        name="i-heroicons-ellipsis-vertical" />
                     </template>
                     <template #body>
                       <div class="dropdown-menu">
@@ -214,7 +219,7 @@
                   :href="l.linkUrl"
                   target="_blank"
                   @click="trackLinkClick(l.title)">
-                  <ExternalLinkIcon class="icon-menu" />
+                  <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
                   <div class="text-right text-sm">{{ l.title }}</div>
                 </a>
               </div>
@@ -222,8 +227,9 @@
               <div v-if="isSeller"
                 class="rightbar-link"
                 @click="createNewLink">
-                <PlusSquareIcon class="icon-menu text-gray-400 mr-6" />
-                <div class="text-gray-400 text-right text-sm">New Link</div>
+                <UIcon class="icon-menu text-gray-500 mr-6" 
+                  name="i-heroicons-plus"/>
+                <div class="text-gray-500 text-right text-sm">New Link</div>
               </div>
             </VueDraggable>
           </div>

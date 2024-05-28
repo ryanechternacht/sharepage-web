@@ -8,7 +8,7 @@
         @opened="isDropdownOpen = true"
         @closed="isDropdownOpen = false">
         <template #trigger>
-          <MoreVerticalIcon class="mt-1" />
+          <UIcon class="mt-1" name="i-heroicons-ellipsis-vertical" />
         </template>
         <template #body>
           <div class="dropdown-menu">

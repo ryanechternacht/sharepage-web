@@ -1,11 +1,7 @@
 <template>
   <div class="border border-gray-200 rounded-md py-.5 px-2 grid-layout bg-white">
-    <FileIcon v-if="event.pageType === 'general'" class="icon-submenu gray-500" />
-    <ArrowRightCircleIcon v-else-if="event.pageType === 'follow-up'" class="icon-submenu gray-500" />
-    <MapIcon v-else-if="event.pageType === 'guide'" class=" icon-submenu gray-500" />
-    <MessageCircleIcon v-else-if="event.pageType === 'discussion'" class="icon-submenu gray-500" />
-    <FileTextIcon v-else-if="event.pageType === 'business-case'" class="icon-submenu gray-500" />
-    <ClipboardIcon v-else-if="event.pageType === 'notes'" class="icon-submenu gray-500" />
+    <SwaypagePageTypeIcon :page-type="event.pageType" 
+      class="text-gray-500" />
     
     <div class="subtext">{{ event.title }}</div>
     
@@ -25,6 +21,15 @@
 const props = defineProps({
   event: { type: Object, required: true }
 })
+
+const icon = computed(() => ({
+  general: 'i-heroicons-document',
+  'follow-up': 'i-heroicons-arrow-right-circle',
+  guide: 'i-heroicons-map',
+  discussion: 'i-heroicons-chat-bubble-left',
+  'business-case': 'i-heroicons-document-chart-bar',
+  notes: 'i-heroicons-clipboards',
+}[props.event.pageType]))
 </script>
 
 <style lang="postcss" scoped>

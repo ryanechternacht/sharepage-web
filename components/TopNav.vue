@@ -6,11 +6,11 @@
     <template v-if="isSeller">
       <!-- TOOD point this to the correct route -->
       <NuxtLink to="/dashboard/feed" class="link">
-        <RadioIcon class="icon-menu" />
+        <UIcon class="icon-menu" name="i-heroicons-signal" />
         <span>Feed</span>
       </NuxtLink>
       <NuxtLink to="/dashboard/swaypages" class="link">
-        <FileIcon class="icon-menu" />
+        <UIcon class="icon-menu" name="i-heroicons-document" />
         <span>Swaypages</span>
       </NuxtLink>
       <!-- TOOD point this to the correct route -->
@@ -68,7 +68,7 @@ async function goToLogin () {
   @apply flex flex-row items-center gap-1;
 
   *, :deep(*) {
-    @apply text-gray-400;
+    @apply text-gray-500;
   }
 
   &.router-link-active {

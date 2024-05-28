@@ -41,7 +41,7 @@
           </div>
 
           <div v-if="swaypage.roomType === 'template'">
-            <div class="mt-[2.25rem] mb-1 text-gray-400">Template Items</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-500">Template Items</div>
             
             <div class="flex flex-col gap-1">
               <div v-for="item in templateItems">
@@ -52,7 +52,7 @@
           </div>
 
           <div>
-            <div class="mt-[2.25rem] mb-1 text-gray-400 body">Pages</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Pages</div>
             <VueDraggable
               v-model="activePages"
               ghost-class="ghost"
@@ -68,7 +68,7 @@
                 <NuxtLink 
                   :href="makeNewSwaypageLink(swaypage, 'feed')"
                   class="sidebar-item">
-                  <RadioIcon />
+                  <UIcon name="i-heroicons-signal" />
                   <div class="body">Feed</div>
                 </NuxtLink>
               </div>
@@ -79,8 +79,9 @@
                     :overlay="false"
                     with-dropdown-closer>
                     <template #trigger>
-                      <MoreVerticalIcon v-if="isSeller"
-                        class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" />
+                      <UIcon v-if="isSeller" 
+                        class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
+                        name="i-heroicons-ellipsis-vertical" />
                     </template>
                     <template #body>
                       <div class="dropdown-menu">
@@ -97,12 +98,7 @@
                 <NuxtLink 
                   :href="makeNewSwaypageLink(swaypage, p.id)"
                   class="sidebar-item">
-                  <FileIcon v-if="p.pageType === 'general'" class="icon-menu" />
-                  <ArrowRightCircleIcon v-else-if="p.pageType === 'follow-up'" class="icon-menu" />
-                  <MapIcon v-else-if="p.pageType === 'guide'" class=" icon-menu" />
-                  <MessageCircleIcon v-else-if="p.pageType === 'discussion'" class="icon-menu" />
-                  <FileTextIcon v-else-if="p.pageType === 'business-case'" class="icon-menu" />
-                  <ClipboardIcon v-else-if="p.pageType === 'notes'" class="icon-menu" />
+                  <SwaypagePageTypeIcon :page-type="p.pageType" />
                   <div class="text-sm">{{ p.title }}</div>
                 </NuxtLink>
               </div>
@@ -110,11 +106,10 @@
               <div v-if="isSeller" 
                 class="ml-6 sidebar-item"
                 @click="createNewPage">
-                <PlusSquareIcon class="text-gray-400" />
-                <div class="text-gray-400 body">New Page</div>
+                <UIcon name="i-heroicons-plus" class="text-gray-500" />
+                <div class="text-gray-500 body">New Page</div>
               </div>
             </VueDraggable>
-            <!-- </div> -->
           </div>
 
           <div class="flex-grow" />
@@ -127,8 +122,8 @@
               <template #trigger>
                 <div v-if="isSeller" 
                   class="cursor-pointer flex flex-row gap-4 items-center">
-                  <ArchiveIcon class="text-gray-400" />
-                  <div class="text-gray-400">Archive</div>
+                  <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
+                  <div class="text-gray-500">Archive</div>
                 </div>
               </template>
               <template #body>

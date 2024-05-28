@@ -6,7 +6,7 @@
         <!-- TODO implement -->
       <!-- <div>active</div> -->
       <div class="flex flex-row items-center gap-2">
-        <LockIcon class="text-orange-300 icon-menu" />
+        <UIcon class="text-orange-300 icon-menu" name="i-heroicons-lock-closed" />
         <div class="subtext">Internal Only</div>
       </div>
       <dropdown-menu
@@ -16,7 +16,7 @@
         @opened="isDropdownOpen = true"
         @closed="isDropdownOpen = false">
         <template #trigger>
-          <MoreVerticalIcon />
+          <UIcon name="i-heroicons-ellipsis-vertical" />
         </template>
         <template #body>
           <div class="dropdown-menu">

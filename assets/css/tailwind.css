@@ -16,7 +16,7 @@
   }
 
   .subtext {
-    @apply font-sans text-sm text-gray-400;
+    @apply font-sans text-sm text-gray-500;
   }
 
   /* remove below */
@@ -43,11 +43,11 @@
   }
 
   .icon-menu {
-    @apply max-w-[.875rem] max-h-[.875rem] w-full h-full;
+    @apply max-w-5 max-h-5 w-full h-full;
   }
 
   .icon-submenu {
-    @apply max-w-[.625rem] max-h-[.625rem] w-full h-full;
+    @apply max-w-[.875rem] max-h-[.875rem] w-full h-full;
   }
 
   .tag {

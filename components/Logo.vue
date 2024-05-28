@@ -3,8 +3,9 @@
     class="center-xy"
     :class="[height, width]"
   >
-    <BriefcaseIcon v-if="loadingError"
-      :class="[maxHeight, maxWidth]" />
+    <UIcon v-if="loadingError"
+      :class="[maxHeight, maxWidth]"
+      name="i-heroicons-briefcase" />
     <img v-else
       :src="src" 
       :class="[maxHeight, maxWidth]"

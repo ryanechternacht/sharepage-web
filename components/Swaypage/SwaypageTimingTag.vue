@@ -1,6 +1,6 @@
 <template>
   <div class="border border-gray-200 rounded-md py-.5 px-2 flex flex-row gap-4 items-center bg-white">
-    <EyeIcon class="icon-submenu gray-500" />
+    <UIcon class="icon-submenu text-gray-500" name="i-heroicons-eye" />
     <div class="subtext">{{ formatTime(timing.timeOnPage) }}</div>
   </div>
 </template>

@@ -3,7 +3,7 @@
     <div class="flex flex-row items-center gap-4">
       <h1>Feed</h1>
       <div class="flex flex-row items-center gap-2">
-        <RadioIcon class="subtext icon-menu" />
+        <UIcon class="subtext icon-menu" name="i-heroicons-signal" />
         <div class="subtext">All events</div>
       </div>
       <!-- TODO use a real dropdown menu for this -->
@@ -17,7 +17,7 @@
             <Component :is="filterOption.icon" class="subtext" />
             <div class="subtext flex flex-row items-center cursor-pointer">
               {{ filterOption.text }} 
-              <ChevronDownIcon class="icon-submenu" />
+              <UIcon class="icon-submenu" name="i-heroicons-chevron-down" />
             </div>
           </div>
         </template>
@@ -70,7 +70,7 @@
               </div>
             </div>
           </div>
-          <div class="cell">
+          <div class="cell gap-2">
             <Logo :src="session.buyersphere.buyerLogo" />
             <div class="subtext">{{ session.buyersphere.buyer }}</div>
           </div>
