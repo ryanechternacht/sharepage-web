@@ -97,7 +97,7 @@
               :readonly="!canEdit"
               :include-ai-prompt="swaypage.roomType !== 'template'"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
-              @insert:item="insertBlock"
+              @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)" />
             
             <EditorHeader v-if="section.type === 'header'"
@@ -105,7 +105,7 @@
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
-              @insert:item="insertBlock"
+              @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)" />
 
             <EditorAiPrompt v-if="section.type === 'ai-prompt'"
@@ -113,7 +113,7 @@
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
-              @insert:item="insertBlock"
+              @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)"
               @update:modelValue="s => updateItem(index, s)" />
 
@@ -122,7 +122,7 @@
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
-              @insert:item="insertBlock"
+              @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)" />
 
             <EditorAsset v-if="section.type === 'asset'"
@@ -130,7 +130,7 @@
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
-              @insert:item="insertBlock"
+              @insert:item="({ item }) => insertBlock({ item, index })"
               @click:item="assetClick(section.link)"
               @delete:item="removeItem(index)" />
           </template>
@@ -432,12 +432,8 @@ function newTextBlock (index) {
     text: "",
     key: nextKey++,
   }
-  
-  if (index) {
-    body.value.sections.splice(index + 1, 0, newBlock)
-  } else {
-    body.value.sections.push(newBlock)
-  }
+
+  addBlock(newBlock, index)
 }
 
 function newHeader (index) {
@@ -446,12 +442,8 @@ function newHeader (index) {
     text: "",
     key: nextKey++,
   }
-  
-  if (index) {
-    body.value.sections.splice(index + 1, 0, newBlock)
-  } else {
-    body.value.sections.push(newBlock)
-  }
+
+  addBlock(newBlock, index)
 }
 
 function newAiBlock (index) {
@@ -462,11 +454,7 @@ function newAiBlock (index) {
     key: nextKey++,
   }
   
-  if (index) {
-    body.value.sections.splice(index + 1, 0, newBlock)
-  } else {
-    body.value.sections.push(newBlock)
-  }
+  addBlock(newBlock, index)
 }
 
 function newAiTemplateBlock (index) {
@@ -476,11 +464,7 @@ function newAiTemplateBlock (index) {
     key: nextKey++,
   }
   
-  if (index) {
-    body.value.sections.splice(index + 1, 0, newBlock)
-  } else {
-    body.value.sections.push(newBlock)
-  }
+  addBlock(newBlock, index)
 }
 
 function newAsset (index) {
@@ -490,10 +474,14 @@ function newAsset (index) {
     key: nextKey++,
   }
   
-  if (index) {
-    body.value.sections.splice(index + 1, 0, newBlock)
+  addBlock(newBlock, index)
+}
+
+function addBlock (block, index) {
+  if (index !== undefined) {
+    body.value.sections.splice(index + 1, 0, block)
   } else {
-    body.value.sections.push(newBlock)
+    body.value.sections.push(block)
   }
 }
 

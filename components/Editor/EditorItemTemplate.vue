@@ -1,50 +1,15 @@
 <template>
   <div class="component p-1 w-full flex flex-row flex-start gap-2">
-    <div v-if="!readonly" class="w-[1rem] drag-handle"
+    <div v-if="!readonly" class="min-w-[1rem] drag-handle"
       :class="{ 'show-menu': isDropdownOpen }">
-      <dropdown-menu
-        :overlay="false"
-        with-dropdown-closer
-        @opened="isDropdownOpen = true"
-        @closed="isDropdownOpen = false">
-        <template #trigger>
-          <UIcon class="mt-1" name="i-heroicons-ellipsis-vertical" />
-        </template>
-        <template #body>
-          <div class="dropdown-menu">
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="emit('delete:item')">Delete</div>
-            <hr class="border-gray-200">
-            <h4 class="dropdown-description p-[.125rem]">Insert Below:</h4>
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="emit('insert:item', { item: 'header' })">Header</div>
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="emit('insert:item', { item: 'text' })">Text Block</div>
-            <div v-if="includeAiPromptTemplate" 
-              class="dropdown-item"
-              dropdown-closer
-              @click="emit('insert:item', { item: 'ai-prompt-template' })">
-              Ai Prompt
-            </div>
-            <div v-if="includeAiPrompt" 
-              class="dropdown-item"
-              dropdown-closer
-              @click="emit('insert:item', { item: 'ai-prompt' })">
-              Ai Prompt
-            </div>
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="emit('insert:item', { item: 'asset' })">Asset Link</div>
-          </div>
-        </template>
-      </dropdown-menu>
+      <UDropdown :items="menu"
+        :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
+        <UIcon name="i-heroicons-ellipsis-vertical" />
+      </UDropdown>
     </div>
-      <div class="content" :class="{ readonly }">
-        <slot name="content" />
-      </div>
+    <div class="content" :class="{ readonly }">
+      <slot name="content" />
+    </div>
   </div>
 </template>
 
@@ -55,9 +20,47 @@ const props = defineProps({
   includeAiPrompt: { type: Boolean, default: false },
 })
 
+const emit = defineEmits([
+  'delete:item',
+  'insert:item',
+])
+
+const menu = [
+  [{
+    label: 'Delete',
+    icon: 'i-heroicons-trash',
+    click: () => emit('delete:item'),
+  }], 
+  [{
+    label: 'Insert Below',
+    disabled: true,
+  }, {
+    label: 'Header',
+    icon: 'i-heroicons-language',
+    click: () => emit('insert:item', { item: 'header' }),
+  }, {
+    label: 'Text Block',
+    icon: 'i-heroicons-bars-3-bottom-left',
+    click: () => emit('insert:item', { item: 'text' }),
+  }, 
+  ...props.includeAiPrompt ? [{
+    label: 'AI Prompt',
+    icon: 'i-heroicons-computer-desktop',
+    click: () => emit('insert:item', { item: 'ai-prompt' }),
+  }] : [], 
+  ...props.includeAiPromptTemplate ? [{
+    label: 'AI Prompt',
+    icon: 'i-heroicons-computer-desktop',
+    click: () => emit('insert:item', { item: 'ai-prompt-template' }),
+  }] : [], {
+    label: 'Asset',
+    icon: 'i-heroicons-link',
+    click: () => emit('insert:item', { item: 'asset' }),
+  }]
+]
+
 const isDropdownOpen = ref(false)
 
-const emit = defineEmits(['delete:item', 'insert:text', 'insert:header', 'insert:asset'])
 </script>
 
 <style lang="postcss" scoped>
