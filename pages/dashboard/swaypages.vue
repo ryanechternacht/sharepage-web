@@ -58,7 +58,7 @@
             :last-activity-date="swaypage.mostRecentBuyerActivity"
             :isOnHold="swaypage.status === 'on-hold'" />
         </div>
-        <div class="cell body">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+        <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
 
@@ -77,7 +77,7 @@
             {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
           </template>
         </div>
-        <div class="cell body">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+        <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
 
@@ -100,7 +100,7 @@
           </template>
         </div>
         <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
-        <div class="cell body">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+        <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
       </NuxtLink>
     </div>
   </div>

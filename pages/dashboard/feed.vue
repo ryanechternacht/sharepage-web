@@ -74,7 +74,7 @@
             <Logo :src="session.buyersphere.buyerLogo" />
             <div class="subtext">{{ session.buyersphere.buyer }}</div>
           </div>
-          <div class="cell">{{ prettyFormatDate(session.createdAt) }}</div>
+          <div class="cell subtext">{{ prettyFormatDate(session.createdAt) }}</div>
         </template>
       </div>
     </div>
