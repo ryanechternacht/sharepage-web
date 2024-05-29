@@ -50,6 +50,7 @@
             :options="visibilityOptions" />
         </div>
         <SubmitButton
+          block
           icon="i-heroicons-pencil-square"
           ready-text="Save"
           submitting-text="Savings"

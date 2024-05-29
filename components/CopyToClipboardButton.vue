@@ -1,14 +1,15 @@
 <template>
   <UPopover mode="hover">
     <SubmitButton
-    icon="i-heroicons-link"
-    submitted-icon="i-heroicons-check-circle"
-    ready-text="Share"
-    submitting-text="Share"
-    submitted-text="Copied"
-    error-text="Try Again"
-    :submissionState="submissionState"
-    @click="submitFn" />
+      icon="i-heroicons-link"
+      block
+      submitted-icon="i-heroicons-check-circle"
+      ready-text="Share"
+      submitting-text="Share"
+      submitted-text="Copied"
+      error-text="Try Again"
+      :submissionState="submissionState"
+      @click="submitFn" />
 
     <template #panel>
       <div class="p-2">

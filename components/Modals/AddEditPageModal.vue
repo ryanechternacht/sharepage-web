@@ -29,6 +29,7 @@
         </div>
         <SubmitButton
           icon="i-heroicons-pencil-square"
+          block
           ready-text="Save"
           submitting-text="Savings"
           submitted-text="Saved"

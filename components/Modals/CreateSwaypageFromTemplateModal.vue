@@ -72,6 +72,7 @@
         </div>
         <SubmitButton 
           icon="i-heroicons-plus"
+          block
           ready-text="Create"
           submitting-text="Creating"
           submitted-text="Created"

@@ -20,6 +20,7 @@
             class="w-full" />
         </div>
         <SubmitButton
+          block
           :icon="editMode ? 'i-heroicons-pencil-square' : 'i-heroicons-plus'"
           :ready-text="`${editMode ? 'Edit' : 'Add'} Link`"
           :submitting-text="`${editMode ? 'Editing' : 'Adding'} Link`"

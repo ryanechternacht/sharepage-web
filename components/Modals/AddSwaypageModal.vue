@@ -38,6 +38,7 @@
             class="w-full" />
         </div>
         <SubmitButton
+          block
           icon="i-heroicons-plus"
           ready-text="Create"
           submitting-text="Creating"
