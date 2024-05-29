@@ -75,25 +75,11 @@
               <div v-for="p in activePages"
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0">
-                  <dropdown-menu
-                    :overlay="false"
-                    with-dropdown-closer>
-                    <template #trigger>
-                      <UIcon v-if="isSeller" 
-                        class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
-                        name="i-heroicons-ellipsis-vertical" />
-                    </template>
-                    <template #body>
-                      <div class="dropdown-menu">
-                        <div class="dropdown-item"
-                          dropdown-closer
-                          @click="removePage(p, 'archived')">Archive</div>
-                        <div class="dropdown-item"
-                          dropdown-closer
-                          @click="removePage(p, 'deleted')">Delete</div>
-                      </div>
-                    </template>
-                  </dropdown-menu>
+                  <UDropdown :items="makePageMenu(p)">
+                    <UIcon v-if="isSeller" 
+                      class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
+                      name="i-heroicons-ellipsis-vertical" />
+                  </UDropdown>
                 </div>
                 <NuxtLink 
                   :href="makeNewSwaypageLink(swaypage, p.id)"
@@ -157,17 +143,26 @@ import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageF
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, orderBy } = lodash_pkg;
 
-async function changeRoute() {
-  await navigateTo(`/113`)
-}
-
 definePageMeta({
   middleware: ['enforce-swaypage-visibility'],
 })
 
+function makePageMenu(page) {
+  return [[
+    {
+      label: 'Archive',
+      icon: "i-heroicons-archive-box",
+      click: () => removePage(page, 'archived')
+    }, {
+      label: 'Delete',
+      icon: "i-heroicons-trash",
+      click: () => removePage(page, 'deleted')
+    }
+  ]]
+}
+
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
-const swaypagePage = route.params.page
 
 const swaypageStore = useSwaypagesStore()
 const { 

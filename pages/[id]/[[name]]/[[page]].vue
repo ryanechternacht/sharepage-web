@@ -149,26 +149,11 @@
               <div v-for="l in links"
                 class="group/link-item flex flex-row-reverse items-center">
                 <div class="w-[1.5rem] flex-shrink-0 text-right">
-                  <dropdown-menu
-                    direction="right"
-                    :overlay="false"
-                    with-dropdown-closer>
-                    <template #trigger>
-                      <UIcon v-if="isSeller"
-                        class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
-                        name="i-heroicons-ellipsis-vertical" />
-                    </template>
-                    <template #body>
-                      <div class="dropdown-menu">
-                        <div class="dropdown-item"
-                          dropdown-closer
-                          @click="editLink(l)">Edit</div>
-                        <div class="dropdown-item"
-                          dropdown-closer
-                          @click="deleteLink(l)">Delete</div>
-                      </div>
-                    </template>
-                  </dropdown-menu>
+                  <UDropdown :items="makeLinkMenu(l)">
+                    <UIcon v-if="isSeller"
+                      class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
+                      name="i-heroicons-ellipsis-vertical" />
+                  </UDropdown>
                 </div>
                 <a class="rightbar-link"
                   :href="l.linkUrl"
@@ -273,6 +258,20 @@ const newBlocksMenu = [
     click: () => newAsset(),
   }]
 ]
+
+function makeLinkMenu(link) {
+  return [[
+    {
+      label: 'Edit',
+      icon: "i-heroicons-pencil-square",
+      click: () => editLink(link)
+    }, {
+      label: 'Delete',
+      icon: "i-heroicons-trash",
+      click: () => deleteLink(link)
+    }
+  ]]
+}
 
 const page = pageId
   ? find(pages, p => p.id === pageId)
