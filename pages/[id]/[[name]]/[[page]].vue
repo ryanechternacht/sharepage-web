@@ -50,29 +50,11 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
-        <dropdown-menu
-          direction="right"
-          :overlay="false"
-          with-dropdown-closer
-          @opened="isDropdownOpen = true"
-          @closed="isDropdownOpen = false">
-          <template #trigger>
-            <UIcon v-if="canEdit"
-              class="-ml-4"
-              name="i-heroicons-ellipsis-vertical" />
-          </template>
-          <template #body>
-            <div class="dropdown-menu">
-              <div class="dropdown-item"
-                dropdown-closer
-                @click="openPageSettingsModal()">Edit Page Settings</div>
-              <div class="dropdown-item"
-                dropdown-closer
-                @click="openSwaypageSettingsModal()">Edit SwayPage Settings</div>
-            </div>
-          </template>
-        </dropdown-menu>
-        <!-- <div>synced</div> -->
+        <UDropdown :items="settingsMenu">
+          <UIcon
+            class="-ml-4"
+            name="i-heroicons-ellipsis-vertical" />
+        </UDropdown>
       </div>
       <div class="page-area">
         <input v-if="canEdit"
@@ -135,44 +117,6 @@
               @delete:item="removeItem(index)" />
           </template>
         </VueDraggable>
-
-        <!-- <div v-if="canEdit">
-          <dropdown-menu class="align-content-left"
-            :overlay="false"
-            with-dropdown-closer
-            @opened="isDropdownOpen = true"
-            @closed="isDropdownOpen = false">
-            <template #trigger>
-              <div class="mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
-                <UIcon v-if="isSeller" 
-                  class="text-gray-500 icon-menu" 
-                  name="i-heroicons-plus" />
-                <div class="subtext">New</div>
-              </div>
-            </template>
-            <template #body>
-              <div class="flex flex-col gap-2 p-1">
-                <div class="dropdown-item"
-                  dropdown-closer
-                  @click="newHeader()">Header</div>
-                <div class="dropdown-item"
-                  dropdown-closer
-                  @click="newTextBlock()">Text Block</div>
-                <div v-if="swaypage.roomType !== 'template'" 
-                  class="dropdown-item"
-                  dropdown-closer
-                  @click="newAiBlock()">AI Prompt Block</div>
-                <div v-if="swaypage.roomType === 'template'" 
-                  class="dropdown-item"
-                  dropdown-closer
-                  @click="newAiTemplateBlock()">AI Prompt Block</div>
-                <div class="dropdown-item"
-                  dropdown-closer
-                  @click="newAsset()">Asset Link</div>
-              </div>
-            </template>
-          </dropdown-menu>
-        </div> -->
         <div v-if="canEdit">
           <UDropdown :items="newBlocksMenu"
             :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
@@ -567,6 +511,16 @@ function openSwaypageSettingsModal () {
     }
   })
 }
+
+const settingsMenu = [
+  [{
+    label: 'Edit Page Settings',
+    click: () => openPageSettingsModal()
+  }, {
+    label: 'Edit Swaypage Settings',
+    click: () => openSwaypageSettingsModal()
+  }]
+]
 
 async function restorePage() {
   await swaypageStore.updatePage({

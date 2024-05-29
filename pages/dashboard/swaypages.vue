@@ -2,36 +2,19 @@
   <div>
     <div class="flex flex-row items-center gap-4">
       <h1>Home</h1>
-    <!-- TODO use a real dropdown menu for this -->
-      <dropdown-menu
-        :overlay="false"
-        with-dropdown-closer
-        @opened="isDropdownOpen = true"
-        @closed="isDropdownOpen = false">
-        <template #trigger>
-          <div class="flex flex-row items-center gap-2">
-            <Component :is="filterOption.icon" class="subtext" />
-            <div class="subtext flex flex-row items-center cursor-pointer">
-              {{ filterOption.text }}
-              <UIcon class="icon-submenu" name="i-heroicons-chevron-down" />
-            </div>
+      <UDropdown :items="swaypageMenu">
+        <div class="flex flex-row items-center gap-2">
+          <!-- <Component :is="filterOption.icon" class="subtext" /> -->
+          <UIcon :name="selectedType.icon" class="subtext" />
+          <div class="subtext flex flex-row items-center cursor-pointer">
+            {{ selectedType.label }}
+            <UIcon class="icon-submenu" name="i-heroicons-chevron-down" />
           </div>
-        </template>
-        <template #body>
-          <div class="dropdown-menu">
-            <div v-for="filterOption in filterOptions" 
-              class="dropdown-item"
-              dropdown-closer
-              @click="setFilter(filterOption.key)">
-              <Component :is="filterOption.icon" class="icon-menu" />  
-              {{ filterOption.text }}
-            </div>
-          </div>
-        </template>
-      </dropdown-menu>
+        </div>
+      </UDropdown>
     </div>
 
-    <div v-if="filterOption.key === 'active'" 
+    <div v-if="selectedType.label === 'Active'" 
       class="room-grid active-rooms">
       <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
@@ -62,7 +45,7 @@
       </NuxtLink>
     </div>
 
-    <div v-else-if="filterOption.key === 'templates'" 
+    <div v-else-if="selectedType.label === 'Templates'" 
       class="room-grid template-rooms">
       <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
@@ -81,7 +64,7 @@
       </NuxtLink>
     </div>
 
-    <div v-if="filterOption.key === 'archive'" 
+    <div v-if="selectedType.label === 'Archive'" 
       class="room-grid archive-rooms">
       <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
@@ -117,22 +100,23 @@ const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', {
 
 const { makeNewSwaypageLink } = useSwaypageLinks()
 
-const filterOptions = [
-  {
-    text: 'Active',
-    icon: markRaw(resolveComponent('FileIcon')),
-    key: 'active',
+// TODO changing these should affect routing
+const swaypageMenu = [
+  [{
+    label: 'Active',
+    icon: 'i-heroicons-document',
+    click: () => selectedType.value = swaypageMenu[0][0]
   }, {
-    text: 'Templates',
-    icon: markRaw(resolveComponent('BookmarkIcon')),
-    key: 'templates',
+    label: 'Templates',
+    icon: 'i-heroicons-bookmark',
+    click: () => selectedType.value = swaypageMenu[0][1]
   }, {
-    text: 'Archive',
-    icon: markRaw(resolveComponent('ArchiveIcon')),
-    key: 'archive',
-  },
+    label: 'Archive',
+    icon: 'i-heroicons-archive-box',
+    click: () => selectedType.value = swaypageMenu[0][2]
+  }],
 ]
-const filterOption = ref(filterOptions[0])
+const selectedType = ref(swaypageMenu[0][0])
 
 const roomTypeMap = {
   'deal-room': 'Deal Room',
@@ -165,11 +149,6 @@ const archiveRooms = computed(() =>
     ['desc']
   )
 )
-
-// TODO changing these should affect routing
-function setFilter (newType) {
-  filterOption.value = find(filterOptions, rt => rt.key === newType)
-}
 
 const dayjs = useDayjs()
 function prettyFormatDate(date) {

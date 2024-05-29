@@ -9,26 +9,11 @@
         <UIcon class="text-orange-300 icon-menu" name="i-heroicons-lock-closed" />
         <div class="subtext">Internal Only</div>
       </div>
-      <dropdown-menu
-        direction="right"
-        :overlay="false"
-        with-dropdown-closer
-        @opened="isDropdownOpen = true"
-        @closed="isDropdownOpen = false">
-        <template #trigger>
-          <UIcon name="i-heroicons-ellipsis-vertical" />
-        </template>
-        <template #body>
-          <div class="dropdown-menu">
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="openPageSettingsModal()">Edit Page Settings</div>
-            <div class="dropdown-item"
-              dropdown-closer
-              @click="openSwaypageSettingsModal()">Edit SwayPage Settings</div>
-          </div>
-        </template>
-      </dropdown-menu>
+      <UDropdown :items="settingsMenu">
+        <UIcon
+          class="-ml-4"
+          name="i-heroicons-ellipsis-vertical" />
+      </UDropdown>
     </div>
     <div class="page-area">
       <div class="feed-grid">
@@ -70,6 +55,9 @@
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
+import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
+
+const modal = useModal()
 
 definePageMeta({
   name: 'feed',
@@ -81,16 +69,35 @@ const swaypageId = parseInt(route.params.id)
 
 const swaypagesStore = useSwaypagesStore()
 const {
+  getSwaypageByIdCached, 
   getSwaypageBuyerSessionsByIdCached,
 } = storeToRefs(swaypagesStore)
 
-const [buyerSessions] = await Promise.all([
+const [swaypage, buyerSessions] = await Promise.all([
+  getSwaypageByIdCached.value(swaypageId),
   getSwaypageBuyerSessionsByIdCached.value(swaypageId),
 ])
 
 const dayjs = useDayjs()
 function prettyFormatDate(date) {
   return dayjs(date).calendar()
+}
+
+const settingsMenu = [
+  [{
+    label: 'Edit Swaypage Settings',
+    click: () => openSwaypageSettingsModal()
+  }]
+]
+
+function openSwaypageSettingsModal () {
+  // TODO map incoming values
+  modal.open(EditSwaypageModal, {
+    swaypage,
+    async onClose () {
+      modal.close()
+    }
+  })
 }
 </script>
 
