@@ -136,7 +136,7 @@
           </template>
         </VueDraggable>
 
-        <div v-if="canEdit">
+        <!-- <div v-if="canEdit">
           <dropdown-menu class="align-content-left"
             :overlay="false"
             with-dropdown-closer
@@ -172,6 +172,17 @@
               </div>
             </template>
           </dropdown-menu>
+        </div> -->
+        <div v-if="canEdit">
+          <UDropdown :items="newBlocksMenu"
+            :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
+            <div class="align-content-left mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
+              <UIcon v-if="isSeller" 
+                class="text-gray-500 icon-menu" 
+                name="i-heroicons-plus" />
+              <div class="subtext">New</div>
+            </div>
+          </UDropdown>
         </div>
 
         <div class="h-[2rem]" /> <!-- bottom spacer -->
@@ -292,6 +303,32 @@ if (!anonymousId.value && process.client) {
     ? crypto.randomUUID()
     : Math.floor(Math.random() * 1000000).toString()
 }
+
+const newBlocksMenu = [
+  [{
+    label: 'Header',
+    icon: 'i-heroicons-language',
+    click: () => newHeader(),
+  }, {
+    label: 'Text Block',
+    icon: 'i-heroicons-bars-3-bottom-left',
+    click: () => newTextBlock(),
+  }, 
+  ...swaypage.roomType !== 'template' ? [{
+    label: 'AI Prompt',
+    icon: 'i-heroicons-computer-desktop',
+    click: () => newAiBlock(),
+  }] : [], 
+  ...swaypage.roomType === 'template' ? [{
+    label: 'AI Prompt',
+    icon: 'i-heroicons-computer-desktop',
+    click: () => newAiTemplateBlock(),
+  }] : [], {
+    label: 'Asset',
+    icon: 'i-heroicons-link',
+    click: () => newAsset(),
+  }]
+]
 
 const page = pageId
   ? find(pages, p => p.id === pageId)
