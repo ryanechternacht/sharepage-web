@@ -6,7 +6,6 @@
         <UIcon class="subtext icon-menu" name="i-heroicons-signal" />
         <div class="subtext">All events</div>
       </div>
-      <!-- TODO use a real dropdown menu for this -->
       <!-- <dropdown-menu
         :overlay="false"
         with-dropdown-closer

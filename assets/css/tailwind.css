@@ -111,17 +111,4 @@
   .center-xy {
     @apply flex flex-row items-center justify-center;
   }
-
-  .dropdown-menu {
-    @apply flex flex-col gap-.5 p-1
-  }
-
-  .dropdown-item {
-    @apply p-[.125rem] text-sm;
-    
-    &:hover {
-      @apply hover:bg-gray-100 hover:px-[.5rem] hover:mx-[-.375rem]
-        cursor-pointer;
-    }
-  }
 }

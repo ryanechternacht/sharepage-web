@@ -202,8 +202,4 @@ function prettyFormatDate(date) {
     @apply -mr-8 pr-8
   }
 }
-
-.dropdown-item {
-  @apply flex flex-row items-center gap-2 font-sans text-sm text-gray-500;
-}
 </style>

@@ -101,25 +101,15 @@
           <div class="flex-grow" />
 
           <div class="mt-16 mb-4 w-full">
-            <dropdown-menu
-              :overlay="false"
-              with-dropdown-closer
-              dropup>
-              <template #trigger>
-                <div v-if="isSeller" 
-                  class="cursor-pointer flex flex-row gap-4 items-center">
-                  <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
-                  <div class="text-gray-500">Archive</div>
-                </div>
-              </template>
-              <template #body>
-                <div class="dropdown-menu">
-                  <NuxtLink v-for="p in archivedPages" 
-                    class="dropdown-item"
-                    :href="makeNewSwaypageLink(swaypage, p.id)">{{ p.title }}</NuxtLink>
-                </div>
-              </template>
-            </dropdown-menu>
+            <UDropdown :items="archivedPagesMenu"
+            :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
+            :popper="{ placement: 'top-start' }">
+              <div v-if="isSeller" 
+                class="cursor-pointer flex flex-row gap-4 items-center">
+                <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
+                <div class="text-gray-500">Archive</div>
+              </div>
+            </UDropdown>
           </div>
         </div>
       </div>
@@ -135,13 +125,13 @@
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
-import { storeToRefs } from 'pinia'
+import { mapActions, storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
-const { debounce, filter, findIndex, orderBy } = lodash_pkg;
+const { debounce, filter, findIndex, map, orderBy } = lodash_pkg;
 
 definePageMeta({
   middleware: ['enforce-swaypage-visibility'],
@@ -222,6 +212,13 @@ function refreshPages () {
   )
 }
 refreshPages()
+
+const archivedPagesMenu = computed(() => {
+  return [map(archivedPages.value, (p) => ({
+    label: p.title,
+    to: makeNewSwaypageLink(swaypage, p.id),
+  }))]
+})
 
 async function savePageOrdering() {
   await swaypageStore.reorderPages({ swaypageId, pages: activePages })

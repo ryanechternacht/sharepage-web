@@ -579,15 +579,6 @@ function trackLinkClick(linkText) {
   margin-left: calc(2.25rem + 2px);
 }
 
-.dropdown-item {
-  @apply p-.5 text-sm;
-  
-  &:hover {
-    @apply hover:bg-gray-100 hover:px-[.5rem] hover:mx-[-.375rem]
-      cursor-pointer;
-  }
-}
-
 .rightbar-link {
   @apply py-2 w-full flex flex-row-reverse cursor-pointer items-center gap-3;
 }
