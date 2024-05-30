@@ -12,12 +12,6 @@ function simplifyName (name) {
 
 function makeInternalSwaypageLink (swaypage, page) {
   return page
-    ? `/old/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
-    : `/old/${swaypage.id}/${simplifyName(swaypage.buyer)}`
-}
-
-function makeNewSwaypageLink (swaypage, page) {
-  return page
     ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
     : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
@@ -34,5 +28,4 @@ export const useSwaypageLinks = () => ({
   makeInternalSwaypageLink,
   makeExternalSwaypageLink,
   makePersonalizedExternalSwaypageLink,
-  makeNewSwaypageLink,
 })

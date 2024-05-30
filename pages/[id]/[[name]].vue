@@ -66,7 +66,7 @@
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0" />
                 <NuxtLink 
-                  :href="makeNewSwaypageLink(swaypage, 'feed')"
+                  :href="makeInternalSwaypageLink(swaypage, 'feed')"
                   class="sidebar-item">
                   <UIcon name="i-heroicons-signal" />
                   <div class="body">Feed</div>
@@ -82,7 +82,7 @@
                   </UDropdown>
                 </div>
                 <NuxtLink 
-                  :href="makeNewSwaypageLink(swaypage, p.id)"
+                  :href="makeInternalSwaypageLink(swaypage, p.id)"
                   class="sidebar-item">
                   <SwaypagePageTypeIcon :page-type="p.pageType" />
                   <div class="text-sm">{{ p.title }}</div>
@@ -160,22 +160,19 @@ const {
   getSwaypagePagesByIdCached, 
 } = storeToRefs(swaypageStore)
 const usersStore = useUsersStore()
-const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
+const { isUserSeller } = storeToRefs(usersStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [swaypage, pages, hasUser, isSeller, organization] = await Promise.all([
+const [swaypage, pages, isSeller, organization] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
-  isUserLoggedIn.value(),
   isUserSeller.value(),
   getOrganizationCached.value(),
 ])
 
-const router = useRouter()
-// switch back to makeInternalSwaypageLink
-const { makeNewSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 const linkToPage = useRequestURL().href
 
@@ -206,7 +203,7 @@ refreshPages()
 const archivedPagesMenu = computed(() => {
   return [map(archivedPages.value, (p) => ({
     label: p.title,
-    to: makeNewSwaypageLink(swaypage, p.id),
+    to: makeInternalSwaypageLink(swaypage, p.id),
   }))]
 })
 

@@ -298,10 +298,9 @@ router.beforeEach(async () => {
   }
 })
 
-// switch back to makeInternalSwaypageLink
-const { makeNewSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 setTimeout(() => router.replace({
-  path: makeNewSwaypageLink(swaypage, page.id)
+  path: makeInternalSwaypageLink(swaypage, page.id)
 }), 100)
 
 const keys = map(page?.body.sections, s => s.key || 0)

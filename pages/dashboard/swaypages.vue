@@ -24,7 +24,7 @@
       <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
-        :to="makeNewSwaypageLink(swaypage)">
+        :to="makeInternalSwaypageLink(swaypage)">
         <div class="cell body">
           <Logo :src="swaypage.buyerLogo" />
           {{ swaypage.buyer }}
@@ -55,7 +55,7 @@
       <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
-        :to="makeNewSwaypageLink(swaypage)">
+        :to="makeInternalSwaypageLink(swaypage)">
         <div class="cell body">{{ swaypage.buyer }}</div>
         <div class="cell subtext">
           <template v-if="swaypage.owner">
@@ -76,7 +76,7 @@
       <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
-        :to="makeNewSwaypageLink(swaypage)">
+        :to="makeInternalSwaypageLink(swaypage)">
         <div class="cell body">
           <Logo :src="swaypage.buyerLogo" />
           {{ swaypage.buyer }}
@@ -97,14 +97,14 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { concat, filter, find, map, orderBy } = lodash_pkg;
+const { filter, orderBy } = lodash_pkg;
 
 const { apiFetch } = useNuxtApp()
 const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', { 
   // query
 })
 
-const { makeNewSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 // TODO changing these should affect routing
 const swaypageMenu = [
