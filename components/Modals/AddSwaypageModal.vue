@@ -103,5 +103,4 @@ const needsMoreInput = computed(() => {
     return !buyer.value
   }
 })
-
 </script>

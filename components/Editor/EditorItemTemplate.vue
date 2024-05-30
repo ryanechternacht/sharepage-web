@@ -1,6 +1,6 @@
 <template>
   <div class="component p-1 w-full flex flex-row flex-start gap-2">
-    <div v-if="!readonly" class="min-w-[1rem] drag-handle"
+    <div v-if="!readonly" class="min-w-[1rem] drag-handle mt-.5"
       :class="{ 'show-menu': isDropdownOpen }">
       <UDropdown :items="menu"
         :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
@@ -91,6 +91,8 @@ const isDropdownOpen = ref(false)
 }
 
 .content {
-  @apply w-full border-l-2 pl-2 border-white;
+  /* I'm not sure why the min-h is required, but there are some extra
+     pixels that are getting added when I switched to UIcon :/ */
+  @apply w-full border-l-2 pl-2 border-white min-h-[1.625rem];
 }
 </style>

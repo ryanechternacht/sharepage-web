@@ -9,7 +9,7 @@
       set the .ProseMirror height correctly. So we are going to flow a value down
       to the .ProseMirror -->
     <template #content>
-      <div>AI Prompt:</div>
+      <div class="text-base font-bold">AI Prompt:</div>
       <editor-content
         :editor="aiEditor"
         class="editor p-0 mb-2 border-t-0 border-x-0 border-b border-gray-200 rounded-none w-full" />
@@ -139,8 +139,6 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     }
   })
 
-  console.log(data, error)
-
   outputEditor.value.commands.setContent(data.value.text, false)
   update()
 })
@@ -172,7 +170,7 @@ function commit() {
   }
 
   p, div, span, .body, b {
-    @apply text-gray-700;
+    @apply text-gray-700 text-sm;
   }
 
   .ProseMirror {

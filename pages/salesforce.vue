@@ -144,7 +144,8 @@ const oppsGrouped = computed(() =>
   @apply border border-gray-100 rounded-md p-1;
 
   &.need-to-login {
-    @apply border-0 bg-green-[#057A6F] text-white;
+    @apply border-0 text-white;
+    /* @apply bg-green-[#057A6F]; */
   }
 }
 
