@@ -27,7 +27,7 @@
 
     <div class="mx-auto w-[800px] flex flex-col gap-2">
       <div v-for="g in oppsGrouped"
-        class="border border-gray-100-active rounded-md p-4 border-l-[10px]">
+        class="border border-gray-100 rounded-md p-4 border-l-[10px]">
         <div class="flex flex-row items-center gap-5 mb-3">
           <img :src="g.logo" class="w-[1.5rem] max-h-6">
           <h3 class="w-[15rem] truncate">{{ g.accountName }}</h3>
@@ -142,7 +142,7 @@ const oppsGrouped = computed(() =>
 
 <style lang="postcss" scoped>
 .login-box {
-  @apply border border-gray-100-active rounded-md p-1;
+  @apply border border-gray-100 rounded-md p-1;
 
   &.need-to-login {
     @apply border-0 bg-green-[#057A6F] text-white;
@@ -157,7 +157,7 @@ const oppsGrouped = computed(() =>
     @apply contents;
 
     .header-cell {
-      @apply border-b border-gray-100-active font-bold p-2;
+      @apply border-b border-gray-100 font-bold p-2;
     }
   }
 
