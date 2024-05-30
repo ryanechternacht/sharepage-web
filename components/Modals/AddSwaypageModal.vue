@@ -2,8 +2,11 @@
   <UModal>
     <UCard>
       <div class="flex flex-col gap-4">
+        <!-- A bit hacky, tab-0 = dealroom, tab-1 = template -->
+        <UTabs v-model="selectedTab" :items="tabs" />
+
         <h2 class="mx-auto">
-          New Swaypage
+          New {{ selectedTab === 0 ? 'Swaypage' : 'Template' }}
         </h2>
         <div>
           <div class="text-sm text-gray-500 mb-1">Name *</div>
@@ -12,7 +15,7 @@
             placeholder="Account Name" 
             class="w-full" />
         </div>
-        <div>
+        <div v-if="selectedTab === 0">
           <div class="text-sm text-gray-500 mb-1">Logo *</div>
           <USelectMenu
             v-model="clearbitLogo"
@@ -30,7 +33,7 @@
             </template>
           </USelectMenu>
         </div>
-        <div>
+        <div v-if="selectedTab === 0">
           <div class="text-sm text-gray-500 mb-1">Context</div>
           <UInput
             v-model="subname"
@@ -64,6 +67,9 @@ const subname = ref('')
 
 const buyer = ref('')
 
+const tabs = [{ label: 'Swaypage' }, { label: 'Template' }]
+const selectedTab = ref(0)
+
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true
 
@@ -84,12 +90,18 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     buyer,
     subname,
     buyerLogo: clearbitLogo.logo,
-    roomType: 'deal-room',
+    roomType: selectedTab.value === 0 ? 'deal-room' : 'template',
     pageTitle: 'New Page'
   })
   emit('close', { swaypageId })
 })
 
-const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
+const needsMoreInput = computed(() => {
+  if (selectedTab === 0) {
+    return !buyer.value || !clearbitLogo.value
+  } else if (selectedTab === 1) {
+    return !buyer.value
+  }
+})
 
 </script>
