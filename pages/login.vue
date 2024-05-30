@@ -75,7 +75,6 @@ const showGoogleLogin = computed(
   () => apiSlug !== 'app'
 )
 
-// TODO should this just be a backend call that redirects you?
 const googleLoginLink = computed(
   () => `${stytch.baseUrl}/v1/b2b/public/oauth/google/start` +
     `?public_token=${stytch.publicToken}` + 

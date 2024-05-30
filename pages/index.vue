@@ -18,7 +18,6 @@ if (user?.buyersphereRole === 'admin') {
 } else if (user?.buyersphereRole === 'buyer') {
   const { apiFetch } = useNuxtApp()
   const { data } = await apiFetch('/v0.1/users/me/buyerspheres')
-  // TODO what to do when there's no answer?
   await navigateTo(makeInternalSwaypageLink(data.value[0]))
 } else /* no user */ {
   await navigateTo('/login')

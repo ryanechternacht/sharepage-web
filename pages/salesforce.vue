@@ -31,7 +31,6 @@
         <div class="flex flex-row items-center gap-5 mb-3">
           <img :src="g.logo" class="w-[1.5rem] max-h-6">
           <h3 class="w-[15rem] truncate">{{ g.accountName }}</h3>
-          <!-- TODO wrong owner? -->
           <!-- <Tag width="8.875rem" height="24px">{{ g.opportunities[0].ownerName }}</Tag> -->
         </div>
 

@@ -31,7 +31,6 @@ function openModal () {
       if (props?.swaypageId) {
         const router = useRouter()
         await router.replace({
-          // TODO change when we get rid of the old pages
           path: `/${props.swaypageId}`
         })
       }

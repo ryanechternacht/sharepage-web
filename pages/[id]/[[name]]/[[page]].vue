@@ -25,7 +25,6 @@
           </div>
         </div>
         <div class="flex-grow" />
-          <!-- TODO implement -->
         <!-- <div>active</div> -->
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="swaypage.isPublic">
@@ -502,7 +501,6 @@ function editLink (link) {
 }
 
 function openSwaypageSettingsModal () {
-  // TODO map incoming values
   modal.open(EditSwaypageModal, {
     swaypage,
     async onClose () {
@@ -565,7 +563,7 @@ function trackLinkClick(linkText) {
 <style lang="postcss" scoped>
 .page-area {
   @apply border border-gray-200 rounded-md px-2 py-1;
-  /* TODO this is based on the current top nav height */
+  /* this is based on the current top nav height */
   min-height: calc(100vh - 5rem);
 }
 

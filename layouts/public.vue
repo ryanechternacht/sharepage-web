@@ -11,12 +11,10 @@
         </NuxtLink>
       </div>
       <div class="flex flex-row items-center justify-end gap-x-3">
-        <!-- TODO add these login options back if we use this for more than login -->
         <NuxtLink to="/login" class="gray">LOG IN</NuxtLink>
         <UButton to="/signup">SIGNUP</UButton>
       </div>
     </div>
-    <!-- TODO get this height to center dynamically -->
     <div class="text-center mt-[100px] mb-[100px]">
       <slot />
     </div>

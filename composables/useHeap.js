@@ -30,9 +30,6 @@ export const useHeap = () => {
     }
   }
 
-  // TODO Add any other heap calls here, using the timeout form to ensure
-  // heap is loaded and expose below
-
   return {
     identify,
   }

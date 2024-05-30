@@ -103,7 +103,7 @@
           <div class="mt-16 mb-4 w-full">
             <UDropdown :items="archivedPagesMenu"
             :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
-            :popper="{ placement: 'top-start' }">
+            :popper="{ placement: 'bottom-start' }">
               <div v-if="isSeller" 
                 class="cursor-pointer flex flex-row gap-4 items-center">
                 <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
@@ -178,16 +178,6 @@ const router = useRouter()
 const { makeNewSwaypageLink } = useSwaypageLinks()
 
 const linkToPage = useRequestURL().href
-
-// TODO for making a new "sharing" modal
-// const path = props.recipient
-//   ? makePersonalizedExternalSwaypageLink(props.swaypageShortcode, props.recipient)
-//   : makeExternalSwaypageLink(props.swaypageShortcode, props.companyName)
-
-// const u = useRequestURL()
-// const urlBase =  u.protocol + '//' + u.host;
-
-// const url = new URL(path, urlBase)
 
 async function trackShare () {
   // TODO implement

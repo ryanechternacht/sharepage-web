@@ -25,7 +25,10 @@
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
         :to="makeNewSwaypageLink(swaypage)">
-        <div class="cell body">{{ swaypage.buyer }}</div>
+        <div class="cell body">
+          <Logo :src="swaypage.buyerLogo" />
+          {{ swaypage.buyer }}
+        </div>
         <div class="cell subtext">{{ swaypage.subname }}</div>
         <div class="cell subtext">
           <template v-if="swaypage.owner">
@@ -74,7 +77,10 @@
 
       <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
         :to="makeNewSwaypageLink(swaypage)">
-        <div class="cell body">{{ swaypage.buyer }}</div>
+        <div class="cell body">
+          <Logo :src="swaypage.buyerLogo" />
+          {{ swaypage.buyer }}
+        </div>
         <div class="cell subtext">{{ swaypage.subname }}</div>
         <div class="cell subtext">
           <template v-if="swaypage.owner">

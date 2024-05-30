@@ -68,11 +68,11 @@ async function lookupOnClearbit (query) {
   clearbitLoading.value = true
 
   if (query) {
-    const { data } = await $fetch(
+    const data = await $fetch(
       `https://autocomplete.clearbit.com/v1/companies/suggest?query=${query}`
     )
     clearbitLoading.value = false
-    return data.value
+    return data
   } else {
     clearbitLoading.value = false
     return []
