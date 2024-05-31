@@ -180,7 +180,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { cloneDeep, debounce, filter, find, findIndex, first, map, max, some } = lodash_pkg;
+const { clone, cloneDeep, debounce, filter, find, findIndex, first, map, max } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
@@ -204,17 +204,16 @@ const {
 } = storeToRefs(swaypageStore)
 
 const usersStore = useUsersStore()
-const { isUserLoggedIn, isUserSeller, getMeCached } = storeToRefs(usersStore)
+const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const buyerSessionStore = useBuyerSessionStore()
 
-const [swaypage, pages, linksSource, hasUser, isSeller, user, _] = await Promise.all([
+const [swaypage, pages, linksSource, hasUser, isSeller, _] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypagePagesByIdCached.value(swaypageId),
   getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
-  getMeCached.value(),
   buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 ])
 
@@ -317,7 +316,6 @@ function updateSection (section) {
     s.text = (s.title ? `<p>${s.title}</p>` : '')
       + s.body.question
       + s.body.answer
-    // TODO unset s.body
   }
 
   if (s.type === 'simple-list') {
@@ -327,14 +325,15 @@ function updateSection (section) {
       + '<ul>' 
       + map(s.body.choices, c => `<li>${c.text}</li>`).join('')
       + '</ul>'
-    // TODO unset s.body
   }
 
   if (s.type === 'simple-asset') {
     s.type = 'asset'
     s.link = s.body.asset.link
-    // TODO unset s.body
   }
+
+  // remove old form of these objects
+  delete s.body
 
   return s
 }
@@ -485,6 +484,7 @@ function createNewLink () {
     link: null,
     async onClose () {
       modal.close()
+      refreshLinks()
     }
   })
 }
@@ -530,7 +530,11 @@ async function restorePage() {
   reloadNuxtApp()
 }
 
-const links = ref(cloneDeep(linksSource))
+const links = ref([])
+function refreshLinks () {
+  links.value = clone(linksSource)
+}
+refreshLinks()
 
 async function saveLinkOrdering() {
   await swaypageStore.reorderLinks({ swaypageId, links })
@@ -550,6 +554,7 @@ async function deleteLink(link) {
     swaypageId,
     linkId: link.id,
   })
+  refreshLinks()
 }
 
 function trackLinkClick(linkText) {
