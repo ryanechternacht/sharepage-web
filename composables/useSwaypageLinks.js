@@ -12,8 +12,8 @@ function simplifyName (name) {
 
 function makeInternalSwaypageLink (swaypage, page) {
   return page
-    ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
-    : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
+    ? `/other/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
+    : `/other/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
 function makePersonalizedExternalSwaypageLink (shortcode, name) {
