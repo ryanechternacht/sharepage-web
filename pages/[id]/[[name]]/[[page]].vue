@@ -299,9 +299,9 @@ router.beforeEach(async () => {
 })
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
-setTimeout(() => router.replace({
-  path: makeInternalSwaypageLink(swaypage, page.id)
-}), 100)
+setTimeout(() => 
+  history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
+  100)
 
 const keys = map(page?.body.sections, s => s.key || 0)
 let nextKey = (max(keys) || 0) + 1

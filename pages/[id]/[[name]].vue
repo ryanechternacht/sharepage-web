@@ -125,7 +125,7 @@
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
-import { mapActions, storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
@@ -174,7 +174,9 @@ const [swaypage, pages, isSeller, organization] = await Promise.all([
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
 
-const linkToPage = useRequestURL().href
+const linkToPage = ref(useRequestURL().href)
+// get the cleaned up url, once it's cleaned up
+setTimeout(() => linkToPage.value = useRequestURL().href, 2000)
 
 async function trackShare () {
   // TODO implement
