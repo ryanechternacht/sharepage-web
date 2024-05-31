@@ -524,7 +524,10 @@ async function restorePage() {
     pageId,
     page: { status: 'active' }
   })
-  await swaypageStore.fetchSwaypagePages({ swaypageId, forceRefresh: true })
+  // Ideally we'd just reload the sidebar, but I'm not sure the best way 
+  // to propogate to the parent page, and this is rare enough that a hard
+  // reload is fine
+  reloadNuxtApp()
 }
 
 const links = ref(cloneDeep(linksSource))

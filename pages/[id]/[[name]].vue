@@ -254,6 +254,7 @@ function createNewPage() {
     page: null,
     async onClose () {
       modal.close()
+      refreshPages()
     }
   })
 }
@@ -294,6 +295,7 @@ async function removePage(page, status) {
   if (page.id === currentPageId) {
     await navigateTo(`/${swaypageId}`)
   }
+  refreshPages()
 }
 </script>
 
