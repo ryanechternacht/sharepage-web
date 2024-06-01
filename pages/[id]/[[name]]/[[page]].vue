@@ -22,15 +22,15 @@
       <div class="mr-4">
         <div class="sticky top-8 min-h-[calc(100vh-6.5rem)] flex flex-col">
           <div class="header-grid">
-            <img v-if="swaypage.roomType === 'deal-room'"
+            <Logo v-if="swaypage.roomType === 'deal-room'"
               :src="swaypage.buyerLogo"
-              class="icon-header">
-            <img v-else-if="swaypage.roomType === 'discovery-room'"
+              class="icon-header" />
+            <Logo v-else-if="swaypage.roomType === 'discovery-room'"
               :src="organization.logo"
-              class="icon-header">
-            <img v-else-if="swaypage.roomType === 'template'"
+              class="icon-header" />
+            <Logo v-else-if="swaypage.roomType === 'template'"
               :src="organization.logo"
-              class="icon-header">
+              class="icon-header" />
             <h2>{{ swaypage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
@@ -386,7 +386,9 @@ if (!anonymousId.value && process.client) {
 
 const linkToPage = ref(useRequestURL().href)
 // get the cleaned up url, once it's cleaned up
-setTimeout(() => linkToPage.value = useRequestURL().href, 2000)
+if (process.client) {
+  setTimeout(() => linkToPage.value = window.location.href, 2000)
+}
 
 async function trackShare () {
   // TODO implement
@@ -398,9 +400,11 @@ const page = pageId
 
 const router = useRouter()
 const { makeInternalSwaypageLink } = useSwaypageLinks()
-setTimeout(() => 
-  history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
-  100)
+if (process.client) {
+  setTimeout(() => 
+    history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
+    100)
+}
 
 
 

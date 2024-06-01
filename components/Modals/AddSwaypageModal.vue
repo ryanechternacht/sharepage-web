@@ -21,9 +21,9 @@
             v-model="clearbitLogo"
             :loading="clearbitLoading"
             :searchable="lookupOnClearbit"
-            by="domain"
+            by="logo"
             placeholder="Search for a company"
-            option-attribute="domain">
+            option-attribute="logo">
             <template #option="{ option: { name, logo, domain } }">
               <div class="flex flex-row gap-2 items-center p-2">
                 <img :src="logo" class="w-[1.5rem] h-[1.5rem] shrink-0">

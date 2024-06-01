@@ -70,7 +70,7 @@
             </div>
           </div>
           <div class="cell gap-2">
-            <Logo :src="session.buyersphere.buyerLogo" />
+            <Logo :src="session.buyersphere.buyerLogo" class="icon-menu" />
             <div class="subtext">{{ session.buyersphere.buyer }}</div>
           </div>
           <div class="cell subtext">{{ prettyFormatDate(session.createdAt) }}</div>

@@ -222,10 +222,6 @@ function prettyFormatDate(date) {
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
 
-const linkToPage = ref(useRequestURL().href)
-// get the cleaned up url, once it's cleaned up
-setTimeout(() => linkToPage.value = useRequestURL().href, 2000)
-
 const activePages = ref([])
 const archivedPages = ref([])
 
