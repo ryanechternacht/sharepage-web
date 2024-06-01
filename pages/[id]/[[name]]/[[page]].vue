@@ -62,7 +62,7 @@
               group="pages"
               handle=".drag-handle"
             >
-              <div v-if="isSeller" 
+              <div v-if="isSeller && swaypage.roomType !== 'template'"
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0" />
                 <NuxtLink 
@@ -75,8 +75,8 @@
               <div v-for="p in activePages"
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0">
-                  <UDropdown :items="makePageMenu(p)">
-                    <UIcon v-if="isSeller" 
+                  <UDropdown v-if="isSeller" :items="makePageMenu(p)">
+                    <UIcon
                       class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
                       name="i-heroicons-ellipsis-vertical" />
                   </UDropdown>
@@ -164,7 +164,7 @@
                     saveSubmissionState === 'ready' ? "Changes" : "??" }}
               </div>
             </div>
-            <UDropdown :items="settingsMenu">
+            <UDropdown v-if="isSeller" :items="settingsMenu">
               <UIcon
                 class="-ml-4"
                 name="i-heroicons-ellipsis-vertical" />
@@ -232,10 +232,10 @@
               </template>
             </VueDraggable>
             <div v-if="canEdit">
-              <UDropdown :items="newBlocksMenu"
+              <UDropdown v-if="isSeller" :items="newBlocksMenu"
                 :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
                 <div class="align-content-left mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
-                  <UIcon v-if="isSeller" 
+                  <UIcon
                     class="text-gray-500 icon-menu" 
                     name="i-heroicons-plus" />
                   <div class="subtext">New</div>
@@ -263,8 +263,8 @@
                   <div v-for="l in links"
                     class="group/link-item flex flex-row-reverse items-center">
                     <div class="w-[1.5rem] flex-shrink-0 text-right">
-                      <UDropdown :items="makeLinkMenu(l)">
-                        <UIcon v-if="isSeller"
+                      <UDropdown v-if="isSeller" :items="makeLinkMenu(l)">
+                        <UIcon
                           class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
                           name="i-heroicons-ellipsis-vertical" />
                       </UDropdown>
@@ -311,6 +311,15 @@ import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import AddEditPageModal from '@/components/Modals/AddEditPageModal'
 import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
+
+// We used to use a nested page approach to extract the largely
+// duplicative page layout logic in [[page]].vue and feed.vue. however
+// this ran into a very annoying bug where the tiptap areas would be
+// double mounted. It appears this is a vue bug according to the nuxt 
+// documentation on transitions. (https://github.com/vuejs/core/issues/5513). 
+// In theory, this bug was fixed in 3.4.8ish, but it's still a problem for
+// tiptap anyway. so I copied that logic into both [[page]].vue and feed.vue
+// and i'm just sad about it :()
 
 useEmbedly()
 

@@ -2,20 +2,9 @@
   <div>
     <TopNav>
       <template #action-button>
-        <template v-if="swaypage.roomType === 'template'">
-          <UButton icon="i-heroicons-document"
-            @click="openCreateSwaypageFromTemplate">
-            Create from Template
-          </UButton>
-        </template>
-        <template v-else>
-          <UButton v-if="isSeller"
-            icon="i-heroicons-link"
-            @click="openShareModal">Share</UButton>
-          <CopyToClipboardButton v-else
-            :url="linkToPage"
-            @click="trackShare" />
-        </template>
+        <UButton
+          icon="i-heroicons-link"
+          @click="openShareModal">Share</UButton>
       </template>
     </TopNav>
     <div class="mt-6 layout-grid">
