@@ -12,8 +12,8 @@ function simplifyName (name) {
 
 function makeInternalSwaypageLink (swaypage, page) {
   return page
-    ? `/other/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
-    : `/other/${swaypage.id}/${simplifyName(swaypage.buyer)}`
+    ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
+    : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
 // requestUrl should be the result of useRequestUrl()
