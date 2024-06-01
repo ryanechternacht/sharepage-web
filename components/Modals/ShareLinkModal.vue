@@ -4,6 +4,17 @@
       <div class="flex flex-col gap-4">
         <UTabs v-model="selectedTab" :items="tabs" />
 
+        <UAlert v-if="!swaypage.isPublic"
+          title="This Swaypage isn't publicly viewable"
+          color="orange"
+          variant="subtle"
+          :actions="[{ 
+            label: 'Make Public', 
+            click: makePublic, 
+            color: 'orange',
+            variant: 'solid' 
+          }]" />
+
         <template v-if="selectedTab === 0">
           <div>
             <div class="text-sm text-gray-500 mb-1">Name *</div>
@@ -26,6 +37,8 @@
 </template>
 
 <script setup>
+import { useSwaypagesStore } from '@/stores/swaypages'
+
 const props = defineProps({
   swaypage: { type: Object, required: true }
 })
@@ -57,4 +70,12 @@ const generalLink = makeExternalSwaypageLink(
   props.swaypage.shortcode,
   props.swaypage.buyer
 )
+
+const store = useSwaypagesStore()
+async function makePublic() {
+  await store.saveSwaypageSettings({
+    swaypageId: props.swaypage.id,
+    isPublic: true,
+  })
+}
 </script>

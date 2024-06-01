@@ -135,5 +135,4 @@ const { submissionState, submitFn } = useSubmit(async () => {
 })
 
 const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
-
 </script>

@@ -78,7 +78,7 @@ module.exports = {
       xl: ['1.625rem', { fontWeight: '800'} ],
       lg: ['1rem', { fontWeight: '600'} ],
       base: ['.875rem', { fontWeight: '500'} ],
-      sm: ['.875rem', { fontWeight: '500'} ],
+      sm: ['.875rem', { fontWeight: '400'} ],
       xs: ['.75rem', { fontWeight: '400'} ],
     },
     extend: {
