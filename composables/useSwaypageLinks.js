@@ -16,12 +16,18 @@ function makeInternalSwaypageLink (swaypage, page) {
     : `/other/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
-function makePersonalizedExternalSwaypageLink (shortcode, name) {
-  return `/u/${shortcode}/${name}`
+// requestUrl should be the result of useRequestUrl()
+function makePersonalizedExternalSwaypageLink (requestUrl, shortcode, name) {
+  const urlBase =  requestUrl.protocol + '//' + requestUrl.host;
+  const path = `/u/${shortcode}/${name}`
+  return new URL(path, urlBase).href
 }
 
-function makeExternalSwaypageLink (shortcode, companyName) {
-  return `/c/${shortcode}/${simplifyName(companyName)}`
+// requestUrl should be the result of useRequestUrl()
+function makeExternalSwaypageLink (requestUrl, shortcode, companyName) {
+  const urlBase =  requestUrl.protocol + '//' + requestUrl.host;
+  const path = `/c/${shortcode}/${simplifyName(companyName)}`
+  return new URL(path, urlBase).href
 }
 
 export const useSwaypageLinks = () => ({ 

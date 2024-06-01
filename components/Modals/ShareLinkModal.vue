@@ -44,10 +44,15 @@ const {
 
 const personalizedLink = computed(() =>  
   makePersonalizedExternalSwaypageLink(
+    useRequestURL(),
     props.swaypage.shortcode,
     recipient.value
   )
 )
 
-const generalLink = makeExternalSwaypageLink(props.swaypage.shortcode, props.swaypage.buyer)
+const generalLink = makeExternalSwaypageLink(
+  useRequestURL(),
+  props.swaypage.shortcode,
+  props.swaypage.buyer
+)
 </script>
