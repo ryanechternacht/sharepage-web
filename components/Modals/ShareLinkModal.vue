@@ -8,11 +8,12 @@
           title="This Swaypage isn't publicly viewable"
           color="orange"
           variant="subtle"
-          :actions="[{ 
-            label: 'Make Public', 
-            click: makePublic, 
+          :actions="[{
+            label: 'Make Public',
+            click: makePublic,
             color: 'orange',
-            variant: 'solid' 
+            icon: 'i-heroicons-eye',
+            variant: 'solid'
           }]" />
 
         <template v-if="selectedTab === 0">

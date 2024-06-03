@@ -4,15 +4,18 @@
       There are no pages in this Swaypage. Create a New Page on the left
     </h2>
     <div v-else>
-      <div v-if="page.status === 'archived'"
-        class="p-2 rounded-md bg-gray-200 flex flex-row items-center">
-        <div>This page is currently archived.</div>
-        <div class="flex-grow" />
-        <UButton icon="i-heroicons-arrow-uturn-left"
-          @click="restorePage">
-          Restore Page
-        </UButton>
-      </div>
+      <UAlert v-if="page.status === 'archived'"
+        title="This page is currently archived"
+        color="orange"
+        variant="subtle"
+        :actions="[{ 
+          label: 'Restore Page', 
+          click: restorePage,
+          icon: 'i-heroicons-arrow-uturn-left',
+          color: 'orange',
+          variant: 'solid' 
+        }]" />
+
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
         <div class="flex flex-row items-center">
           <UserAvatar v-for="s in swaypage.sellerTeam" 
@@ -298,9 +301,11 @@ router.beforeEach(async () => {
 })
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
-setTimeout(() => 
-  history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
-  100)
+if (process.client) {
+  setTimeout(() => 
+    history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
+    100)
+}
 
 const keys = map(page?.body.sections, s => s.key || 0)
 let nextKey = (max(keys) || 0) + 1

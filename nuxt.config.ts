@@ -1,8 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // We used to use a nested page approach to extract the largely
+  // duplicative page layout logic in [[page]].vue and feed.vue. however
+  // this ran into a very annoying bug where the tiptap areas would be
+  // double mounted. It appears this is a vue bug according to the nuxt 
+  // documentation on transitions. (https://github.com/vuejs/core/issues/5513). 
+  // In theory, this bug was fixed in 3.4.8ish, but it's still a problem for
+  // tiptap anyway. so no transitions until this is fixed
   app: {
-    layoutTransition: { name: 'layout', mode: 'out-in' },
-    pageTransition: { name: 'page', mode: 'out-in' }
+    // layoutTransition: { name: 'layout', mode: 'out-in' },
+    // pageTransition: { name: 'page', mode: 'out-in' }
   },
 
   css: ['assets/css/tailwind.css'],
