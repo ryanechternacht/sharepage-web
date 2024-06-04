@@ -3,20 +3,20 @@
     <UCard>
       <div class="flex flex-col gap-4">
         <h2 class="mx-auto">
-          {{ editMode ? 'Edit Page Settings' : 'New Page' }}
+          {{ editMode ? 'Edit Page Settings' : 'New Chapter' }}
         </h2>
         <div>
-          <div class="text-sm text-gray-500 mb-1">Page Title *</div>
+          <div class="text-sm text-gray-500 mb-1">Chapter Title *</div>
           <UInput
             v-model="title"
-            placeholder="Page Title" 
+            placeholder="Chapter Title" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-500 mb-1">Page Type *</div>
+          <div class="text-sm text-gray-500 mb-1">Chapter Type *</div>
           <USelect
             v-model="pageType"
-            placeholder="Page Type" 
+            placeholder="Chapter Type" 
             :options="pageTypes"
             class="w-full" />
         </div>
@@ -64,10 +64,10 @@ const canBuyerEditOptions = ['Yes', 'No']
 const pageType = ref(props.page?.pageType)
 const pageTypes = [
   {
-    label: 'General Page',
+    label: 'General Chapter',
     value: 'general',
   }, {
-    label: 'Follow-up page',
+    label: 'Follow-up Chapter',
     value: 'follow-up',
   }, {
     label: 'Guide',

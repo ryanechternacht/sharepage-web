@@ -52,7 +52,7 @@
           </div>
 
           <div>
-            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Pages</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Chapters</div>
             <VueDraggable
               v-model="activePages"
               ghost-class="ghost"
@@ -93,7 +93,7 @@
                 class="ml-6 sidebar-item"
                 @click="createNewPage">
                 <UIcon name="i-heroicons-plus" class="text-gray-500" />
-                <div class="text-gray-500 body">New Page</div>
+                <div class="text-gray-500 body">New Chapter</div>
               </div>
             </VueDraggable>
           </div>

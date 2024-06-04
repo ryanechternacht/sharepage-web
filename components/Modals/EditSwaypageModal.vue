@@ -128,7 +128,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     buyerLogo: clearbitLogo.value.logo,
     roomType: 'deal-room',
     isPublic: isPublic.value === 'public',
-    pageTitle: 'New Page',
+    pageTitle: 'New Chapter',
     status,
   })
   emit('close')

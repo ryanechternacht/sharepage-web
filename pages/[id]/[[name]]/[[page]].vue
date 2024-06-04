@@ -1,15 +1,15 @@
 <template>
   <div class="page-grid">
     <h2 v-if="!page">
-      There are no pages in this Swaypage. Create a New Page on the left
+      There are no Chapters in this Swaypage. Create a New Chapter on the left
     </h2>
     <div v-else>
       <UAlert v-if="page.status === 'archived'"
-        title="This page is currently archived"
+        title="This Chapter is currently archived"
         color="orange"
         variant="subtle"
         :actions="[{ 
-          label: 'Restore Page', 
+          label: 'Restore Chapter', 
           click: restorePage,
           icon: 'i-heroicons-arrow-uturn-left',
           color: 'orange',
@@ -515,7 +515,7 @@ function openSwaypageSettingsModal () {
 
 const settingsMenu = [
   [{
-    label: 'Edit Page Settings',
+    label: 'Edit Chapter Settings',
     click: () => openPageSettingsModal()
   }, {
     label: 'Edit Swaypage Settings',

@@ -91,7 +91,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     subname,
     buyerLogo: clearbitLogo.logo,
     roomType: selectedTab.value === 0 ? 'deal-room' : 'template',
-    pageTitle: 'New Page'
+    pageTitle: 'New Chapter'
   })
   emit('close', { swaypageId })
 })
