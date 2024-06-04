@@ -3,7 +3,7 @@
     <UCard>
       <div class="flex flex-col gap-4">
         <h2 class="mx-auto">
-          {{ editMode ? 'Edit Page Settings' : 'New Chapter' }}
+          {{ editMode ? 'Edit Chapter Settings' : 'New Chapter' }}
         </h2>
         <div>
           <div class="text-sm text-gray-500 mb-1">Chapter Title *</div>

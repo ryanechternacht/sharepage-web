@@ -2,7 +2,8 @@
   <div>
     <div class="flex flex-row items-center gap-4">
       <h1>Home</h1>
-      <UDropdown :items="swaypageMenu">
+      <UDropdown :items="swaypageMenu"
+        :popper="{ placement: 'bottom-start' }">
         <div class="flex flex-row items-center gap-2">
           <!-- <Component :is="filterOption.icon" class="subtext" /> -->
           <UIcon :name="selectedType.icon" class="subtext" />
