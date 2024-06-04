@@ -13,7 +13,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
     milestones: {},
     activities: {},
     buyerActivity: {},
-    pages: {},
+    chapters: {},
     links: {},
     buyerSessions: {},
   }),
@@ -37,9 +37,9 @@ export const useSwaypagesStore = defineStore('swaypages', {
     // TODO can we separate active from archived here without 
     // double fetching? I thihnk we double fetch user data in 
     // when trying to load multiple getters in parallel 
-    getSwaypagePagesByIdCached: (state) => async (swaypageId) => {
+    getSwaypageChaptersByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypagePages({ swaypageId })
-      return state.pages[swaypageId]?.content
+      return state.chapters[swaypageId]?.content
     },
     getSwaypageLinksByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypageLinks({ swaypageId })
@@ -396,34 +396,34 @@ export const useSwaypagesStore = defineStore('swaypages', {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.pages[swaypageId]?.content
+      if (!this.chapters[swaypageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.pages[swaypageId]?.generatedAt))
+          || is10MinutesOld(this.chapters[swaypageId]?.generatedAt))
       {
         const { data } = await apiFetch(`/v0.1/buyerspheres/${swaypageId}/pages`)
-        this.pages[swaypageId] = {
+        this.chapters[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async createPage({ swaypageId, page }) {
+    async createChapter({ swaypageId, chapter }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${swaypageId}/pages`,
-        { method: 'POST', body: page }
+        { method: 'POST', body: chapter }
       )
-      this.pages[swaypageId].content.push(data.value)
+      this.chapters[swaypageId].content.push(data.value)
       return data.value.id
     },
-    async updatePage({ swaypageId, pageId, page }) {
+    async updateChapter({ swaypageId, chapterId, chapter }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/page/${pageId}`,
-        { method: 'PATCH', body: page }
+        `/v0.1/buyerspheres/${swaypageId}/page/${chapterId}`,
+        { method: 'PATCH', body: chapter }
       )
       
-      const p = find(this.pages[swaypageId].content, p => p.id === pageId)
+      const p = find(this.chapters[swaypageId].content, p => p.id === chapterId)
       if (p) {
         if (data.value.title !== undefined) {
           p.title = data.value.title
@@ -445,23 +445,23 @@ export const useSwaypagesStore = defineStore('swaypages', {
         }
       }
     },
-    async deletePage({ swaypageId, pageId }) {
+    async deleteChapter({ swaypageId, chapterId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/page/${pageId}`,
+        `/v0.1/buyerspheres/${swaypageId}/page/${chapterId}`,
         { method: 'DELETE' }
       )
 
-      remove(this.pages[swaypageId].content, p => p.id === pageId)
+      remove(this.chapters[swaypageId].content, c => c.id === chapterId)
     },
-    async reorderPages({ swaypageId, pages }) {
+    async reorderChapters({ swaypageId, chapters }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${swaypageId}/pages/ordering`,
-        { method: 'PATCH', body: pages }
+        { method: 'PATCH', body: chapters }
       )
-      this.pages[swaypageId] = {
+      this.chapters[swaypageId] = {
         content: data.value,
         generatedAt: dayjs().toJSON()
       }

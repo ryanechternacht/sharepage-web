@@ -15,9 +15,9 @@
         <div>
           <div class="text-sm text-gray-500 mb-1">Chapter Type *</div>
           <USelect
-            v-model="pageType"
+            v-model="chapterType"
             placeholder="Chapter Type" 
-            :options="pageTypes"
+            :options="chapterTypes"
             class="w-full" />
         </div>
         <div>
@@ -37,6 +37,7 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
+          {{  error }}
       </div>
     </UCard>
   </UModal>
@@ -48,21 +49,21 @@ import { useSwaypagesStore } from '@/stores/swaypages'
 const store = useSwaypagesStore()
 
 const props = defineProps({
-  page: { type: Object, default: {} },
+  chapter: { type: Object, default: {} },
   swaypageId: { type: Number, required: true },
 })
 
 const emit = defineEmits(['close'])
 
-const editMode = !!props.page?.id
+const editMode = !!props.chapter?.id
 
-const title = ref(props.page?.title)
+const title = ref(props.chapter?.title)
 
-const canBuyerEdit = ref(props.page?.canBuyerEdit ? 'Yes' : 'No')
+const canBuyerEdit = ref(props.chapter?.canBuyerEdit ? 'Yes' : 'No')
 const canBuyerEditOptions = ['Yes', 'No']
 
-const pageType = ref(props.page?.pageType)
-const pageTypes = [
+const chapterType = ref(props.chapter?.pageType)
+const chapterTypes = [
   {
     label: 'General Chapter',
     value: 'general',
@@ -85,31 +86,31 @@ const pageTypes = [
 ]
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  let pageId = null
+  let chapterId = null
   if (editMode) {
-    await store.updatePage({
+    await store.updateChapter({
       swaypageId: props.swaypageId,
-      pageId: props.page.id,
-      page: {
+      chapterId: props.chapter.id,
+      chapter: {
         title,
-        pageType,
+        pageType: chapterType,
         canBuyerEdit: canBuyerEdit.value === 'Yes',
       },
     })
   } else {
-    pageId = await store.createPage({
+    chapterId = await store.createChapter({
       swaypageId: props.swaypageId,
-      page: {
+      chapter: {
         title,
-        pageType,
+        pageType: chapterType,
         canBuyerEdit: canBuyerEdit.value === 'Yes',
       },      
     })
   }
-  emit('close', { pageId })
+  emit('close', { chapterId })
 })
 
 const needsMoreInput = computed(() => !title.value 
-  || !pageType.value || !canBuyerEdit.value)
+  || !chapterType.value || !canBuyerEdit.value)
 
 </script>

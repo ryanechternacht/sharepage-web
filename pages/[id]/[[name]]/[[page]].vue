@@ -190,7 +190,7 @@ import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
-import AddEditPageModal from '@/components/Modals/AddEditPageModal'
+import AddEditChapterModal from '@/components/Modals/AddEditChapterModal'
 import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
 
 useEmbedly()
@@ -202,7 +202,7 @@ const pageId = parseInt(route.params.page)
 const swaypageStore = useSwaypagesStore()
 const { 
   getSwaypageByIdCached, 
-  getSwaypagePagesByIdCached, 
+  getSwaypageChaptersByIdCached, 
   getSwaypageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 
@@ -213,7 +213,7 @@ const buyerSessionStore = useBuyerSessionStore()
 
 const [swaypage, pages, linksSource, hasUser, isSeller, _] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
-  getSwaypagePagesByIdCached.value(swaypageId),
+  getSwaypageChaptersByIdCached.value(swaypageId),
   getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
@@ -365,7 +365,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   page.body = body.value
   page.title = title.value
-  await swaypageStore.updatePage({ swaypageId, pageId, page })
+  await swaypageStore.createChapter({ swaypageId, chapterId: pageId, chapter: page })
   isDirty.value = false
 })
 
@@ -474,9 +474,9 @@ function updateItem(index, newSection) {
 const modal = useModal()
 
 function openPageSettingsModal () {
-  modal.open(AddEditPageModal, {
+  modal.open(AddEditChapterModal, {
     swaypageId: swaypage.id,
-    page,
+    chapter: page,
     async onClose () {
       modal.close()
     }
@@ -524,10 +524,10 @@ const settingsMenu = [
 ]
 
 async function restorePage() {
-  await swaypageStore.updatePage({
+  await swaypageStore.updateChapter({
     swaypageId,
-    pageId,
-    page: { status: 'active' }
+    chapterId: pageId,
+    chapter: { status: 'active' }
   })
   // Ideally we'd just reload the sidebar, but I'm not sure the best way 
   // to propogate to the parent page, and this is rare enough that a hard

@@ -53,15 +53,7 @@
 
           <div>
             <div class="mt-[2.25rem] mb-1 text-gray-500 body">Chapters</div>
-            <VueDraggable
-              v-model="activePages"
-              ghost-class="ghost"
-              :animation="200"
-              :scroll="false"
-              class="flex flex-col -ml-6"
-              group="pages"
-              handle=".drag-handle"
-            >
+            <div class="flex flex-col -ml-6">
               <div v-if="isSeller" 
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0" />
@@ -72,30 +64,38 @@
                   <div class="body">Feed</div>
                 </NuxtLink>
               </div>
-              <div v-for="p in activePages"
-                class="group/sidebar-item flex flex-row items-center">
-                <div class="w-[1.5rem] flex-shrink-0">
-                  <UDropdown :items="makePageMenu(p)">
-                    <UIcon v-if="isSeller" 
-                      class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
-                      name="i-heroicons-ellipsis-vertical" />
-                  </UDropdown>
+              <VueDraggable
+                v-model="activePages"
+                ghost-class="ghost"
+                :animation="200"
+                :scroll="false"
+                group="pages"
+                handle=".drag-handle"
+              >
+                <div v-for="p in activePages"
+                  class="group/sidebar-item flex flex-row items-center">
+                  <div class="w-[1.5rem] flex-shrink-0">
+                    <UDropdown :items="makePageMenu(p)">
+                      <UIcon v-if="isSeller" 
+                        class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
+                        name="i-heroicons-ellipsis-vertical" />
+                    </UDropdown>
+                  </div>
+                  <NuxtLink 
+                    :href="makeInternalSwaypageLink(swaypage, p.id)"
+                    class="sidebar-item">
+                    <SwaypagePageTypeIcon :page-type="p.pageType" />
+                    <div class="text-sm">{{ p.title }}</div>
+                  </NuxtLink>
                 </div>
-                <NuxtLink 
-                  :href="makeInternalSwaypageLink(swaypage, p.id)"
-                  class="sidebar-item">
-                  <SwaypagePageTypeIcon :page-type="p.pageType" />
-                  <div class="text-sm">{{ p.title }}</div>
-                </NuxtLink>
-              </div>
-
+              </VueDraggable>
               <div v-if="isSeller" 
                 class="ml-6 sidebar-item"
                 @click="createNewPage">
                 <UIcon name="i-heroicons-plus" class="text-gray-500" />
                 <div class="text-gray-500 body">New Chapter</div>
               </div>
-            </VueDraggable>
+            </div>
           </div>
 
           <div class="flex-grow" />
@@ -128,7 +128,7 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
-import AddEditPageModal from '@/components/Modals/AddEditPageModal'
+import AddEditChapterModal from '@/components/Modals/AddEditChapterModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, map, orderBy } = lodash_pkg;
@@ -157,7 +157,7 @@ const swaypageId = parseInt(route.params.id)
 const swaypageStore = useSwaypagesStore()
 const { 
   getSwaypageByIdCached, 
-  getSwaypagePagesByIdCached, 
+  getSwaypageChaptersByIdCached, 
 } = storeToRefs(swaypageStore)
 const usersStore = useUsersStore()
 const { isUserSeller } = storeToRefs(usersStore)
@@ -167,7 +167,7 @@ const { getOrganizationCached } = storeToRefs(organizationStore)
 
 const [swaypage, pages, isSeller, organization] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
-  getSwaypagePagesByIdCached.value(swaypageId),
+  getSwaypageChaptersByIdCached.value(swaypageId),
   isUserSeller.value(),
   getOrganizationCached.value(),
 ])
@@ -212,7 +212,7 @@ const archivedPagesMenu = computed(() => {
 })
 
 async function savePageOrdering() {
-  await swaypageStore.reorderPages({ swaypageId, pages: activePages })
+  await swaypageStore.reorderChapters({ swaypageId, chapters: activePages })
 }
 
 const debouncedPageReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
@@ -250,13 +250,14 @@ const templateItems = [
 
 const modal = useModal()
 
-function createNewPage() {
-  modal.open(AddEditPageModal, {
+async function createNewPage() {
+  modal.open(AddEditChapterModal, {
     swaypageId: swaypage.id,
-    page: null,
-    async onClose () {
+    chapter: null,
+    async onClose ({ chapterId }) {
       modal.close()
       refreshPages()
+      await navigateTo(makeInternalSwaypageLink(swaypage, chapterId))
     }
   })
 }
@@ -287,10 +288,10 @@ async function removePage(page, status) {
     p => p.id === page.id)
   activePages.value.splice(i, 1)
 
-  await swaypageStore.updatePage({
+  await swaypageStore.updateChapter({
     swaypageId,
-    pageId: page.id,
-    page: { status }
+    chapterId: page.id,
+    chapter: { status }
   })
 
   const currentPageId = parseInt(route.params.page)
