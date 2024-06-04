@@ -20,7 +20,7 @@
 <script setup>
 import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
-import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
+import { useEditor, EditorContent } from '@tiptap/vue-3'
 import lodash_pkg from 'lodash'
 const { debounce } = lodash_pkg;
 

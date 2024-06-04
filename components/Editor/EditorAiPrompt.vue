@@ -36,9 +36,9 @@
 <script setup>
 import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
-import { BubbleMenu, useEditor, EditorContent, FloatingMenu } from '@tiptap/vue-3'
+import { useEditor, EditorContent } from '@tiptap/vue-3'
 import lodash_pkg from 'lodash'
-const { cloneDeep, debounce } = lodash_pkg
+const { cloneDeep } = lodash_pkg
 
 const props = defineProps({ 
   modelValue: { type: Object },
@@ -49,12 +49,9 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'delete:item'])
 
-const prompt = ref(props.modelValue.prompt)
-const output = ref(props.modelValue.output)
-
 const aiEditor = useEditor({
   editable: !props.readonly,
-  content: prompt.value,
+  content: props.modelValue.prompt,
   extensions: [
     StarterKit.configure({
       dropcursor: false,
@@ -77,7 +74,7 @@ const aiEditor = useEditor({
 
 const outputEditor = useEditor({
   editable: !props.readonly,
-  content: output.value,
+  content: props.modelValue.output,
   extensions: [
     StarterKit.configure({
       dropcursor: false,
@@ -105,15 +102,6 @@ function update() {
   emit('update:modelValue', newSection)
 }
 
-// const debouncedUpdate = debounce(
-//   () => {
-
-//     emit('update:modelValue', editor.value.getHTML())
-//   }, 
-//   1000,
-//   { leading: false, trailing: true }
-// )
-
 watch(() => props.modelValue, (newModelValue) => {
   aiEditor.value.commands.setContent(newModelValue.prompt, false)
   outputEditor.value.commands.setContent(newModelValue.output, false)
@@ -130,12 +118,12 @@ function focus () {
 
 defineExpose({ focus })
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   const { apiFetch } = useNuxtApp()
-  const { data, error } = await apiFetch('/v0.1/templates/generate-text', { 
+  const { data } = await apiFetch('/v0.1/templates/generate-text', { 
     method: 'POST',
     body: {
-      prompt
+      prompt: aiEditor.value.getHTML()
     }
   })
 
