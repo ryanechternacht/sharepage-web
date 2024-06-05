@@ -10,9 +10,6 @@ function is10MinutesOld(jsonTimestamp) {
 export const useSwaypagesStore = defineStore('swaypages', {
   state: () => ({ 
     buyerspheres: {},
-    milestones: {},
-    activities: {},
-    buyerActivity: {},
     chapters: {},
     links: {},
     buyerSessions: {},
@@ -21,18 +18,6 @@ export const useSwaypagesStore = defineStore('swaypages', {
     getSwaypageByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypage({ swaypageId })
       return state.buyerspheres[swaypageId]?.content
-    },
-    getSwaypageMilestonesByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypageMilestones({ swaypageId })
-      return state.milestones[swaypageId]?.content
-    },
-    getSwaypageActivitiesByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypageActivities({ swaypageId })
-      return state.activities[swaypageId]?.content
-    },
-    getSwaypageBuyerActivityByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypageBuyerActivity({ swaypageId })
-      return state.buyerActivity[swaypageId]?.content
     },
     // TODO can we separate active from archived here without 
     // double fetching? I thihnk we double fetch user data in 
@@ -194,158 +179,6 @@ export const useSwaypagesStore = defineStore('swaypages', {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(`/v0.1/buyersphere/shortcode/${shortcode}`)
       return data?.value
-    },
-    async fetchSwaypageMilestones({ swaypageId, forceRefresh }) {
-      const dayjs = useDayjs()
-      const { apiFetch } = useNuxtApp()
-
-      if (!this.milestones[swaypageId]?.content
-          || forceRefresh
-          || is10MinutesOld(this.milestones[swaypageId]?.generatedAt))
-      {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/milestones`)
-        this.milestones[swaypageId] = {
-          content: data.value,
-          generatedAt: dayjs().toJSON()
-        }
-      }
-    },
-    async createSwaypageMilestone({ swaypageId, milestone }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/milestones`,
-        { method: 'POST', body: milestone }
-      )
-      this.milestones[swaypageId].content.push(data.value)
-    },
-    async updateSwaypageMilestone({ swaypageId, id, milestone }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/milestone/${id}`,
-        { method: 'PATCH', body: milestone }
-      )
-      const m = find(this.milestones[swaypageId]?.content, m => m.id === id)
-      if (m) {
-        if (data.value.title !== undefined) {
-          m.title = data.value.title
-        }
-      }
-    },
-    async deleteSwaypageMilestone({ swaypageId, id }) {
-      const { apiFetch } = useNuxtApp()
-      await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/milestone/${id}`,
-        { method: 'DELETE' }
-      )
-
-      remove(this.milestones[swaypageId].content, m => m.id === id)
-    },
-    async fetchSwaypageActivities({ swaypageId, forceRefresh }) {
-      const dayjs = useDayjs()
-      const { apiFetch } = useNuxtApp()
-
-      if (!this.activities[swaypageId]?.content
-          || forceRefresh
-          || is10MinutesOld(this.activities[swaypageId]?.generatedAt))
-      {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/milestones/activities`)
-        this.activities[swaypageId] = {
-          content: data.value,
-          generatedAt: dayjs().toJSON()
-        }
-      }
-    },
-    async createSwaypageActivity({ swaypageId, milestoneId, activity }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/milestone/${milestoneId}/activities`,
-        { method: 'POST', body: activity }
-      )
-      this.activities[swaypageId].content.push(data.value)
-    },
-    async deleteSwaypageActivity({ swaypageId, id }) {
-      const { apiFetch } = useNuxtApp()
-      await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/activity/${id}`,
-        { method: 'DELETE' }
-      )
-
-      remove(this.activities[swaypageId].content, a => a.id === id)
-    },
-    async updateSwaypageActivity({ swaypageId, id, activity }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/activity/${id}`,
-        { method: 'PATCH', body: activity }
-      )
-      const a = find(this.activities[swaypageId]?.content, a => a.id === id)
-      if (a) {
-        if (data.value.milestoneId !== undefined) {
-          a.milestoneId = data.value.milestoneId
-        }
-        if (data.value.resolved !== undefined) {
-          a.resolved = data.value.resolved
-        }
-        if (data.value.dueDate !== undefined) {
-          a.dueDate = data.value.dueDate
-        }
-        if (data.value.title !== undefined) {
-          a.title = data.value.title
-        }
-        if (data.value.assignedTo !== undefined) {
-          a.assignedTo = data.value.assignedTo
-        }
-        if (data.value.assignedTeam !== undefined) {
-          a.assignedTeam = data.value.assignedTeam
-        }
-        if (data.value.activityType !== undefined) {
-          a.activityType = data.value.activityType
-        }
-      }
-    },
-    async fetchSwaypageBuyerActivity({ swaypageId, forceRefresh }) {
-      const dayjs = useDayjs()
-      const { apiFetch } = useNuxtApp()
-
-      if (!this.buyerActivity[swaypageId]?.content
-          || forceRefresh
-          || is10MinutesOld(this.buyerActivity[swaypageId]?.generatedAt))
-      {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/buyer-activity`)
-        this.buyerActivity[swaypageId] = {
-          content: data.value,
-          generatedAt: dayjs().toJSON()
-        }
-      }
-    },
-    async createResource({ swaypageId, title, link }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/resources`,
-        { method: 'POST', body: { title, link } }
-      )
-      this.buyerspheres[swaypageId].content.resources.push(data.value)
-    },
-    async updateResource({ swaypageId, resourceId, title, link }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/resource/${resourceId}`,
-        { method: 'PATCH', body: { title, link }}
-      )
-      
-      const ri = findIndex(
-        this.buyerspheres[swaypageId].content.resources, 
-        r => r.id === resourceId)
-      this.buyerspheres[swaypageId].content.resources[ri] = data.value
-    },
-    async deleteResource({ swaypageId, resourceId }) {
-      const { apiFetch } = useNuxtApp()
-      await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/resource/${resourceId}`,
-        { method: 'DELETE' }
-      )
-
-      remove(this.buyerspheres[swaypageId].content.resources, r => r.id === resourceId)
     },
     async createBuyerUser({ swaypageId, user }) {
       const { apiFetch } = useNuxtApp()
