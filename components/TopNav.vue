@@ -13,6 +13,10 @@
         <UIcon class="icon-menu" name="i-heroicons-document" />
         <span>Swaypages</span>
       </NuxtLink>
+      <NuxtLink to="/dashboard/campaigns" class="link">
+        <UIcon class="icon-menu" name="i-heroicons-paper-airplane" />
+        <span>Campaigns</span>
+      </NuxtLink>
       <!-- TOOD point this to the correct route -->
       <!-- <NuxtLink to="/swaypage-demo" class="link">
         <ZapIcon class="icon-menu" />

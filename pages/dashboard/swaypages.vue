@@ -1,97 +1,111 @@
 <template>
   <div>
-    <div class="flex flex-row items-center gap-4">
-      <h1>Home</h1>
-      <UDropdown :items="swaypageMenu"
-        :popper="{ placement: 'bottom-start' }">
-        <div class="flex flex-row items-center gap-2">
-          <!-- <Component :is="filterOption.icon" class="subtext" /> -->
-          <UIcon :name="selectedType.icon" class="subtext" />
-          <div class="subtext flex flex-row items-center cursor-pointer">
-            {{ selectedType.label }}
-            <UIcon class="icon-submenu" name="i-heroicons-chevron-down" />
-          </div>
-        </div>
-      </UDropdown>
-    </div>
+    <TopNav>
+      <template #action-button>
+        <UButton
+          icon="i-heroicons-document"
+          @click="openModal">
+          New
+        </UButton>
+      </template>
+    </TopNav>
 
-    <div v-if="selectedType.label === 'Active'" 
-      class="room-grid active-rooms">
-      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+    <div class="px-10 py-5">
+      <div>
+        <div class="flex flex-row items-center gap-4">
+          <h1>Home</h1>
+          <UDropdown :items="swaypageMenu"
+            :popper="{ placement: 'bottom-start' }">
+            <div class="flex flex-row items-center gap-2">
+              <!-- <Component :is="filterOption.icon" class="subtext" /> -->
+              <UIcon :name="selectedType.icon" class="subtext" />
+              <div class="subtext flex flex-row items-center cursor-pointer">
+                {{ selectedType.label }}
+                <UIcon class="icon-submenu" name="i-heroicons-chevron-down" />
+              </div>
+            </div>
+          </UDropdown>
+        </div>
 
-      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
-        :to="makeInternalSwaypageLink(swaypage)">
-        <div class="cell body">
-          <Logo :src="swaypage.buyerLogo" class="icon-menu" />
-          {{ swaypage.buyer }}
-        </div>
-        <div class="cell subtext">{{ swaypage.subname }}</div>
-        <div class="cell subtext">
-          <template v-if="swaypage.owner">
-            <UserAvatar :user="swaypage.owner" />
-            {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
-          </template>
-        </div>
-        <div class="cell">
-          <SwaypagePriorityTag :priority="swaypage.priority" />
-        </div>
-        <div class="cell">
-          <SwaypageStatusTag
-            :last-activity-date="swaypage.mostRecentBuyerActivity"
-            :isOnHold="swaypage.status === 'on-hold'" />
-        </div>
-        <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
-      </NuxtLink>
-    </div>
+        <div v-if="selectedType.label === 'Active'" 
+          class="room-grid active-rooms">
+          <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
-    <div v-else-if="selectedType.label === 'Templates'" 
-      class="room-grid template-rooms">
-      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
-
-      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
-        :to="makeInternalSwaypageLink(swaypage)">
-        <div class="cell body">{{ swaypage.buyer }}</div>
-        <div class="cell subtext">
-          <template v-if="swaypage.owner">
-            <UserAvatar :user="swaypage.owner" />
-            {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
-          </template>
+          <NuxtLink class="contents cursor-pointer group" v-for="swaypage in activeRooms"
+            :to="makeInternalSwaypageLink(swaypage)">
+            <div class="cell body">
+              <Logo :src="swaypage.buyerLogo" class="icon-menu" />
+              {{ swaypage.buyer }}
+            </div>
+            <div class="cell subtext">{{ swaypage.subname }}</div>
+            <div class="cell subtext">
+              <template v-if="swaypage.owner">
+                <UserAvatar :user="swaypage.owner" />
+                {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+              </template>
+            </div>
+            <div class="cell">
+              <SwaypagePriorityTag :priority="swaypage.priority" />
+            </div>
+            <div class="cell">
+              <SwaypageStatusTag
+                :last-activity-date="swaypage.mostRecentBuyerActivity"
+                :isOnHold="swaypage.status === 'on-hold'" />
+            </div>
+            <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+          </NuxtLink>
         </div>
-        <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
-      </NuxtLink>
-    </div>
 
-    <div v-if="selectedType.label === 'Archive'" 
-      class="room-grid archive-rooms">
-      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Room Type</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+        <div v-else-if="selectedType.label === 'Templates'" 
+          class="room-grid template-rooms">
+          <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
-      <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
-        :to="makeInternalSwaypageLink(swaypage)">
-        <div class="cell body">
-          <Logo :src="swaypage.buyerLogo" class="icon-menu" />
-          {{ swaypage.buyer }}
+          <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
+            :to="makeInternalSwaypageLink(swaypage)">
+            <div class="cell body">{{ swaypage.buyer }}</div>
+            <div class="cell subtext">
+              <template v-if="swaypage.owner">
+                <UserAvatar :user="swaypage.owner" />
+                {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+              </template>
+            </div>
+            <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+          </NuxtLink>
         </div>
-        <div class="cell subtext">{{ swaypage.subname }}</div>
-        <div class="cell subtext">
-          <template v-if="swaypage.owner">
-            <UserAvatar :user="swaypage.owner" />
-            {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
-          </template>
+
+        <div v-if="selectedType.label === 'Archive'" 
+          class="room-grid archive-rooms">
+          <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Room Type</h2>
+          <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+
+          <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
+            :to="makeInternalSwaypageLink(swaypage)">
+            <div class="cell body">
+              <Logo :src="swaypage.buyerLogo" class="icon-menu" />
+              {{ swaypage.buyer }}
+            </div>
+            <div class="cell subtext">{{ swaypage.subname }}</div>
+            <div class="cell subtext">
+              <template v-if="swaypage.owner">
+                <UserAvatar :user="swaypage.owner" />
+                {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+              </template>
+            </div>
+            <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
+            <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+          </NuxtLink>
         </div>
-        <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
-        <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
-      </NuxtLink>
+      </div>
     </div>
   </div>
 </template>

@@ -33,5 +33,5 @@ const { submissionState, submitFn } = useSubmit(async () => {
 })
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 </style>

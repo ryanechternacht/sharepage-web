@@ -11,21 +11,17 @@
 const file = ref(null)
 
 function fileSelected ($e) {
-  console.log($e)
   file.value = $e[0]
-  console.log(file.value)
 }
 
 async function submitForm () {
-  console.log('submit')
-
   const formData = new FormData()
 
   formData.append('file', file.value)
 
   const { apiFetch } = useNuxtApp()
 
-  const { data, error } = await apiFetch('/v0.1/csv', {
+  const { data, error } = await apiFetch('/v0.1/csv-upload/template-data/v1', {
     method: 'POST',
     body: formData,
   })
