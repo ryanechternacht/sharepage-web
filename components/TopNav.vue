@@ -79,7 +79,7 @@ async function goToLogin () {
     @apply p-2 -mx-2 bg-gray-200 rounded-md;
 
     *, :deep(*) {
-      @apply text-blue-brand;
+      @apply text-blue-500;
     }
   }
 }

@@ -27,7 +27,7 @@
           </UDropdown>
         </div>
 
-        <div v-if="selectedType.label === 'Active'" 
+        <div v-if="selectedType.label === 'Swaypages'" 
           class="room-grid active-rooms">
           <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
           <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
@@ -124,7 +124,7 @@ const { makeInternalSwaypageLink } = useSwaypageLinks()
 // TODO changing these should affect routing
 const swaypageMenu = [
   [{
-    label: 'Active',
+    label: 'Swaypages',
     icon: 'i-heroicons-document',
     click: () => selectedType.value = swaypageMenu[0][0]
   }, {
@@ -140,7 +140,7 @@ const swaypageMenu = [
 const selectedType = ref(swaypageMenu[0][0])
 
 const roomTypeMap = {
-  'deal-room': 'Deal Room',
+  'deal-room': 'Swaypages',
   'template': 'Template'
 }
 

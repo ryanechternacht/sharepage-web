@@ -80,7 +80,6 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
-        {{ error }}
       </div>
     </UCard>
   </UModal>
@@ -123,7 +122,7 @@ async function lookupOnClearbit (query) {
   }
 }
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   const swaypageId = await store.createSwaypageFromTemplate({
     buyer,
     subname,

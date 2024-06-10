@@ -1,7 +1,7 @@
 <template>
   <div class="border border-gray-200 rounded-md py-.5 px-2 flex flex-row gap-2 items-center bg-white">
     <div class="rounded small-text w-[.875rem] mx-auto text-center"
-      :class="{'bg-blue-brand text-white': priority === 1,
+      :class="{'bg-blue-500 text-white': priority === 1,
                'bg-gray-500 text-white': priority === 2,
                'bg-gray-200 text-sm': priority === 3}">
                {{ priority }}
