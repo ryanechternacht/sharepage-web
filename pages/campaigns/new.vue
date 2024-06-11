@@ -60,7 +60,6 @@
         :disabled="needsMoreInput"
         :submissionState="submissionState"
         @click="submitFn" />
-      {{ error }}
     </div>
   </div>
 </template>
@@ -105,12 +104,13 @@ function fileSelected ($e) {
   leadFile.value = $e[0]
 }
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
-  campaignsStore.createCampaign({
+const { submissionState, submitFn } = useSubmit(async () => {
+  const uuid = await campaignsStore.createCampaign({
     title: templateName,
     file: leadFile,
     templateId: selectedTemplate.value.id
   })
+  await navigateTo(`/campaigns/${uuid}`)
 })
 
 const needsMoreInput = computed(
