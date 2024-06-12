@@ -76,8 +76,11 @@ const tabs = [{
 }, {
   label: 'Variables',
   disabled: true,
+// }, {
+//   label: 'AI Prompts',
+//   disabled: true,
 }, {
-  label: 'AI Prompts',
+  label: 'Publish',
   disabled: true,
 }]
 

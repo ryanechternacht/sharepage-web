@@ -47,6 +47,34 @@ export const useCampaignsStore = defineStore('campaigns', {
         body: formData
       })
       return data.value.uuid
+    },
+    async updateCampaign({ uuid, title, columnsApproved, aiPromptsApproved, 
+      isPublished 
+    }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/campaign/${uuid}`, { 
+        method: 'PATCH',
+        body: { 
+          title,
+          columnsApproved,
+          aiPromptsApproved,
+          isPublished,
+        }
+      })
+
+      const c = this.campaigns[uuid].content
+      if (data.value.title !== undefined) {
+        c.title = data.value.title
+      }
+      if (data.value.columnsApproved !== undefined) {
+        c.columnsApproved = data.value.columnsApproved
+      }
+      if (data.value.aiPromptsApproved !== undefined) {
+        c.aiPromptsApproved = data.value.aiPromptsApproved
+      }
+      if (data.value.isPublished !== undefined) {
+        c.isPublished = data.value.isPublished
+      }
     }
   }
 })
