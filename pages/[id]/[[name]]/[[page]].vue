@@ -18,14 +18,21 @@
 
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
         <div class="flex flex-row items-center">
-          <UserAvatar v-for="s in swaypage.sellerTeam" 
+          <UserAvatar
+            class="-mr-.5 shrink-0"
+            size="small"
+            :user="swaypage.owner" />
+          <div class="ml-4 shrink-0 text-sm">
+            Made by {{ swaypage.owner.firstName }}
+          </div>
+          <!-- TODO this text should be better -->
+          <!-- <UserAvatar v-for="s in swaypage.sellerTeam" 
             class="-mr-.5 shrink-0"
             size="small"
             :user="s" />
-          <!-- TODO this text should be better -->
           <div class="ml-4 shrink-0 text-sm">Made by
             <span v-for="(s, i) in swaypage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
-          </div>
+          </div> -->
         </div>
         <div class="flex-grow" />
         <!-- <div>active</div> -->
@@ -365,7 +372,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   page.body = body.value
   page.title = title.value
-  await swaypageStore.createChapter({ swaypageId, chapterId: pageId, chapter: page })
+  await swaypageStore.updateChapter({ swaypageId, chapterId: pageId, chapter: page })
   isDirty.value = false
 })
 

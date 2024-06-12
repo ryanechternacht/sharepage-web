@@ -4,7 +4,7 @@
       <template #action-button>
         <UButton
           icon="i-heroicons-paper-airplane"
-          @click="openModal">
+          to="/campaigns/new">
           New
         </UButton>
       </template>

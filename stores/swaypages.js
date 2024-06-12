@@ -65,7 +65,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
       const { apiFetch } = useNuxtApp()
       const { data } =  await apiFetch(
         `/v0.1/buyerspheres/template/${templateId}`,
-        { 
+        {
           method: 'POST', 
           body: { 
             buyer,
