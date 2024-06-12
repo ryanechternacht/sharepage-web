@@ -4,6 +4,7 @@
     :icon="currentIcon"
     :loading="submissionState === 'submitting'"
     :block="block"
+    :color="color"
     @click="emit('click')">
     <div class="center-xy">
       <span v-if="submissionState === 'ready'">{{ readyText }}</span>
@@ -27,7 +28,8 @@ const props = defineProps({
   submittingIcon: { type: String },
   submittedIcon: { type: String },
   errorIcon: { type: String },
-  block: { type: Boolean, default: false }
+  block: { type: Boolean, default: false },
+  color: { type: String, default: 'primary' },
 })
 
 const currentIcon = computed(() => {

@@ -2,11 +2,31 @@
   <div>
     <TopNav>
       <template #action-button>
-        <UButton
-          icon="i-heroicons-document"
-          @click="openModal">
-          New
+        <UButton v-if="selectedTab === 0 && !campaign.isPublished"
+          @click="selectedTab = 1">
+          Review Variables
         </UButton>
+
+        <SubmitButton
+          v-if="selectedTab === 1 && !campaign.columnsApproved"
+          icon="i-heroicons-check"
+          ready-text="Approve Variables"
+          submitting-text="Approving Variables"
+          submitted-text="Variables Approved"
+          error-text="Try Again"
+          :submissionState="columnsSubmissionState"
+          @click="columnsSubmitFn" />
+
+        <SubmitButton
+          v-if="selectedTab === 2 && !campaign.isPublished"
+          color="green"
+          icon="i-heroicons-document-check"
+          ready-text="Publish"
+          submitting-text="Publishing"
+          submitted-text="Published!"
+          error-text="Try Again"
+          :submissionState="publishSubmissionState"
+          @click="publishSubmitFn" />
       </template>
     </TopNav>
 
@@ -17,67 +37,54 @@
       </div>
 
       <div v-if="selectedTab === 0">
-        <!-- <div class="border border-gray-200 rounded-md flex flex-col">
+        <div class="border border-gray-200 rounded-md flex flex-col">
           <div class="setup-section">
             <div class="number">1</div>
             <h2>Campaign Name</h2>
-            <UInput v-model="templateName" />
+            <UInput v-model="title" />
           </div>
           <div class="divider" />
           <div class="setup-section">
             <div class="number">2</div>
             <h2>Campaign Template</h2>
-            <USelectMenu
-              v-model="selectedTemplate"
-              class="w-[initial]"
-              by="id"
-              searchable
-              option-attribute="buyer"
-              placeholder="Search for a template"
-              :search-attributes="['buyer']"
-              :options="templateRooms">
-            </USelectMenu>
+            <div class="body">{{ campaign.template.buyer }}</div>
           </div>
           <div class="divider" />
           <div class="setup-section">
             <div class="number">3</div>
             <h2>Campiagn Leads</h2>
-            <UInput type="file"
-              icon="i-heroicons-folder"
-              @change="fileSelected" />
-            <UButton
-              icon="i-heroicons-arrow-down-tray"
-              to="/swaypage-csv-template.csv"
-              target="_blank">Download Template</UButton>
+            <div class="body">{{ campaign.leadsFile.fileName }}</div>
           </div>
         </div>
 
         <SubmitButton
           class="mt-8"
-          icon="i-heroicons-plus"
-          ready-text="Create Campaign"
-          submitting-text="Creating Campaign"
-          submitted-text="Campaign Created"
+          icon="i-heroicons-check"
+          ready-text="Update Campaign"
+          submitting-text="Updating Campaign"
+          submitted-text="Campaign Updated"
           error-text="Try Again"
-          :disabled="needsMoreInput"
-          :submissionState="submissionState"
-          @click="submitFn" /> -->
+          :disabled="settingsNeedsMoreInput"
+          :submissionState="settingsSubmissionState"
+          @click="settingsSubmitFn" />
       </div>
 
       <div v-if="selectedTab === 1">
         <div class="border border-gray-200 rounded-md variables-grid">
           <div class="row">
             <h2>Variable Name</h2>
-            <h2>Field Description</h2>
+            <h2>Variable Description</h2>
+            <h2>CSV Column Header</h2>
             <h2>Samples</h2>
           </div>
 
           <div v-for="(row, index) in variablesTranposed"
             class="row">
             <div class="body">{{ variableRowNameMaker(index) }}</div>
-            <div>
-              <UInput v-model="campaign.headerRow[index]"
-                icon="i-heroicons-tag"/></div>
+            <div class="body">{{ variableRowDescriptionMaker(index) }}</div>
+            <div class="subtext">
+              {{ campaign.leadsFile.headerRow[index] }}
+            </div>
             <div class="flex flex-col gap-2 subtext">
               <div v-for="r in row">{{ r }}</div>
             </div>
@@ -87,7 +94,7 @@
         <SubmitButton
           v-if="!campaign.columnsApproved"
           class="mt-8"
-          icon="i-heroicons-plus"
+          icon="i-heroicons-check"
           ready-text="Approve Variables"
           submitting-text="Approving Variables"
           submitted-text="Variables Approved"
@@ -96,17 +103,24 @@
           @click="columnsSubmitFn" />
       </div>
 
-      <div v-if="selectedTab === 1">
-        <!-- <SubmitButton
-          v-if="!campaign.columnsApproved"
+      <div v-if="selectedTab === 2">
+        <h2>Ready to Publish</h2>
+
+        <div class="body">
+          Clicking publish will create {{ campaign.leadsFile.dataRowsCount }} new
+          Swaypages using the leads you've uploaded.
+        </div>
+        <SubmitButton
+          v-if="!campaign.isPublished"
+          color="green"
           class="mt-8"
-          icon="i-heroicons-plus"
-          ready-text="Approve Variables"
-          submitting-text="Approving Variables"
-          submitted-text="Variables Approved"
+          icon="i-heroicons-document-check"
+          ready-text="Publish"
+          submitting-text="Publishing"
+          submitted-text="Published!"
           error-text="Try Again"
-          :submissionState="columnsSubmissionState"
-          @click="columnsSubmitFn" /> -->
+          :submissionState="publishSubmissionState"
+          @click="publishSubmitFn" />
       </div>
 
     </div>
@@ -140,9 +154,16 @@ const tabs = computed(() => [{
   label: 'Publish',
   disabled: !campaign.columnsApproved, // TODO change this to aiPromptsApproved
 }])
-const selectedTab = ref(1)
+const selectedTab = ref(null)
+if (campaign.isPublished) {
+  selectedTab.value = 0
+} else if (campaign.columnsApproved) {
+  selectedTab.value = 2
+} else {
+  selectedTab.value = 1
+}
 
-const variablesTranposed = zip.apply(null, campaign.sampleRows)
+const variablesTranposed = zip.apply(null, campaign.leadsFile.sampleRows)
 
 function variableRowNameMaker (rowNumber) {
   if (rowNumber === 0) {
@@ -154,18 +175,54 @@ function variableRowNameMaker (rowNumber) {
   } else if (rowNumber === 3) {
     return 'email'
   } else {
-    return `field-${rowNumber}`
+    return `field-${rowNumber - 3}`
   }
 }
+
+// TODO pull this from template
+function variableRowDescriptionMaker (rowNumber) {
+  if (rowNumber === 0) {
+    return 'Account Name'
+  } else if (rowNumber === 1) {
+    return 'First Name'
+  } else if (rowNumber === 2) {
+    return 'Last Name'
+  } else if (rowNumber === 3) {
+    return 'Email'
+  } else {
+    return `Field #${rowNumber - 3}`
+  }
+}
+
+const title = ref(campaign.title)
+const { 
+  submissionState: settingsSubmissionState, 
+  submitFn: settingsSubmitFn,
+} = useSubmit(async () => {
+  await campaignsStore.updateCampaign({
+    uuid: campaign.uuid,
+    title,
+  })
+})
+const settingsNeedsMoreInput = computed(() => !title.value)
 
 const { 
   submissionState: columnsSubmissionState, 
   submitFn: columnsSubmitFn,
-  error
 } = useSubmit(async () => {
   await campaignsStore.updateCampaign({
     uuid: campaign.uuid,
     columnsApproved: true,
+  })
+  selectedTab.value++
+})
+
+const { 
+  submissionState: publishSubmissionState, 
+  submitFn: publishSubmitFn,
+} = useSubmit(async () => {
+  await campaignsStore.publishCampaign({
+    uuid: campaign.uuid
   })
 })
 </script>
@@ -192,7 +249,7 @@ const {
 
 .variables-grid {
   @apply grid justify-center;
-  grid-template-columns: repeat(3, minmax(auto, 1fr));
+  grid-template-columns: repeat(4, minmax(auto, 1fr));
 
   .row {
     @apply contents;

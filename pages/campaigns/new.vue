@@ -2,11 +2,11 @@
   <div>
     <TopNav>
       <template #action-button>
-        <UButton
+        <!-- <UButton
           icon="i-heroicons-document"
           @click="openModal">
           New
-        </UButton>
+        </UButton> -->
       </template>
     </TopNav>
 
@@ -19,7 +19,7 @@
         <div class="setup-section">
           <div class="number">1</div>
           <h2>Campaign Name</h2>
-          <UInput v-model="templateName" />
+          <UInput v-model="title" />
         </div>
         <div class="divider" />
         <div class="setup-section">
@@ -84,7 +84,7 @@ const tabs = [{
   disabled: true,
 }]
 
-const templateName = ref(null)
+const title = ref(null)
 
 // TODO better than this
 const { apiFetch } = useNuxtApp()
@@ -109,7 +109,7 @@ function fileSelected ($e) {
 
 const { submissionState, submitFn } = useSubmit(async () => {
   const uuid = await campaignsStore.createCampaign({
-    title: templateName,
+    title,
     file: leadFile,
     templateId: selectedTemplate.value.id
   })
@@ -117,7 +117,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
 })
 
 const needsMoreInput = computed(
-  () => !templateName.value || !selectedTemplate.value || !leadFile.value)
+  () => !title.value || !selectedTemplate.value || !leadFile.value)
 </script>
 
 <style lang="postcss" scoped>

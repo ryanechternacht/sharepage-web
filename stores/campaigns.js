@@ -75,6 +75,17 @@ export const useCampaignsStore = defineStore('campaigns', {
       if (data.value.isPublished !== undefined) {
         c.isPublished = data.value.isPublished
       }
-    }
+    },
+    async publishCampaign({ uuid }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } = await apiFetch(`/v0.1/campaign/${uuid}/publish`, { 
+        method: 'POST',
+      })
+
+      const c = this.campaigns[uuid].content
+      if (data.value.isPublished !== undefined) {
+        c.isPublished = data.value.isPublished
+      }
+    },
   }
 })
