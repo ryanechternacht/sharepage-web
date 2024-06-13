@@ -3,14 +3,14 @@
     :class="[ sizeClasses ]">
     <UIcon class="w-auto h-auto" name="i-heroicons-user" />
   </div>
-  <img v-else-if="user.image"
+  <img v-else-if="user?.image"
     :class="[ sizeClasses ]"
     class="rounded-full"
-    :src="user.image">
+    :src="user?.image">
   <div v-else
     :class="[ sizeClasses ]"
     class="bg-blue-500 rounded-full center-xy h-8">
-    <h3 class="dark mx-auto">{{ user.firstName[0] }}</h3>
+    <h3 class="dark mx-auto">{{ user?.firstName[0] }}</h3>
   </div>
 </template>
 

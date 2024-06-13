@@ -23,7 +23,7 @@
             size="small"
             :user="swaypage.owner" />
           <div class="ml-4 shrink-0 text-sm">
-            Made by {{ swaypage.owner.firstName }}
+            Made by {{ swaypage.owner?.firstName }}
           </div>
           <!-- TODO this text should be better -->
           <!-- <UserAvatar v-for="s in swaypage.sellerTeam" 

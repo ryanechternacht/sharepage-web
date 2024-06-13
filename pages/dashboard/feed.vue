@@ -2,11 +2,11 @@
   <div>
     <TopNav>
       <template #action-button>
-        <UButton
+        <!-- <UButton
           icon="i-heroicons-document"
           @click="openModal">
           New
-        </UButton>
+        </UButton> -->
       </template>
     </TopNav>
 

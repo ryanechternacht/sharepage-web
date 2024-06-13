@@ -46,7 +46,7 @@
             <div class="cell subtext">
               <template v-if="swaypage.owner">
                 <UserAvatar :user="swaypage.owner" />
-                {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+                {{ swaypage.owner?.firstName }} {{ swaypage.owner?.lastName }} 
               </template>
             </div>
             <div class="cell">
@@ -73,7 +73,7 @@
             <div class="cell subtext">
               <template v-if="swaypage.owner">
                 <UserAvatar :user="swaypage.owner" />
-                {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+                {{ swaypage.owner?.firstName }} {{ swaypage.owner?.lastName }} 
               </template>
             </div>
             <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
@@ -98,7 +98,7 @@
             <div class="cell subtext">
               <template v-if="swaypage.owner">
                 <UserAvatar :user="swaypage.owner" />
-                {{ swaypage.owner.firstName }} {{ swaypage.owner.lastName }} 
+                {{ swaypage.owner?.firstName }} {{ swaypage.owner?.lastName }} 
               </template>
             </div>
             <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
@@ -113,6 +113,7 @@
 <script setup>
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
+import AddSwaypageModal from '@/components/Modals/AddSwaypageModal'
 
 const { apiFetch } = useNuxtApp()
 const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', { 
@@ -174,6 +175,18 @@ const archiveRooms = computed(() =>
 const dayjs = useDayjs()
 function prettyFormatDate(date) {
   return dayjs(date).calendar()
+}
+
+const modal = useModal()
+function openModal () {
+  modal.open(AddSwaypageModal, {
+    async onClose (props) {
+      modal.close()
+      if (props?.swaypageId) {
+        await navigateTo(`/${props.swaypageId}`)
+      }
+    }
+  })
 }
 </script>
 
