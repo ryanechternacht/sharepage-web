@@ -147,7 +147,7 @@ const roomTypeMap = {
 
 const activeRooms = computed(() => 
   orderBy(
-    filter(swaypages.value, 
+    filter(swaypages.value,
       s => s.status !== 'archived' && s.roomType === 'deal-room'),
     ['updatedAt'],
     ['desc']
@@ -156,7 +156,7 @@ const activeRooms = computed(() =>
 
 const templateRooms = computed(() => 
   orderBy(
-    filter(swaypages.value, 
+    filter(swaypages.value,
       s => s.status !== 'archived' && s.roomType === 'template'),
     ['updatedAt'],
     ['desc']
@@ -165,7 +165,7 @@ const templateRooms = computed(() =>
 
 const archiveRooms = computed(() => 
   orderBy(
-    filter(swaypages.value, 
+    filter(swaypages.value,
       s => s.status === 'archived'),
     ['updatedAt'],
     ['desc']

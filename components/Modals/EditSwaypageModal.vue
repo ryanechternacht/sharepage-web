@@ -97,11 +97,8 @@ const statusOptions = [
     label: 'Active',
     value: 'active',
   }, {
-    label: 'On Hold',
-    value: 'on-hold',
-  }, {
     label: 'Archive',
-    value: 'opt-out',
+    value: 'archived',
   },
 ]
 

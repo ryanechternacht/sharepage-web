@@ -31,8 +31,14 @@
     </TopNav>
 
     <div class="px-10 py-5">
-      <div class="w-full flex flex-row justify-between">
+      <div class="w-full flex flex-row gap-4 items-center">
+        <UButton v-if="campaign.isPublished"
+          icon="i-heroicons-arrow-left" 
+          variant="outline" 
+          :to="`/campaigns/${campaign.uuid}`" />
+
         <h1>{{ campaign.title }}</h1>
+        <div class="flex-grow" />
         <UTabs v-model="selectedTab" :items="tabs" />
       </div>
 
