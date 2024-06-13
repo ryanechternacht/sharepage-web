@@ -224,6 +224,7 @@ const {
   await campaignsStore.publishCampaign({
     uuid: campaign.uuid
   })
+  await navigateTo(`/campaigns/${campaign.uuid}`)
 })
 </script>
 
