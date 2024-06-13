@@ -39,6 +39,11 @@
         </div>
         <div>
           <h3 class="mb-2">Template Data</h3>
+          <div class="text-sm text-gray-500 mb-1">Account Name</div>
+          <UInput
+            v-model="accountName"
+            placeholder="Account Name" 
+            class="mb-2" />
           <div class="text-sm text-gray-500 mb-1">First Name</div>
           <UInput
             v-model="firstName"
@@ -49,25 +54,40 @@
             v-model="lastName"
             placeholder="Last Name" 
             class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Company</div>
+          <div class="text-sm text-gray-500 mb-1">Email</div>
           <UInput
-            v-model="company"
-            placeholder="Company Name" 
+            v-model="email"
+            placeholder="Email" 
             class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Data 1</div>
+            <div class="text-sm text-gray-500 mb-1">Domain</div>
           <UInput
-            v-model="data1"
-            placeholder="Data 1" 
+            v-model="domain"
+            placeholder="Domain" 
             class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Data 2</div>
+          <div class="text-sm text-gray-500 mb-1">Field 1</div>
           <UInput
-            v-model="data2"
-            placeholder="Data 2" 
+            v-model="field1"
+            placeholder="Field 1" 
             class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Data 3</div>
+          <div class="text-sm text-gray-500 mb-1">Field 2</div>
           <UInput
-            v-model="data3"
-            placeholder="Data 3" 
+            v-model="field2"
+            placeholder="Field 2" 
+            class="mb-2" />
+          <div class="text-sm text-gray-500 mb-1">Field 3</div>
+          <UInput
+            v-model="field3"
+            placeholder="Field 3" 
+            class="mb-2" />
+          <div class="text-sm text-gray-500 mb-1">Field 4</div>
+          <UInput
+            v-model="field4"
+            placeholder="Field 4" 
+            class="mb-2" />
+          <div class="text-sm text-gray-500 mb-1">Field 5</div>
+          <UInput
+            v-model="field5"
+            placeholder="Field 5" 
             class="mb-2" />
         </div>
         <SubmitButton 
@@ -100,12 +120,16 @@ const clearbitLogo = ref(null)
 
 const buyer = ref('')
 const subname = ref('')
+const accountName = ref('')
 const firstName = ref('')
 const lastName = ref('')
-const company = ref('')
-const data1 = ref('')
-const data2 = ref('')
-const data3 = ref('')
+const email = ref('')
+const domain = ref('')
+const field1 = ref('')
+const field2 = ref('')
+const field3 = ref('')
+const field4 = ref('')
+const field5 = ref('')
 
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true
@@ -129,12 +153,16 @@ const { submissionState, submitFn } = useSubmit(async () => {
     buyerLogo: clearbitLogo.logo,
     templateId: props.templateId,
     templateData: {
+      accountName,
       firstName,
       lastName,
-      company,
-      data1,
-      data2,
-      data3,
+      email,
+      domain,
+      field1,
+      field2,
+      field3,
+      field4,
+      field5,
     }
   })
   emit('close', { swaypageId })
