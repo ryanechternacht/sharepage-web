@@ -46,7 +46,8 @@
           <UButton
             icon="i-heroicons-arrow-down-tray"
             to="/swaypage-csv-template.csv"
-            target="_blank">Download Template</UButton>
+            target="_blank"
+            variant="outline">Download Template</UButton>
         </div>
       </div>
 

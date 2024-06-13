@@ -158,8 +158,9 @@
               <div v-for="l in links"
                 class="group/link-item flex flex-row-reverse items-center">
                 <div class="w-[1.5rem] flex-shrink-0 text-right">
-                  <UDropdown :items="makeLinkMenu(l)">
-                    <UIcon v-if="isSeller"
+                  <UDropdown v-if="isSeller" 
+                    :items="makeLinkMenu(l)">
+                    <UIcon
                       class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
                       name="i-heroicons-ellipsis-vertical" />
                   </UDropdown>

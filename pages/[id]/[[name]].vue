@@ -75,8 +75,9 @@
                 <div v-for="p in activePages"
                   class="group/sidebar-item flex flex-row items-center">
                   <div class="w-[1.5rem] flex-shrink-0">
-                    <UDropdown :items="makePageMenu(p)">
-                      <UIcon v-if="isSeller" 
+                    <UDropdown v-if="isSeller"
+                      :items="makePageMenu(p)">
+                      <UIcon
                         class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
                         name="i-heroicons-ellipsis-vertical" />
                     </UDropdown>
