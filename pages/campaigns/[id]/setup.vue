@@ -174,8 +174,10 @@ function variableRowNameMaker (rowNumber) {
     return 'last-name'
   } else if (rowNumber === 3) {
     return 'email'
-  } else {
-    return `field-${rowNumber - 3}`
+  } else if (rowNumber === 4) {
+    return 'domain'
+  }else {
+    return `field-${rowNumber - 4}`
   }
 }
 
@@ -189,8 +191,10 @@ function variableRowDescriptionMaker (rowNumber) {
     return 'Last Name'
   } else if (rowNumber === 3) {
     return 'Email'
-  } else {
-    return `Field #${rowNumber - 3}`
+  } else if (rowNumber === 4) {
+    return 'Domain'
+  }else {
+    return `Field #${rowNumber - 4}`
   }
 }
 

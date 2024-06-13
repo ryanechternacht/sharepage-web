@@ -3,13 +3,15 @@
     <TopNav />
 
     <div class="px-10 py-5">
-      <div class="flex flex-row justify-between items-center">
-        <h1>Lead Swaypages</h1>
+      <div class="mb-2 flex flex-row justify-between items-center">
+        <h1>{{ campaign.title }}</h1>
         <NuxtLink :to="`/campaigns/${campaign.uuid}/setup`">
           <UIcon class="w-[2rem] h-[2rem] icon-menu" 
             name="i-heroicons-cog-8-tooth" />
         </NuxtLink>
       </div>
+
+      <h2>Swaypages</h2>
       <div class="mt-2 swaypage-grid">
         <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
