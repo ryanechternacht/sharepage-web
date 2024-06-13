@@ -144,8 +144,8 @@
     <div>
       <div class="ml-2">
         <div class="sticky top-[5.75rem]">
-          <div class="mt-[5.75rem] flex flex-col gap-4 items-end">
-            <div class="text-gray-500 text-sm">Key Links</div>
+          <div class="mt-[5.75rem] flex flex-col gap-2 items-end">
+            <div class="body text-gray-500">Key Links</div>
             <VueDraggable
               v-model="links"
               ghost-class="ghost"

@@ -12,7 +12,7 @@
             placeholder="Account Name" 
             class="w-full" />
         </div>
-        <div>
+        <div v-if="swaypage.roomType === 'deal-room'">
           <div class="text-sm text-gray-500 mb-1">Logo *</div>
           <USelectMenu
             v-model="clearbitLogo"
@@ -30,7 +30,7 @@
             </template>
           </USelectMenu>
         </div>
-        <div>
+        <div v-if="swaypage.roomType === 'deal-room'">
           <div class="text-sm text-gray-500 mb-1">Context</div>
           <UInput
             v-model="subname"

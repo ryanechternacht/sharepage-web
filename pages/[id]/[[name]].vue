@@ -41,13 +41,13 @@
           </div>
 
           <div v-if="swaypage.roomType === 'template'">
-            <div class="mt-[2.25rem] mb-1 text-gray-500">Template Items</div>
-            
-            <div class="flex flex-col gap-1">
-              <div v-for="item in templateItems">
-                {{ item.name }} 
+            <div class="mt-[2.25rem] mb-2 text-gray-500 body">Variables</div>
+
+            <div class="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-baseline">
+              <template v-for="item in templateItems">
                 <span class="subtext text-[.75rem]">{{ item.key }}</span>
-              </div>
+                <span class="body">{{ item.name }}</span> 
+              </template>
             </div>
           </div>
 
@@ -223,6 +223,10 @@ watch(activePages, () => {
 
 const templateItems = [
   {
+    name: 'Account Name',
+    key: 'account-name',
+  },
+  {
     name: 'First Name',
     key: 'first-name',
   },
@@ -231,20 +235,32 @@ const templateItems = [
     key: 'last-name',
   },
   {
-    name: 'Company',
-    key: 'company',
+    name: 'Email',
+    key: 'email',
   },
   {
-    name: 'Data 1',
-    key: 'data-1',
+    name: 'Domain',
+    key: 'domain',
   },
   {
-    name: 'Data 2',
-    key: 'data-2',
+    name: 'Field 1',
+    key: 'field-1',
   },
   {
-    name: 'Data 3',
-    key: 'data-3',
+    name: 'Field 2',
+    key: 'field-2',
+  },
+  {
+    name: 'Field 3',
+    key: 'field-3',
+  },
+  {
+    name: 'Field 4',
+    key: 'field-4',
+  },
+  {
+    name: 'Field 5',
+    key: 'field-5',
   },
 ]
 
