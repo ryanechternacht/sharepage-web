@@ -134,8 +134,16 @@ import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageF
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, map, orderBy } = lodash_pkg;
 
+// We shouldn't need to re-render this component on navigation, but 
+// for some reason, `pages` isn't getting updates from the store
+// if we don't. I have no idea why, but re-rendering this component
+// addresses it, ¯\_(ツ)_/¯ 
+// The good news is most of this content is already
+// fetched so it shouldn't be too tough to rerender. 
+const route = useRoute()
 definePageMeta({
   middleware: ['enforce-swaypage-visibility'],
+  key: route => route.fullPath
 })
 
 function makePageMenu(page) {
@@ -152,7 +160,6 @@ function makePageMenu(page) {
   ]]
 }
 
-const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
 const swaypageStore = useSwaypagesStore()
@@ -190,14 +197,14 @@ const archivedPages = ref([])
 
 function refreshPages () {
   activePages.value = orderBy(
-    filter(pages, 
+    filter(pages,
       p => p.status === 'active'),
     ['ordering'],
     ['asc']
   )
 
   archivedPages.value = orderBy(
-    filter(pages, 
+    filter(pages,
       p => p.status === 'archived'),
     ['ordering'],
     ['asc']
@@ -315,7 +322,6 @@ async function removePage(page, status) {
   if (page.id === currentPageId) {
     await navigateTo(`/${swaypageId}`)
   }
-  refreshPages()
 }
 </script>
 

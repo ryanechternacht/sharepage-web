@@ -543,9 +543,14 @@ async function restorePage() {
   reloadNuxtApp()
 }
 
+// This pattern is because VueDraggable needs its own object (links) to
+// modify as ppl drag around. changes are sent to the store and then
+// pushed back into vue draggable
+// I'm honestly not sure why this works and just having VueDraggable
+// use linksSouce directly doesn't ¯\_(ツ)_/¯
 const links = ref([])
 function refreshLinks () {
-  links.value = clone(linksSource)
+  links.value = linksSource
 }
 refreshLinks()
 
