@@ -205,7 +205,6 @@ useEmbedly()
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
-const pageId = parseInt(route.params.page)
 
 const swaypageStore = useSwaypagesStore()
 const { 
@@ -225,7 +224,6 @@ const [swaypage, pages, linksSource, hasUser, isSeller, _] = await Promise.all([
   getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
-  buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 ])
 
 const { cookies } = useAppConfig()
@@ -282,9 +280,18 @@ function makeLinkMenu(link) {
   ]]
 }
 
-const page = pageId
-  ? find(pages, p => p.id === pageId)
-  : first(filter(pages, p => p.status === 'active'))
+let pageId = parseInt(route.params.page)
+let page
+// when we get here from a shareable link, the page id isn't in the url,
+// so we'll pull it from the page we're sending them to
+if (pageId) {
+  page = find(pages, p => p.id === pageId)
+} else {
+  page = first(filter(pages, p => p.status === 'active'))
+  pageId = page.id
+}
+
+buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 
 const canEdit = isSeller || page.canBuyerEdit
 
@@ -547,7 +554,7 @@ async function restorePage() {
 // modify as ppl drag around. changes are sent to the store and then
 // pushed back into vue draggable
 // I'm honestly not sure why this works and just having VueDraggable
-// use linksSouce directly doesn't ¯\_(ツ)_/¯
+// use linksSouce directly doesn't, ¯\_(ツ)_/¯
 const links = ref([])
 function refreshLinks () {
   links.value = linksSource

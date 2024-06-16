@@ -29,7 +29,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
     },
     async capturePageTimingIfAppropriate({ swaypageId, page }) {
       // All of my attempts to create sessions server side and pass them
-      // to the client, to prevent (to save time client side), have failed
+      // to the client (to save time client side), have failed
       // miserably. It feels like it _should work_, but it appears to 
       // not be for some reason. I think that reason is how I'm trying
       // to use pinia as a cache, instead of using nuxt api fetching
@@ -46,6 +46,8 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
       }
 
       const { timeMe } = useNuxtApp()
+
+      console.log('page', page)
 
       // setup
       if (!this.sessionId) {
