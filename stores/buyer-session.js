@@ -47,8 +47,6 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
       const { timeMe } = useNuxtApp()
 
-      console.log('page', page)
-
       // setup
       if (!this.sessionId) {
         await this.generateActivitySession({ swaypageId })
