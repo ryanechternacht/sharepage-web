@@ -22,7 +22,7 @@
             class="-mr-.5 shrink-0"
             size="small"
             :user="swaypage.owner" />
-          <div class="ml-4 shrink-0 text-sm">
+          <div v-if="swaypage.owner" class="ml-4 shrink-0 text-sm">
             Made by {{ swaypage.owner?.firstName }}
           </div>
           <!-- TODO this text should be better -->
