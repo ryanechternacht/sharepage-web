@@ -150,7 +150,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
   const swaypageId = await store.createSwaypageFromTemplate({
     buyer,
     subname,
-    buyerLogo: clearbitLogo.logo,
+    buyerLogo: clearbitLogo.value.logo,
     templateId: props.templateId,
     templateData: {
       accountName,
