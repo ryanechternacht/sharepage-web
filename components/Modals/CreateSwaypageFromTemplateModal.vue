@@ -20,13 +20,19 @@
             :searchable="lookupOnClearbit"
             by="domain"
             placeholder="Search for a company"
-            option-attribute="domain">
+            option-attribute="domain"
+            creatable>
             <template #option="{ option: { name, logo, domain } }">
               <div class="flex flex-row gap-2 items-center p-2">
                 <img :src="logo" class="w-[1.5rem] h-[1.5rem] shrink-0">
                 <div class="grow">{{ name }}</div>
                 <div class="shrink-0 tag">{{ domain }}</div>
               </div>
+            </template>
+            <template #option-create="{ option }">
+              <span class="flex-shrink-0">Url Entered:</span>
+              <Logo class="max-h-[1.25rem] h-full w-full max-w-[1.25rem] flex-shrink-0" :src="option.logo" />
+              <span class="flex-grow block truncate text-gray-400">{{ option.logo }}</span>
             </template>
           </USelectMenu>
         </div>
