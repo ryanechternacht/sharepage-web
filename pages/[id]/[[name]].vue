@@ -102,10 +102,11 @@
           <div class="flex-grow" />
 
           <div class="mt-16 mb-4 w-full">
-            <UDropdown :items="archivedPagesMenu"
-            :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
-            :popper="{ placement: 'bottom-start' }">
-              <div v-if="isSeller" 
+            <UDropdown v-if="isSeller" 
+              :items="archivedPagesMenu"
+              :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
+              :popper="{ placement: 'bottom-start' }">
+              <div
                 class="cursor-pointer flex flex-row gap-4 items-center">
                 <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
                 <div class="text-gray-500">Archive</div>
