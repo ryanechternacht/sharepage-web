@@ -89,7 +89,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
   const swaypageId = await store.createSwaypage({
     buyer,
     subname,
-    buyerLogo: clearbitLogo.logo,
+    buyerLogo: clearbitLogo.value.logo,
     roomType: selectedTab.value === 0 ? 'deal-room' : 'template',
     pageTitle: 'New Chapter'
   })
