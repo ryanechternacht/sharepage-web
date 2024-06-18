@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav />
+    <TopNav active-link="campaigns" />
 
     <div class="px-10 py-5">
       <div class="mb-2 flex flex-row justify-between items-center">

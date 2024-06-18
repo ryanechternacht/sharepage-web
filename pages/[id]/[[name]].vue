@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav>
+    <TopNav active-link="swaypages">
       <template #action-button>
         <template v-if="swaypage.roomType === 'template'">
           <UButton icon="i-heroicons-document"

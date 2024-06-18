@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav>
+    <TopNav active-link="campaigns">
       <template #action-button>
         <UButton v-if="selectedTab === 0 && !campaign.isPublished"
           @click="selectedTab = 1">

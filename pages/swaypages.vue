@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav>
+    <TopNav active-link="swaypages">
       <template #action-button>
         <UButton
           icon="i-heroicons-document"

@@ -5,15 +5,21 @@
     </NuxtLink>
     <template v-if="isSeller">
       <!-- TOOD point this to the correct route -->
-      <NuxtLink to="/dashboard/feed" class="link">
+      <NuxtLink to="/feed" 
+        class="link"
+        :class="{ 'router-link-active': activeLink === 'feed' }">
         <UIcon class="icon-menu" name="i-heroicons-signal" />
         <span>Feed</span>
       </NuxtLink>
-      <NuxtLink to="/dashboard/swaypages" class="link">
+      <NuxtLink to="/swaypages" 
+        class="link"
+        :class="{ 'router-link-active': activeLink === 'swaypages' }">
         <UIcon class="icon-menu" name="i-heroicons-document" />
         <span>Swaypages</span>
       </NuxtLink>
-      <NuxtLink to="/dashboard/campaigns" class="link">
+      <NuxtLink to="/campaigns"
+        class="link"
+        :class="{ 'router-link-active': activeLink === 'campaigns' }">
         <UIcon class="icon-menu" name="i-heroicons-paper-airplane" />
         <span>Campaigns</span>
       </NuxtLink>
@@ -53,12 +59,13 @@
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 
-const usersStore = useUsersStore()
-const {getMeCached, isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
+const props = defineProps({ activeLink: String })
 
-const [user, hasUser, isSeller] = await Promise.all([
+const usersStore = useUsersStore()
+const {getMeCached, isUserSeller } = storeToRefs(usersStore)
+
+const [user, isSeller] = await Promise.all([
   getMeCached.value(),
-  isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
 

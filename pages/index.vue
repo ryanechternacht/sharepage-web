@@ -14,7 +14,7 @@ const { getMeCached } = storeToRefs(usersStore)
 const user = await getMeCached.value()
 
 if (user?.buyersphereRole === 'admin') {
-  await navigateTo('/dashboard')
+  await navigateTo('/swaypages')
 } else if (user?.buyersphereRole === 'buyer') {
   const { apiFetch } = useNuxtApp()
   const { data } = await apiFetch('/v0.1/users/me/buyerspheres')
