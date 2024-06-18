@@ -13,6 +13,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
     chapters: {},
     links: {},
     buyerSessions: {},
+    all: {},
   }),
   getters: {
     getSwaypageByIdCached: (state) => async (swaypageId) => {
@@ -34,8 +35,29 @@ export const useSwaypagesStore = defineStore('swaypages', {
       await state.fetchSwaypageBuyerSessions({ swaypageId })
       return state.buyerSessions[swaypageId]?.content
     },
+    getSwaypageList: (state) => async () => {
+      await state.fetchAllSwaypages()
+      return state.all.content
+    }
   },
   actions: {
+    async fetchAllSwaypages({ forceRefresh } = {}) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.all?.content
+          || forceRefresh
+          || is10MinutesOld(this.all?.generatedAt))
+      {
+        const { data } =  await apiFetch('/v0.1/buyerspheres')
+        this.all.content = data.value
+        this.all.generatedAt = dayjs().toJSON()
+      }
+    },
+    async invalidateAllSwaypageCache() {
+      const dayjs = useDayjs()
+      this.all.generatedAt = dayjs(0).toJSON()
+    },
     async createSwaypage({ 
       buyer, subname, buyerLogo, crmOpportunityId, dealAmount,
       pageTemplateId, pageTitle, roomType

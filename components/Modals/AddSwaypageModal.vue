@@ -99,6 +99,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     roomType: selectedTab.value === 0 ? 'deal-room' : 'template',
     pageTitle: 'New Chapter'
   })
+  await store.invalidateAllSwaypageCache()
   emit('close', { swaypageId })
 })
 

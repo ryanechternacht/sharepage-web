@@ -171,6 +171,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       field5,
     }
   })
+  await store.invalidateAllSwaypageCache()
   emit('close', { swaypageId })
 })
 

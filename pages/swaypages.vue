@@ -114,11 +114,13 @@
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
 import AddSwaypageModal from '@/components/Modals/AddSwaypageModal'
+import { useSwaypagesStore } from '@/stores/swaypages'
+import { storeToRefs } from 'pinia'
 
-const { apiFetch } = useNuxtApp()
-const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', { 
-  // query
-})
+const swaypageStore = useSwaypagesStore()
+const { getSwaypageList } = storeToRefs(swaypageStore)
+
+const swaypages = await getSwaypageList.value()
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
 
@@ -147,7 +149,7 @@ const roomTypeMap = {
 
 const activeRooms = computed(() => 
   orderBy(
-    filter(swaypages.value,
+    filter(swaypages,
       s => s.status !== 'archived' && s.roomType === 'deal-room'),
     ['updatedAt'],
     ['desc']
@@ -156,7 +158,7 @@ const activeRooms = computed(() =>
 
 const templateRooms = computed(() => 
   orderBy(
-    filter(swaypages.value,
+    filter(swaypages,
       s => s.status !== 'archived' && s.roomType === 'template'),
     ['updatedAt'],
     ['desc']
@@ -165,7 +167,7 @@ const templateRooms = computed(() =>
 
 const archiveRooms = computed(() => 
   orderBy(
-    filter(swaypages.value,
+    filter(swaypages,
       s => s.status === 'archived'),
     ['updatedAt'],
     ['desc']
