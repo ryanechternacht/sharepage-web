@@ -48,10 +48,11 @@
         </div>
         <div v-if="canEdit" class="flex flex-row items-center gap-2">
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
-          <div :class="{'text-blue-500': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
-                        'text-orange-300': saveSubmissionState === 'submitting'}">
-            <UIcon class="icon-menu" name="i-heroicons-document" />
-          </div>  
+          <UIcon name="i-heroicons-document"
+            class="icon-menu"
+            :class="{'text-blue-500': saveSubmissionState === 'ready' || saveSubmissionState === 'submitted',
+                      'text-orange-300': saveSubmissionState === 'submitting'}"
+          />
           <div class="subtext w-[3.25rem]">
             {{ !isDirty ? "Saved" :
                 saveSubmissionState === 'submitting' ? "Saving" :
@@ -59,11 +60,10 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
-        <UDropdown :items="settingsMenu">
-          <UIcon
-            class="-ml-4"
-            name="i-heroicons-ellipsis-vertical" />
-        </UDropdown>
+        <UButton icon="i-heroicons-cog-6-tooth"
+          variant="outline"
+          color="gray"
+          :to="makeInternalSwaypageLink(swaypage, 'settings')" />
       </div>
       <div class="page-area">
         <input v-if="canEdit"
@@ -191,7 +191,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { clone, cloneDeep, debounce, filter, find, findIndex, first, map, max } = lodash_pkg;
+const { cloneDeep, debounce, filter, find, findIndex, first, map, max } = lodash_pkg;
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
