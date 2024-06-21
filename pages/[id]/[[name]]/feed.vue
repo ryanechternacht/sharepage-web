@@ -59,7 +59,6 @@ import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
 const modal = useModal()
 
 definePageMeta({
-  name: 'feed',
   middleware: ['enforce-seller'],
 })
 
