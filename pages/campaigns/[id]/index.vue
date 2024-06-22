@@ -5,10 +5,10 @@
     <div class="px-10 py-5">
       <div class="mb-2 flex flex-row justify-between items-center">
         <h1>{{ campaign.title }}</h1>
-        <NuxtLink :to="`/campaigns/${campaign.uuid}/setup`">
-          <UIcon class="w-[2rem] h-[2rem] icon-menu" 
-            name="i-heroicons-cog-8-tooth" />
-        </NuxtLink>
+        <UButton icon="i-heroicons-cog-6-tooth"
+          variant="ghost"
+          color="gray"
+          :to="`/campaigns/${campaign.uuid}/setup`" />
       </div>
 
       <h2>Swaypages</h2>

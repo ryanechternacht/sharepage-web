@@ -34,7 +34,8 @@
       <div class="w-full flex flex-row gap-4 items-center">
         <UButton v-if="campaign.isPublished"
           icon="i-heroicons-arrow-left" 
-          variant="outline" 
+          variant="ghost"
+          color="gray"
           :to="`/campaigns/${campaign.uuid}`" />
 
         <h1>{{ campaign.title }}</h1>

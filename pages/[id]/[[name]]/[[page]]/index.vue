@@ -61,7 +61,7 @@
           </div>
         </div>
         <UButton icon="i-heroicons-cog-6-tooth"
-          variant="outline"
+          variant="ghost"
           color="gray"
           :to="makeInternalSwaypageLink(swaypage, 'settings')" />
       </div>
