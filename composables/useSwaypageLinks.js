@@ -16,6 +16,10 @@ function makeInternalSwaypageLink (swaypage, page) {
     : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
 }
 
+function makeSwaypageChapterSettingsLink (swaypage, pageId) {
+  return `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${pageId}/settings`
+}
+
 // requestUrl should be the result of useRequestUrl()
 function makePersonalizedExternalSwaypageLink (requestUrl, shortcode, name) {
   const urlBase =  requestUrl.protocol + '//' + requestUrl.host;
@@ -34,4 +38,5 @@ export const useSwaypageLinks = () => ({
   makeInternalSwaypageLink,
   makeExternalSwaypageLink,
   makePersonalizedExternalSwaypageLink,
+  makeSwaypageChapterSettingsLink,
 })

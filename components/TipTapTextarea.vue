@@ -56,6 +56,16 @@ defineExpose({ focus })
     outline: 0
   }
 
+  ul {
+    list-style: circle !important;
+    list-style-position: inside !important;
+  }
+
+  ol {
+    list-style: decimal !important;
+    list-style-position: inside !important;
+  }
+
   li p {
     display: inline;
   }

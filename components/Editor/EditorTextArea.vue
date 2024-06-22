@@ -86,6 +86,16 @@ defineExpose({ focus })
     display: inline;
   }
 
+  ul {
+    list-style: circle !important;
+    list-style-position: inside !important;
+  }
+
+  ol {
+    list-style: decimal !important;
+    list-style-position: inside !important;
+  }
+
   .ProseMirror p.is-editor-empty:first-child::before {
     color: #adb5bd;
     content: attr(data-placeholder);

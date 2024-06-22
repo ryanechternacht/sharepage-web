@@ -1,5 +1,6 @@
 <template>
-  <UIcon :name="icon" />
+  <!-- <UIcon :name="icon" /> -->
+  <UIcon :name="getSwaypageTypeIcon(pageType)" />
 </template>
 
 <script setup>
@@ -7,12 +8,5 @@ const props = defineProps({
   pageType: { type: String, required: true }
 })
 
-const icon = computed(() => ({
-  general: 'i-heroicons-document',
-  'follow-up': 'i-heroicons-arrow-right-circle',
-  guide: 'i-heroicons-map',
-  discussion: 'i-heroicons-chat-bubble-left',
-  'business-case': 'i-heroicons-document-chart-bar',
-  notes: 'i-heroicons-clipboards',
-}[props.pageType]))
+const { getSwaypageTypeIcon } = useSwayageIcons()
 </script>

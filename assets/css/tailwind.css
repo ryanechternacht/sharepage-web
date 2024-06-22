@@ -84,16 +84,6 @@
     }
   }
 
-  ul {
-    list-style: circle;
-    list-style-position: inside;
-  }
-
-  ol {
-    list-style: decimal;
-    list-style-position: inside;
-  }
-
   .inline-html p:first-child {
     display: inline;
   }

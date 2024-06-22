@@ -11,7 +11,9 @@
     </div>
     <div class="page-area">
       <UHorizontalNavigation :links="links" />
-      main settings!
+      {{ swaypageId }} <br>
+      {{ page }} <br>
+      settings!
     </div>
   </div>
 </template>
@@ -25,6 +27,7 @@ const { concat, map } = lodash_pkg;
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
+const page = parseInt(route.params.page)
 
 const swaypageStore = useSwaypagesStore()
 const { 
@@ -56,17 +59,3 @@ const links = computed(() => concat([{
   to: makeSwaypageChapterSettingsLink(swaypage, page.id)
 }))))
 </script>
-
-<style lang="postcss">
-.page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
-  /* this is based on the current top nav height */
-  min-height: calc(100vh - 5rem);
-  overflow: hidden;
-}
-
-:deep() ::marker {
-  display: none;
-  outline: red;
-}
-</style>

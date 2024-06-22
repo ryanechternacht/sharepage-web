@@ -218,7 +218,7 @@ const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const buyerSessionStore = useBuyerSessionStore()
 
-const [swaypage, pages, linksSource, hasUser, isSeller, _] = await Promise.all([
+const [swaypage, pages, linksSource, hasUser, isSeller] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypageChaptersByIdCached.value(swaypageId),
   getSwaypageLinksByIdCached.value(swaypageId),
@@ -527,16 +527,6 @@ function openSwaypageSettingsModal () {
     }
   })
 }
-
-const settingsMenu = [
-  [{
-    label: 'Edit Chapter Settings',
-    click: () => openPageSettingsModal()
-  }, {
-    label: 'Edit Swaypage Settings',
-    click: () => openSwaypageSettingsModal()
-  }]
-]
 
 async function restorePage() {
   await swaypageStore.updateChapter({
