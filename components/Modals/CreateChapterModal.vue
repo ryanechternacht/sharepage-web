@@ -2,9 +2,7 @@
   <UModal>
     <UCard>
       <div class="flex flex-col gap-4">
-        <h2 class="mx-auto">
-          {{ editMode ? 'Edit Chapter Settings' : 'New Chapter' }}
-        </h2>
+        <h2 class="mx-auto">New Chapter</h2>
         <div>
           <div class="text-sm text-gray-500 mb-1">Chapter Title *</div>
           <UInput
@@ -37,7 +35,6 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
-          {{  error }}
       </div>
     </UCard>
   </UModal>
@@ -55,14 +52,12 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const editMode = !!props.chapter?.id
+const title = ref('')
 
-const title = ref(props.chapter?.title)
-
-const canBuyerEdit = ref(props.chapter?.canBuyerEdit ? 'Yes' : 'No')
+const canBuyerEdit = ref('Yes')
 const canBuyerEditOptions = ['Yes', 'No']
 
-const chapterType = ref(props.chapter?.pageType)
+const chapterType = ref(null)
 const chapterTypes = [
   {
     label: 'General Chapter',
@@ -85,32 +80,18 @@ const chapterTypes = [
   },
 ]
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
-  let chapterId = null
-  if (editMode) {
-    await store.updateChapter({
-      swaypageId: props.swaypageId,
-      chapterId: props.chapter.id,
-      chapter: {
-        title,
-        pageType: chapterType,
-        canBuyerEdit: canBuyerEdit.value === 'Yes',
-      },
-    })
-  } else {
-    chapterId = await store.createChapter({
-      swaypageId: props.swaypageId,
-      chapter: {
-        title,
-        pageType: chapterType,
-        canBuyerEdit: canBuyerEdit.value === 'Yes',
-      },      
-    })
-  }
+const { submissionState, submitFn } = useSubmit(async () => {
+  const chapterId = await store.createChapter({
+    swaypageId: props.swaypageId,
+    chapter: {
+      title,
+      pageType: chapterType,
+      canBuyerEdit: canBuyerEdit.value === 'Yes',
+    },      
+  })
   emit('close', { chapterId })
 })
 
 const needsMoreInput = computed(() => !title.value 
   || !chapterType.value || !canBuyerEdit.value)
-
 </script>

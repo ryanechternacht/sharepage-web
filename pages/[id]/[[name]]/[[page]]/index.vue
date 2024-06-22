@@ -197,8 +197,7 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
-import AddEditChapterModal from '@/components/Modals/AddEditChapterModal'
+import CreateChapterModal from '@/components/Modals/CreateChapterModal'
 import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
 
 useEmbedly()
@@ -488,16 +487,6 @@ function updateItem(index, newSection) {
 
 const modal = useModal()
 
-function openPageSettingsModal () {
-  modal.open(AddEditChapterModal, {
-    swaypageId: swaypage.id,
-    chapter: page,
-    async onClose () {
-      modal.close()
-    }
-  })
-}
-
 function createNewLink () {
   modal.open(AddEditSwaypageLinkModal, {
     swaypageId: swaypage.id,
@@ -513,15 +502,6 @@ function editLink (link) {
   modal.open(AddEditSwaypageLinkModal, {
     swaypageId: swaypage.id,
     link,
-    async onClose () {
-      modal.close()
-    }
-  })
-}
-
-function openSwaypageSettingsModal () {
-  modal.open(EditSwaypageModal, {
-    swaypage,
     async onClose () {
       modal.close()
     }

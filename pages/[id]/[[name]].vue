@@ -130,7 +130,7 @@ import { useOrganizationStore } from '@/stores/organization'
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
-import AddEditChapterModal from '@/components/Modals/AddEditChapterModal'
+import CreateChapterModal from '@/components/Modals/CreateChapterModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
 const { debounce, filter, findIndex, map, orderBy } = lodash_pkg;
@@ -276,7 +276,7 @@ const templateItems = [
 const modal = useModal()
 
 async function createNewPage() {
-  modal.open(AddEditChapterModal, {
+  modal.open(CreateChapterModal, {
     swaypageId: swaypage.id,
     chapter: null,
     async onClose ({ chapterId }) {
