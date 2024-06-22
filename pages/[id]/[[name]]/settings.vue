@@ -10,8 +10,72 @@
       </div>
     </div>
     <div class="page-area">
-      <UHorizontalNavigation :links="links" />
-      main settings!
+      <UHorizontalNavigation :links="links"
+        class="mb-4" />
+      
+      <div class="flex flex-col gap-4 max-w-[600px]">
+        <UFormGroup label="Name" required>
+          <UInput
+            v-model="buyer"
+            placeholder="Account Name" />
+        </UFormGroup>
+        <UFormGroup label="Logo"
+          required
+          help="Paste a link or type to search Clearbit for logos">
+          <USelectMenu
+            v-model="clearbitLogo"
+            :loading="clearbitLoading"
+            :searchable="lookupOnClearbit"
+            by="logo"
+            placeholder="Search for a company"
+            option-attribute="logo"
+            creatable>
+            <template #option="{ option: { name, logo, domain } }">
+              <div class="flex flex-row gap-2 items-center p-2">
+                <img :src="logo" class="w-[1.5rem] h-[1.5rem] shrink-0">
+                <div class="grow">{{ name }}</div>
+                <div class="shrink-0 tag">{{ domain }}</div>
+              </div>
+            </template>
+            <template #option-create="{ option }">
+              <span class="flex-shrink-0">Use Url:</span>
+              <Logo class="max-h-[1.25rem] h-full w-full max-w-[1.25rem] flex-shrink-0" :src="option.logo" />
+              <span class="flex-grow block truncate text-gray-400 min-w-[8rem]">{{ option.logo }}</span>
+            </template>
+          </USelectMenu>
+        </UFormGroup>
+
+        <UFormGroup v-if="swaypage.roomType === 'deal-room'" 
+          label="Context">
+          <UInput
+            v-model="subname"
+            placeholder="Sales Divison, Team, etc" 
+            class="w-full" />
+        </UFormGroup>
+
+        <UFormGroup label="Status">
+          <USelect
+            v-model="status"
+            :options="statusOptions" />
+        </UFormGroup>
+
+        <UFormGroup label="Visibility">
+          <USelect
+            v-model="isPublic"
+            :options="visibilityOptions" />
+        </UFormGroup>
+
+        <SubmitButton
+          block
+          icon="i-heroicons-pencil-square"
+          ready-text="Save"
+          submitting-text="Savings"
+          submitted-text="Saved"
+          error-text="Try Again"
+          :disabled="needsMoreInput"
+          :submissionState="submissionState"
+          @click="submitFn" />
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +119,64 @@ const links = computed(() => concat([{
   icon: getSwaypageTypeIcon(page.pageType),
   to: makeSwaypageChapterSettingsLink(swaypage, page.id)
 }))))
+
+const clearbitLoading = ref(false)
+const clearbitLogo = ref({ logo: swaypage.buyerLogo })
+
+const buyer = ref(swaypage.buyer)
+const subname = ref(swaypage.subname)
+
+const isPublic = ref(swaypage.isPublic ? 'public' : 'private')
+const visibilityOptions = [
+  {
+    label: 'Public',
+    value: 'public',
+  }, {
+    label: 'Private',
+    value: 'private',
+  },
+]
+
+const status = ref(swaypage.status)
+const statusOptions = [
+  {
+    label: 'Active',
+    value: 'active',
+  }, {
+    label: 'Archive',
+    value: 'archived',
+  },
+]
+
+async function lookupOnClearbit (query) {
+  clearbitLoading.value = true
+
+  if (query) {
+    const data = await $fetch(
+      `https://autocomplete.clearbit.com/v1/companies/suggest?query=${query}`
+    )
+    clearbitLoading.value = false
+    return data
+  } else {
+    clearbitLoading.value = false
+    return []
+  }
+}
+
+const { submissionState, submitFn } = useSubmit(async () => {
+  await swaypageStore.saveSwaypageSettings({
+    swaypageId: swaypage.id,
+    buyer,
+    subname,
+    buyerLogo: clearbitLogo.value.logo,
+    isPublic: isPublic.value === 'public',
+    pageTitle: 'New Chapter',
+    status,
+  })
+})
+
+const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
+
 </script>
 
 <style lang="postcss">

@@ -278,25 +278,28 @@ export const useSwaypagesStore = defineStore('swaypages', {
         { method: 'PATCH', body: chapter }
       )
       
-      const p = find(this.chapters[swaypageId].content, p => p.id === chapterId)
-      if (p) {
+      const c = find(this.chapters[swaypageId].content, c => c.id === chapterId)
+      if (c) {
         if (data.value.title !== undefined) {
-          p.title = data.value.title
+          c.title = data.value.title
         }
         if (data.value.body !== undefined) {
-          p.body = data.value.body
+          c.body = data.value.body
         }
         if (data.value.isPublic !== undefined) {
-          p.isPublic = data.value.isPublic
+          c.isPublic = data.value.isPublic
         }
         if (data.value.ordering !== undefined) {
-          p.ordering = data.value.ordering
+          c.ordering = data.value.ordering
         }
         if (data.value.canBuyerEdit !== undefined) {
-          p.canBuyerEdit = data.value.canBuyerEdit
+          c.canBuyerEdit = data.value.canBuyerEdit
         }
         if (data.value.status !== undefined) {
-          p.status = data.value.status
+          c.status = data.value.status
+        }
+        if (data.value.pageType !== undefined) {
+          c.pageType = data.value.pageType
         }
       }
     },
