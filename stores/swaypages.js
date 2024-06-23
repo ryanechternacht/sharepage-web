@@ -102,7 +102,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
     async saveSwaypageSettings({
       swaypageId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing, qualificationDate, 
-      evaluationDate, decisionDate, status, isPublic, roomType
+      evaluationDate, decisionDate, status, isPublic, roomType, priority
     }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
@@ -123,6 +123,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
             status,
             isPublic,
             roomType,
+            priority,
           } 
         }
       )
@@ -140,6 +141,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
       b.crmOpportunityId = data.value.crmOpportunityId
       b.status = data.value.status
       b.isPublic = data.value.isPublic
+      b.priority = data.value.priority
     },
     async updateBuyerInput({ swaypageId, featuresAnswer, successCriteriaAnswer,
       objectivesAnswer, constraintsAnswer, pricingTierId, status }) {

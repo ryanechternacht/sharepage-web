@@ -36,6 +36,8 @@
         </div>
         <div class="flex-grow" />
         <!-- <div>active</div> -->
+        <SwaypagePriorityTag v-if="isSeller"
+          :priority="swaypage.priority" />
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="swaypage.isPublic">
             <UIcon class="icon-menu text-green-300" name="i-heroicons-eye" />
@@ -60,7 +62,9 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
-        <UButton icon="i-heroicons-cog-6-tooth"
+        <UButton v-if="canEdit" 
+          icon="i-heroicons-cog-6-tooth"
+          class="-ml-4"
           variant="ghost"
           color="gray"
           :to="makeInternalSwaypageLink(swaypage, 'settings')" />

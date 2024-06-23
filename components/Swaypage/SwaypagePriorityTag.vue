@@ -1,12 +1,10 @@
 <template>
-  <div class="border border-gray-200 rounded-md py-.5 px-2 flex flex-row gap-2 items-center bg-white">
-    <div class="rounded small-text w-[.875rem] mx-auto text-center"
-      :class="{'bg-blue-500 text-white': priority === 1,
-               'bg-gray-500 text-white': priority === 2,
-               'bg-gray-200 text-sm': priority === 3}">
-               {{ priority }}
-    </div>    
-    <div class="subtext">{{ priorityTag[priority].text }}</div>
+  <div class="py-.5 px-2 flex flex-row gap-2 items-center">
+    <UIcon name="i-heroicons-bell"
+      :class="[priorityTag[priority].color]" />
+    <span class="subtext">
+      {{ priorityTag[priority].text }}
+    </span>
   </div>
 </template>
 
@@ -17,13 +15,16 @@ const props = defineProps({
 
 const priorityTag = {
   1: { 
-    text: 'Top'
+    text: 'High',
+    color: 'text-blue-500',
   },
   2: { 
-    text: 'Normal'
+    text: 'Normal',
+    color: 'text-gray-500',
   },
   3: { 
-    text: 'Low'
+    text: 'Low',
+    color: 'text-gray-300',
   },
 }
 </script>

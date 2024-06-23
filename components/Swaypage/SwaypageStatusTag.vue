@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-200 rounded-md py-.5 px-2 flex flex-row gap-2 items-center bg-white">
+  <div class="py-.5 px-2 flex flex-row gap-2 items-center">
     <div class="rounded-full w-2 h-2"
       :class="{'bg-blue-500': status === 'Engaged',
                'bg-green-300': status === 'Active',

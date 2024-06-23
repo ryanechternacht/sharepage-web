@@ -53,6 +53,12 @@
             class="w-full" />
         </UFormGroup>
 
+        <UFormGroup label="Priority">
+          <USelect
+            v-model="priority"
+            :options="priorityOptions" />
+        </UFormGroup>
+
         <UFormGroup label="Status">
           <USelect
             v-model="status"
@@ -126,6 +132,20 @@ const clearbitLogo = ref({ logo: swaypage.buyerLogo })
 const buyer = ref(swaypage.buyer)
 const subname = ref(swaypage.subname)
 
+const priority = ref(swaypage.priority)
+const priorityOptions = [
+  {
+    label: 'High',
+    value: 1,
+  }, {
+    label: 'Normal',
+    value: 2,
+  }, {
+    label: 'Low',
+    value: 3,
+  },
+]
+
 const isPublic = ref(swaypage.isPublic ? 'public' : 'private')
 const visibilityOptions = [
   {
@@ -167,6 +187,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
   await swaypageStore.saveSwaypageSettings({
     swaypageId: swaypage.id,
     buyer,
+    priority,
     subname,
     buyerLogo: clearbitLogo.value.logo,
     isPublic: isPublic.value === 'public',
