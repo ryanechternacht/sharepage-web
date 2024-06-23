@@ -19,6 +19,7 @@
             v-model="buyer"
             placeholder="Account Name" />
         </UFormGroup>
+        
         <UFormGroup label="Logo"
           required
           help="Paste a link or type to search Clearbit for logos">
@@ -70,28 +71,27 @@
             v-model="isPublic"
             :options="visibilityOptions" />
         </UFormGroup>
-
-        <SubmitButton
-          block
-          icon="i-heroicons-pencil-square"
-          ready-text="Save"
-          submitting-text="Savings"
-          submitted-text="Saved"
-          error-text="Try Again"
-          :disabled="needsMoreInput"
-          :submissionState="submissionState"
-          @click="submitFn" />
       </div>
+
+      <SubmitButton
+        class="mt-8"
+        icon="i-heroicons-pencil-square"
+        ready-text="Save"
+        submitting-text="Savings"
+        submitted-text="Saved"
+        error-text="Try Again"
+        :disabled="needsMoreInput"
+        :submissionState="submissionState"
+        @click="submitFn" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
-import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { concat, map } = lodash_pkg;
+const { concat, filter, map } = lodash_pkg;
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
@@ -102,9 +102,7 @@ const {
   getSwaypageChaptersByIdCached, 
 } = storeToRefs(swaypageStore)
 
-const buyerSessionStore = useBuyerSessionStore()
-
-const [swaypage, pages] = await Promise.all([
+const [swaypage, chapters] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypageChaptersByIdCached.value(swaypageId),
 ])
@@ -116,15 +114,25 @@ const {
 
 const { getSwaypageTypeIcon } = useSwayageIcons()
 
-const links = computed(() => concat([{
-  label: 'Swaypage',
-  icon: 'i-heroicons-document',
-  to: makeInternalSwaypageLink(swaypage, 'settings')
-}], map(pages, (page) => ({
-  label: page.title,
-  icon: getSwaypageTypeIcon(page.pageType),
-  to: makeSwaypageChapterSettingsLink(swaypage, page.id)
-}))))
+const links = computed(() => filter(
+  concat(
+    [{
+      label: 'Swaypage',
+      icon: 'i-heroicons-document',
+      to: makeInternalSwaypageLink(swaypage, 'settings')
+    }], 
+    swaypage.roomType === 'template' ? {
+      label: 'Variables',
+      icon: 'i-heroicons-variable',
+      to: makeInternalSwaypageLink(swaypage, 'variables')
+    } : null,
+    map(chapters, (chapter) => ({
+      label: chapter.title,
+      icon: getSwaypageTypeIcon(chapter.pageType),
+      to: makeSwaypageChapterSettingsLink(swaypage, chapter.id)
+    }))),
+    x => x
+))
 
 const clearbitLoading = ref(false)
 const clearbitLogo = ref({ logo: swaypage.buyerLogo })

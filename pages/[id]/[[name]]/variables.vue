@@ -1,5 +1,5 @@
 <template>
-  <div>
+<div>
     <div class="h-[2.375rem] flex flex-row items-center gap-6">
       <h1>Settings</h1>
       <div class="flex-grow" />
@@ -13,38 +13,58 @@
       <UHorizontalNavigation :links="links"
         class="mb-4" />
 
-      <div class="flex flex-col gap-4 max-w-[600px]">
-        <UFormGroup label="Chapter Title" required>
+      <h2 class="mb-2">Variable Labels</h2>
+      <div class="variable-grid">
+        <div class="subtext">account-name</div>
+        <div class="body">Account Name</div>
+        <div><!-- empty--></div>
+
+        <div class="subtext">first-name</div>
+        <div class="body">First Name</div>
+        <div><!-- empty--></div>
+
+        <div class="subtext">last-name</div>
+        <div class="body">Last Name</div>
+        <div><!-- empty--></div>
+
+        <div class="subtext">email</div>
+        <div class="body">Email</div>
+        <div><!-- empty--></div>
+
+        <div class="subtext">domain</div>
+        <div class="body">Domain</div>
+        <div><!-- empty--></div>
+
+        <template v-for="(variable, index) in variables">
+          <div class="subtext">field-{{ index + 1 }}</div>
           <UInput
-            v-model="title"
-            placeholder="Chapter Title" 
-            class="w-full" />
-        </UFormGroup>
-
-        <UFormGroup label="Chapter Type" required>
-          <USelect
-            v-model="chapterType"
-            placeholder="Chapter Type" 
-            :options="chapterTypes"
-            class="w-full" />
-        </UFormGroup>
-
-        <UFormGroup label="Can Buyer Edit" required>
-          <USelect
-            v-model="canBuyerEdit"
-            :options="canBuyerEditOptions"
-            class="w-full" />
-        </UFormGroup>
+            :modelValue="variable"
+            placeholder="Custom Variable Label"
+            class="w-full"
+            @update:modelValue="v => variables[index] = v" />
+          <div>
+            <UButton v-if="index === variables.length - 1"
+              icon="i-heroicons-trash"
+              variant="outline"
+              @click="variables.pop()">Remove</UButton>
+          </div>
+        </template>
+        <div class="col-span-3">
+          <UButton
+            icon="i-heroicons-plus"
+            variant="outline"
+            @click="variables.push('')">Add Variable</UButton>
+        </div>
       </div>
 
       <SubmitButton
         class="mt-8"
         icon="i-heroicons-pencil-square"
+        :disabled="needsMoreInput"
         ready-text="Save"
         submitting-text="Savings"
         submitted-text="Saved"
         error-text="Try Again"
-        :disabled="needsMoreInput"
         :submissionState="submissionState"
         @click="submitFn" />
     </div>
@@ -55,11 +75,10 @@
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { concat, filter, find, map } = lodash_pkg;
+const { clone, concat, filter, map, some } = lodash_pkg;
 
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
-const chapterId = parseInt(route.params.page)
 
 const swaypageStore = useSwaypagesStore()
 const { 
@@ -85,7 +104,7 @@ const links = computed(() => filter(
       label: 'Swaypage',
       icon: 'i-heroicons-document',
       to: makeInternalSwaypageLink(swaypage, 'settings')
-    }], 
+    }],
     swaypage.roomType === 'template' ? {
       label: 'Variables',
       icon: 'i-heroicons-variable',
@@ -99,47 +118,21 @@ const links = computed(() => filter(
     x => x
 ))
 
-const chapter = find(chapters, c => c.id === chapterId)
-
-const title = ref(chapter.title)
-const canBuyerEdit = ref(chapter.canBuyerEdit ? 'Yes' : 'No')
-const canBuyerEditOptions = ['Yes', 'No']
-
-const chapterType = ref(chapter.pageType)
-const chapterTypes = [
-  {
-    label: 'General Chapter',
-    value: 'general',
-  }, {
-    label: 'Follow-up Chapter',
-    value: 'follow-up',
-  }, {
-    label: 'Guide',
-    value: 'guide',
-  }, {
-    label: 'Discussion Doc',
-    value: 'discussion',
-  }, {
-    label: 'Business Case',
-    value: 'business-case',
-  }, {
-    label: 'Notes',
-    value: 'notes',
-  },
-]
+const variables = ref(clone(swaypage.templateCustomVariables))
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.updateChapter({
-    swaypageId: swaypageId,
-    chapterId: chapter.id,
-    chapter: {
-      title,
-      pageType: chapterType,
-      canBuyerEdit: canBuyerEdit.value === 'Yes',
-    },
+  await swaypageStore.saveSwaypageSettings({
+    swaypageId: swaypage.id,
+    templateCustomVariables: variables,
   })
 })
 
-const needsMoreInput = computed(() => !title.value 
-  || !chapterType.value || !canBuyerEdit.value)
+const needsMoreInput = computed(() => some(variables.value, v => !v))
 </script>
+
+<style lang="postcss" scoped>
+.variable-grid {
+  @apply grid max-w-[600px] gap-4 items-center;
+  grid-template-columns: auto 1fr auto;
+}
+</style>

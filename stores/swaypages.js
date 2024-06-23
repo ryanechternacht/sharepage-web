@@ -102,7 +102,8 @@ export const useSwaypagesStore = defineStore('swaypages', {
     async saveSwaypageSettings({
       swaypageId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing, qualificationDate, 
-      evaluationDate, decisionDate, status, isPublic, roomType, priority
+      evaluationDate, decisionDate, status, isPublic, roomType, priority,
+      templateCustomVariables
     }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
@@ -124,24 +125,26 @@ export const useSwaypagesStore = defineStore('swaypages', {
             isPublic,
             roomType,
             priority,
+            templateCustomVariables,
           } 
         }
       )
 
-      const b = this.buyerspheres[swaypageId].content
-      b.currentStage = data.value.currentStage
-      b.buyer = data.value.buyer
-      b.subname = data.value.subname
-      b.buyerLogo = data.value.buyerLogo
-      b.showPricing = data.value.showPricing
-      b.qualificationDate = data.value.qualificationDate
-      b.evaluationDate = data.value.evaluationDate
-      b.decisionDate = data.value.decisionDate
-      b.dealAmount = data.value.dealAmount
-      b.crmOpportunityId = data.value.crmOpportunityId
-      b.status = data.value.status
-      b.isPublic = data.value.isPublic
-      b.priority = data.value.priority
+      const s = this.buyerspheres[swaypageId].content
+      s.currentStage = data.value.currentStage
+      s.buyer = data.value.buyer
+      s.subname = data.value.subname
+      s.buyerLogo = data.value.buyerLogo
+      s.showPricing = data.value.showPricing
+      s.qualificationDate = data.value.qualificationDate
+      s.evaluationDate = data.value.evaluationDate
+      s.decisionDate = data.value.decisionDate
+      s.dealAmount = data.value.dealAmount
+      s.crmOpportunityId = data.value.crmOpportunityId
+      s.status = data.value.status
+      s.isPublic = data.value.isPublic
+      s.priority = data.value.priority
+      s.templateCustomVariables = data.value.templateCustomVariables
     },
     async updateBuyerInput({ swaypageId, featuresAnswer, successCriteriaAnswer,
       objectivesAnswer, constraintsAnswer, pricingTierId, status }) {

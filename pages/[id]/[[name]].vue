@@ -133,7 +133,7 @@ import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import CreateChapterModal from '@/components/Modals/CreateChapterModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
-const { debounce, filter, findIndex, map, orderBy } = lodash_pkg;
+const { concat, debounce, filter, findIndex, map, orderBy } = lodash_pkg;
 
 // We shouldn't need to re-render this component on navigation, but 
 // for some reason, `pages` isn't getting updates from the store
@@ -230,7 +230,8 @@ watch(activePages, () => {
   debouncedPageReorder()
 })
 
-const templateItems = [
+const templateItems = computed(() => 
+  concat([
   {
     name: 'Account Name',
     key: 'account-name',
@@ -250,28 +251,10 @@ const templateItems = [
   {
     name: 'Domain',
     key: 'domain',
-  },
-  {
-    name: 'Field 1',
-    key: 'field-1',
-  },
-  {
-    name: 'Field 2',
-    key: 'field-2',
-  },
-  {
-    name: 'Field 3',
-    key: 'field-3',
-  },
-  {
-    name: 'Field 4',
-    key: 'field-4',
-  },
-  {
-    name: 'Field 5',
-    key: 'field-5',
-  },
-]
+  }], map(swaypage.templateCustomVariables, (variable, index) => ({
+    name: variable,
+    key: `field-${index + 1}`
+  }))))
 
 const modal = useModal()
 
