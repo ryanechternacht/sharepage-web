@@ -201,7 +201,6 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-import CreateChapterModal from '@/components/Modals/CreateChapterModal'
 import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
 
 useEmbedly()

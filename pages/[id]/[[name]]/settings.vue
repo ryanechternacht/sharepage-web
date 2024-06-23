@@ -15,8 +15,7 @@
       
       <div class="flex flex-col gap-4 max-w-[600px]">
         <UFormGroup label="Name" required>
-          <UInput
-            v-model="buyer"
+          <UInput v-model="buyer"
             placeholder="Account Name" />
         </UFormGroup>
         
@@ -48,27 +47,22 @@
 
         <UFormGroup v-if="swaypage.roomType === 'deal-room'" 
           label="Context">
-          <UInput
-            v-model="subname"
-            placeholder="Sales Divison, Team, etc" 
-            class="w-full" />
+          <UInput v-model="subname"
+            placeholder="Sales Divison, Team, etc" />
         </UFormGroup>
 
         <UFormGroup label="Priority">
-          <USelect
-            v-model="priority"
+          <USelect v-model="priority"
             :options="priorityOptions" />
         </UFormGroup>
 
         <UFormGroup label="Status">
-          <USelect
-            v-model="status"
+          <USelect v-model="status"
             :options="statusOptions" />
         </UFormGroup>
 
         <UFormGroup label="Visibility">
-          <USelect
-            v-model="isPublic"
+          <USelect v-model="isPublic"
             :options="visibilityOptions" />
         </UFormGroup>
       </div>

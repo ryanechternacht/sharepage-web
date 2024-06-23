@@ -40,7 +40,6 @@
           <UInput
             :modelValue="variable"
             placeholder="Custom Variable Label"
-            class="w-full"
             @update:modelValue="v => variables[index] = v" />
           <div>
             <UButton v-if="index === variables.length - 1"

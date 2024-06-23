@@ -15,25 +15,19 @@
 
       <div class="flex flex-col gap-4 max-w-[600px]">
         <UFormGroup label="Chapter Title" required>
-          <UInput
-            v-model="title"
-            placeholder="Chapter Title" 
-            class="w-full" />
+          <UInput v-model="title"
+            placeholder="Chapter Title" />
         </UFormGroup>
 
         <UFormGroup label="Chapter Type" required>
-          <USelect
-            v-model="chapterType"
+          <USelect v-model="chapterType"
             placeholder="Chapter Type" 
-            :options="chapterTypes"
-            class="w-full" />
+            :options="chapterTypes" />
         </UFormGroup>
 
         <UFormGroup label="Can Buyer Edit" required>
-          <USelect
-            v-model="canBuyerEdit"
-            :options="canBuyerEditOptions"
-            class="w-full" />
+          <USelect v-model="canBuyerEdit"
+            :options="canBuyerEditOptions" />
         </UFormGroup>
       </div>
 

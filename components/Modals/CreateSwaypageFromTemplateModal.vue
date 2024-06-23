@@ -5,22 +5,21 @@
         <h2 class="mx-auto">
           Create Swaypage from this Template
         </h2>
-        <div>
-          <div class="text-sm text-gray-500 mb-1">Name *</div>
-          <UInput
-            v-model="buyer"
-            placeholder="Account Name" 
-            class="w-full" />
-        </div>
-        <div>
-          <div class="text-sm text-gray-500 mb-1">Logo *</div>
+        <UFormGroup label="Name" required>
+          <UInput v-model="buyer"
+            placeholder="Account Name" />
+        </UFormGroup>
+
+        <UFormGroup label="Logo"
+          required
+          help="Paste a link or type to search Clearbit for logos">
           <USelectMenu
             v-model="clearbitLogo"
             :loading="clearbitLoading"
             :searchable="lookupOnClearbit"
-            by="domain"
+            by="logo"
             placeholder="Search for a company"
-            option-attribute="domain"
+            option-attribute="logo"
             creatable>
             <template #option="{ option: { name, logo, domain } }">
               <div class="flex flex-row gap-2 items-center p-2">
@@ -30,47 +29,54 @@
               </div>
             </template>
             <template #option-create="{ option }">
-              <span class="flex-shrink-0">Url Entered:</span>
+              <span class="flex-shrink-0">Use Url:</span>
               <Logo class="max-h-[1.25rem] h-full w-full max-w-[1.25rem] flex-shrink-0" :src="option.logo" />
-              <span class="flex-grow block truncate text-gray-400">{{ option.logo }}</span>
+              <span class="flex-grow block truncate text-gray-400 min-w-[8rem]">{{ option.logo }}</span>
             </template>
           </USelectMenu>
-        </div>
-        <div>
-          <div class="text-sm text-gray-500 mb-1">Context</div>
-          <UInput
-            v-model="subname"
+        </UFormGroup>
+
+        <UFormGroup label="Context">
+          <UInput v-model="subname"
             placeholder="Sales Divison, Team, etc" 
             class="w-full" />
-        </div>
-        <div>
-          <h3 class="mb-2">Template Data</h3>
-          <div class="text-sm text-gray-500 mb-1">Account Name</div>
-          <UInput
-            v-model="accountName"
-            placeholder="Account Name" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">First Name</div>
-          <UInput
-            v-model="firstName"
-            placeholder="First Name" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Last Name</div>
-          <UInput
-            v-model="lastName"
-            placeholder="Last Name" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Email</div>
-          <UInput
-            v-model="email"
-            placeholder="Email" 
-            class="mb-2" />
-            <div class="text-sm text-gray-500 mb-1">Domain</div>
-          <UInput
-            v-model="domain"
-            placeholder="Domain" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Field 1</div>
+        </UFormGroup>
+
+        <h3>Template Data</h3>
+        
+        <UFormGroup label="Account Name">
+          <UInput v-model="accountName"
+            placeholder="Account Name" />
+        </UFormGroup>
+        
+        <UFormGroup label="First Name">
+          <UInput v-model="firstName"
+            placeholder="First Name" />
+        </UFormGroup>
+
+        <UFormGroup label="Last Name">
+          <UInput v-model="lastName"
+            placeholder="Last Name" />
+        </UFormGroup>
+
+        <UFormGroup label="Email">
+          <UInput v-model="email"
+            placeholder="Email" />
+        </UFormGroup>
+
+        <UFormGroup label="Domain">
+          <UInput v-model="domain"
+            placeholder="Domain" />
+        </UFormGroup>
+
+        <UFormGroup v-for="(variable, index) in variables"
+          :label="template.templateCustomVariables[index]">
+          <UInput :modelValue="variable"
+            :placeholder="template.templateCustomVariables[index]"
+            @update:modelValue="v => variables[index] = v" />
+        </UFormGroup>
+
+          <!-- <div class="text-sm text-gray-500 mb-1">Field 1</div>
           <UInput
             v-model="field1"
             placeholder="Field 1" 
@@ -94,8 +100,7 @@
           <UInput
             v-model="field5"
             placeholder="Field 5" 
-            class="mb-2" />
-        </div>
+            class="mb-2" /> -->
         <SubmitButton 
           icon="i-heroicons-plus"
           block
@@ -106,6 +111,7 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
+          {{ error }}
       </div>
     </UCard>
   </UModal>
@@ -113,6 +119,9 @@
 
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
+import { storeToRefs } from 'pinia'
+import lodash_pkg from 'lodash';
+const { forEach, map } = lodash_pkg;
 
 const props = defineProps({
   templateId: { type: Number, required: true },
@@ -120,6 +129,10 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 const store = useSwaypagesStore()
+
+const { getSwaypageByIdCached } = storeToRefs(store)
+
+const template = await getSwaypageByIdCached.value(props.templateId)
 
 const clearbitLoading = ref(false)
 const clearbitLogo = ref(null)
@@ -131,11 +144,8 @@ const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
 const domain = ref('')
-const field1 = ref('')
-const field2 = ref('')
-const field3 = ref('')
-const field4 = ref('')
-const field5 = ref('')
+
+const variables = ref(map(template.templateCustomVariables, v => ''))
 
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true
@@ -152,29 +162,22 @@ async function lookupOnClearbit (query) {
   }
 }
 
-const { submissionState, submitFn } = useSubmit(async () => {
+const { submissionState, submitFn, error } = useSubmit(async () => {
+  const templateData = { accountName, firstName, lastName, email, domain }
+  forEach(variables.value, (v, i) => {
+    templateData[`field${i+1}`] = v
+  })
+
   const swaypageId = await store.createSwaypageFromTemplate({
     buyer,
     subname,
     buyerLogo: clearbitLogo.value.logo,
     templateId: props.templateId,
-    templateData: {
-      accountName,
-      firstName,
-      lastName,
-      email,
-      domain,
-      field1,
-      field2,
-      field3,
-      field4,
-      field5,
-    }
+    templateData,
   })
   await store.invalidateAllSwaypageCache()
   emit('close', { swaypageId })
 })
 
 const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
-
 </script>
