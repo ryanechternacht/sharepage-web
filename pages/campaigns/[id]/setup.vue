@@ -93,7 +93,7 @@
               {{ campaign.leadsFile.headerRow[index] }}
             </div>
             <div class="flex flex-col gap-2 subtext">
-              <div v-for="r in row">{{ r }}</div>
+              <div class="truncate" v-for="r in row">{{ r }}</div>
             </div>
           </div>
         </div>
@@ -267,7 +267,7 @@ const {
     @apply contents;
     
     & > * {
-      @apply py-2 px-8 border-b border-gray-200;
+      @apply py-2 px-8 border-b border-gray-200 min-w-0;
     }
 
     &:last-child > * {
