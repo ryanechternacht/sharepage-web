@@ -8,6 +8,7 @@
         <input v-if="!readonly" 
           v-model="value"
           class="p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
+          :class="{'hidden': !loaded}"
           placeholder="Enter Link"
           @blur="valueChanged"
           @keypress.enter="valueChanged">
@@ -97,6 +98,11 @@ function rewriteLinkForGoogleDrivePreview (link) {
   // we will just replace with a static placeholder
   return link.replace(/\/view/, '/preview')
 }
+
+const loaded = ref(false)
+setTimeout(() => {
+  loaded.value = true
+}, 100)
 </script>
 
 <style lang="postcss" scoped>
