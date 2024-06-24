@@ -13,7 +13,7 @@
       <UHorizontalNavigation :links="links"
         class="mb-4" />
 
-      <h2 class="mb-2">Variable Labels</h2>
+      <h2 class="mb-2 px-[10px]">Variable Labels</h2>
       <div class="variable-grid">
         <div class="subtext">account-name</div>
         <div class="body">Account Name</div>
@@ -57,7 +57,7 @@
       </div>
 
       <SubmitButton
-        class="mt-8"
+        class="mt-8 ml-[10px]"
         icon="i-heroicons-pencil-square"
         :disabled="needsMoreInput"
         ready-text="Save"
@@ -131,7 +131,7 @@ const needsMoreInput = computed(() => some(variables.value, v => !v))
 
 <style lang="postcss" scoped>
 .variable-grid {
-  @apply grid max-w-[600px] gap-4 items-center;
+  @apply grid max-w-[600px] gap-4 items-center px-[10px];
   grid-template-columns: auto 1fr auto;
 }
 </style>

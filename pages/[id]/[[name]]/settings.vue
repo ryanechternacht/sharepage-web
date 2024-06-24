@@ -13,7 +13,7 @@
       <UHorizontalNavigation :links="links"
         class="mb-4" />
       
-      <div class="flex flex-col gap-4 max-w-[600px]">
+      <div class="flex flex-col gap-4 max-w-[600px] px-[10px]">
         <UFormGroup label="Name" required>
           <UInput v-model="buyer"
             placeholder="Account Name" />
@@ -68,7 +68,7 @@
       </div>
 
       <SubmitButton
-        class="mt-8"
+        class="mt-8 ml-[10px]"
         icon="i-heroicons-pencil-square"
         ready-text="Save"
         submitting-text="Savings"
