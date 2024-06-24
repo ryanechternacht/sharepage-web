@@ -52,7 +52,7 @@
         </UFormGroup>
 
         <UFormGroup label="Priority">
-          <USelect v-model="priority"
+          <USelect v-model.number="priority"
             :options="priorityOptions" />
         </UFormGroup>
 
