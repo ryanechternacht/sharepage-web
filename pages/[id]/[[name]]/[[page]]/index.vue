@@ -81,7 +81,7 @@
           ghost-class="ghost"
           :animation="200"
           :scroll="true"
-          class="flex flex-col gap-2"
+          class="flex flex-col gap-4"
           group="sections"
           handle=".drag-handle"
         >

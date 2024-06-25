@@ -2,7 +2,6 @@
   <EditorItemTemplate :readonly="readonly"
     :include-ai-prompt-template="includeAiPromptTemplate"
     :include-ai-prompt="includeAiPrompt"
-    class="mb-2"
     @delete:item="emit('delete:item')">
     <!-- For some reason, setting height on this element and height: 100% on the
       inner .ProseMirror element makes the prose mirror set it's height correctly,
@@ -87,6 +86,14 @@ defineExpose({ focus })
     display: inline;
   }
 
+  li {
+    @apply mb-2;
+
+    &:last-child {
+      @apply mb-0;
+    }
+  }
+
   ul {
     list-style: circle !important;
     list-style-position: inside !important;
@@ -106,7 +113,11 @@ defineExpose({ focus })
   }
 
   p, div, span, .body, b {
-    @apply text-gray-700 text-sm;
+    @apply text-gray-700 text-sm mb-4;
+
+    &:last-child {
+      @apply mb-0;
+    }
   }
 
   .ProseMirror {
