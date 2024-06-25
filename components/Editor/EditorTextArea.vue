@@ -2,6 +2,7 @@
   <EditorItemTemplate :readonly="readonly"
     :include-ai-prompt-template="includeAiPromptTemplate"
     :include-ai-prompt="includeAiPrompt"
+    class="mb-2"
     @delete:item="emit('delete:item')">
     <!-- For some reason, setting height on this element and height: 100% on the
       inner .ProseMirror element makes the prose mirror set it's height correctly,

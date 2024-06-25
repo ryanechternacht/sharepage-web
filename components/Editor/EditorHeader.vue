@@ -2,6 +2,7 @@
   <EditorItemTemplate :readonly="readonly"
     :include-ai-prompt-template="includeAiPromptTemplate"
     :include-ai-prompt="includeAiPrompt"
+    class="mb-4"
     @delete:item="emit('delete:item')">
     <template #content>
       <input v-model="value"
