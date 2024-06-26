@@ -3,7 +3,7 @@
     <h2 v-if="!page">
       There are no Chapters in this Swaypage. Create a New Chapter on the left
     </h2>
-    <div v-else>
+    <div class="min-w-0" v-else>
       <UAlert v-if="page.status === 'archived'"
         title="This Chapter is currently archived"
         color="orange"
@@ -104,13 +104,13 @@
               @delete:item="removeItem(index)" />
 
             <EditorAiPrompt v-if="section.type === 'ai-prompt'"
-              :modelValue="section"
+              :model-value="section"
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)"
-              @update:modelValue="s => updateItem(index, s)" />
+              @update:model-value="s => updateItem(index, s)" />
 
             <EditorAiPromptTemplate v-if="section.type === 'ai-prompt-template'"
               v-model="section.prompt"
@@ -121,13 +121,14 @@
               @delete:item="removeItem(index)" />
 
             <EditorAsset v-if="section.type === 'asset'"
-              v-model="section.link"
+              :model-value="section"
               :readonly="!canEdit"
               :include-ai-prompt-template="swaypage.roomType === 'template'"
               :include-ai-prompt="swaypage.roomType !== 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @click:item="assetClick(section.link)"
-              @delete:item="removeItem(index)" />
+              @delete:item="removeItem(index)"
+              @update:model-value="s => body.sections[index] = s" />
           </template>
         </VueDraggable>
         <div v-if="canEdit">

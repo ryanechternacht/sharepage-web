@@ -71,9 +71,9 @@
 
         <UFormGroup v-for="(variable, index) in variables"
           :label="template.templateCustomVariables[index]">
-          <UInput :modelValue="variable"
+          <UInput :model-value="variable"
             :placeholder="template.templateCustomVariables[index]"
-            @update:modelValue="v => variables[index] = v" />
+            @update:model-value="v => variables[index] = v" />
         </UFormGroup>
 
           <!-- <div class="text-sm text-gray-500 mb-1">Field 1</div>

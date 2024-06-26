@@ -5,13 +5,22 @@
     @delete:item="emit('delete:item')">
     <template #content>
       <div>
-        <input v-if="!readonly" 
-          v-model="value"
-          class="p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
-          :class="{'hidden': !loaded}"
-          placeholder="Enter Link"
-          @blur="valueChanged"
-          @keypress.enter="valueChanged">
+        <UFormGroup v-if="!readonly" label="Link">
+          <input
+            v-model="section.link"
+            class="p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full"
+            :class="{'hidden': !loaded}"
+            placeholder="Enter Link"
+            @blur="sectionUpdated"
+            @keypress.enter="sectionUpdated">
+        </UFormGroup>
+        <UFormGroup v-if="!readonly" label="Size">
+          <USelect v-model="section.size"
+            class="max-w-[10rem]"
+            placeholder="Image Size"
+            :options="sizes"
+            @update:model-value="sectionUpdated" />
+        </UFormGroup>
         <div v-for="link in fakeLinkArray"
           :key="link">
           <a v-if="isGoogleDocFile(link)"
@@ -34,10 +43,13 @@
                access to attach the handler -->
           <div v-else
             @click="clickHandler"
-            class="track-me">
+            class="track-me"
+            :class="{'max-w-[40%]': section.size === 'small',
+                     'max-w-[60%]': section.size === 'medium',
+                     'max-w-[80%]': section.size === 'large',}">
             <a
               :href="link" 
-              class="embedly-card mt-1 text-white"
+              class="embedly-card mt-1 truncate block"
               data-card-align="left"
               data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4"
               @click="emit('click:item')">
@@ -64,23 +76,38 @@ const props = defineProps({
   includeAiPrompt: { type: Boolean, default: false },
 })
 
+const sizes = [{
+  label: 'Original',
+  value: 'original',
+}, {
+  label: 'Small',
+  value: 'small',
+}, {
+  label: 'Medium',
+  value: 'medium',
+}, {
+  label: 'Large',
+  value: 'large',
+}]
+
 const emit = defineEmits(['update:modelValue', 'delete:item', 'click:item'])
 
-const value = ref(clone(props.modelValue))
+const section = ref(clone(props.modelValue))
+section.value.size ||= 'original'
 
 watch(() => props.modelValue, (newModelValue) => {
-  value.value = newModelValue
+  section.value = clone(newModelValue)
 })
 
-const { embedly } = useEmbedly()
+useEmbedly()
 
 // we use this as a poor man's way to ensure we create new elements
 // so that the embedly card algo will create new cards
-const fakeLinkArray = ref([value.value])
+const fakeLinkArray = ref([section.value.link])
 
-function valueChanged () {
-  emit('update:modelValue', value.value);
-  fakeLinkArray.value[0] = value.value
+function sectionUpdated () {
+  emit('update:modelValue', section.value);
+  fakeLinkArray.value[0] = section.value.link
 }
 
 function isGoogleDocFile (link) {

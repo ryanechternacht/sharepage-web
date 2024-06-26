@@ -38,9 +38,9 @@
         <template v-for="(variable, index) in variables">
           <div class="subtext">field-{{ index + 1 }}</div>
           <UInput
-            :modelValue="variable"
+            :model-value="variable"
             placeholder="Custom Variable Label"
-            @update:modelValue="v => variables[index] = v" />
+            @update:model-value="v => variables[index] = v" />
           <div>
             <UButton v-if="index === variables.length - 1"
               icon="i-heroicons-trash"
