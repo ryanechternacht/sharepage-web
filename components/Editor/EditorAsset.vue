@@ -16,7 +16,7 @@
         </UFormGroup>
         <UFormGroup v-if="!readonly" label="Size">
           <USelect v-model="section.size"
-            class="max-w-[10rem]"
+            class="max-w-[10rem] mb-2"
             placeholder="Image Size"
             :options="sizes"
             @update:model-value="sectionUpdated" />
@@ -35,8 +35,9 @@
           </a>
           <iframe v-else-if="isGoogleDriveFile(link)"
             :src="rewriteLinkForGoogleDrivePreview(link)"
-            width="640"
-            height="480"
+            :class="{'h-[240px] w-[320px]': section.size === 'small',
+                     'h-[360px] w-[480px]': section.size === 'medium',
+                     'h-[480px] w-[640px]': section.size === 'large',}"
             allow="autoplay" />
           <!-- TODO the click handlers below don't work since
                embedly sticks a new element in that we can't easily
@@ -44,12 +45,12 @@
           <div v-else
             @click="clickHandler"
             class="track-me"
-            :class="{'max-w-[40%]': section.size === 'small',
-                     'max-w-[60%]': section.size === 'medium',
-                     'max-w-[80%]': section.size === 'large',}">
+            :class="{'w-[40%]': section.size === 'small',
+                     'w-[60%]': section.size === 'medium',
+                     'w-[80%]': section.size === 'large',}">
             <a
               :href="link" 
-              class="embedly-card mt-1 truncate block"
+              class="embedly-card truncate block"
               data-card-align="left"
               data-card-key="f7f5eddea12f4012bcbc6c7668ec40e4"
               @click="emit('click:item')">
@@ -67,28 +68,29 @@ function clickHandler () {
 }
 
 import lodash_pkg from 'lodash';
-const { clone } = lodash_pkg;
+const { concat, clone } = lodash_pkg;
 
 const props = defineProps({ 
-  modelValue: { type: String },
+  modelValue: { type: Object },
   readonly: { type: Boolean, default: false },
   includeAiPromptTemplate: { type: Boolean, default: false },
   includeAiPrompt: { type: Boolean, default: false },
 })
 
-const sizes = [{
-  label: 'Original',
-  value: 'original',
-}, {
-  label: 'Small',
-  value: 'small',
-}, {
-  label: 'Medium',
-  value: 'medium',
-}, {
-  label: 'Large',
-  value: 'large',
-}]
+const sizes = computed(() => concat(
+  isGoogleDriveFile(section.value.link) ? [] : [{
+    label: 'Original',
+    value: 'original',
+  }], {
+    label: 'Small',
+    value: 'small',
+  }, {
+    label: 'Medium',
+    value: 'medium',
+  }, {
+    label: 'Large',
+    value: 'large',
+  }))
 
 const emit = defineEmits(['update:modelValue', 'delete:item', 'click:item'])
 

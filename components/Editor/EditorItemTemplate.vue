@@ -1,7 +1,6 @@
 <template>
   <div class="component p-1 w-full flex flex-row flex-start gap-2">
-    <div v-if="!readonly" class="min-w-[1rem] drag-handle mt-.5"
-      :class="{ 'show-menu': isDropdownOpen }">
+    <div v-if="!readonly" class="min-w-[1rem] drag-handle mt-.5">
       <UDropdown :items="menu"
         :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
         <UIcon name="i-heroicons-ellipsis-vertical" />
@@ -59,18 +58,12 @@ const menu = [
   }]
 ]
 
-const isDropdownOpen = ref(false)
-
 </script>
 
 <style lang="postcss" scoped>
 .drag-handle {
   &:deep() > * {
     @apply hidden;
-  }
-
-  &.show-menu :deep() > * {
-    @apply block;
   }
 
   &:has(+ .content:focus-within) :deep() > * {

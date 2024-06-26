@@ -113,7 +113,7 @@ defineExpose({ focus })
   }
 
   p, div, span, .body, b {
-    @apply text-gray-700 text-sm mb-4;
+    @apply text-gray-700 text-base mb-4;
 
     &:last-child {
       @apply mb-0;

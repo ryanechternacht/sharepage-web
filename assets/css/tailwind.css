@@ -21,13 +21,11 @@
 
   /* remove below */
   h3, .h3, .body-header {
-    @apply font-sans font-semibold text-gray-700;
-    font-size: .875rem; /* 14px */
+    @apply font-sans text-gray-700 text-base;
   }
 
   h4, .h4, .tag-header {
-    @apply font-sans font-medium text-gray-700;
-    font-size: .75rem; /* 12px */
+    @apply font-sans font-medium text-gray-700 text-xs;
   }
 
   svg {
