@@ -62,12 +62,10 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
-        <UButton v-if="canEdit" 
-          icon="i-heroicons-cog-6-tooth"
-          class="-ml-4"
-          variant="ghost"
-          color="gray"
-          :to="makeInternalSwaypageLink(swaypage, 'settings')" />
+        <UDropdown v-if="canEdit" :items="settingsMenu">
+          <UIcon name="i-heroicons-ellipsis-vertical"
+            class="-ml-4" />
+        </UDropdown>
       </div>
       <div class="page-area">
         <input v-if="canEdit"
@@ -318,12 +316,20 @@ router.beforeEach(async () => {
   }
 })
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink, makeSwaypageChapterSettingsLink } = useSwaypageLinks()
 if (process.client) {
   setTimeout(() => 
     history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
     100)
 }
+
+const settingsMenu = [[{
+  label: 'Thread Settings',
+  to: makeSwaypageChapterSettingsLink(swaypage, pageId),
+}, {
+  label: 'Swaypage Settings',
+  to: makeInternalSwaypageLink(swaypage, 'settings'),
+}]]
 
 const keys = map(page?.body.sections, s => s.key || 0)
 let nextKey = (max(keys) || 0) + 1

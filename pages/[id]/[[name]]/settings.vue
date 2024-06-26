@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="h-[2.375rem] flex flex-row items-center gap-6">
+    <div class="h-[2.375rem] flex flex-row items-center gap-2">
+      <UButton
+        icon="i-heroicons-arrow-left" 
+        variant="ghost"
+        color="gray"
+        :to="makeInternalSwaypageLink(swaypage)" />
       <h1>Settings</h1>
       <div class="flex-grow" />
       <!-- <div>active</div> -->

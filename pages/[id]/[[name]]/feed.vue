@@ -54,7 +54,6 @@
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { storeToRefs } from 'pinia'
-import EditSwaypageModal from '@/components/Modals/EditSwaypageModal'
 
 const modal = useModal()
 
@@ -81,21 +80,12 @@ function prettyFormatDate(date) {
   return dayjs(date).calendar()
 }
 
-const settingsMenu = [
-  [{
-    label: 'Edit Swaypage Settings',
-    click: () => openSwaypageSettingsModal()
-  }]
-]
+const { makeInternalSwaypageLink } = useSwaypageLinks()
 
-function openSwaypageSettingsModal () {
-  modal.open(EditSwaypageModal, {
-    swaypage,
-    async onClose () {
-      modal.close()
-    }
-  })
-}
+const settingsMenu = [[{
+  label: 'Swaypage Settings',
+  to: makeInternalSwaypageLink(swaypage, 'settings'),
+}]]
 </script>
 
 <style lang="postcss" scoped>
