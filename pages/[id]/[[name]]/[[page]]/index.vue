@@ -1,15 +1,15 @@
 <template>
   <div class="page-grid">
     <h2 v-if="!page">
-      There are no Chapters in this Swaypage. Create a New Chapter on the left
+      There are no Threads in this Swaypage. Create a New Thread on the left
     </h2>
     <div class="min-w-0" v-else>
       <UAlert v-if="page.status === 'archived'"
-        title="This Chapter is currently archived"
+        title="This Thread is currently archived"
         color="orange"
         variant="subtle"
         :actions="[{ 
-          label: 'Restore Chapter', 
+          label: 'Restore Thread', 
           click: restorePage,
           icon: 'i-heroicons-arrow-uturn-left',
           color: 'orange',

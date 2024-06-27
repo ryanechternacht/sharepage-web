@@ -198,7 +198,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     subname,
     buyerLogo: clearbitLogo.value.logo,
     isPublic: isPublic.value === 'public',
-    pageTitle: 'New Chapter',
+    pageTitle: 'New Thread',
     status,
   })
 })

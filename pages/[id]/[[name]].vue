@@ -52,7 +52,7 @@
           </div>
 
           <div>
-            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Chapters</div>
+            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
             <div class="flex flex-col -ml-6">
               <div v-if="isSeller" 
                 class="group/sidebar-item flex flex-row items-center">
@@ -94,7 +94,7 @@
                 class="ml-6 sidebar-item"
                 @click="createNewPage">
                 <UIcon name="i-heroicons-plus" class="text-gray-500" />
-                <div class="text-gray-500 body">New Chapter</div>
+                <div class="text-gray-500 body">New Thread</div>
               </div>
             </div>
           </div>

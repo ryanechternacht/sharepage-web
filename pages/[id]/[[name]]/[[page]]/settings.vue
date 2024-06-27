@@ -19,14 +19,14 @@
         class="mb-4" />
 
       <div class="flex flex-col gap-4 max-w-[600px] px-[10px]">
-        <UFormGroup label="Chapter Title" required>
+        <UFormGroup label="Thread Title" required>
           <UInput v-model="title"
-            placeholder="Chapter Title" />
+            placeholder="Thread Title" />
         </UFormGroup>
 
-        <UFormGroup label="Chapter Type" required>
+        <UFormGroup label="Thread Type" required>
           <USelect v-model="chapterType"
-            placeholder="Chapter Type" 
+            placeholder="Thread Type" 
             :options="chapterTypes" />
         </UFormGroup>
 
@@ -107,10 +107,10 @@ const canBuyerEditOptions = ['Yes', 'No']
 const chapterType = ref(chapter.pageType)
 const chapterTypes = [
   {
-    label: 'General Chapter',
+    label: 'General Thread',
     value: 'general',
   }, {
-    label: 'Follow-up Chapter',
+    label: 'Follow-up Thread',
     value: 'follow-up',
   }, {
     label: 'Guide',

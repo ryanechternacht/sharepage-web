@@ -4,17 +4,17 @@
       <div class="flex flex-col gap-4">
         <h2 class="mx-auto">New Chapter</h2>
         <div>
-          <div class="text-sm text-gray-500 mb-1">Chapter Title *</div>
+          <div class="text-sm text-gray-500 mb-1">Thread Title *</div>
           <UInput
             v-model="title"
-            placeholder="Chapter Title" 
+            placeholder="Thread Title" 
             class="w-full" />
         </div>
         <div>
-          <div class="text-sm text-gray-500 mb-1">Chapter Type *</div>
+          <div class="text-sm text-gray-500 mb-1">Thread Type *</div>
           <USelect
             v-model="chapterType"
-            placeholder="Chapter Type" 
+            placeholder="Thread Type" 
             :options="chapterTypes"
             class="w-full" />
         </div>
@@ -60,10 +60,10 @@ const canBuyerEditOptions = ['Yes', 'No']
 const chapterType = ref(null)
 const chapterTypes = [
   {
-    label: 'General Chapter',
+    label: 'General Thread',
     value: 'general',
   }, {
-    label: 'Follow-up Chapter',
+    label: 'Follow-up Thread',
     value: 'follow-up',
   }, {
     label: 'Guide',
