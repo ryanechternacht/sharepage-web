@@ -19,6 +19,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
   // TODO should we just pull this from config?
   const apiUrlBase = url.protocol + '//' + parts.join('.')
+  
+  // save for later (campaign links need this)
+  nuxtApp.apiBaseUrl = apiUrlBase
+  
   const apiUrl = (path) => new URL(path, apiUrlBase).toString()
 
   nuxtApp.apiFetch = async (path, options) => {

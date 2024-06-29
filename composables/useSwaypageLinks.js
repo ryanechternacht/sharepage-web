@@ -34,9 +34,16 @@ function makeExternalSwaypageLink (requestUrl, shortcode, companyName) {
   return new URL(path, urlBase).href
 }
 
+// apiUrlBase is found in useNuxtApp()
+function makeCampaignDownloadLink (apiUrlBase, campaign) {
+  const path = `/v0.1/campaign/${campaign.uuid}/published-csv`
+  return new URL(path, apiUrlBase).toString()
+}
+
 export const useSwaypageLinks = () => ({ 
   makeInternalSwaypageLink,
   makeExternalSwaypageLink,
   makePersonalizedExternalSwaypageLink,
   makeSwaypageChapterSettingsLink,
+  makeCampaignDownloadLink,
 })

@@ -1,6 +1,14 @@
 <template>
   <div>
-    <TopNav active-link="campaigns" />
+    <TopNav active-link="campaigns">
+      <template #action-button>
+        <UButton
+          icon="i-heroicons-arrow-down-on-square-stack"
+          :to="downloadListUrl">
+          Download Campaign Links
+        </UButton>
+      </template>
+    </TopNav>
 
     <div class="px-10 py-5">
       <div class="mb-2 flex flex-row justify-between items-center">
@@ -63,12 +71,17 @@ if (!campaign.isPublished) {
   await navigateTo(`/campaigns/${campaign.uuid}/setup`, { replace: true })
 }
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSwaypageLink, makeCampaignDownloadLink } = useSwaypageLinks()
 
 const dayjs = useDayjs()
 function prettyFormatDate(date) {
   return dayjs(date).calendar()
 }
+
+const downloadListUrl = computed(() => {
+  const { apiBaseUrl } = useNuxtApp()
+  return makeCampaignDownloadLink(apiBaseUrl, campaign)
+})
 </script>
 
 <style lang="postcss" scoped>
