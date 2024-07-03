@@ -12,7 +12,23 @@
       <div class="text-base font-bold">AI Prompt:</div>
       <editor-content
         :editor="editor"
-        class="editor p-0 mb-2 border-t-0 border-x-0 border-b-1 border-gray-black rounded-none w-full" />
+        class="editor p-0 mb-2 border-b border-gray-black rounded-none w-full" />
+
+        <SubmitButton
+          class="text-center"
+          ready-text="Preview Prompt"
+          submitting-text="Generating!"
+          submitted-text="See Text Below"
+          error-text="Please try again"
+          :submission-state="submissionState"
+          variant="outline"
+          @click="submitFn" />
+      
+      <div v-if="generatedText" class="mt-2">
+        <div class="text-base font-bold">Sample Output</div>
+        <div v-html="generatedText"
+          class="utextarea-styles" />
+      </div>
     </template>
   </EditorItemTemplate>
 </template>
@@ -75,6 +91,18 @@ function focus () {
 }
 
 defineExpose({ focus })
+
+const generatedText = ref(null)
+const { submissionState, submitFn } = useSubmit(async () => {
+  const { apiFetch } = useNuxtApp()
+  const { data } = await apiFetch('/v0.1/templates/generate-text', { 
+    method: 'POST',
+    body: {
+      prompt: editor.value.getHTML()
+    }
+  })
+  generatedText.value = data.value.text
+})
 </script>
 
 <style lang="postcss" scoped>
@@ -112,5 +140,10 @@ defineExpose({ focus })
   .ProseMirror {
     @apply h-full;
   }
+}
+
+.utextarea-styles {
+  @apply text-sm text-gray-900 py-[.375rem] px-[.625rem] bg-gray-50 
+    ring-1 ring-inset ring-gray-300 shadow-sm opacity-[.75] rounded-md;
 }
 </style>

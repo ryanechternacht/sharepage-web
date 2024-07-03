@@ -12,7 +12,7 @@
       <div class="text-base font-bold">AI Prompt:</div>
       <editor-content
         :editor="aiEditor"
-        class="editor p-0 mb-2 border-t-0 border-x-0 border-b border-gray-200 rounded-none w-full" />
+        class="editor p-0 mb-2 border-b border-gray-200 rounded-none w-full" />
 
       <SubmitButton
         class="text-center"
@@ -23,10 +23,10 @@
         :submission-state="submissionState"
         @click="submitFn" />
       
-      <div class="mt-2">Output:</div>
+      <div class="mt-2 body">Output:</div>
       <editor-content
         :editor="outputEditor"
-        class="editor p-0 mb-2 border-t-0 border-x-0 border-b border-gray-200 rounded-none w-full" />
+        class="editor p-0 mb-2 border-b border-gray-200 rounded-none w-full" />
 
       <UButton @click="commit">Save</UButton>
     </template>
