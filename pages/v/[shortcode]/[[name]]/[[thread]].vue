@@ -15,7 +15,7 @@
 
       <div class="page-area">
         <h1 class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
-        <template v-for="section in page.body.sections"
+        <template v-for="section in sections"
           :key="section.key">
           <EditorTextArea v-if="section.type === 'text'"
             v-model="section.text"
@@ -25,10 +25,7 @@
             v-model="section.text"
             readonly />
 
-          <EditorAiPrompt v-if="section.type === 'ai-prompt'"
-            :model-value="section"
-            readonly />
-
+          <!-- TODO this should be removable -->
           <EditorAiPromptTemplate v-if="section.type === 'ai-prompt-template'"
             v-model="section.prompt"
             readonly />
@@ -51,7 +48,7 @@
               <div v-for="l in links"
                 class="flex flex-row-reverse items-center">
                 <a class="rightbar-link"
-                  :href="l.linkUrl"
+                  :href="mustache.render(l.linkUrl, pageData)"
                   target="_blank"
                   @click="trackLinkClick(l.title)">
                   <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
@@ -91,24 +88,40 @@ const pageData = virtualSwaypage.pageData
 const template = virtualSwaypage.template
 const owner = virtualSwaypage.owner
 
-// TODO we'll need to render pageData into these first
-const [pages, links] = await Promise.all([
+const [threads, links] = await Promise.all([
   getSwaypageChaptersByIdCached.value(template.id),
   getSwaypageLinksByIdCached.value(template.id),
 ])
 
-let pageId = parseInt(route.params.page)
-let page
-// when we get here from a shareable link, the page id isn't in the url,
-// so we'll pull it from the page we're sending them to
-if (pageId) {
-  page = find(pages, p => p.id === pageId)
+let threadId = parseInt(route.params.thread)
+let thread
+// when we get here from a shareable link, the thread id isn't in the url,
+// so we'll pull it from the thread we're sending them to
+if (threadId) {
+  thread = find(threads, t => t.id === threadId)
 } else {
-  page = first(filter(pages, p => p.status === 'active'))
-  pageId = page.id
+  thread = first(filter(threads, t => t.status === 'active'))
+  threadId = thread.id
 }
 
-const title = mustache.render(page.title, pageData)
+const sections = map(thread.body.sections, s => {
+  if (s.type === 'header' || s.type === 'text') {
+    s.text = mustache.render(s.text, pageData)
+  }
+
+  if (s.type === 'asset') {
+    s.link = mustache.render(s.link, pageData)
+  }
+
+  if (s.type === 'ai-prompt-template') {
+    s.type = 'text'
+    s.text = pageData.ai[s.key]
+  }
+
+  return s
+})
+
+const title = mustache.render(thread.title, pageData)
 
 const buyerSessionStore = useBuyerSessionStore()
 function trackLinkClick(linkText) {
@@ -116,7 +129,7 @@ function trackLinkClick(linkText) {
     eventType: "click-link",
     eventData: { linkText },
     swaypageId,
-    page: pageId,
+    page: threadId,
    })
 }
 </script>

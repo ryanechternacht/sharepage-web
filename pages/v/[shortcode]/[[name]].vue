@@ -12,7 +12,7 @@
         <div class="sticky top-8 min-h-[calc(100vh-6.5rem)] flex flex-col">
           <div class="header-grid">
             <Logo :src="logo" class="icon-header" />
-            <h2>{{ pageData.accountName }}</h2>
+            <h2>{{ pageData['account-name'] }}</h2>
           </div>
 
           <div>
