@@ -82,7 +82,7 @@
                         name="i-heroicons-ellipsis-vertical" />
                     </UDropdown>
                   </div>
-                  <NuxtLink 
+                  <NuxtLink
                     :href="makeInternalSwaypageLink(swaypage, p.id)"
                     class="sidebar-item">
                     <SwaypagePageTypeIcon :page-type="p.pageType" />
@@ -331,6 +331,7 @@ async function removePage(page, status) {
     }
   }
 }
+
 .show-menu :deep() > * {
   @apply block;
 }

@@ -319,6 +319,10 @@ router.beforeEach(async () => {
 const { makeInternalSwaypageLink, makeSwaypageChapterSettingsLink } = useSwaypageLinks()
 if (process.client) {
   setTimeout(() => 
+    // TODO because we don't actually update routing, the link doesn't get
+    // router-active-link set on it in the right sidebar
+    // I think we could fix this by just manually setting it on that link
+    // if no route param is set
     history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
     100)
 }
@@ -573,16 +577,15 @@ function trackLinkClick(linkText) {
 </script>
 
 <style lang="postcss" scoped>
-.page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
-  /* this is based on the current top nav height */
-  min-height: calc(100vh - 5rem);
-}
-
-/* should be grid-cols-subgrid, but we need a newer tailwind */
 .page-grid {
   @apply grid;
   grid-template-columns: 1fr minmax(150px, 220px);
+}
+
+.page-area {
+  @apply border border-gray-200 rounded-md px-2 py-1;
+  /* this is based on the current top nav height + header above */
+  min-height: calc(100vh - 10.375rem);
 }
 
 .align-content-left {
