@@ -27,7 +27,7 @@
         <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
         <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
-          :to="makeInternalSwaypageLink(swaypage)">
+          :to="makeVirtualSwaypageLink(swaypage.shortcode, swaypage.pageData.accountName)">
           <div class="cell body">
             <Logo :src="makeClearbitLogo(swaypage.pageData.domain)" class="icon-menu" />
             {{ swaypage.pageData.accountName }}
@@ -63,11 +63,13 @@ const [campaign, { data: swaypages }] = await Promise.all([
   await apiFetch(`/v0.1/campaign/${campaignId}/swaypages`)
 ])
 
+console.log(swaypages)
+
 if (!campaign.isPublished) {
   await navigateTo(`/campaigns/${campaign.uuid}/setup`, { replace: true })
 }
 
-const { makeInternalSwaypageLink, makeCampaignDownloadLink } = useSwaypageLinks()
+const { makeVirtualSwaypageLink, makeCampaignDownloadLink } = useSwaypageLinks()
 
 const dayjs = useDayjs()
 function prettyFormatDate(date) {

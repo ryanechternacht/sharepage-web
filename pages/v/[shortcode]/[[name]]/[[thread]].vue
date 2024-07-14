@@ -115,7 +115,7 @@ const sections = map(thread.body.sections, s => {
 
   if (s.type === 'ai-prompt-template') {
     s.type = 'text'
-    s.text = pageData.ai[s.key]
+    s.text = pageData.ai[threadId][s.key]
   }
 
   return s

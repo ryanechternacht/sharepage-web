@@ -41,7 +41,9 @@ function makeCampaignDownloadLink (apiUrlBase, campaign) {
 }
 
 function makeVirtualSwaypageLink (shortcode, name, page) {
-  return `/v/${shortcode}/${name}/${page}`
+  return page
+    ? `/v/${shortcode}/${name}/${page}`
+    : `/v/${shortcode}/${name}`
 }
 
 export const useSwaypageLinks = () => ({ 
