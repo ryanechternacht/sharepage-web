@@ -29,16 +29,16 @@
         <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
           :to="makeInternalSwaypageLink(swaypage)">
           <div class="cell body">
-            <Logo :src="makeClearbitLogo(swaypage.pageData.domain)" class="icon-menu" />
-            {{ swaypage.pageData.accountName }}
+            <Logo :src="swaypage.buyerLogo" class="icon-menu" />
+            {{ swaypage.buyer }}
           </div>
           <div class="cell">
-            <!-- <SwaypagePriorityTag :priority="swaypage.priority" /> -->
+            <SwaypagePriorityTag :priority="swaypage.priority" />
           </div>
           <div class="cell">
-            <!-- <SwaypageStatusTag
+            <SwaypageStatusTag
               :last-activity-date="swaypage.mostRecentBuyerActivity"
-              :isOnHold="swaypage.status === 'on-hold'" /> -->
+              :isOnHold="swaypage.status === 'on-hold'" />
           </div>
           <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
         </NuxtLink>
@@ -60,7 +60,11 @@ const { getCampaignByIdCached } = storeToRefs(campaignsStore)
 const { apiFetch } = useNuxtApp()
 const [campaign, { data: swaypages }] = await Promise.all([
   getCampaignByIdCached.value(campaignId),
-  await apiFetch(`/v0.1/campaign/${campaignId}/swaypages`)
+  await apiFetch('/v0.1/buyerspheres', { 
+    query: {
+      'campaign-uuid': campaignId
+    }
+  }),
 ])
 
 if (!campaign.isPublished) {
@@ -78,8 +82,6 @@ const downloadListUrl = computed(() => {
   const { apiBaseUrl } = useNuxtApp()
   return makeCampaignDownloadLink(apiBaseUrl, campaign)
 })
-
-const { makeClearbitLogo } = useLogo();
 </script>
 
 <style lang="postcss" scoped>

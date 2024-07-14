@@ -65,7 +65,8 @@ const [pages] = await Promise.all([
 
 const { makeVirtualSwaypageLink } = useSwaypageLinks()
 
-const logo = computed(() => `https://logo.clearbit.com/${pageData.domain}`)
+const { makeClearbitLogo } = useLogo();
+const logo = computed(() => makeClearbitLogo(pageData.domain))
 
 const linkToPage = ref(useRequestURL().href)
 // get the cleaned up url, once it's cleaned up
