@@ -75,7 +75,7 @@
                 <div v-for="p in activePages"
                   class="group/sidebar-item flex flex-row items-center">
                   <div class="w-[1.5rem] flex-shrink-0">
-                    <UDropdown v-if="isSeller"
+                    <UDropdown v-if="canSellerEdit"
                       :items="makePageMenu(p)">
                       <UIcon
                         class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
@@ -90,7 +90,7 @@
                   </NuxtLink>
                 </div>
               </VueDraggable>
-              <div v-if="isSeller" 
+              <div v-if="canSellerEdit" 
                 class="ml-6 sidebar-item"
                 @click="createNewPage">
                 <UIcon name="i-heroicons-plus" class="text-gray-500" />
@@ -182,6 +182,8 @@ const [swaypage, pages, isSeller, organization] = await Promise.all([
 ])
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
+
+const canSellerEdit = isSeller && !swaypage.isLocked
 
 const linkToPage = ref(useRequestURL().href)
 // get the cleaned up url, once it's cleaned up

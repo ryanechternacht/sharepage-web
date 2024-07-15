@@ -8,10 +8,22 @@
         title="This Thread is currently archived"
         color="orange"
         variant="subtle"
-        :actions="[{ 
-          label: 'Restore Thread', 
+        :actions="[{
+          label: 'Restore Thread',
           click: restorePage,
           icon: 'i-heroicons-arrow-uturn-left',
+          color: 'orange',
+          variant: 'solid'
+        }]" />
+      <UAlert v-else-if="swaypage.isLocked"
+        title="This Template is currently locked."
+        description="This Template is currently locked because it is used by a campaign. You can make a copy of it if you want to edit it before using it in a new campaign."
+        color="orange"
+        variant="subtle"
+        :actions="[{ 
+          label: 'Make a Copy',
+          click: restorePage,
+          icon: 'i-heroicons-document-duplicate',
           color: 'orange',
           variant: 'solid' 
         }]" />
@@ -133,8 +145,7 @@
           <UDropdown :items="newBlocksMenu"
             :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
             <div class="align-content-left mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
-              <UIcon v-if="isSeller" 
-                class="text-gray-500 icon-menu" 
+              <UIcon class="text-gray-500 icon-menu" 
                 name="i-heroicons-plus" />
               <div class="subtext">New</div>
             </div>
@@ -161,7 +172,7 @@
               <div v-for="l in links"
                 class="group/link-item flex flex-row-reverse items-center">
                 <div class="w-[1.5rem] flex-shrink-0 text-right">
-                  <UDropdown v-if="isSeller" 
+                  <UDropdown v-if="canSellerEdit" 
                     :items="makeLinkMenu(l)">
                     <UIcon
                       class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
@@ -177,7 +188,7 @@
                 </a>
               </div>
               
-              <div v-if="isSeller"
+              <div v-if="canSellerEdit"
                 class="rightbar-link"
                 @click="createNewLink">
                 <UIcon class="icon-menu text-gray-500 mr-6" 
@@ -294,7 +305,8 @@ if (pageId) {
 
 buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 
-const canEdit = isSeller || page.canBuyerEdit
+const canSellerEdit = isSeller && !swaypage.isLocked
+const canEdit = canSellerEdit || page.canBuyerEdit
 
 const metaTitle = `Discover ${swaypage.buyer}`
 const metaDescription = `Learn more about what ${swaypage.buyer} has to offer`
