@@ -21,8 +21,14 @@
         color="orange"
         variant="subtle"
         :actions="[{ 
-          label: 'Make a Copy',
-          click: restorePage,
+          label: 'Clone as a Swaypage',
+          click: () => cloneSwaypage('deal-room'),
+          icon: 'i-heroicons-document-duplicate',
+          color: 'orange',
+          variant: 'solid'
+        }, { 
+          label: 'Clone as a Template',
+          click: () => cloneSwaypage('template'),
           icon: 'i-heroicons-document-duplicate',
           color: 'orange',
           variant: 'solid' 
@@ -74,7 +80,7 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
-        <UDropdown v-if="canEdit" :items="settingsMenu">
+        <UDropdown v-if="isSeller" :items="settingsMenu">
           <UIcon name="i-heroicons-ellipsis-vertical"
             class="-ml-4" />
         </UDropdown>
@@ -345,6 +351,12 @@ const settingsMenu = [[{
 }, {
   label: 'Swaypage Settings',
   to: makeInternalSwaypageLink(swaypage, 'settings'),
+}], [{
+  label: 'Clone as Swaypage',
+  click: () => cloneSwaypage('deal-room')
+}, {
+  label: 'Clone as Template',
+  click: () => cloneSwaypage('template')
 }]]
 
 const keys = map(page?.body.sections, s => s.key || 0)
@@ -585,6 +597,11 @@ function trackLinkClick(linkText) {
     swaypageId,
     page: pageId,
    })
+}
+
+async function cloneSwaypage(roomType) {
+  const newId = await swaypageStore.cloneSwaypage({ roomType, swaypageId: swaypage.id })
+  await navigateTo(`/${newId}`)
 }
 </script>
 

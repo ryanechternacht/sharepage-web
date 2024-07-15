@@ -86,6 +86,14 @@ export const useSwaypagesStore = defineStore('swaypages', {
       )
       return data.value.id
     },
+    async cloneSwaypage({ swaypageId, roomType }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } =  await apiFetch(`/v0.1/swaypage/${swaypageId}/clone`, {
+        method: 'POST', 
+        body: { roomType }
+      })
+      return data.value.id
+    },
     async createSwaypageFromTemplate({ 
       templateId, buyer, subname, buyerLogo, templateData
     }) {
