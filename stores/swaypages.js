@@ -433,11 +433,8 @@ export const useSwaypagesStore = defineStore('swaypages', {
       {
         const { data } = await apiFetch(`/v0.1/virtual-swaypage/${shortcode}`)
 
-        console.log('data', data)
-
         const { convertPageData } = usePageData()
         const obj = data.value
-        console.log('obj', obj)
         obj.pageData = convertPageData(obj.virtualSwaypage.pageData)
 
         this.virtualSwaypages[shortcode] = {

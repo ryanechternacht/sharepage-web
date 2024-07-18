@@ -24,12 +24,15 @@ const props = defineProps({
   url: { type: String, required: true },
 })
 
+const emit = defineEmits(['click'])
+
 const { submissionState, submitFn } = useSubmit(async () => {
   if (navigator?.clipboard) {
     await navigator.clipboard.writeText(props.url)
   } else {
     console.log(`can't find navigator, but would copy ${props.url}`)
   }
+  emit('click')
 })
 </script>
 

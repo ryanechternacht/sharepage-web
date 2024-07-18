@@ -127,13 +127,14 @@
 import { useSwaypagesStore } from '@/stores/swaypages'
 import { useUsersStore } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
+import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import CreateChapterModal from '@/components/Modals/CreateChapterModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
-const { concat, debounce, filter, findIndex, map, orderBy } = lodash_pkg;
+const { concat, debounce, filter, findIndex, first, map, orderBy } = lodash_pkg;
 
 // We shouldn't need to re-render this component on navigation, but 
 // for some reason, `pages` isn't getting updates from the store
@@ -191,8 +192,18 @@ if (process.client) {
   setTimeout(() => linkToPage.value = window.location.href, 2000)
 }
 
+let pageId = route.params.page && parseInt(route.params.page)
+if (!pageId) {
+  pageId = first(filter(pages, p => p.status === 'active')).id
+}
+
+const buyerSessionStore = useBuyerSessionStore()
 async function trackShare () {
-  // TODO implement
+  buyerSessionStore.capturePageEventIfAppropriate({
+    eventType: "click-share",
+    swaypageId,
+    page: pageId,
+   })
 }
 
 const activePages = ref([])

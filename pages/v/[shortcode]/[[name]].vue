@@ -18,12 +18,12 @@
           <div>
             <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
             <div class="flex flex-col">
-              <div v-for="p in pages"
+              <div v-for="t in threads"
                 class="flex flex-row items-center">
-                <NuxtLink :href="makeVirtualSwaypageLink(shortcode, name, p.id)"
+                <NuxtLink :href="makeVirtualSwaypageLink(shortcode, name, t.id)"
                   class="sidebar-item">
-                  <SwaypagePageTypeIcon :page-type="p.pageType" />
-                  <div class="text-sm">{{ mustache.render(p.title, pageData) }}</div>
+                  <SwaypagePageTypeIcon :page-type="t.pageType" />
+                  <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
                 </NuxtLink>
               </div>
             </div>
@@ -40,8 +40,11 @@
 
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
+import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import mustache from 'mustache'
+import lodash_pkg from 'lodash';
+const { filter, first } = lodash_pkg;
 
 const route = useRoute()
 const shortcode = route.params.shortcode
@@ -59,7 +62,7 @@ const pageData = virtualSwaypage.pageData
 const template = virtualSwaypage.template
 
 // TODO we'll need to render pageData into these first
-const [pages] = await Promise.all([
+const [threads] = await Promise.all([
   getSwaypageChaptersByIdCached.value(template.id),
 ])
 
@@ -72,6 +75,20 @@ const linkToPage = ref(useRequestURL().href)
 // get the cleaned up url, once it's cleaned up
 if (process.client) {
   setTimeout(() => linkToPage.value = window.location.href, 2000)
+}
+
+let threadId = route.params.thread && parseInt(route.params.thread)
+if (!threadId) {
+  threadId = first(filter(threads, t => t.status === 'active')).id
+}
+
+const buyerSessionStore = useBuyerSessionStore()
+async function trackShare () {
+  buyerSessionStore.captureVirtualSwaypageEventIfAppropriate({
+    eventType: "click-share",
+    shortcode,
+    threadId
+   })
 }
 </script>
 

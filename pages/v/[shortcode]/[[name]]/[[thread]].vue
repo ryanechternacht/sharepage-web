@@ -50,7 +50,7 @@
                 <a class="rightbar-link"
                   :href="mustache.render(l.linkUrl, pageData)"
                   target="_blank"
-                  @click="trackLinkClick(l.title)">
+                  @click="trackLinkClick(l.title, l.linkUrl, pageData)">
                   <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
                   <div class="text-right text-sm">{{ mustache.render(l.title, pageData) }}</div>
                 </a>
@@ -65,15 +65,18 @@
 
 <script setup>
 import { useSwaypagesStore } from '@/stores/swaypages'
-import { useBuyerSessionStore } from '@/stores/buyer-session';
+import { useBuyerSessionStore } from '@/stores/buyer-session'
+import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { cloneDeep, debounce, filter, find, findIndex, first, map, max } = lodash_pkg;
+const { capitalize, filter, find, first, map } = lodash_pkg;
 import mustache from 'mustache'
 
 const route = useRoute()
 const shortcode = route.params.shortcode
-const name = route.params.name
+
+const usersStore = useUsersStore()
+const { isUserLoggedIn } = storeToRefs(usersStore)
 
 const swaypageStore = useSwaypagesStore()
 const {
@@ -88,10 +91,29 @@ const pageData = virtualSwaypage.pageData
 const template = virtualSwaypage.template
 const owner = virtualSwaypage.owner
 
-const [threads, links] = await Promise.all([
+const [threads, links, hasUser] = await Promise.all([
   getSwaypageChaptersByIdCached.value(template.id),
   getSwaypageLinksByIdCached.value(template.id),
+  isUserLoggedIn.value(),
 ])
+
+const { cookies } = useAppConfig()
+const linkedName = useCookie('linked-name', { domain: cookies.domain })
+const anonymousId = useCookie('anonymous-id', { domain: cookies.domain })
+
+
+
+if (!hasUser && !linkedName.value) {
+  const tokens = route.params.name.split('-')
+  const capitalized = map(tokens, capitalize)
+  linkedName.value = capitalized.join(' ')
+}
+
+if (!anonymousId.value && process.client) {
+  anonymousId.value = crypto?.randomUUID
+    ? crypto.randomUUID()
+    : Math.floor(Math.random() * 1000000).toString()
+}
 
 let threadId = parseInt(route.params.thread)
 let thread
@@ -124,12 +146,16 @@ const sections = map(thread.body.sections, s => {
 const title = mustache.render(thread.title, pageData)
 
 const buyerSessionStore = useBuyerSessionStore()
-function trackLinkClick(linkText) {
-  buyerSessionStore.capturePageEventIfAppropriate({
+buyerSessionStore.captureVirtualSwaypageThreadTimingIfAppropriate({ shortcode, threadId })
+function trackLinkClick(linkText, linkUrl, pageData) {
+  buyerSessionStore.captureVirtualSwaypageEventIfAppropriate({
     eventType: "click-link",
-    eventData: { linkText },
-    swaypageId,
-    page: threadId,
+    eventData: { 
+      linkText: mustache.render(linkText, pageData),
+      linkUrl: mustache.render(linkUrl, pageData),
+    },
+    shortcode,
+    threadId,
    })
 }
 </script>
