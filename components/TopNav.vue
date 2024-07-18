@@ -22,6 +22,10 @@
         :class="{ 'router-link-active': activeLink === 'campaigns' }">
         <UIcon class="icon-menu" name="i-heroicons-paper-airplane" />
         <span>Campaigns</span>
+        <UBadge
+          variant="outline" 
+          class="beta-badge"
+          size="xs">Beta</UBadge>
       </NuxtLink>
       <!-- TOOD point this to the correct route -->
       <!-- <NuxtLink to="/swaypage-demo" class="link">
@@ -88,6 +92,14 @@ async function goToLogin () {
     *, :deep(*) {
       @apply text-blue-500;
     }
+
+    .beta-badge {
+      @apply !text-white bg-blue-500
+    }
+  }
+
+  .beta-badge {
+    @apply !text-blue-500
   }
 }
 </style>
