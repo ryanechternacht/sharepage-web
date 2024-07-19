@@ -601,6 +601,7 @@ function trackLinkClick(linkText) {
 
 async function cloneSwaypage(roomType) {
   const newId = await swaypageStore.cloneSwaypage({ roomType, swaypageId: swaypage.id })
+  swaypageStore.invalidateAllSwaypageCache()
   await navigateTo(`/${newId}`)
 }
 </script>
