@@ -4,23 +4,23 @@ DEFAULT='\033[0m'
 GREEN='\033[0;32m'
 CYAN='\033[1;36m'
 
-aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 126599745635.dkr.ecr.us-east-2.amazonaws.com
+aws ecr get-login-password --profile sp | docker login --username AWS --password-stdin 471112549420.dkr.ecr.us-east-2.amazonaws.com
 echo "${GREEN}Step 1 Complete:${DEFAULT} Refreshing AWS token
 "
 
-docker build -f deployment/dev/Dockerfile-dev -t buyersphere-web .
+docker build -f deployment/dev/Dockerfile-dev -t swaypage-web-dev .
 echo "${GREEN}Step 2 Complete:${DEFAULT} Building Docker image
 "
 
-docker tag buyersphere-web:latest 126599745635.dkr.ecr.us-east-2.amazonaws.com/buyersphere-web:latest
+docker tag swaypage-web-dev:latest 471112549420.dkr.ecr.us-east-2.amazonaws.com/swaypage-web-dev:latest
 echo "${GREEN}Step 3 Complete:${DEFAULT} Tagging Docker image
 "
 
-docker push 126599745635.dkr.ecr.us-east-2.amazonaws.com/buyersphere-web:latest
+docker push 471112549420.dkr.ecr.us-east-2.amazonaws.com/swaypage-web-dev:latest
 echo "${GREEN}Step 4 Complete:${DEFAULT} Deploying Docker image
 
 Check AWS AppRunner (link below) to see the service deployment:
 
-${CYAN}https://us-east-2.console.aws.amazon.com/apprunner/home?region=us-east-2#/services/dashboard?service_arn=arn%3Aaws%3Aapprunner%3Aus-east-2%3A126599745635%3Aservice%2Fbuyersphere-web%2F01d1c68c63c24393a510002a90f3909e&active_tab=logs${DEFAULT}
+${CYAN}https://us-east-2.console.aws.amazon.com/ecr/repositories/private/471112549420/swaypage-web-dev?region=us-east-2${DEFAULT}
 
 "
