@@ -6,7 +6,10 @@
 
     <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
       :to="makeInternalSwaypageLink(swaypage)">
-      <div class="cell body">{{ swaypage.buyer }}</div>
+      <div class="cell body">
+        <UIcon v-if="swaypage.isLocked"
+          name="i-heroicons-lock-closed"/>
+        {{ swaypage.buyer }}</div>
       <div class="cell subtext">
         <template v-if="swaypage.owner">
           <UserAvatar :user="swaypage.owner" />

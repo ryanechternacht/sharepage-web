@@ -8,10 +8,28 @@
         title="This Thread is currently archived"
         color="orange"
         variant="subtle"
-        :actions="[{ 
-          label: 'Restore Thread', 
+        :actions="[{
+          label: 'Restore Thread',
           click: restorePage,
           icon: 'i-heroicons-arrow-uturn-left',
+          color: 'orange',
+          variant: 'solid'
+        }]" />
+      <UAlert v-else-if="swaypage.isLocked"
+        title="This Template is currently locked."
+        description="This Template is currently locked because it is used by a campaign. You can make a copy of it if you want to edit it before using it in a new campaign."
+        color="orange"
+        variant="subtle"
+        :actions="[{ 
+          label: 'Clone as a Swaypage',
+          click: () => cloneSwaypage('deal-room'),
+          icon: 'i-heroicons-document-duplicate',
+          color: 'orange',
+          variant: 'solid'
+        }, { 
+          label: 'Clone as a Template',
+          click: () => cloneSwaypage('template'),
+          icon: 'i-heroicons-document-duplicate',
           color: 'orange',
           variant: 'solid' 
         }]" />
@@ -62,7 +80,7 @@
                 saveSubmissionState === 'ready' ? "Changes" : "??" }}
           </div>
         </div>
-        <UDropdown v-if="canEdit" :items="settingsMenu">
+        <UDropdown v-if="isSeller" :items="settingsMenu">
           <UIcon name="i-heroicons-ellipsis-vertical"
             class="-ml-4" />
         </UDropdown>
@@ -133,8 +151,7 @@
           <UDropdown :items="newBlocksMenu"
             :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}">
             <div class="align-content-left mt-2 flex flex-row gap-2 items-center cursor-pointer rounded-md py-2 px-1">
-              <UIcon v-if="isSeller" 
-                class="text-gray-500 icon-menu" 
+              <UIcon class="text-gray-500 icon-menu" 
                 name="i-heroicons-plus" />
               <div class="subtext">New</div>
             </div>
@@ -161,7 +178,7 @@
               <div v-for="l in links"
                 class="group/link-item flex flex-row-reverse items-center">
                 <div class="w-[1.5rem] flex-shrink-0 text-right">
-                  <UDropdown v-if="isSeller" 
+                  <UDropdown v-if="canSellerEdit" 
                     :items="makeLinkMenu(l)">
                     <UIcon
                       class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
@@ -177,7 +194,7 @@
                 </a>
               </div>
               
-              <div v-if="isSeller"
+              <div v-if="canSellerEdit"
                 class="rightbar-link"
                 @click="createNewLink">
                 <UIcon class="icon-menu text-gray-500 mr-6" 
@@ -294,7 +311,8 @@ if (pageId) {
 
 buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
 
-const canEdit = isSeller || page.canBuyerEdit
+const canSellerEdit = isSeller && !swaypage.isLocked
+const canEdit = canSellerEdit || page.canBuyerEdit
 
 const metaTitle = `Discover ${swaypage.buyer}`
 const metaDescription = `Learn more about what ${swaypage.buyer} has to offer`
@@ -319,6 +337,10 @@ router.beforeEach(async () => {
 const { makeInternalSwaypageLink, makeSwaypageChapterSettingsLink } = useSwaypageLinks()
 if (process.client) {
   setTimeout(() => 
+    // TODO because we don't actually update routing, the link doesn't get
+    // router-active-link set on it in the right sidebar
+    // I think we could fix this by just manually setting it on that link
+    // if no route param is set
     history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
     100)
 }
@@ -329,6 +351,12 @@ const settingsMenu = [[{
 }, {
   label: 'Swaypage Settings',
   to: makeInternalSwaypageLink(swaypage, 'settings'),
+}], [{
+  label: 'Clone as Swaypage',
+  click: () => cloneSwaypage('deal-room')
+}, {
+  label: 'Clone as Template',
+  click: () => cloneSwaypage('template')
 }]]
 
 const keys = map(page?.body.sections, s => s.key || 0)
@@ -570,19 +598,24 @@ function trackLinkClick(linkText) {
     page: pageId,
    })
 }
+
+async function cloneSwaypage(roomType) {
+  const newId = await swaypageStore.cloneSwaypage({ roomType, swaypageId: swaypage.id })
+  swaypageStore.invalidateAllSwaypageCache()
+  await navigateTo(`/${newId}`)
+}
 </script>
 
 <style lang="postcss" scoped>
-.page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
-  /* this is based on the current top nav height */
-  min-height: calc(100vh - 5rem);
-}
-
-/* should be grid-cols-subgrid, but we need a newer tailwind */
 .page-grid {
   @apply grid;
   grid-template-columns: 1fr minmax(150px, 220px);
+}
+
+.page-area {
+  @apply border border-gray-200 rounded-md px-2 py-1;
+  /* this is based on the current top nav height + header above */
+  min-height: calc(100vh - 10.375rem);
 }
 
 .align-content-left {

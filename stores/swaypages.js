@@ -14,6 +14,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
     links: {},
     buyerSessions: {},
     all: {},
+    virtualSwaypages: {},
   }),
   getters: {
     getSwaypageByIdCached: (state) => async (swaypageId) => {
@@ -21,7 +22,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
       return state.buyerspheres[swaypageId]?.content
     },
     // TODO can we separate active from archived here without 
-    // double fetching? I thihnk we double fetch user data in 
+    // double fetching? I think we double fetch user data in 
     // when trying to load multiple getters in parallel 
     getSwaypageChaptersByIdCached: (state) => async (swaypageId) => {
       await state.fetchSwaypagePages({ swaypageId })
@@ -38,6 +39,10 @@ export const useSwaypagesStore = defineStore('swaypages', {
     getSwaypageList: (state) => async () => {
       await state.fetchAllSwaypages()
       return state.all.content
+    },
+    getVirtualSwaypageByShortcodeCached: (state) => async (shortcode) => {
+      await state.fetchVirtualSwaypage({ shortcode })
+      return state.virtualSwaypages[shortcode]?.content
     }
   },
   actions: {
@@ -79,6 +84,14 @@ export const useSwaypagesStore = defineStore('swaypages', {
           } 
         }
       )
+      return data.value.id
+    },
+    async cloneSwaypage({ swaypageId, roomType }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } =  await apiFetch(`/v0.1/swaypage/${swaypageId}/clone`, {
+        method: 'POST', 
+        body: { roomType }
+      })
       return data.value.id
     },
     async createSwaypageFromTemplate({ 
@@ -261,6 +274,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
           || is10MinutesOld(this.chapters[swaypageId]?.generatedAt))
       {
         const { data } = await apiFetch(`/v0.1/buyerspheres/${swaypageId}/pages`)
+
         this.chapters[swaypageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
@@ -405,6 +419,26 @@ export const useSwaypagesStore = defineStore('swaypages', {
         const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/sessions`)
         this.buyerSessions[swaypageId] = {
           content: data.value,
+          generatedAt: dayjs().toJSON()
+        }
+      }
+    },
+    async fetchVirtualSwaypage({ shortcode, forceRefresh }) {
+      const dayjs = useDayjs()
+      const { apiFetch } = useNuxtApp()
+
+      if (!this.virtualSwaypages[shortcode]?.content
+          || forceRefresh
+          || is10MinutesOld(this.virtualSwaypages[shortcode]?.generatedAt))
+      {
+        const { data } = await apiFetch(`/v0.1/virtual-swaypage/${shortcode}`)
+
+        const { convertPageData } = usePageData()
+        const obj = data.value
+        obj.pageData = convertPageData(obj.virtualSwaypage.pageData)
+
+        this.virtualSwaypages[shortcode] = {
+          content: obj,
           generatedAt: dayjs().toJSON()
         }
       }
