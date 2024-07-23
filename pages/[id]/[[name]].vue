@@ -36,8 +36,10 @@
               <!-- TODO restore this icon -->
               <!-- <StarIcon class="icon-menu justify-self-center text-gray-400" /> -->
             </div>
-            <div v-if="swaypage.roomType === 'template'" class="subtext">Template</div>
-            <div v-else class="subtext">{{ swaypage.subname }}</div>
+            <template v-if="isSeller">
+              <div v-if="swaypage.roomType === 'template'" class="subtext">Template</div>
+              <div v-else class="subtext">{{ swaypage.subname }}</div>
+            </template>
           </div>
 
           <div v-if="swaypage.roomType === 'template'">
