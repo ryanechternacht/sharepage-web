@@ -273,11 +273,12 @@ const newBlocksMenu = [
     icon: 'i-heroicons-computer-desktop',
     click: () => newAiBlock(),
   }] : [], 
-  ...swaypage.roomType === 'template' ? [{
-    label: 'AI Prompt',
-    icon: 'i-heroicons-computer-desktop',
-    click: () => newAiTemplateBlock(),
-  }] : [], {
+  // ...swaypage.roomType === 'template' ? [{
+  //   label: 'AI Prompt',
+  //   icon: 'i-heroicons-computer-desktop',
+  //   click: () => newAiTemplateBlock(),
+  // }] : [], 
+  {
     label: 'Asset',
     icon: 'i-heroicons-link',
     click: () => newAsset(),

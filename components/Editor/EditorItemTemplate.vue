@@ -47,11 +47,12 @@ const menu = [
     icon: 'i-heroicons-computer-desktop',
     click: () => emit('insert:item', { item: 'ai-prompt' }),
   }] : [], 
-  ...props.includeAiPromptTemplate ? [{
-    label: 'AI Prompt',
-    icon: 'i-heroicons-computer-desktop',
-    click: () => emit('insert:item', { item: 'ai-prompt-template' }),
-  }] : [], {
+  // ...props.includeAiPromptTemplate ? [{
+  //   label: 'AI Prompt',
+  //   icon: 'i-heroicons-computer-desktop',
+  //   click: () => emit('insert:item', { item: 'ai-prompt-template' }),
+  // }] : [], 
+  {
     label: 'Asset',
     icon: 'i-heroicons-link',
     click: () => emit('insert:item', { item: 'asset' }),
