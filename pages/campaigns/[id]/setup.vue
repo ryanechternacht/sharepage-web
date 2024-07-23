@@ -77,6 +77,13 @@
       </div>
 
       <div v-if="selectedTab === 1">
+        <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > 500"
+          title="Too many leads were uploaded"
+          description="Campaign have a limit of 500 leads per campaign. When you publish this campaign, we will only create Swaypages for the first 500 leads."
+          color="orange"
+          variant="subtle"
+          class="mb-4" />
+
         <div class="border border-gray-200 rounded-md variables-grid">
           <div class="row">
             <h2>Variable Name</h2>
@@ -111,6 +118,13 @@
       </div>
 
       <div v-if="selectedTab === 2">
+        <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > 500"
+          title="Too many leads were uploaded"
+          description="Campaign have a limit of 500 leads per campaign. When you publish this campaign, we will only create Swaypages for the first 500 leads."
+          color="orange"
+          variant="subtle"
+          class="mb-4" />
+
         <h2>Ready to Publish</h2>
 
         <div class="body">
@@ -149,6 +163,8 @@ const { getCampaignByIdCached } = storeToRefs(campaignsStore)
 const [campaign] = await Promise.all([
   getCampaignByIdCached.value(campaignId)
 ])
+
+console.log('campaign', campaign)
 
 const tabs = computed(() => [{
   label: 'Setup',
