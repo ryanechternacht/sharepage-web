@@ -20,7 +20,7 @@
     </TopNav>
     <div class="mt-6 layout-grid">
       <div class="mr-4">
-        <div class="sticky top-8 min-h-[calc(100vh-6.5rem)] flex flex-col">
+        <div class="sticky top-8 mb-2 md:mb-0 md:min-h-[calc(100vh-6.5rem)] flex flex-col">
           <div class="header-grid">
             <Logo v-if="swaypage.roomType === 'deal-room'"
               :src="swaypage.buyerLogo"
@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <div>
+          <div class="hidden md:block">
             <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
             <div class="flex flex-col -ml-6">
               <div v-if="isSeller" 
@@ -142,7 +142,7 @@
 
           <div class="flex-grow" />
 
-          <div class="mt-16 mb-4 w-full">
+          <div class="hidden md:block mt-16 mb-4 w-full">
             <UDropdown v-if="isSeller" 
               :items="archivedPagesMenu"
               :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
@@ -158,6 +158,93 @@
       </div>
 
       <NuxtPage />
+
+      <div class="md:hidden">
+        <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
+        <div class="flex flex-col -ml-6">
+          <div v-if="isSeller" 
+            class="group/sidebar-item flex flex-row items-center">
+            <div class="w-[1.5rem] flex-shrink-0" />
+            <NuxtLink 
+              :href="makeInternalSwaypageLink(swaypage, 'feed')"
+              class="sidebar-item">
+              <UIcon name="i-heroicons-signal" />
+              <div class="body">Feed</div>
+            </NuxtLink>
+          </div>
+          <VueDraggable
+            v-model="activePages"
+            ghost-class="ghost"
+            :animation="200"
+            :scroll="false"
+            group="pages"
+            handle=".drag-handle"
+          >
+            <div v-for="p in activePages"
+              class="group/sidebar-item flex flex-row items-center">
+              <div class="w-[1.5rem] flex-shrink-0">
+                <UDropdown v-if="canSellerEdit"
+                  :items="makePageMenu(p)">
+                  <UIcon
+                    class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
+                    name="i-heroicons-ellipsis-vertical" />
+                </UDropdown>
+              </div>
+              <NuxtLink 
+                :href="makeInternalSwaypageLink(swaypage, p.id)"
+                class="sidebar-item">
+                <SwaypagePageTypeIcon :page-type="p.pageType" />
+                <div class="text-sm">{{ p.title }}</div>
+              </NuxtLink>
+            </div>
+          </VueDraggable>
+          <div v-if="canSellerEdit" 
+            class="ml-6 sidebar-item"
+            @click="createNewPage">
+            <UIcon name="i-heroicons-plus" class="text-gray-500" />
+            <div class="text-gray-500 body">New Thread</div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <div class="mb-1 text-gray-500 body">Key Links</div>
+          <VueDraggable
+            v-model="links"
+            ghost-class="ghost"
+            :animation="200"
+            :scroll="false"
+            class="flex flex-col -ml-6"
+            group="pages"
+            handle=".drag-handle"
+          >
+            <div v-for="l in links"
+              class="group/sidebar-item flex flex-row items-center">
+              <div class="w-[1.5rem] flex-shrink-0">
+                <UDropdown v-if="canSellerEdit" 
+                  :items="makeLinkMenu(l)">
+                  <UIcon
+                    class="drag-handle icon-menu cursor-pointer hidden group-hover/sidebar-item:block"
+                    name="i-heroicons-ellipsis-vertical" />
+                </UDropdown>
+              </div>
+              <a class="sidebar-item"
+                :href="l.linkUrl"
+                target="_blank"
+                @click="trackLinkClick(l.title)">
+                <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                <div class="text-sm">{{ l.title }}</div>
+              </a>
+            </div>
+            
+            <div v-if="canSellerEdit"
+              class="ml-6 sidebar-item"
+              @click="createNewLink">
+              <UIcon class="text-gray-500" name="i-heroicons-plus"/>
+              <div class="text-gray-500 body">New Link</div>
+            </div>
+          </VueDraggable>
+        </div>
+      </div>
     </div>
 
     <div class="h-[5rem]" /> <!-- bottom spacer -->
@@ -442,8 +529,14 @@ async function removePage(page, status) {
 
 <style lang="postcss" scoped>
 .layout-grid {
-  @apply grid mx-8;
-  grid-template-columns: minmax(150px, 370px) 1fr;
+  @apply mx-8;
+}
+
+@screen md {
+  .layout-grid {
+    @apply grid;
+    grid-template-columns: minmax(150px, 370px) 1fr;
+  }
 }
 
 .header-grid {

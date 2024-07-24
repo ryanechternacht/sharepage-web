@@ -6,7 +6,7 @@
     </NuxtLayout>
     <UModals />
 
-    <UModal v-model="showModal" prevent-close
+    <!-- <UModal v-model="showModal" prevent-close
       :ui="{ overlay: { background: 'bg-gray-200 dark:bg-gray-800'} }">
       <UCard>
         <template #header>
@@ -20,7 +20,7 @@
 
         <h2 class="text-center">Please try again at your computer</h2>
       </UCard>
-    </UModal>
+    </UModal> -->
   </div>
 </template>
 
@@ -52,16 +52,16 @@ useHead({
   }]
 })
 
-const viewport = useViewport()
-const showModal = ref(false)
+// const viewport = useViewport()
+// const showModal = ref(false)
 
-watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
-  if (viewport.isLessThan('tablet')) {
-    showModal.value = true
-  } else {
-    showModal.value = false
-  }
-})
+// watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
+//   if (viewport.isLessThan('tablet')) {
+//     showModal.value = true
+//   } else {
+//     showModal.value = false
+//   }
+// })
 </script>
 
 <style lang="postcss" scoped>
