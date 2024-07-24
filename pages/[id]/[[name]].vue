@@ -84,7 +84,7 @@
                         name="i-heroicons-ellipsis-vertical" />
                     </UDropdown>
                   </div>
-                  <NuxtLink
+                  <NuxtLink 
                     :href="makeInternalSwaypageLink(swaypage, p.id)"
                     class="sidebar-item">
                     <SwaypagePageTypeIcon :page-type="p.pageType" />
@@ -98,6 +98,45 @@
                 <UIcon name="i-heroicons-plus" class="text-gray-500" />
                 <div class="text-gray-500 body">New Thread</div>
               </div>
+            </div>
+
+            <div class="mt-8 flex flex-col">
+              <div class="mb-1 text-gray-500 body">Key Links</div>
+              <VueDraggable
+                v-model="links"
+                ghost-class="ghost"
+                :animation="200"
+                :scroll="false"
+                class="flex flex-col -ml-6"
+                group="pages"
+                handle=".drag-handle"
+              >
+                <div v-for="l in links"
+                  class="group/sidebar-item flex flex-row items-center">
+                  <div class="w-[1.5rem] flex-shrink-0">
+                    <UDropdown v-if="canSellerEdit" 
+                      :items="makeLinkMenu(l)">
+                      <UIcon
+                        class="drag-handle icon-menu cursor-pointer hidden group-hover/sidebar-item:block"
+                        name="i-heroicons-ellipsis-vertical" />
+                    </UDropdown>
+                  </div>
+                  <a class="sidebar-item"
+                    :href="l.linkUrl"
+                    target="_blank"
+                    @click="trackLinkClick(l.title)">
+                    <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                    <div class="text-sm">{{ l.title }}</div>
+                  </a>
+                </div>
+                
+                <div v-if="canSellerEdit"
+                  class="ml-6 sidebar-item"
+                  @click="createNewLink">
+                  <UIcon class="text-gray-500" name="i-heroicons-plus"/>
+                  <div class="text-gray-500 body">New Link</div>
+                </div>
+              </VueDraggable>
             </div>
           </div>
 
@@ -137,6 +176,7 @@ import CreateChapterModal from '@/components/Modals/CreateChapterModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
 const { concat, debounce, filter, findIndex, first, map, orderBy } = lodash_pkg;
+import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
 
 // We shouldn't need to re-render this component on navigation, but 
 // for some reason, `pages` isn't getting updates from the store
@@ -170,6 +210,7 @@ const swaypageStore = useSwaypagesStore()
 const { 
   getSwaypageByIdCached, 
   getSwaypageChaptersByIdCached, 
+  getSwaypageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 const usersStore = useUsersStore()
 const { isUserSeller } = storeToRefs(usersStore)
@@ -177,9 +218,10 @@ const { isUserSeller } = storeToRefs(usersStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [swaypage, pages, isSeller, organization] = await Promise.all([
+const [swaypage, pages, linksSource, isSeller, organization] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypageChaptersByIdCached.value(swaypageId),
+  getSwaypageLinksByIdCached.value(swaypageId),
   isUserSeller.value(),
   getOrganizationCached.value(),
 ])
@@ -227,6 +269,80 @@ function refreshPages () {
   )
 }
 refreshPages()
+
+// This pattern is because VueDraggable needs its own object (links) to
+// modify as ppl drag around. changes are sent to the store and then
+// pushed back into vue draggable
+// I'm honestly not sure why this works and just having VueDraggable
+// use linksSouce directly doesn't, ¯\_(ツ)_/¯
+const links = ref([])
+function refreshLinks () {
+  links.value = linksSource
+}
+refreshLinks()
+
+function makeLinkMenu(link) {
+  return [[
+    {
+      label: 'Edit',
+      icon: "i-heroicons-pencil-square",
+      click: () => editLink(link)
+    }, {
+      label: 'Delete',
+      icon: "i-heroicons-trash",
+      click: () => deleteLink(link)
+    }
+  ]]
+}
+
+function createNewLink () {
+  modal.open(AddEditSwaypageLinkModal, {
+    swaypageId: swaypage.id,
+    link: null,
+    async onClose () {
+      modal.close()
+      refreshLinks()
+    }
+  })
+}
+
+function editLink (link) {
+  modal.open(AddEditSwaypageLinkModal, {
+    swaypageId: swaypage.id,
+    link,
+    async onClose () {
+      modal.close()
+    }
+  })
+}
+
+async function saveLinkOrdering() {
+  await swaypageStore.reorderLinks({ swaypageId, links })
+}
+const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
+watch(links, () => {
+  dbounceLinkReorder()
+})
+
+function trackLinkClick(linkText) {
+  buyerSessionStore.capturePageEventIfAppropriate({
+    eventType: "click-link",
+    eventData: { linkText },
+    swaypageId,
+    page: pageId,
+   })
+}
+
+async function deleteLink(link) {
+  const i = findIndex(links.value, l => l.id === link.id)
+  links.value.splice(i, 1)
+
+  await swaypageStore.deleteLink({
+    swaypageId,
+    linkId: link.id,
+  })
+  refreshLinks()
+}
 
 const archivedPagesMenu = computed(() => {
   return [map(archivedPages.value, (p) => ({
@@ -327,7 +443,7 @@ async function removePage(page, status) {
 <style lang="postcss" scoped>
 .layout-grid {
   @apply grid mx-8;
-  grid-template-columns: minmax(150px, 250px) 1fr;
+  grid-template-columns: minmax(150px, 370px) 1fr;
 }
 
 .header-grid {

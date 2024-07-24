@@ -1,5 +1,5 @@
 <template>
-  <div class="page-grid">
+  <div>
     <h2 v-if="!page">
       There are no Threads in this Swaypage. Create a New Thread on the left
     </h2>
@@ -161,51 +161,6 @@
         <div class="h-[2rem]" /> <!-- bottom spacer -->
       </div>
     </div>
-    <div>
-      <div class="ml-2">
-        <div class="sticky top-[5.75rem]">
-          <div class="mt-[5.75rem] flex flex-col gap-2 items-end">
-            <div class="body text-gray-500">Key Links</div>
-            <VueDraggable
-              v-model="links"
-              ghost-class="ghost"
-              :animation="200"
-              :scroll="false"
-              class="flex flex-col -mr-6"
-              group="pages"
-              handle=".drag-handle"
-            >
-              <div v-for="l in links"
-                class="group/link-item flex flex-row-reverse items-center">
-                <div class="w-[1.5rem] flex-shrink-0 text-right">
-                  <UDropdown v-if="canSellerEdit" 
-                    :items="makeLinkMenu(l)">
-                    <UIcon
-                      class="drag-handle icon-menu cursor-pointer hidden group-hover/link-item:block"
-                      name="i-heroicons-ellipsis-vertical" />
-                  </UDropdown>
-                </div>
-                <a class="rightbar-link"
-                  :href="l.linkUrl"
-                  target="_blank"
-                  @click="trackLinkClick(l.title)">
-                  <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
-                  <div class="text-right text-sm">{{ l.title }}</div>
-                </a>
-              </div>
-              
-              <div v-if="canSellerEdit"
-                class="rightbar-link"
-                @click="createNewLink">
-                <UIcon class="icon-menu text-gray-500 mr-6" 
-                  name="i-heroicons-plus"/>
-                <div class="text-gray-500 text-right text-sm">New Link</div>
-              </div>
-            </VueDraggable>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -217,7 +172,6 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
 
 useEmbedly()
 
@@ -228,7 +182,6 @@ const swaypageStore = useSwaypagesStore()
 const { 
   getSwaypageByIdCached, 
   getSwaypageChaptersByIdCached, 
-  getSwaypageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 
 const usersStore = useUsersStore()
@@ -236,10 +189,9 @@ const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const buyerSessionStore = useBuyerSessionStore()
 
-const [swaypage, pages, linksSource, hasUser, isSeller] = await Promise.all([
+const [swaypage, pages, hasUser, isSeller] = await Promise.all([
   getSwaypageByIdCached.value(swaypageId),
   getSwaypageChaptersByIdCached.value(swaypageId),
-  getSwaypageLinksByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
@@ -284,20 +236,6 @@ const newBlocksMenu = [
     click: () => newAsset(),
   }]
 ]
-
-function makeLinkMenu(link) {
-  return [[
-    {
-      label: 'Edit',
-      icon: "i-heroicons-pencil-square",
-      click: () => editLink(link)
-    }, {
-      label: 'Delete',
-      icon: "i-heroicons-trash",
-      click: () => deleteLink(link)
-    }
-  ]]
-}
 
 let pageId = parseInt(route.params.page)
 let page
@@ -526,27 +464,6 @@ function updateItem(index, newSection) {
 
 const modal = useModal()
 
-function createNewLink () {
-  modal.open(AddEditSwaypageLinkModal, {
-    swaypageId: swaypage.id,
-    link: null,
-    async onClose () {
-      modal.close()
-      refreshLinks()
-    }
-  })
-}
-
-function editLink (link) {
-  modal.open(AddEditSwaypageLinkModal, {
-    swaypageId: swaypage.id,
-    link,
-    async onClose () {
-      modal.close()
-    }
-  })
-}
-
 async function restorePage() {
   await swaypageStore.updateChapter({
     swaypageId,
@@ -559,47 +476,6 @@ async function restorePage() {
   reloadNuxtApp()
 }
 
-// This pattern is because VueDraggable needs its own object (links) to
-// modify as ppl drag around. changes are sent to the store and then
-// pushed back into vue draggable
-// I'm honestly not sure why this works and just having VueDraggable
-// use linksSouce directly doesn't, ¯\_(ツ)_/¯
-const links = ref([])
-function refreshLinks () {
-  links.value = linksSource
-}
-refreshLinks()
-
-async function saveLinkOrdering() {
-  await swaypageStore.reorderLinks({ swaypageId, links })
-}
-
-const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
-
-watch(links, () => {
-  dbounceLinkReorder()
-})
-
-async function deleteLink(link) {
-  const i = findIndex(links.value, l => l.id === link.id)
-  links.value.splice(i, 1)
-
-  await swaypageStore.deleteLink({
-    swaypageId,
-    linkId: link.id,
-  })
-  refreshLinks()
-}
-
-function trackLinkClick(linkText) {
-  buyerSessionStore.capturePageEventIfAppropriate({
-    eventType: "click-link",
-    eventData: { linkText },
-    swaypageId,
-    page: pageId,
-   })
-}
-
 async function cloneSwaypage(roomType) {
   const newId = await swaypageStore.cloneSwaypage({ roomType, swaypageId: swaypage.id })
   swaypageStore.invalidateAllSwaypageCache()
@@ -608,11 +484,6 @@ async function cloneSwaypage(roomType) {
 </script>
 
 <style lang="postcss" scoped>
-.page-grid {
-  @apply grid;
-  grid-template-columns: 1fr minmax(150px, 220px);
-}
-
 .page-area {
   @apply border border-gray-200 rounded-md px-2 py-1;
   /* this is based on the current top nav height + header above */
@@ -621,9 +492,5 @@ async function cloneSwaypage(roomType) {
 
 .align-content-left {
   margin-left: calc(2.25rem + 2px);
-}
-
-.rightbar-link {
-  @apply py-2 w-full flex flex-row-reverse cursor-pointer items-center gap-3;
 }
 </style>
