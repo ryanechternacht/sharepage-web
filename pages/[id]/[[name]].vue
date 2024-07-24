@@ -535,7 +535,7 @@ async function removePage(page, status) {
 @screen md {
   .layout-grid {
     @apply grid;
-    grid-template-columns: minmax(150px, 370px) 1fr;
+    grid-template-columns: minmax(20%, 370px) minmax(580px, 1fr);
   }
 }
 
