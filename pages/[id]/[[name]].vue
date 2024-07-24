@@ -100,7 +100,7 @@
               </div>
             </div>
 
-            <div class="mt-8 flex flex-col">
+            <div class="mt-8">
               <div class="mb-1 text-gray-500 body">Key Links</div>
               <VueDraggable
                 v-model="links"

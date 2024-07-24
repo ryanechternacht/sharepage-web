@@ -27,6 +27,22 @@
                 </NuxtLink>
               </div>
             </div>
+
+            <div>
+              <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
+              <div class="flex flex-col">
+                <div v-for="l in links"
+                  class="flex flex-row items-center">
+                  <a class="sidebar-item"
+                    :href="mustache.render(l.linkUrl, pageData)"
+                    target="_blank"
+                    @click="trackLinkClick(l.title, l.linkUrl, pageData)">
+                    <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                    <div class="text-sm">{{ mustache.render(l.title, pageData) }}</div>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -54,6 +70,7 @@ const swaypageStore = useSwaypagesStore()
 const {
   getVirtualSwaypageByShortcodeCached,
   getSwaypageChaptersByIdCached,
+  getSwaypageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 
 const virtualSwaypage = await getVirtualSwaypageByShortcodeCached.value(shortcode)
@@ -62,8 +79,9 @@ const pageData = virtualSwaypage.pageData
 const template = virtualSwaypage.template
 
 // TODO we'll need to render pageData into these first
-const [threads] = await Promise.all([
+const [threads, links] = await Promise.all([
   getSwaypageChaptersByIdCached.value(template.id),
+  getSwaypageLinksByIdCached.value(template.id),
 ])
 
 const { makeVirtualSwaypageLink } = useSwaypageLinks()
@@ -88,6 +106,18 @@ async function trackShare () {
     eventType: "click-share",
     shortcode,
     threadId
+   })
+}
+
+function trackLinkClick(linkText, linkUrl, pageData) {
+  buyerSessionStore.captureVirtualSwaypageEventIfAppropriate({
+    eventType: "click-link",
+    eventData: { 
+      linkText: mustache.render(linkText, pageData),
+      linkUrl: mustache.render(linkUrl, pageData),
+    },
+    shortcode,
+    threadId,
    })
 }
 </script>
