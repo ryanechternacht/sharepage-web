@@ -29,7 +29,7 @@
               </div>
             </div>
 
-            <div>
+            <div v-if="links.length">
               <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
               <div class="flex flex-col">
                 <div v-for="l in links"
@@ -63,7 +63,7 @@
           </div>
         </div>
 
-        <div>
+        <div v-if="links.length">
           <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
           <div class="flex flex-col">
             <div v-for="l in links"
