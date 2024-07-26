@@ -77,9 +77,9 @@
       </div>
 
       <div v-if="selectedTab === 1">
-        <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > 500"
+        <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > maxCampaignSize"
           title="Too many leads were uploaded"
-          description="Campaign have a limit of 500 leads per campaign. When you publish this campaign, we will only create Swaypages for the first 500 leads."
+          :description="`Campaign have a limit of ${maxCampaignSize} leads per campaign. When you publish this campaign, we will only create Swaypages for the first ${maxCampaignSize} leads.`"
           color="orange"
           variant="subtle"
           class="mb-4" />
@@ -118,9 +118,9 @@
       </div>
 
       <div v-if="selectedTab === 2">
-        <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > 500"
+        <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > maxCampaignSize"
           title="Too many leads were uploaded"
-          description="Campaign have a limit of 500 leads per campaign. When you publish this campaign, we will only create Swaypages for the first 500 leads."
+          :description="`Campaign have a limit of ${maxCampaignSize} leads per campaign. When you publish this campaign, we will only create Swaypages for the first ${maxCampaignSize} leads.`"
           color="orange"
           variant="subtle"
           class="mb-4" />
@@ -128,7 +128,7 @@
         <h2>Ready to Publish</h2>
 
         <div class="body">
-          Clicking publish will create {{ campaign.leadsFile.dataRowsCount }} new
+          Clicking publish will create {{ Math.min(campaign.leadsFile.dataRowsCount, maxCampaignSize) }} new
           Swaypages using the leads you've uploaded.
         </div>
         <SubmitButton
@@ -164,7 +164,7 @@ const [campaign] = await Promise.all([
   getCampaignByIdCached.value(campaignId)
 ])
 
-console.log('campaign', campaign)
+const maxCampaignSize = 500
 
 const tabs = computed(() => [{
   label: 'Setup',
