@@ -11,7 +11,6 @@
         </NuxtLink>
       </div>
       <div class="flex flex-row items-center justify-end gap-x-3">
-        <NuxtLink to="/login" class="gray">LOG IN</NuxtLink>
         <UButton to="/signup">SIGNUP</UButton>
       </div>
     </div>

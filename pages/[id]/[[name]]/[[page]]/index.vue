@@ -55,6 +55,7 @@
         <div class="flex-grow" />
         <!-- <div>active</div> -->
         <SwaypagePriorityTag v-if="isSeller"
+          class="hidden sm:flex"
           :priority="swaypage.priority" />
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="swaypage.isPublic">
@@ -66,7 +67,7 @@
             <div class="subtext">Private</div>
           </template>
         </div>
-        <div v-if="canEdit" class="flex flex-row items-center gap-2">
+        <div v-if="canEdit" class="hidden sm:flex flex-row items-center gap-2">
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
           <UIcon name="i-heroicons-document"
             class="icon-menu"

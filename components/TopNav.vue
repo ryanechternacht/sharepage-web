@@ -1,6 +1,6 @@
 <template>
   <div class="h-[5rem] w-full flex flex-row items-center gap-8 px-8 border-b border-gray-200">
-    <NuxtLink to="/" class="mr-4">
+    <NuxtLink to="/" class="flex-shrink-0">
       <img src="/svg/logo-blue.svg" class="icon-header">
     </NuxtLink>
     <template v-if="isSeller">
@@ -49,11 +49,9 @@
 
     <slot name="action-button" />
 
-    <div v-if="user">
-      <UserAvatar :user="user" size="large" />
-    </div>
-    <div v-else>
-      <UButton icon="i-heroicons-arrow-right-end-on-rectangle"
+    <div class="flex-shrink-0">
+      <UserAvatar v-if="user" :user="user" size="large" class="flex-shrink-0" />
+      <UButton v-else icon="i-heroicons-arrow-right-end-on-rectangle"
         variant="outline"
         @click="goToLogin">
         Login
