@@ -32,7 +32,7 @@
       with a link to login. No password needed!
     </div>
 
-    <a
+    <!-- <a
       v-if="showGoogleLogin"
       :href="googleLoginLink"
       class="google-button">
@@ -40,7 +40,7 @@
       <span class="text-[14px] text-medium" style="font-family: Roboto">
         Sign in with Google
       </span>
-    </a>
+    </a> -->
   </div>
 </template>
 
