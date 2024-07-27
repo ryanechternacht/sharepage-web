@@ -1,7 +1,7 @@
 <template>
   <div class="h-[5rem] w-full flex flex-row items-center gap-8 px-8 border-b border-gray-200">
     <NuxtLink to="/" class="flex-shrink-0">
-      <img src="/svg/logo-blue.svg" class="icon-header">
+      <img src="/svg/logo.svg" class="icon-header">
     </NuxtLink>
     <template v-if="isSeller">
       <template v-if="!collapseHeader">
@@ -53,7 +53,7 @@
         <UCard class="h-full">
           <template #header>
             <div class="flex flex-row items-center gap-2"> 
-              <img src="/svg/logo-blue.svg" class="icon-header">
+              <img src="/svg/logo.svg" class="icon-header">
               <h2>Sharepage</h2>
             </div>
           </template>

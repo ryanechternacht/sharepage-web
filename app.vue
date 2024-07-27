@@ -32,7 +32,7 @@ useHead({
   link: [{
     rel: "icon",
     type: "image/png",
-    href: "/svg/logo-blue.svg",
+    href: "/svg/logo.svg",
   }]
 })
 </script>
