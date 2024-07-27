@@ -19,7 +19,7 @@
           :to="`/campaigns/${campaign.uuid}/setup`" />
       </div>
 
-      <h2>Swaypages</h2>
+      <h2>Sharepages</h2>
       <div class="mt-2 swaypage-grid">
         <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>

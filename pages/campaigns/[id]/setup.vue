@@ -79,7 +79,7 @@
       <div v-if="selectedTab === 1">
         <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > maxCampaignSize"
           title="Too many leads were uploaded"
-          :description="`Campaign have a limit of ${maxCampaignSize} leads per campaign. When you publish this campaign, we will only create Swaypages for the first ${maxCampaignSize} leads.`"
+          :description="`Campaign have a limit of ${maxCampaignSize} leads per campaign. When you publish this campaign, we will only create Sharepages for the first ${maxCampaignSize} leads.`"
           color="orange"
           variant="subtle"
           class="mb-4" />
@@ -120,7 +120,7 @@
       <div v-if="selectedTab === 2">
         <UAlert v-if="!campaign.isPublished && campaign.leadsFile.dataRowsCount > maxCampaignSize"
           title="Too many leads were uploaded"
-          :description="`Campaign have a limit of ${maxCampaignSize} leads per campaign. When you publish this campaign, we will only create Swaypages for the first ${maxCampaignSize} leads.`"
+          :description="`Campaign have a limit of ${maxCampaignSize} leads per campaign. When you publish this campaign, we will only create Sharepages for the first ${maxCampaignSize} leads.`"
           color="orange"
           variant="subtle"
           class="mb-4" />
@@ -129,7 +129,7 @@
 
         <div class="body">
           Clicking publish will create {{ Math.min(campaign.leadsFile.dataRowsCount, maxCampaignSize) }} new
-          Swaypages using the leads you've uploaded.
+          Sharepages using the leads you've uploaded.
         </div>
         <SubmitButton
           v-if="!campaign.isPublished"

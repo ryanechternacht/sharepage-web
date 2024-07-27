@@ -3,10 +3,10 @@
     <div class="px-6 pt-6 grid grid-cols-3">
       <div class="flex flex-row items-center gap-x-1">
         <img src="/svg/logo.svg">
-        <h3>Swaypage</h3>
+        <h3>Sharepage</h3>
       </div>
       <div class="flex flex-row items-center gap-x-4 mx-auto">
-        <NuxtLink to="https://www.swaypage.io">
+        <NuxtLink to="https://www.sharepage.io">
           <h3 class="gray">LEARN MORE</h3>
         </NuxtLink>
       </div>

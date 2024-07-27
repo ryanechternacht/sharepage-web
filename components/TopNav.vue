@@ -11,11 +11,11 @@
           <UIcon class="icon-menu" name="i-heroicons-signal" />
           <span>Feed</span>
         </NuxtLink>
-        <NuxtLink to="/swaypages" 
+        <NuxtLink to="/sharepages" 
           class="link"
-          :class="{ 'router-link-active': activeLink === 'swaypages' }">
+          :class="{ 'router-link-active': activeLink === 'sharepages' }">
           <UIcon class="icon-menu" name="i-heroicons-document" />
-          <span>Swaypages</span>
+          <span>Sharepages</span>
         </NuxtLink>
         <NuxtLink to="/campaigns"
           class="link"
@@ -27,20 +27,6 @@
             class="beta-badge"
             size="xs">Beta</UBadge>
         </NuxtLink>
-        <!-- TOOD point this to the correct route -->
-        <!-- <NuxtLink to="/swaypage-demo" class="link">
-          <ZapIcon class="icon-menu" />
-          <span>Leads</span>
-        </NuxtLink> -->
-        <!-- TOOD point this to the correct route -->
-        <!-- <NuxtLink to="" class="link">
-          <SendIcon class="icon-menu" />
-          <span>Campaigns</span>
-        </NuxtLink> -->
-        <!-- <NuxtLink to="/dashboard/activities" class="link">
-          <CheckCircleIcon class="icon-menu" />
-          <span>Activities</span>
-        </NuxtLink> -->
       </template>
 
     </template>
@@ -68,7 +54,7 @@
           <template #header>
             <div class="flex flex-row items-center gap-2"> 
               <img src="/svg/logo-blue.svg" class="icon-header">
-              <h2>Swaypage</h2>
+              <h2>Sharepage</h2>
             </div>
           </template>
 
@@ -79,11 +65,11 @@
               <UIcon class="icon-menu" name="i-heroicons-signal" />
               <span>Feed</span>
             </NuxtLink>
-            <NuxtLink to="/swaypages" 
+            <NuxtLink to="/sharepages" 
               class="link"
-              :class="{ 'router-link-active': activeLink === 'swaypages' }">
+              :class="{ 'router-link-active': activeLink === 'sharepages' }">
               <UIcon class="icon-menu" name="i-heroicons-document" />
-              <span>Swaypages</span>
+              <span>Sharepages</span>
             </NuxtLink>
             <NuxtLink to="/campaigns"
               class="link"

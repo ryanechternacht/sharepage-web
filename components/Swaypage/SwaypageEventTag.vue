@@ -16,7 +16,7 @@ const eventMap = {
     text: "Link Click",
   },
   'click-share': {
-    text: "Swaypage Shared",
+    text: "Sharepage Shared",
   }
 }
 </script>

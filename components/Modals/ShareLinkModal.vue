@@ -5,7 +5,7 @@
         <UTabs v-model="selectedTab" :items="tabs" />
 
         <UAlert v-if="!swaypage.isPublic"
-          title="This Swaypage isn't publicly viewable"
+          title="This Sharepage isn't publicly viewable"
           color="orange"
           variant="subtle"
           :actions="[{

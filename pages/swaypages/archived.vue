@@ -39,7 +39,7 @@ const swaypages = await getSwaypageList.value()
 const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 const roomTypeMap = {
-  'deal-room': 'Swaypages',
+  'deal-room': 'Sharepages',
   'template': 'Template'
 }
 

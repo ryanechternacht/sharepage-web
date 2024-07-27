@@ -116,7 +116,7 @@ const { getSwaypageTypeIcon } = useSwayageIcons()
 const links = computed(() => filter(
   concat(
     [{
-      label: 'Swaypage',
+      label: 'Sharepage',
       icon: 'i-heroicons-document',
       to: makeInternalSwaypageLink(swaypage, 'settings')
     }], 

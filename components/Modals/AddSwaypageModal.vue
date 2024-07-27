@@ -6,7 +6,7 @@
         <UTabs v-model="selectedTab" :items="tabs" />
 
         <h2 class="mx-auto">
-          New {{ selectedTab === 0 ? 'Swaypage' : 'Template' }}
+          New {{ selectedTab === 0 ? 'Sharepage' : 'Template' }}
         </h2>
         <div>
           <div class="text-sm text-gray-500 mb-1">Name *</div>
@@ -73,7 +73,7 @@ const subname = ref('')
 
 const buyer = ref('')
 
-const tabs = [{ label: 'Swaypage' }, { label: 'Template' }]
+const tabs = [{ label: 'Sharepage' }, { label: 'Template' }]
 const selectedTab = ref(0)
 
 async function lookupOnClearbit (query) {

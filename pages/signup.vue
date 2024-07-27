@@ -5,7 +5,7 @@
         :src="organization ? organization.logo : '/logo-big.svg'"
         class="w-20">
       
-      <h1>Signup for {{ organization.name }} Swaypage</h1>
+      <h1>Signup for {{ organization.name }} Sharepage</h1>
       
       
       <div class="flex flex-col gap-2">

@@ -83,7 +83,7 @@ function prettyFormatDate(date) {
 const { makeInternalSwaypageLink } = useSwaypageLinks()
 
 const settingsMenu = [[{
-  label: 'Swaypage Settings',
+  label: 'Sharepage Settings',
   to: makeInternalSwaypageLink(swaypage, 'settings'),
 }]]
 </script>

@@ -3,7 +3,7 @@
     <UCard>
       <div class="flex flex-col gap-4">
         <h2 class="mx-auto">
-          Create Swaypage from this Template
+          Create Sharepage from this Template
         </h2>
         <UFormGroup label="Name" required>
           <UInput v-model="buyer"

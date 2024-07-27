@@ -21,7 +21,7 @@
         color="orange"
         variant="subtle"
         :actions="[{ 
-          label: 'Clone as a Swaypage',
+          label: 'Clone as a Sharepage',
           click: () => cloneSwaypage('deal-room'),
           icon: 'i-heroicons-document-duplicate',
           color: 'orange',
@@ -289,10 +289,10 @@ const settingsMenu = [[{
   label: 'Thread Settings',
   to: makeSwaypageChapterSettingsLink(swaypage, pageId),
 }, {
-  label: 'Swaypage Settings',
+  label: 'Sharepage Settings',
   to: makeInternalSwaypageLink(swaypage, 'settings'),
 }], [{
-  label: 'Clone as Swaypage',
+  label: 'Clone as Sharepage',
   click: () => cloneSwaypage('deal-room')
 }, {
   label: 'Clone as Template',
