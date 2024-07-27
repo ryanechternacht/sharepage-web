@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav active-link="swaypages">
+    <TopNav active-link="sharepages">
       <template #action-button>
         <UButton
           icon="i-heroicons-document"
@@ -38,27 +38,27 @@ import AddSwaypageModal from '@/components/Modals/AddSwaypageModal'
 
 const swaypageMenu = [
   [{
-    label: 'Swaypages',
+    label: 'Sharepages',
     icon: 'i-heroicons-document',
-    to: '/swaypages'
+    to: '/sharepages'
   }, {
     label: 'Templates',
     icon: 'i-heroicons-bookmark',
-    to: '/swaypages/templates'
+    to: '/sharepages/templates'
   }, {
     label: 'Archive',
     icon: 'i-heroicons-archive-box',
-    to: '/swaypages/archived'
+    to: '/sharepages/archived'
   }],
 ]
 
 const route = useRoute()
 const selectedType = computed(() => {
-  if (route.fullPath === '/swaypages') {
+  if (route.fullPath === '/sharepages') {
     return swaypageMenu[0][0]
-  } else if (route.fullPath === '/swaypages/templates') {
+  } else if (route.fullPath === '/sharepages/templates') {
     return swaypageMenu[0][1]
-  } else if (route.fullPath === '/swaypages/archived') {
+  } else if (route.fullPath === '/sharepages/archived') {
     return swaypageMenu[0][2]
   }
 })
