@@ -54,17 +54,17 @@ const shortcode = route.params.shortcode
 const usersStore = useUsersStore()
 const { isUserLoggedIn } = storeToRefs(usersStore)
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const {
   getVirtualSharepageByShortcodeCached,
   getSharepageThreadsByIdCached,
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 
-const virtualSwaypage = await getVirtualSharepageByShortcodeCached.value(shortcode)
+const virtualSharepage = await getVirtualSharepageByShortcodeCached.value(shortcode)
 
-const pageData = virtualSwaypage.pageData
-const template = virtualSwaypage.template
-const owner = virtualSwaypage.owner
+const pageData = virtualSharepage.pageData
+const template = virtualSharepage.template
+const owner = virtualSharepage.owner
 
 const [threads, hasUser] = await Promise.all([
   getSharepageThreadsByIdCached.value(template.id),
@@ -118,7 +118,7 @@ const sections = map(thread.body.sections, s => {
 const title = mustache.render(thread.title, pageData)
 
 const buyerSessionStore = useBuyerSessionStore()
-buyerSessionStore.captureVirtualSwaypageThreadTimingIfAppropriate({ shortcode, threadId })
+buyerSessionStore.captureVirtualSharepageThreadTimingIfAppropriate({ shortcode, threadId })
 </script>
 
 <style lang="postcss" scoped>

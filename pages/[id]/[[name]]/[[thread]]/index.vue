@@ -249,7 +249,7 @@ if (threadId) {
   threadId = thread.id
 }
 
-buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId: sharepageId, page: threadId })
+buyerSessionStore.captureThreadTimingIfAppropriate({ sharepageId, thread: threadId })
 
 const canSellerEdit = isSeller && !sharepage.isLocked
 const canEdit = canSellerEdit || thread.canBuyerEdit

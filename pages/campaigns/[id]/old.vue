@@ -20,27 +20,27 @@
       </div>
 
       <h2>Sharepages</h2>
-      <div class="mt-2 swaypage-grid">
+      <div class="mt-2 sharepage-grid">
         <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
         <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
-        <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
-          :to="makeInternalSharepageLink(swaypage)">
+        <NuxtLink class="contents cursor-pointer group" v-for="sharepage in sharepages"
+          :to="makeInternalSharepageLink(sharepage)">
           <div class="cell body">
-            <Logo :src="swaypage.buyerLogo" class="icon-menu" />
-            {{ swaypage.buyer }}
+            <Logo :src="sharepage.buyerLogo" class="icon-menu" />
+            {{ sharepage.buyer }}
           </div>
           <div class="cell">
-            <SharepagePriorityTag :priority="swaypage.priority" />
+            <SharepagePriorityTag :priority="sharepage.priority" />
           </div>
           <div class="cell">
             <SharepageStatusTag
-              :last-activity-date="swaypage.mostRecentBuyerActivity"
-              :isOnHold="swaypage.status === 'on-hold'" />
+              :last-activity-date="sharepage.mostRecentBuyerActivity"
+              :isOnHold="sharepage.status === 'on-hold'" />
           </div>
-          <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+          <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
         </NuxtLink>
       </div>
     </div>
@@ -58,7 +58,7 @@ const campaignsStore = useCampaignsStore()
 const { getCampaignByIdCached } = storeToRefs(campaignsStore)
 
 const { apiFetch } = useNuxtApp()
-const [campaign, { data: swaypages }] = await Promise.all([
+const [campaign, { data: sharepages }] = await Promise.all([
   getCampaignByIdCached.value(campaignId),
   await apiFetch('/v0.1/buyerspheres', { 
     query: {
@@ -85,7 +85,7 @@ const downloadListUrl = computed(() => {
 </script>
 
 <style lang="postcss" scoped>
-.swaypage-grid {
+.sharepage-grid {
   @apply grid px-8 gap-x-8 border border-gray-200 rounded-md overflow-hidden;
   grid-template-columns: repeat(4, 1fr);
 }

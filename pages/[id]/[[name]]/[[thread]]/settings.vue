@@ -5,7 +5,7 @@
         icon="i-heroicons-arrow-left" 
         variant="ghost"
         color="gray"
-        :to="makeInternalSharepageLink(swaypage, chapterId)" />
+        :to="makeInternalSharepageLink(sharepage, chapterId)" />
         <h1>Settings</h1>
       <div class="flex-grow" />
       <!-- <div>active</div> -->
@@ -57,18 +57,18 @@ import lodash_pkg from 'lodash';
 const { concat, filter, find, map } = lodash_pkg;
 
 const route = useRoute()
-const swaypageId = parseInt(route.params.id)
+const sharepageId = parseInt(route.params.id)
 const chapterId = parseInt(route.params.thread)
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const { 
   getSharepageByIdCached, 
   getSharepageThreadsByIdCached, 
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 
-const [swaypage, chapters] = await Promise.all([
-  getSharepageByIdCached.value(swaypageId),
-  getSharepageThreadsByIdCached.value(swaypageId),
+const [sharepage, chapters] = await Promise.all([
+  getSharepageByIdCached.value(sharepageId),
+  getSharepageThreadsByIdCached.value(sharepageId),
 ])
 
 const { 
@@ -83,17 +83,17 @@ const links = computed(() => filter(
     [{
       label: 'Sharepage',
       icon: 'i-heroicons-document',
-      to: makeInternalSharepageLink(swaypage, 'settings')
+      to: makeInternalSharepageLink(sharepage, 'settings')
     }], 
-    swaypage.roomType === 'template' ? {
+    sharepage.roomType === 'template' ? {
       label: 'Variables',
       icon: 'i-heroicons-variable',
-      to: makeInternalSharepageLink(swaypage, 'variables')
+      to: makeInternalSharepageLink(sharepage, 'variables')
     } : null,
     map(chapters, (chapter) => ({
       label: chapter.title,
       icon: getSharepageThreadTypeIcon(chapter.pageType),
-      to: makeSharepageThreadSettingsLink(swaypage, chapter.id)
+      to: makeSharepageThreadSettingsLink(sharepage, chapter.id)
     }))),
     x => x
 ))
@@ -128,8 +128,8 @@ const chapterTypes = [
 ]
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.updateThread({
-    sharepageId: swaypageId,
+  await sharepageStore.updateThread({
+    sharepageId,
     threadId: chapter.id,
     thread: {
       title,

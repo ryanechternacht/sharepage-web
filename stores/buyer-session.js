@@ -4,30 +4,30 @@ import { useUsersStore } from './users'
 export const useBuyerSessionStore = defineStore('buyer-session', {
   state: () => ({
     sessionId: null,
-    currentPage: null,
+    currentThread: null,
   }),
   getters: {
   },
   actions: {
-    async generateSwaypageActivitySession({ swaypageId }) {
+    async generateSharepageActivitySession({ sharepageId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/session`, 
+        `/v0.1/buyersphere/${sharepageId}/session`, 
         { method: 'POST' },
       )
       this.sessionId = data.value.id
     },
-    async postSwaypageTimingData({ swaypageId, body }) {
+    async postSharepageTimingData({ sharepageId, body }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/session/${this.sessionId}/timing`,
+        `/v0.1/buyersphere/${sharepageId}/session/${this.sessionId}/timing`,
         { 
           method: 'POST',
           body,
         }
       )
     },
-    async capturePageTimingIfAppropriate({ swaypageId, page }) {
+    async captureThreadTimingIfAppropriate({ sharepageId, thread }) {
       // All of my attempts to create sessions server side and pass them
       // to the client (to save time client side), have failed
       // miserably. It feels like it _should work_, but it appears to 
@@ -49,25 +49,25 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
       // setup
       if (!this.sessionId) {
-        await this.generateSwaypageActivitySession({ swaypageId })
+        await this.generateSharepageActivitySession({ sharepageId })
 
         timeMe.initialize({
-          currentPageName: page,
+          currentThreadName: thread,
           idleTimeoutInSeconds: 15,
         })
-        this.currentPage = page
+        this.currentThread = thread
       
         timeMe.callWhenUserLeaves(async () => {
-          await this.postSwaypageTimingData({ 
-            swaypageId, 
+          await this.postSharepageTimingData({ 
+            sharepageId, 
             body: timeMe.getTimeOnAllPagesInSeconds()
           })
         })
 
         setInterval(async () => {
           if (!timeMe.isUserCurrentlyIdle) {
-            await this.postSwaypageTimingData({ 
-              swaypageId, 
+            await this.postSharepageTimingData({ 
+              sharepageId, 
               body: timeMe.getTimeOnAllPagesInSeconds()
             })
           }
@@ -75,34 +75,34 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
       }
 
       // handle switching pages
-      if (this.currentPage !== page) {
-        timeMe.stopTimer(this.currentPage)
-        timeMe.setCurrentPageName(page)
+      if (this.currentThread !== thread) {
+        timeMe.stopTimer(this.currentThread)
+        timeMe.setcurrentThreadName(thread)
 
-        await this.postSwaypageTimingData({ 
-          swaypageId, 
+        await this.postSharepageTimingData({ 
+          sharepageId, 
           body: timeMe.getTimeOnAllPagesInSeconds()
         })
       }
 
-      timeMe.startTimer(page)
-      this.currentPage = page
+      timeMe.startTimer(thread)
+      this.currentThread = thread
     },
-    async capturePageEventIfAppropriate ({ swaypageId, page, eventType, eventData }) {
+    async captureThreadEventIfAppropriate ({ sharepageId, thread, eventType, eventData }) {
       if (!this.sessionId) {
         return
       }
       
       const { apiFetch } = useNuxtApp()
        await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/session/${this.sessionId}/${page}/event`, 
+        `/v0.1/buyersphere/${sharepageId}/session/${this.sessionId}/${thread}/event`, 
         {
           method: 'POST',
           body: { eventType, eventData }
         },
       )
     },
-    async generateVirtualSwaypageActivitySession({ shortcode }) {
+    async generateVirtualSharepageActivitySession({ shortcode }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/virtual-swaypage/${shortcode}/session`, 
@@ -110,23 +110,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
       )
       this.sessionId = data.value.id
     },
-    async captureVirtualPageTimingIfAppropriate ({ swaypageId, page, eventType, eventData }) {
-      if (process.server) {
-        return
-      }
-
-      const usersStore = useUsersStore()
-      const shouldTrack = !(await usersStore.isUserSeller())
-
-      if (!shouldTrack) {
-        return
-      }
-
-      const { timeMe } = useNuxtApp()
-
-
-    },
-    async postVirtualSwaypageTimingData({ shortcode, body }) {
+    async postVirtualSharepageTimingData({ shortcode, body }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
         `/v0.1/virtual-swaypage/${shortcode}/session/${this.sessionId}/timing`,
@@ -136,7 +120,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
         }
       )
     },
-    async captureVirtualSwaypageThreadTimingIfAppropriate({ shortcode, threadId }) {
+    async captureVirtualSharepageThreadTimingIfAppropriate({ shortcode, threadId }) {
       // All of my attempts to create sessions server side and pass them
       // to the client (to save time client side), have failed
       // miserably. It feels like it _should work_, but it appears to 
@@ -158,16 +142,16 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
       // setup
       if (!this.sessionId) {
-        await this.generateVirtualSwaypageActivitySession({ shortcode })
+        await this.generateVirtualSharepageActivitySession({ shortcode })
 
         timeMe.initialize({
-          currentPageName: threadId,
+          currentThreadName: threadId,
           idleTimeoutInSeconds: 15,
         })
-        this.currentPage = threadId
+        this.currentThread = threadId
       
         timeMe.callWhenUserLeaves(async () => {
-          await this.postVirtualSwaypageTimingData({ 
+          await this.postVirtualSharepageTimingData({ 
             shortcode, 
             body: timeMe.getTimeOnAllPagesInSeconds()
           })
@@ -175,7 +159,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
         setInterval(async () => {
           if (!timeMe.isUserCurrentlyIdle) {
-            await this.postVirtualSwaypageTimingData({ 
+            await this.postVirtualSharepageTimingData({ 
               shortcode, 
               body: timeMe.getTimeOnAllPagesInSeconds()
             })
@@ -184,20 +168,20 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
       }
 
       // handle switching threads
-      if (this.currentPage !== threadId) {
-        timeMe.stopTimer(this.currentPage)
-        timeMe.setCurrentPageName(threadId)
+      if (this.currentThread !== threadId) {
+        timeMe.stopTimer(this.currentThread)
+        timeMe.setcurrentThreadName(threadId)
 
-        await this.postVirtualSwaypageTimingData({ 
+        await this.postVirtualSharepageTimingData({ 
           shortcode, 
           body: timeMe.getTimeOnAllPagesInSeconds()
         })
       }
 
       timeMe.startTimer(threadId)
-      this.currentPage = threadId
+      this.currentThread = threadId
     },
-    async captureVirtualSwaypageEventIfAppropriate ({ shortcode, threadId, eventType, eventData }) {
+    async captureVirtualSharepageEventIfAppropriate ({ shortcode, threadId, eventType, eventData }) {
       if (!this.sessionId) {
         return
       }

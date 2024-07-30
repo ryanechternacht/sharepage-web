@@ -1,26 +1,26 @@
 <template>
-  <div class="archived-rooms">
+  <div class="archived-sharepages">
     <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
     <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
     <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
     <h2 class="h-[3rem] flex flex-row items-center">Room Type</h2>
     <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
-    <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
-      :to="makeInternalSharepageLink(swaypage)">
+    <NuxtLink class="contents cursor-pointer group" v-for="sharepage in archiveRooms"
+      :to="makeInternalSharepageLink(sharepage)">
       <div class="cell body">
-        <Logo :src="swaypage.buyerLogo" class="icon-menu" />
-        {{ swaypage.buyer }}
+        <Logo :src="sharepage.buyerLogo" class="icon-menu" />
+        {{ sharepage.buyer }}
       </div>
-      <div class="cell subtext">{{ swaypage.subname }}</div>
+      <div class="cell subtext">{{ sharepage.subname }}</div>
       <div class="cell subtext">
-        <template v-if="swaypage.owner">
-          <UserAvatar :user="swaypage.owner" />
-          {{ swaypage.owner?.firstName }} {{ swaypage.owner?.lastName }} 
+        <template v-if="sharepage.owner">
+          <UserAvatar :user="sharepage.owner" />
+          {{ sharepage.owner?.firstName }} {{ sharepage.owner?.lastName }} 
         </template>
       </div>
-      <div class="cell subtext">{{ roomTypeMap[swaypage.roomType] }}</div>
-      <div class="cell subtext">{{ prettyFormatDate(swaypage.updatedAt )}}</div>
+      <div class="cell subtext">{{ roomTypeMap[sharepage.roomType] }}</div>
+      <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
     </NuxtLink>
   </div>
 </template>
@@ -31,10 +31,10 @@ const { filter, orderBy } = lodash_pkg;
 import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 
-const swaypageStore = useSharepagesStore()
-const { getSharepageList } = storeToRefs(swaypageStore)
+const sharepageStore = useSharepagesStore()
+const { getSharepageList } = storeToRefs(sharepageStore)
 
-const swaypages = await getSharepageList.value()
+const sharepages = await getSharepageList.value()
 
 const { makeInternalSharepageLink } = useSharepageLinks()
 
@@ -45,7 +45,7 @@ const roomTypeMap = {
 
 const archiveRooms = computed(() => 
   orderBy(
-    filter(swaypages,
+    filter(sharepages,
       s => s.status === 'archived'),
     ['updatedAt'],
     ['desc']
@@ -59,7 +59,7 @@ function prettyFormatDate(date) {
 </script>
 
 <style lang="postcss" scoped>
-.archived-rooms {
+.archived-sharepages {
   @apply grid px-8 gap-x-8 border border-gray-200 rounded-md overflow-hidden;
   grid-template-columns: repeat(5, 1fr);
 }

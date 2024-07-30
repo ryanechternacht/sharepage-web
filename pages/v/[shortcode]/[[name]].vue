@@ -23,7 +23,7 @@
                 class="flex flex-row items-center">
                 <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
                   class="sidebar-item">
-                  <SwaypagePageTypeIcon :page-type="t.pageType" />
+                  <SharepagetThreadTypeIcon :page-type="t.pageType" />
                   <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
                 </NuxtLink>
               </div>
@@ -57,7 +57,7 @@
             class="flex flex-row items-center">
             <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
               class="sidebar-item">
-              <SwaypagePageTypeIcon :page-type="t.pageType" />
+              <SharepageThreadTypeIcon :page-type="t.pageType" />
               <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
             </NuxtLink>
           </div>
@@ -97,17 +97,17 @@ const route = useRoute()
 const shortcode = route.params.shortcode
 const name = route.params.name
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const {
   getVirtualSharepageByShortcodeCached,
   getSharepageThreadsByIdCached,
   getSharepageLinksByIdCached,
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 
-const virtualSwaypage = await getVirtualSharepageByShortcodeCached.value(shortcode)
+const virtualSharepage = await getVirtualSharepageByShortcodeCached.value(shortcode)
 
-const pageData = virtualSwaypage.pageData
-const template = virtualSwaypage.template
+const pageData = virtualSharepage.pageData
+const template = virtualSharepage.template
 
 // TODO we'll need to render pageData into these first
 const [threads, links] = await Promise.all([
@@ -133,7 +133,7 @@ if (!threadId) {
 
 const buyerSessionStore = useBuyerSessionStore()
 async function trackShare () {
-  buyerSessionStore.captureVirtualSwaypageEventIfAppropriate({
+  buyerSessionStore.captureVirtualSharepageEventIfAppropriate({
     eventType: "click-share",
     shortcode,
     threadId
@@ -141,7 +141,7 @@ async function trackShare () {
 }
 
 function trackLinkClick(linkText, linkUrl, pageData) {
-  buyerSessionStore.captureVirtualSwaypageEventIfAppropriate({
+  buyerSessionStore.captureVirtualSharepageEventIfAppropriate({
     eventType: "click-link",
     eventData: { 
       linkText: mustache.render(linkText, pageData),

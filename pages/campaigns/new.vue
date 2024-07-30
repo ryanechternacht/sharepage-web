@@ -45,7 +45,7 @@
             @change="fileSelected" />
           <UButton
             icon="i-heroicons-arrow-down-tray"
-            to="/swaypage-csv-template.csv"
+            to="/sharepage-csv-template.csv"
             target="_blank"
             variant="outline">Download Template</UButton>
         </div>
@@ -89,12 +89,12 @@ const title = ref(null)
 
 // TODO better than this
 const { apiFetch } = useNuxtApp()
-const { data: swaypages } = await apiFetch('/v0.1/buyerspheres', { 
+const { data: sharepages } = await apiFetch('/v0.1/buyerspheres', { 
   // query
 })
 const templateRooms = computed(() => 
   orderBy(
-    filter(swaypages.value, 
+    filter(sharepages.value, 
       s => s.status !== 'archived' && s.roomType === 'template'),
     ['updatedAt'],
     ['desc']

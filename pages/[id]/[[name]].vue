@@ -67,18 +67,18 @@
                 </NuxtLink>
               </div>
               <VueDraggable
-                v-model="activePages"
+                v-model="activeThreads"
                 ghost-class="ghost"
                 :animation="200"
                 :scroll="false"
                 group="pages"
                 handle=".drag-handle"
               >
-                <div v-for="p in activePages"
+                <div v-for="p in activeThreads"
                   class="group/sidebar-item flex flex-row items-center">
                   <div class="w-[1.5rem] flex-shrink-0">
                     <UDropdown v-if="canSellerEdit"
-                      :items="makePageMenu(p)">
+                      :items="makeThreadMenu(p)">
                       <UIcon
                         class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
                         name="i-heroicons-ellipsis-vertical" />
@@ -87,14 +87,14 @@
                   <NuxtLink 
                     :href="makeInternalSharepageLink(sharepage, p.id)"
                     class="sidebar-item">
-                    <SharepagePageTypeIcon :page-type="p.pageType" />
+                    <SharepageThreadTypeIcon :page-type="p.pageType" />
                     <div class="text-sm">{{ p.title }}</div>
                   </NuxtLink>
                 </div>
               </VueDraggable>
               <div v-if="canSellerEdit" 
                 class="ml-6 sidebar-item"
-                @click="createNewPage">
+                @click="createNewThread">
                 <UIcon name="i-heroicons-plus" class="text-gray-500" />
                 <div class="text-gray-500 body">New Thread</div>
               </div>
@@ -144,7 +144,7 @@
 
           <div class="hidden md:block mt-16 mb-4 w-full">
             <UDropdown v-if="isSeller" 
-              :items="archivedPagesMenu"
+              :items="archivedThreadsMenu"
               :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
               :popper="{ placement: 'bottom-start' }">
               <div
@@ -173,18 +173,18 @@
             </NuxtLink>
           </div>
           <VueDraggable
-            v-model="activePages"
+            v-model="activeThreads"
             ghost-class="ghost"
             :animation="200"
             :scroll="false"
             group="pages"
             handle=".drag-handle"
           >
-            <div v-for="p in activePages"
+            <div v-for="p in activeThreads"
               class="group/sidebar-item flex flex-row items-center">
               <div class="w-[1.5rem] flex-shrink-0">
                 <UDropdown v-if="canSellerEdit"
-                  :items="makePageMenu(p)">
+                  :items="makeThreadMenu(p)">
                   <UIcon
                     class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
                     name="i-heroicons-ellipsis-vertical" />
@@ -193,14 +193,14 @@
               <NuxtLink 
                 :href="makeInternalSharepageLink(sharepage, p.id)"
                 class="sidebar-item">
-                <SharepagePageTypeIcon :page-type="p.pageType" />
+                <SharepageThreadTypeIcon :page-type="p.pageType" />
                 <div class="text-sm">{{ p.title }}</div>
               </NuxtLink>
             </div>
           </VueDraggable>
           <div v-if="canSellerEdit" 
             class="ml-6 sidebar-item"
-            @click="createNewPage">
+            @click="createNewThread">
             <UIcon name="i-heroicons-plus" class="text-gray-500" />
             <div class="text-gray-500 body">New Thread</div>
           </div>
@@ -277,16 +277,16 @@ definePageMeta({
   key: route => route.fullPath
 })
 
-function makePageMenu(page) {
+function makeThreadMenu(thread) {
   return [[
     {
       label: 'Archive',
       icon: "i-heroicons-archive-box",
-      click: () => removePage(page, 'archived')
+      click: () => removeThread(thread, 'archived')
     }, {
       label: 'Delete',
       icon: "i-heroicons-trash",
-      click: () => removePage(page, 'deleted')
+      click: () => removeThread(thread, 'deleted')
     }
   ]]
 }
@@ -305,7 +305,7 @@ const { isUserSeller } = storeToRefs(usersStore)
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [sharepage, pages, linksSource, isSeller, organization] = await Promise.all([
+const [sharepage, threads, linksSource, isSeller, organization] = await Promise.all([
   getSharepageByIdCached.value(sharepageId),
   getSharepageThreadsByIdCached.value(sharepageId),
   getSharepageLinksByIdCached.value(sharepageId),
@@ -323,39 +323,39 @@ if (process.client) {
   setTimeout(() => linkToPage.value = window.location.href, 2000)
 }
 
-let pageId = route.params.page && parseInt(route.params.page)
-if (!pageId) {
-  pageId = first(filter(pages, p => p.status === 'active')).id
+let threadId = route.params.page && parseInt(route.params.page)
+if (!threadId) {
+  threadId = first(filter(threads, t => t.status === 'active')).id
 }
 
 const buyerSessionStore = useBuyerSessionStore()
 async function trackShare () {
-  buyerSessionStore.capturePageEventIfAppropriate({
+  buyerSessionStore.captureThreadEventIfAppropriate({
     eventType: "click-share",
     sharepageId,
-    page: pageId,
+    thread: threadId,
    })
 }
 
-const activePages = ref([])
-const archivedPages = ref([])
+const activeThreads = ref([])
+const archivedThreads = ref([])
 
-function refreshPages () {
-  activePages.value = orderBy(
-    filter(pages,
+function refreshThreads () {
+  activeThreads.value = orderBy(
+    filter(threads,
       p => p.status === 'active'),
     ['ordering'],
     ['asc']
   )
 
-  archivedPages.value = orderBy(
-    filter(pages,
+  archivedThreads.value = orderBy(
+    filter(threads,
       p => p.status === 'archived'),
     ['ordering'],
     ['asc']
   )
 }
-refreshPages()
+refreshThreads()
 
 // This pattern is because VueDraggable needs its own object (links) to
 // modify as ppl drag around. changes are sent to the store and then
@@ -412,11 +412,11 @@ watch(links, () => {
 })
 
 function trackLinkClick(linkText) {
-  buyerSessionStore.capturePageEventIfAppropriate({
+  buyerSessionStore.captureThreadEventIfAppropriate({
     eventType: "click-link",
     eventData: { linkText },
-    swaypageId: sharepageId,
-    page: pageId,
+    sharepageId,
+    thread: threadId,
    })
 }
 
@@ -431,21 +431,21 @@ async function deleteLink(link) {
   refreshLinks()
 }
 
-const archivedPagesMenu = computed(() => {
-  return [map(archivedPages.value, (p) => ({
+const archivedThreadsMenu = computed(() => {
+  return [map(archivedThreads.value, (p) => ({
     label: p.title,
     to: makeInternalSharepageLink(sharepage, p.id),
   }))]
 })
 
-async function savePageOrdering() {
-  await sharepageStore.reorderThreads({ sharepageId, threads: activePages })
+async function saveThreadOrdering() {
+  await sharepageStore.reorderThreads({ sharepageId, threads: activeThreads })
 }
 
-const debouncedPageReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
+const debouncedThreadReorder = debounce(saveThreadOrdering, 3000, { leading: false, trailing: true })
 
-watch(activePages, () => {
-  debouncedPageReorder()
+watch(activeThreads, () => {
+  debouncedThreadReorder()
 })
 
 const templateItems = computed(() => 
@@ -476,13 +476,13 @@ const templateItems = computed(() =>
 
 const modal = useModal()
 
-async function createNewPage() {
+async function createNewThread() {
   modal.open(CreateThreadModal, {
     sharepageId: sharepage.id,
     thread: null,
     async onClose ({ threadId }) {
       modal.close()
-      refreshPages()
+      refreshThreads()
       await navigateTo(makeInternalSharepageLink(sharepage, threadId))
     }
   })
@@ -509,10 +509,10 @@ function openCreateSharepageFromTemplate () {
   })
 }
 
-async function removePage(page, status) {
-  const i = findIndex(activePages.value,
+async function removeThread(page, status) {
+  const i = findIndex(activeThreads.value,
     p => p.id === page.id)
-  activePages.value.splice(i, 1)
+  activeThreads.value.splice(i, 1)
 
   await sharepageStore.updateThread({
     sharepageId,
@@ -520,8 +520,8 @@ async function removePage(page, status) {
     thread: { status }
   })
 
-  const currentPageId = parseInt(route.params.page)
-  if (page.id === currentPageId) {
+  const currentThreadId = parseInt(route.params.page)
+  if (page.id === currentThreadId) {
     await navigateTo(`/${sharepageId}`)
   }
 }
