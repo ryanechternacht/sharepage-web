@@ -41,7 +41,7 @@ const store = useSharepagesStore()
 
 const props = defineProps({
   link: { type: Object, default: {} },
-  swaypageId: { type: Number, required: true },
+  sharepageId: { type: Number, required: true },
 })
 
 const editMode = ref(!!props.link?.id)
@@ -54,7 +54,7 @@ const linkUrl = ref(props.link?.linkUrl)
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updateLink({
-      sharepageId: props.swaypageId, 
+      sharepageId: props.sharepageId, 
       linkId: props.link.id,
       link: {
         title,
@@ -63,7 +63,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     })
   } else {
     await store.createLink({ 
-      sharepageId: props.swaypageId, 
+      sharepageId: props.sharepageId, 
       title,
       link: {
         title,

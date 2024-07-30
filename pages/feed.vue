@@ -56,7 +56,7 @@
 
             <template v-for="session in buyerSessions">
               <div class="cell">
-                <SwaypagePriorityTag :priority="session.buyersphere.priority" />
+                <SharepagePriorityTag :priority="session.buyersphere.priority" />
               </div>
               <div class="cell">{{ session?.linkedName }}</div>
               <div class="cell">
@@ -64,19 +64,19 @@
                   <div v-for="timing in session.timings"
                     class="contents group">
                     <div class="p-2 group-hover:bg-gray-100 flex flex-row items-start">
-                      <SwaypageTimingTag :timing="timing" />
+                      <SharepageTimingTag :timing="timing" />
                     </div>
                     <div class="p-2 pr-8 group-hover:bg-gray-100 flex flex-row items-start">
-                      <SwaypagePageTag :event="timing" />
+                      <SharepageThreadTag :event="timing" />
                     </div>
                   </div>
                   <div v-for="event in session.events"
                     class="contents group">
                     <div class="p-2 group-hover:bg-gray-100 flex flex-row items-start">
-                      <SwaypageEventTag :event="event" />
+                      <SharepageEventTag :event="event" />
                     </div>
                     <div class="p-2 pr-8 group-hover:bg-gray-100 flex flex-row items-start">
-                      <SwaypagePageTag :event="event" />
+                      <SharepageThreadTag :event="event" />
                     </div>
                   </div>
                 </div>

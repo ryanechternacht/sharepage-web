@@ -1,5 +1,5 @@
-function getSwaypageTypeIcon (swaypageType) {
-  switch (swaypageType) {
+function getSharepageThreadTypeIcon (sharepageType) {
+  switch (sharepageType) {
     case 'general': 
       return 'i-heroicons-document'
     case 'follow-up': 
@@ -17,6 +17,6 @@ function getSwaypageTypeIcon (swaypageType) {
   }
 }
 
-export const useSwayageIcons = () => ({ 
-  getSwaypageTypeIcon,
+export const useSharepageIcons = () => ({ 
+  getSharepageThreadTypeIcon,
 })

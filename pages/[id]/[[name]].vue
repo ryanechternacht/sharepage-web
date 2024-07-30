@@ -260,10 +260,10 @@ import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
 import CreateThreadModal from '@/components/Modals/CreateThreadModal'
-import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
+import CreateSharepageFromTemplateModal from '@/components/Modals/CreateSharepageFromTemplateModal'
 import lodash_pkg from 'lodash';
 const { concat, debounce, filter, findIndex, first, map, orderBy } = lodash_pkg;
-import AddEditSwaypageLinkModal from '@/components/Modals/AddEditSwaypageLinkModal';
+import AddEditSharepageLinkModal from '@/components/Modals/AddEditSharepageLinkModal';
 
 // We shouldn't need to re-render this component on navigation, but 
 // for some reason, `pages` isn't getting updates from the store
@@ -383,8 +383,8 @@ function makeLinkMenu(link) {
 }
 
 function createNewLink () {
-  modal.open(AddEditSwaypageLinkModal, {
-    swaypageId: swaypage.id,
+  modal.open(AddEditSharepageLinkModal, {
+    sharepageId: swaypage.id,
     link: null,
     async onClose () {
       modal.close()
@@ -394,8 +394,8 @@ function createNewLink () {
 }
 
 function editLink (link) {
-  modal.open(AddEditSwaypageLinkModal, {
-    swaypageId: swaypage.id,
+  modal.open(AddEditSharepageLinkModal, {
+    sharepageId: swaypage.id,
     link,
     async onClose () {
       modal.close()
@@ -498,12 +498,12 @@ function openShareModal () {
 }
 
 function openCreateSwaypageFromTemplate () {
-  modal.open(CreateSwaypageFromTemplateModal, {
+  modal.open(CreateSharepageFromTemplateModal, {
     templateId: swaypage.id,
     async onClose (props) {
       modal.close()
-      if (props?.swaypageId) {
-        await navigateTo(`/${props.swaypageId}`)
+      if (props?.sharepageId) {
+        await navigateTo(`/${props.sharepageId}`)
       }
     }
   })

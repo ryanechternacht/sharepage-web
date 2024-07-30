@@ -54,7 +54,7 @@
         </div>
         <div class="flex-grow" />
         <!-- <div>active</div> -->
-        <SwaypagePriorityTag v-if="isSeller"
+        <SharepagePriorityTag v-if="isSeller"
           class="hidden sm:flex"
           :priority="swaypage.priority" />
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">

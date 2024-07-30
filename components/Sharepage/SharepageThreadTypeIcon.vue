@@ -1,6 +1,6 @@
 <template>
   <!-- <UIcon :name="icon" /> -->
-  <UIcon :name="getSwaypageTypeIcon(pageType)" />
+  <UIcon :name="getSharepageThreadTypeIcon(pageType)" />
 </template>
 
 <script setup>
@@ -8,5 +8,5 @@ const props = defineProps({
   pageType: { type: String, required: true }
 })
 
-const { getSwaypageTypeIcon } = useSwayageIcons()
+const { getSharepageThreadTypeIcon } = useSharepageIcons()
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="border border-gray-200 rounded-md py-.5 px-2 grid-layout bg-white">
-    <SwaypagePageTypeIcon :page-type="event.pageType" 
+    <SharepagePageTypeIcon :page-type="event.pageType" 
       class="text-gray-500" />
     
     <div class="subtext">{{ event.title }}</div>

@@ -168,7 +168,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     templateData[`field${i+1}`] = v
   })
 
-  const swaypageId = await store.createSharepageFromTemplate({
+  const sharepageId = await store.createSharepageFromTemplate({
     buyer,
     subname,
     buyerLogo: clearbitLogo.value.logo,
@@ -176,7 +176,7 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
     templateData,
   })
   await store.invalidateAllSharepageCache()
-  emit('close', { swaypageId })
+  emit('close', { sharepageId })
 })
 
 const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)

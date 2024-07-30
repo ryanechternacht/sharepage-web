@@ -33,10 +33,10 @@
             {{ swaypage.buyer }}
           </div>
           <div class="cell">
-            <SwaypagePriorityTag :priority="swaypage.priority" />
+            <SharepagePriorityTag :priority="swaypage.priority" />
           </div>
           <div class="cell">
-            <SwaypageStatusTag
+            <SharepageStatusTag
               :last-activity-date="swaypage.mostRecentBuyerActivity"
               :isOnHold="swaypage.status === 'on-hold'" />
           </div>

@@ -111,7 +111,7 @@ const {
   makeSwaypageChapterSettingsLink,
 } = useSwaypageLinks()
 
-const { getSwaypageTypeIcon } = useSwayageIcons()
+const { getSharepageThreadTypeIcon } = useSwaypageIcons()
 
 const links = computed(() => filter(
   concat(
@@ -127,7 +127,7 @@ const links = computed(() => filter(
     } : null,
     map(chapters, (chapter) => ({
       label: chapter.title,
-      icon: getSwaypageTypeIcon(chapter.pageType),
+      icon: getSharepageThreadTypeIcon(chapter.pageType),
       to: makeSwaypageChapterSettingsLink(swaypage, chapter.id)
     }))),
     x => x

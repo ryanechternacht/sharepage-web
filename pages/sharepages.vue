@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import AddSwaypageModal from '@/components/Modals/AddSwaypageModal'
+import AddSharepageModal from '@/components/Modals/AddSharepageModal'
 
 const swaypageMenu = [
   [{
@@ -65,11 +65,11 @@ const selectedType = computed(() => {
 
 const modal = useModal()
 function openModal () {
-  modal.open(AddSwaypageModal, {
+  modal.open(AddSharepageModal, {
     async onClose (props) {
       modal.close()
-      if (props?.swaypageId) {
-        await navigateTo(`/${props.swaypageId}`)
+      if (props?.sharepageId) {
+        await navigateTo(`/${props.sharepageId}`)
       }
     }
   })
