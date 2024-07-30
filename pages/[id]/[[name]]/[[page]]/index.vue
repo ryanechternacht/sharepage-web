@@ -22,13 +22,13 @@
         variant="subtle"
         :actions="[{ 
           label: 'Clone as a Sharepage',
-          click: () => cloneSwaypage('deal-room'),
+          click: () => cloneSharepage('deal-room'),
           icon: 'i-heroicons-document-duplicate',
           color: 'orange',
           variant: 'solid'
         }, { 
           label: 'Clone as a Template',
-          click: () => cloneSwaypage('template'),
+          click: () => cloneSharepage('template'),
           icon: 'i-heroicons-document-duplicate',
           color: 'orange',
           variant: 'solid' 
@@ -293,10 +293,10 @@ const settingsMenu = [[{
   to: makeInternalSwaypageLink(swaypage, 'settings'),
 }], [{
   label: 'Clone as Sharepage',
-  click: () => cloneSwaypage('deal-room')
+  click: () => cloneSharepage('deal-room')
 }, {
   label: 'Clone as Template',
-  click: () => cloneSwaypage('template')
+  click: () => cloneSharepage('template')
 }]]
 
 const keys = map(page?.body.sections, s => s.key || 0)
@@ -357,7 +357,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   page.body = body.value
   page.title = title.value
-  await swaypageStore.updateThread({ swaypageId, threadID: pageId, thread: page })
+  await swaypageStore.updateThread({ sharepageId: swaypageId, threadID: pageId, thread: page })
   isDirty.value = false
 })
 
@@ -467,7 +467,7 @@ const modal = useModal()
 
 async function restorePage() {
   await swaypageStore.updateThread({
-    swaypageId,
+    sharepageId: swaypageId,
     threadId: pageId,
     thread: { status: 'active' }
   })
@@ -477,9 +477,9 @@ async function restorePage() {
   reloadNuxtApp()
 }
 
-async function cloneSwaypage(roomType) {
-  const newId = await swaypageStore.cloneSwaypage({ roomType, swaypageId: swaypage.id })
-  swaypageStore.invalidateAllSwaypageCache()
+async function cloneSharepage(roomType) {
+  const newId = await swaypageStore.cloneSharepage({ roomType, sharepageId: swaypage.id })
+  swaypageStore.invalidateAllSharepageCache()
   await navigateTo(`/${newId}`)
 }
 </script>

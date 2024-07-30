@@ -404,7 +404,7 @@ function editLink (link) {
 }
 
 async function saveLinkOrdering() {
-  await swaypageStore.reorderLinks({ swaypageId, links })
+  await swaypageStore.reorderLinks({ sharepageId: swaypageId, links })
 }
 const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
 watch(links, () => {
@@ -425,7 +425,7 @@ async function deleteLink(link) {
   links.value.splice(i, 1)
 
   await swaypageStore.deleteLink({
-    swaypageId,
+    sharepageId: swaypageId,
     linkId: link.id,
   })
   refreshLinks()
@@ -439,7 +439,7 @@ const archivedPagesMenu = computed(() => {
 })
 
 async function savePageOrdering() {
-  await swaypageStore.reorderThreads({ swaypageId, threads: activePages })
+  await swaypageStore.reorderThreads({ sharepageId: swaypageId, threads: activePages })
 }
 
 const debouncedPageReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
@@ -515,7 +515,7 @@ async function removePage(page, status) {
   activePages.value.splice(i, 1)
 
   await swaypageStore.updateThread({
-    swaypageId,
+    sharepageId: swaypageId,
     threadId: page.id,
     thread: { status }
   })

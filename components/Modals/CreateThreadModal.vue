@@ -82,7 +82,7 @@ const threadTypes = [
 
 const { submissionState, submitFn } = useSubmit(async () => {
   const threadId = await store.createThread({
-    swaypageId: props.swaypageId,
+    sharepageId: props.swaypageId,
     thread: {
       title,
       pageType: threadType,

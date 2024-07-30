@@ -10,7 +10,7 @@ const shortcode = route.params.shortcode
 const name = route.params.name
 
 const store = useSharepagesStore()
-const swaypage = await store.getSwaypageByShortcode({ shortcode })
+const swaypage = await store.getSharepageByShortcode({ shortcode })
 
 if (swaypage) {
   await navigateTo(`/${swaypage.id}?sent-to=${name}`, { redirectCode: 301 })

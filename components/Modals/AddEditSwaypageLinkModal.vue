@@ -54,7 +54,7 @@ const linkUrl = ref(props.link?.linkUrl)
 const { submissionState, submitFn } = useSubmit(async () => {
   if (editMode.value) {
     await store.updateLink({
-      swaypageId: props.swaypageId, 
+      sharepageId: props.swaypageId, 
       linkId: props.link.id,
       link: {
         title,
@@ -63,7 +63,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
     })
   } else {
     await store.createLink({ 
-      swaypageId: props.swaypageId, 
+      sharepageId: props.swaypageId, 
       title,
       link: {
         title,

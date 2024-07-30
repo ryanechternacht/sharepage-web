@@ -129,7 +129,7 @@ const chapterTypes = [
 
 const { submissionState, submitFn } = useSubmit(async () => {
   await swaypageStore.updateThread({
-    swaypageId: swaypageId,
+    sharepageId: swaypageId,
     threadId: chapter.id,
     thread: {
       title,

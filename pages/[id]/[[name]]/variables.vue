@@ -120,8 +120,8 @@ const links = computed(() => filter(
 const variables = ref(clone(swaypage.templateCustomVariables))
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.saveSwaypageSettings({
-    swaypageId: swaypage.id,
+  await swaypageStore.saveSharepageSettings({
+    sharepageId: swaypage.id,
     templateCustomVariables: variables,
   })
 })

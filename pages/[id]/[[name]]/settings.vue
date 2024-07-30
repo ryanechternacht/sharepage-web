@@ -191,8 +191,8 @@ async function lookupOnClearbit (query) {
 }
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.saveSwaypageSettings({
-    swaypageId: swaypage.id,
+  await swaypageStore.saveSharepageSettings({
+    sharepageId: swaypage.id,
     buyer,
     priority,
     subname,

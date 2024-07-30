@@ -92,14 +92,14 @@ async function lookupOnClearbit (query) {
 }
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  const swaypageId = await store.createSwaypage({
+  const swaypageId = await store.createSharepage({
     buyer,
     subname,
     buyerLogo: clearbitLogo.value?.logo,
     roomType: selectedTab.value === 0 ? 'deal-room' : 'template',
     pageTitle: 'New Thread'
   })
-  await store.invalidateAllSwaypageCache()
+  await store.invalidateAllSharepageCache()
   emit('close', { swaypageId })
 })
 

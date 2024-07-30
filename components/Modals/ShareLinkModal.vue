@@ -74,8 +74,8 @@ const generalLink = makeExternalSwaypageLink(
 
 const store = useSharepagesStore()
 async function makePublic() {
-  await store.saveSwaypageSettings({
-    swaypageId: props.swaypage.id,
+  await store.saveSharepageSettings({
+    sharepageId: props.swaypage.id,
     isPublic: true,
   })
 }

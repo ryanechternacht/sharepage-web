@@ -18,35 +18,35 @@ export const useSharepagesStore = defineStore('sharepages', {
   }),
   getters: {
     getSharepageByIdCached: (state) => async (sharepageId) => {
-      await state.fetchSwaypage({ sharepageId })
+      await state.fetchSharepage({ sharepageId })
       return state.buyerspheres[sharepageId]?.content
     },
     // TODO can we separate active from archived here without 
     // double fetching? I think we double fetch user data in 
     // when trying to load multiple getters in parallel 
     getSharepageThreadsByIdCached: (state) => async (sharepageId) => {
-      await state.fetchSwaypagePages({ sharepageId })
+      await state.fetchSharepageThreads({ sharepageId })
       return state.threads[sharepageId]?.content
     },
     getSharepageLinksByIdCached: (state) => async (sharepageId) => {
-      await state.fetchSwaypageLinks({ sharepageId })
+      await state.fetchSharepageLinks({ sharepageId })
       return state.links[sharepageId]?.content
     },
     getSharepageBuyerSessionsByIdCached: (state) => async (sharepageId) => {
-      await state.fetchSwaypageBuyerSessions({ sharepageId })
+      await state.fetchSharepageBuyerSessions({ sharepageId })
       return state.buyerSessions[sharepageId]?.content
     },
     getSharepageList: (state) => async () => {
-      await state.fetchAllSwaypages()
+      await state.fetchAllSharepages()
       return state.all.content
     },
     getVirtualSharepageByShortcodeCached: (state) => async (shortcode) => {
-      await state.fetchVirtualSwaypage({ shortcode })
+      await state.fetchVirtualSharepage({ shortcode })
       return state.virtualSharepages[shortcode]?.content
     }
   },
   actions: {
-    async fetchAllSwaypages({ forceRefresh } = {}) {
+    async fetchAllSharepages({ forceRefresh } = {}) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -59,11 +59,11 @@ export const useSharepagesStore = defineStore('sharepages', {
         this.all.generatedAt = dayjs().toJSON()
       }
     },
-    async invalidateAllSwaypageCache() {
+    async invalidateAllSharepageCache() {
       const dayjs = useDayjs()
       this.all.generatedAt = dayjs(0).toJSON()
     },
-    async createSwaypage({ 
+    async createSharepage({ 
       buyer, subname, buyerLogo, crmOpportunityId, dealAmount,
       pageTemplateId, pageTitle, roomType
     }) {
@@ -86,15 +86,15 @@ export const useSharepagesStore = defineStore('sharepages', {
       )
       return data.value.id
     },
-    async cloneSwaypage({ swaypageId, roomType }) {
+    async cloneSharepage({ sharepageId, roomType }) {
       const { apiFetch } = useNuxtApp()
-      const { data } =  await apiFetch(`/v0.1/swaypage/${swaypageId}/clone`, {
+      const { data } =  await apiFetch(`/v0.1/swaypage/${sharepageId}/clone`, {
         method: 'POST', 
         body: { roomType }
       })
       return data.value.id
     },
-    async createSwaypageFromTemplate({ 
+    async createSharepageFromTemplate({ 
       templateId, buyer, subname, buyerLogo, templateData
     }) {
       const { apiFetch } = useNuxtApp()
@@ -112,15 +112,15 @@ export const useSharepagesStore = defineStore('sharepages', {
       )
       return data.value.id
     },
-    async saveSwaypageSettings({
-      swaypageId, buyer, subname, buyerLogo, dealAmount, 
+    async saveSharepageSettings({
+      sharepageId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing, qualificationDate, 
       evaluationDate, decisionDate, status, isPublic, roomType, priority,
       templateCustomVariables
     }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}`,
+        `/v0.1/buyersphere/${sharepageId}`,
         { 
           method: 'PATCH',
           body: { 
@@ -143,7 +143,7 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       )
 
-      const s = this.buyerspheres[swaypageId].content
+      const s = this.buyerspheres[sharepageId].content
       s.currentStage = data.value.currentStage
       s.buyer = data.value.buyer
       s.subname = data.value.subname
@@ -159,48 +159,7 @@ export const useSharepagesStore = defineStore('sharepages', {
       s.priority = data.value.priority
       s.templateCustomVariables = data.value.templateCustomVariables
     },
-    async updateBuyerInput({ swaypageId, featuresAnswer, successCriteriaAnswer,
-      objectivesAnswer, constraintsAnswer, pricingTierId, status }) {
-      const { apiFetch } = useNuxtApp()
-      const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}`,
-        { 
-          method: 'PATCH', 
-          body: { 
-            featuresAnswer,
-            successCriteriaAnswer,
-            objectivesAnswer,
-            constraintsAnswer,
-            pricingTierId,
-            status,
-          } 
-        }
-      )
-      const b = this.buyerspheres && this.buyerspheres[swaypageId]?.content
-      if (!b) {
-        return
-      }
-      
-      if (data.value.featuresAnswer !== undefined) {
-        b.featuresAnswer = data.value.featuresAnswer
-      }
-      if (data.value.successCriteriaAnswer !== undefined) {
-        b.successCriteriaAnswer = data.value.successCriteriaAnswer
-      }
-      if (data.value.objectivesAnswer !== undefined) {
-        b.objectivesAnswer = data.value.objectivesAnswer
-      }
-      if (data.value.constraintsAnswer !== undefined) {
-        b.constraintsAnswer = data.value.constraintsAnswer
-      }
-      if (data.value.pricingTierId !== undefined) {
-        b.pricingTierId = data.value.pricingTierId
-      }
-      if (data.value.status !== undefined) {
-        b.status = data.value.status
-      }
-    },
-    async fetchSwaypage({ sharepageId, forceRefresh }) {
+    async fetchSharepage({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -215,57 +174,57 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       }
     },
-    async getSwaypageByShortcode({ shortcode }) {
+    async getSharepageByShortcode({ shortcode }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(`/v0.1/buyersphere/shortcode/${shortcode}`)
       return data?.value
     },
-    async createBuyerUser({ swaypageId, user }) {
+    async createBuyerUser({ sharepageId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/team/buyer`,
+        `/v0.1/buyersphere/${sharepageId}/team/buyer`,
         { method: 'POST', body: user }
       )
       
-      this.buyerspheres[swaypageId].content.buyerTeam = data.value
+      this.buyerspheres[sharepageId].content.buyerTeam = data.value
     },
-    async editBuyerUser({ swaypageId, user }) {
+    async editBuyerUser({ sharepageId, user }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/team/buyer/${user.id}`,
+        `/v0.1/buyersphere/${sharepageId}/team/buyer/${user.id}`,
         { method: 'PATCH', body: user }
       )
       
-      this.buyerspheres[swaypageId].content.buyerTeam = data.value
+      this.buyerspheres[sharepageId].content.buyerTeam = data.value
     },
-    async removeBuyerUser({ swaypageId, userId }) {
+    async removeBuyerUser({ sharepageId, userId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/team/buyer/${userId}`,
+        `/v0.1/buyersphere/${sharepageId}/team/buyer/${userId}`,
         { method: 'DELETE' }
       )
 
-      this.buyerspheres[swaypageId].content.buyerTeam = data.value
+      this.buyerspheres[sharepageId].content.buyerTeam = data.value
     },
-    async addSellerUser({ swaypageId, user}) {
+    async addSellerUser({ sharepageId, user}) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/team/seller`,
+        `/v0.1/buyersphere/${sharepageId}/team/seller`,
         { method: 'POST', body: { user_id: user.id } }
       )
       
-      this.buyerspheres[swaypageId].content.sellerTeam = data.value
+      this.buyerspheres[sharepageId].content.sellerTeam = data.value
     },
-    async removeSellerUser({ swaypageId, userId }) {
+    async removeSellerUser({ sharepageId, userId }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/team/seller/${userId}`,
+        `/v0.1/buyersphere/${sharepageId}/team/seller/${userId}`,
         { method: 'DELETE' }
       )
 
-      this.buyerspheres[swaypageId].content.sellerTeam = data.value
+      this.buyerspheres[sharepageId].content.sellerTeam = data.value
     },
-    async fetchSwaypagePages({ sharepageId, forceRefresh }) {
+    async fetchSharepageThreads({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -281,23 +240,23 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       }
     },
-    async createThread({ swaypageId, thread }) {
+    async createThread({ sharepageId, thread }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/pages`,
+        `/v0.1/buyerspheres/${sharepageId}/pages`,
         { method: 'POST', body: thread }
       )
-      this.threads[swaypageId].content.push(data.value)
+      this.threads[sharepageId].content.push(data.value)
       return data.value.id
     },
-    async updateThread({ swaypageId, threadId, thread }) {
+    async updateThread({ sharepageId, threadId, thread }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/page/${threadId}`,
+        `/v0.1/buyerspheres/${sharepageId}/page/${threadId}`,
         { method: 'PATCH', body: thread }
       )
       
-      const t = find(this.threads[swaypageId].content, t => t.id === threadId)
+      const t = find(this.threads[sharepageId].content, t => t.id === threadId)
       if (t) {
         if (data.value.title !== undefined) {
           t.title = data.value.title
@@ -322,28 +281,28 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       }
     },
-    async deleteThread({ swaypageId, threadId }) {
+    async deleteThread({ sharepageId, threadId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/page/${threadId}`,
+        `/v0.1/buyerspheres/${sharepageId}/page/${threadId}`,
         { method: 'DELETE' }
       )
 
-      remove(this.threads[swaypageId].content, c => c.id === threadId)
+      remove(this.threads[sharepageId].content, c => c.id === threadId)
     },
-    async reorderThreads({ swaypageId, threads }) {
+    async reorderThreads({ sharepageId, threads }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/pages/ordering`,
+        `/v0.1/buyerspheres/${sharepageId}/pages/ordering`,
         { method: 'PATCH', body: threads }
       )
-      this.threads[swaypageId] = {
+      this.threads[sharepageId] = {
         content: data.value,
         generatedAt: dayjs().toJSON()
       }
     },
-    async fetchSwaypageLinks({ sharepageId, forceRefresh }) {
+    async fetchSharepageLinks({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -358,23 +317,23 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       }
     },
-    async createLink({ swaypageId, link }) {
+    async createLink({ sharepageId, link }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/links`,
+        `/v0.1/buyersphere/${sharepageId}/links`,
         { method: 'POST', body: link }
       )
-      this.links[swaypageId].content.push(data.value)
+      this.links[sharepageId].content.push(data.value)
       return data.value.id
     },
-    async updateLink({ swaypageId, linkId, link }) {
+    async updateLink({ sharepageId, linkId, link }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/link/${linkId}`,
+        `/v0.1/buyersphere/${sharepageId}/link/${linkId}`,
         { method: 'PATCH', body: link }
       )
       
-      const l = find(this.links[swaypageId].content, l => l.id === linkId)
+      const l = find(this.links[sharepageId].content, l => l.id === linkId)
       if (l) {
         if (data.value.title !== undefined) {
           l.title = data.value.title
@@ -387,28 +346,28 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       }
     },
-    async deleteLink({ swaypageId, linkId }) {
+    async deleteLink({ sharepageId, linkId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/link/${linkId}`,
+        `/v0.1/buyersphere/${sharepageId}/link/${linkId}`,
         { method: 'DELETE' }
       )
 
-      remove(this.links[swaypageId].content, l => l.id === linkId)
+      remove(this.links[sharepageId].content, l => l.id === linkId)
     },
-    async reorderLinks({ swaypageId, links }) {
+    async reorderLinks({ sharepageId, links }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyersphere/${swaypageId}/links/ordering`,
+        `/v0.1/buyersphere/${sharepageId}/links/ordering`,
         { method: 'PATCH', body: links }
       )
-      this.links[swaypageId] = {
+      this.links[sharepageId] = {
         content: data.value,
         generatedAt: dayjs().toJSON()
       }
     },
-    async fetchSwaypageBuyerSessions({ sharepageId, forceRefresh }) {
+    async fetchSharepageBuyerSessions({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
@@ -423,7 +382,7 @@ export const useSharepagesStore = defineStore('sharepages', {
         }
       }
     },
-    async fetchVirtualSwaypage({ shortcode, forceRefresh }) {
+    async fetchVirtualSharepage({ shortcode, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
