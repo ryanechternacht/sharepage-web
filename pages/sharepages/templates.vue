@@ -5,7 +5,7 @@
     <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
     <NuxtLink class="contents cursor-pointer group" v-for="swaypage in templateRooms"
-      :to="makeInternalSwaypageLink(swaypage)">
+      :to="makeInternalSharepageLink(swaypage)">
       <div class="cell body">
         <UIcon v-if="swaypage.isLocked"
           name="i-heroicons-lock-closed"/>
@@ -32,7 +32,7 @@ const { getSharepageList } = storeToRefs(swaypageStore)
 
 const swaypages = await getSharepageList.value()
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSharepageLink } = useSharepageLinks()
 
 const templateRooms = computed(() => 
   orderBy(

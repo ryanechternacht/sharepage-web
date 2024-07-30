@@ -80,11 +80,11 @@ function prettyFormatDate(date) {
   return dayjs(date).calendar()
 }
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSharepageLink } = useSharepageLinks()
 
 const settingsMenu = [[{
   label: 'Sharepage Settings',
-  to: makeInternalSwaypageLink(swaypage, 'settings'),
+  to: makeInternalSharepageLink(swaypage, 'settings'),
 }]]
 </script>
 

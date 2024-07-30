@@ -1,21 +1,21 @@
 <template>
   <div>
-    <h2 v-if="!page">
-      There are no Threads in this Swaypage. Create a New Thread on the left
+    <h2 v-if="!thread">
+      There are no Threads in this Sharepage. Create a New Thread on the left
     </h2>
     <div class="min-w-0" v-else>
-      <UAlert v-if="page.status === 'archived'"
+      <UAlert v-if="thread.status === 'archived'"
         title="This Thread is currently archived"
         color="orange"
         variant="subtle"
         :actions="[{
           label: 'Restore Thread',
-          click: restorePage,
+          click: restoreThread,
           icon: 'i-heroicons-arrow-uturn-left',
           color: 'orange',
           variant: 'solid'
         }]" />
-      <UAlert v-else-if="swaypage.isLocked"
+      <UAlert v-else-if="sharepage.isLocked"
         title="This Template is currently locked."
         description="This Template is currently locked because it is used by a campaign. You can make a copy of it if you want to edit it before using it in a new campaign."
         color="orange"
@@ -39,26 +39,26 @@
           <UserAvatar
             class="-mr-.5 shrink-0"
             size="small"
-            :user="swaypage.owner" />
-          <div v-if="swaypage.owner" class="ml-4 shrink-0 text-sm">
-            Made by {{ swaypage.owner?.firstName }}
+            :user="sharepage.owner" />
+          <div v-if="sharepage.owner" class="ml-4 shrink-0 text-sm">
+            Made by {{ sharepage.owner?.firstName }}
           </div>
           <!-- TODO this text should be better -->
-          <!-- <UserAvatar v-for="s in swaypage.sellerTeam" 
+          <!-- <UserAvatar v-for="s in sharepage.sellerTeam" 
             class="-mr-.5 shrink-0"
             size="small"
             :user="s" />
           <div class="ml-4 shrink-0 text-sm">Made by
-            <span v-for="(s, i) in swaypage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
+            <span v-for="(s, i) in sharepage.sellerTeam">{{ i > 1 ? "s.firstName, " : s.firstName }}</span>
           </div> -->
         </div>
         <div class="flex-grow" />
         <!-- <div>active</div> -->
         <SharepagePriorityTag v-if="isSeller"
           class="hidden sm:flex"
-          :priority="swaypage.priority" />
+          :priority="sharepage.priority" />
         <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
-          <template v-if="swaypage.isPublic">
+          <template v-if="sharepage.isPublic">
             <UIcon class="icon-menu text-green-300" name="i-heroicons-eye" />
             <div class="subtext">Public</div>
           </template>
@@ -107,24 +107,24 @@
             <EditorTextArea v-if="section.type === 'text'"
               v-model="section.text"
               :readonly="!canEdit"
-              :include-ai-prompt="swaypage.roomType !== 'template'"
-              :include-ai-prompt-template="swaypage.roomType === 'template'"
+              :include-ai-prompt="sharepage.roomType !== 'template'"
+              :include-ai-prompt-template="sharepage.roomType === 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)" />
             
             <EditorHeader v-if="section.type === 'header'"
               v-model="section.text"
               :readonly="!canEdit"
-              :include-ai-prompt-template="swaypage.roomType === 'template'"
-              :include-ai-prompt="swaypage.roomType !== 'template'"
+              :include-ai-prompt-template="sharepage.roomType === 'template'"
+              :include-ai-prompt="sharepage.roomType !== 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)" />
 
             <EditorAiPrompt v-if="section.type === 'ai-prompt'"
               :model-value="section"
               :readonly="!canEdit"
-              :include-ai-prompt-template="swaypage.roomType === 'template'"
-              :include-ai-prompt="swaypage.roomType !== 'template'"
+              :include-ai-prompt-template="sharepage.roomType === 'template'"
+              :include-ai-prompt="sharepage.roomType !== 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)"
               @update:model-value="s => updateItem(index, s)" />
@@ -132,16 +132,16 @@
             <EditorAiPromptTemplate v-if="section.type === 'ai-prompt-template'"
               v-model="section.prompt"
               :readonly="!canEdit"
-              :include-ai-prompt-template="swaypage.roomType === 'template'"
-              :include-ai-prompt="swaypage.roomType !== 'template'"
+              :include-ai-prompt-template="sharepage.roomType === 'template'"
+              :include-ai-prompt="sharepage.roomType !== 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @delete:item="removeItem(index)" />
 
             <EditorAsset v-if="section.type === 'asset'"
               :model-value="section"
               :readonly="!canEdit"
-              :include-ai-prompt-template="swaypage.roomType === 'template'"
-              :include-ai-prompt="swaypage.roomType !== 'template'"
+              :include-ai-prompt-template="sharepage.roomType === 'template'"
+              :include-ai-prompt="sharepage.roomType !== 'template'"
               @insert:item="({ item }) => insertBlock({ item, index })"
               @click:item="assetClick(section.link)"
               @delete:item="removeItem(index)"
@@ -177,22 +177,22 @@ import { VueDraggable } from 'vue-draggable-plus'
 useEmbedly()
 
 const route = useRoute()
-const swaypageId = parseInt(route.params.id)
+const sharepageId = parseInt(route.params.id)
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const { 
   getSharepageByIdCached, 
   getSharepageThreadsByIdCached, 
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 
 const buyerSessionStore = useBuyerSessionStore()
 
-const [swaypage, pages, hasUser, isSeller] = await Promise.all([
-  getSharepageByIdCached.value(swaypageId),
-  getSharepageThreadsByIdCached.value(swaypageId),
+const [sharepage, threads, hasUser, isSeller] = await Promise.all([
+  getSharepageByIdCached.value(sharepageId),
+  getSharepageThreadsByIdCached.value(sharepageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
@@ -221,12 +221,12 @@ const newBlocksMenu = [
     icon: 'i-heroicons-bars-3-bottom-left',
     click: () => newTextBlock(),
   }, 
-  ...swaypage.roomType !== 'template' ? [{
+  ...sharepage.roomType !== 'template' ? [{
     label: 'AI Prompt',
     icon: 'i-heroicons-computer-desktop',
     click: () => newAiBlock(),
   }] : [], 
-  // ...swaypage.roomType === 'template' ? [{
+  // ...sharepage.roomType === 'template' ? [{
   //   label: 'AI Prompt',
   //   icon: 'i-heroicons-computer-desktop',
   //   click: () => newAiTemplateBlock(),
@@ -238,24 +238,24 @@ const newBlocksMenu = [
   }]
 ]
 
-let pageId = parseInt(route.params.page)
-let page
+let threadId = parseInt(route.params.thread)
+let thread
 // when we get here from a shareable link, the page id isn't in the url,
 // so we'll pull it from the page we're sending them to
-if (pageId) {
-  page = find(pages, p => p.id === pageId)
+if (threadId) {
+  thread = find(threads, t => t.id === threadId)
 } else {
-  page = first(filter(pages, p => p.status === 'active'))
-  pageId = page.id
+  thread = first(filter(threads, t => t.status === 'active'))
+  threadId = thread.id
 }
 
-buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId, page: pageId })
+buyerSessionStore.capturePageTimingIfAppropriate({ swaypageId: sharepageId, page: threadId })
 
-const canSellerEdit = isSeller && !swaypage.isLocked
-const canEdit = canSellerEdit || page.canBuyerEdit
+const canSellerEdit = isSeller && !sharepage.isLocked
+const canEdit = canSellerEdit || thread.canBuyerEdit
 
-const metaTitle = `Discover ${swaypage.buyer}`
-const metaDescription = `Learn more about what ${swaypage.buyer} has to offer`
+const metaTitle = `Discover ${sharepage.buyer}`
+const metaDescription = `Learn more about what ${sharepage.buyer} has to offer`
 
 useSeoMeta({
   title: metaTitle,
@@ -274,23 +274,23 @@ router.beforeEach(async () => {
   }
 })
 
-const { makeInternalSwaypageLink, makeSwaypageChapterSettingsLink } = useSwaypageLinks()
+const { makeInternalSharepageLink, makeSharepageThreadSettingsLink } = useSharepageLinks()
 if (process.client) {
   setTimeout(() => 
     // TODO because we don't actually update routing, the link doesn't get
     // router-active-link set on it in the right sidebar
     // I think we could fix this by just manually setting it on that link
     // if no route param is set
-    history.replaceState({}, '', makeInternalSwaypageLink(swaypage, page.id)), 
+    history.replaceState({}, '', makeInternalSharepageLink(sharepage, thread.id)), 
     100)
 }
 
 const settingsMenu = [[{
   label: 'Thread Settings',
-  to: makeSwaypageChapterSettingsLink(swaypage, pageId),
+  to: makeSharepageThreadSettingsLink(sharepage, threadId),
 }, {
   label: 'Sharepage Settings',
-  to: makeInternalSwaypageLink(swaypage, 'settings'),
+  to: makeInternalSharepageLink(sharepage, 'settings'),
 }], [{
   label: 'Clone as Sharepage',
   click: () => cloneSharepage('deal-room')
@@ -299,7 +299,7 @@ const settingsMenu = [[{
   click: () => cloneSharepage('template')
 }]]
 
-const keys = map(page?.body.sections, s => s.key || 0)
+const keys = map(thread?.body.sections, s => s.key || 0)
 let nextKey = (max(keys) || 0) + 1
 
 function updateSection (section) {
@@ -335,8 +335,8 @@ function updateSection (section) {
   return s
 }
 
-const body = ref({ sections: map(page?.body.sections, updateSection) })
-const title = ref(page?.title)
+const body = ref({ sections: map(thread?.body.sections, updateSection) })
+const title = ref(thread?.title)
 
 if (process.client) {
   window.addEventListener('beforeunload', (e) => {
@@ -355,9 +355,9 @@ if (process.client) {
 // these components as pages. This is probably worth doing when we do a larger
 // layout/styling rework
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
-  page.body = body.value
-  page.title = title.value
-  await swaypageStore.updateThread({ sharepageId: swaypageId, threadID: pageId, thread: page })
+  thread.body = body.value
+  thread.title = title.value
+  await sharepageStore.updateThread({ sharepageId, threadID, thread })
   isDirty.value = false
 })
 
@@ -376,7 +376,7 @@ watch(title, () => {
 
 function assetClick(link) {
   buyerActivityStore.captureBuyerActivity({
-    buyersphereId: swaypageId,
+    buyersphereId: sharepageId,
     activity: "open-asset-v2",
     activityData: { link }
   })
@@ -465,10 +465,10 @@ function updateItem(index, newSection) {
 
 const modal = useModal()
 
-async function restorePage() {
-  await swaypageStore.updateThread({
-    sharepageId: swaypageId,
-    threadId: pageId,
+async function restoreThread() {
+  await sharepageStore.updateThread({
+    sharepageId,
+    threadId,
     thread: { status: 'active' }
   })
   // Ideally we'd just reload the sidebar, but I'm not sure the best way 
@@ -478,8 +478,8 @@ async function restorePage() {
 }
 
 async function cloneSharepage(roomType) {
-  const newId = await swaypageStore.cloneSharepage({ roomType, sharepageId: swaypage.id })
-  swaypageStore.invalidateAllSharepageCache()
+  const newId = await sharepageStore.cloneSharepage({ roomType, sharepageId: sharepage.id })
+  sharepageStore.invalidateAllSharepageCache()
   await navigateTo(`/${newId}`)
 }
 </script>

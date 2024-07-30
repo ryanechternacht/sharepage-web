@@ -27,7 +27,7 @@
         <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
         <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
-          :to="makeInternalSwaypageLink(swaypage)">
+          :to="makeInternalSharepageLink(swaypage)">
           <div class="cell body">
             <Logo :src="swaypage.buyerLogo" class="icon-menu" />
             {{ swaypage.buyer }}
@@ -71,7 +71,7 @@ if (!campaign.isPublished) {
   await navigateTo(`/campaigns/${campaign.uuid}/setup`, { replace: true })
 }
 
-const { makeInternalSwaypageLink, makeCampaignDownloadLink } = useSwaypageLinks()
+const { makeInternalSharepageLink, makeCampaignDownloadLink } = useSharepageLinks()
 
 const dayjs = useDayjs()
 function prettyFormatDate(date) {

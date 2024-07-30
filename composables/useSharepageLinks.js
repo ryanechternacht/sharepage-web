@@ -10,25 +10,25 @@ function simplifyName (name) {
     .toLowerCase();
 }
 
-function makeInternalSwaypageLink (swaypage, page) {
-  return page
-    ? `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${page}`
-    : `/${swaypage.id}/${simplifyName(swaypage.buyer)}`
+function makeInternalSharepageLink (sharepage, thread) {
+  return thread
+    ? `/${sharepage.id}/${simplifyName(sharepage.buyer)}/${thread}`
+    : `/${sharepage.id}/${simplifyName(sharepage.buyer)}`
 }
 
-function makeSwaypageChapterSettingsLink (swaypage, pageId) {
-  return `/${swaypage.id}/${simplifyName(swaypage.buyer)}/${pageId}/settings`
+function makeSharepageThreadSettingsLink (sharepage, threadId) {
+  return `/${sharepage.id}/${simplifyName(sharepage.buyer)}/${threadId}/settings`
 }
 
 // requestUrl should be the result of useRequestUrl()
-function makePersonalizedExternalSwaypageLink (requestUrl, shortcode, name) {
+function makePersonalizedExternalSharepageLink (requestUrl, shortcode, name) {
   const urlBase =  requestUrl.protocol + '//' + requestUrl.host;
   const path = `/u/${shortcode}/${name}`
   return new URL(path, urlBase).href
 }
 
 // requestUrl should be the result of useRequestUrl()
-function makeExternalSwaypageLink (requestUrl, shortcode, companyName) {
+function makeExternalSharepageLink (requestUrl, shortcode, companyName) {
   const urlBase =  requestUrl.protocol + '//' + requestUrl.host;
   const path = `/c/${shortcode}/${simplifyName(companyName)}`
   return new URL(path, urlBase).href
@@ -40,17 +40,17 @@ function makeCampaignDownloadLink (apiUrlBase, campaign) {
   return new URL(path, apiUrlBase).toString()
 }
 
-function makeVirtualSwaypageLink (shortcode, name, page) {
+function makeVirtualSharepageLink (shortcode, name, page) {
   return page
     ? `/v/${shortcode}/${name}/${page}`
     : `/v/${shortcode}/${name}`
 }
 
-export const useSwaypageLinks = () => ({ 
-  makeInternalSwaypageLink,
-  makeExternalSwaypageLink,
-  makePersonalizedExternalSwaypageLink,
-  makeSwaypageChapterSettingsLink,
+export const useSharepageLinks = () => ({ 
+  makeInternalSharepageLink,
+  makeExternalSharepageLink,
+  makePersonalizedExternalSharepageLink,
+  makeSharepageThreadSettingsLink,
   makeCampaignDownloadLink,
-  makeVirtualSwaypageLink,
+  makeVirtualSharepageLink,
 })

@@ -6,7 +6,7 @@
 import { useUsersStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSharepageLink } = useSharepageLinks()
 
 const usersStore = useUsersStore()
 const { getMeCached } = storeToRefs(usersStore)
@@ -18,7 +18,7 @@ if (user?.buyersphereRole === 'admin') {
 } else if (user?.buyersphereRole === 'buyer') {
   const { apiFetch } = useNuxtApp()
   const { data } = await apiFetch('/v0.1/users/me/buyerspheres')
-  await navigateTo(makeInternalSwaypageLink(data.value[0]))
+  await navigateTo(makeInternalSharepageLink(data.value[0]))
 } else /* no user */ {
   await navigateTo('/login')
 }

@@ -5,7 +5,7 @@
         icon="i-heroicons-arrow-left" 
         variant="ghost"
         color="gray"
-        :to="makeInternalSwaypageLink(swaypage)" />
+        :to="makeInternalSharepageLink(swaypage)" />
       <h1>Settings</h1>
       <div class="flex-grow" />
       <!-- <div>active</div> -->
@@ -107,9 +107,9 @@ const [swaypage, chapters] = await Promise.all([
 ])
 
 const { 
-  makeInternalSwaypageLink, 
-  makeSwaypageChapterSettingsLink,
-} = useSwaypageLinks()
+  makeInternalSharepageLink, 
+  makeSharepageThreadSettingsLink,
+} = useSharepageLinks()
 
 const { getSharepageThreadTypeIcon } = useSwaypageIcons()
 
@@ -118,17 +118,17 @@ const links = computed(() => filter(
     [{
       label: 'Sharepage',
       icon: 'i-heroicons-document',
-      to: makeInternalSwaypageLink(swaypage, 'settings')
+      to: makeInternalSharepageLink(swaypage, 'settings')
     }], 
     swaypage.roomType === 'template' ? {
       label: 'Variables',
       icon: 'i-heroicons-variable',
-      to: makeInternalSwaypageLink(swaypage, 'variables')
+      to: makeInternalSharepageLink(swaypage, 'variables')
     } : null,
     map(chapters, (chapter) => ({
       label: chapter.title,
       icon: getSharepageThreadTypeIcon(chapter.pageType),
-      to: makeSwaypageChapterSettingsLink(swaypage, chapter.id)
+      to: makeSharepageThreadSettingsLink(swaypage, chapter.id)
     }))),
     x => x
 ))

@@ -52,21 +52,21 @@ const selectedTab = ref(0)
 const recipient = ref('')
 
 const { 
-  makeExternalSwaypageLink, 
-  makePersonalizedExternalSwaypageLink,
-} = useSwaypageLinks()
+  makeExternalSharepageLink, 
+  makePersonalizedExternalSharepageLink,
+} = useSharepageLinks()
 
 const requestUrl = useRequestURL()
 
 const personalizedLink = computed(() =>  
-  makePersonalizedExternalSwaypageLink(
+  makePersonalizedExternalSharepageLink(
     requestUrl,
     props.swaypage.shortcode,
     recipient.value
   )
 )
 
-const generalLink = makeExternalSwaypageLink(
+const generalLink = makeExternalSharepageLink(
   requestUrl,
   props.swaypage.shortcode,
   props.swaypage.buyer

@@ -21,7 +21,7 @@
             <div class="flex flex-col">
               <div v-for="t in threads"
                 class="flex flex-row items-center">
-                <NuxtLink :href="makeVirtualSwaypageLink(shortcode, name, t.id)"
+                <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
                   class="sidebar-item">
                   <SwaypagePageTypeIcon :page-type="t.pageType" />
                   <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
@@ -55,7 +55,7 @@
         <div class="flex flex-col">
           <div v-for="t in threads"
             class="flex flex-row items-center">
-            <NuxtLink :href="makeVirtualSwaypageLink(shortcode, name, t.id)"
+            <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
               class="sidebar-item">
               <SwaypagePageTypeIcon :page-type="t.pageType" />
               <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
@@ -115,7 +115,7 @@ const [threads, links] = await Promise.all([
   getSharepageLinksByIdCached.value(template.id),
 ])
 
-const { makeVirtualSwaypageLink } = useSwaypageLinks()
+const { makeVirtualSharepageLink } = useSharepageLinks()
 
 const { makeClearbitLogo } = useLogo();
 const logo = computed(() => makeClearbitLogo(pageData.domain))

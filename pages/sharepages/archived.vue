@@ -7,7 +7,7 @@
     <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
     <NuxtLink class="contents cursor-pointer group" v-for="swaypage in archiveRooms"
-      :to="makeInternalSwaypageLink(swaypage)">
+      :to="makeInternalSharepageLink(swaypage)">
       <div class="cell body">
         <Logo :src="swaypage.buyerLogo" class="icon-menu" />
         {{ swaypage.buyer }}
@@ -36,7 +36,7 @@ const { getSharepageList } = storeToRefs(swaypageStore)
 
 const swaypages = await getSharepageList.value()
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSharepageLink } = useSharepageLinks()
 
 const roomTypeMap = {
   'deal-room': 'Sharepages',

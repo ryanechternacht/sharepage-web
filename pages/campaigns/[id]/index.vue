@@ -27,7 +27,7 @@
         <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
 
         <NuxtLink class="contents cursor-pointer group" v-for="swaypage in swaypages"
-          :to="makeVirtualSwaypageLink(swaypage.shortcode, `${swaypage.pageData.firstName}-${swaypage.pageData.lastName}`)">
+          :to="makeVirtualSharepageLink(swaypage.shortcode, `${swaypage.pageData.firstName}-${swaypage.pageData.lastName}`)">
           <div class="cell body">
             <Logo :src="makeClearbitLogo(swaypage.pageData.domain)" class="icon-menu" />
             {{ swaypage.pageData.accountName }}
@@ -67,7 +67,7 @@ if (!campaign.isPublished) {
   await navigateTo(`/campaigns/${campaign.uuid}/setup`, { replace: true })
 }
 
-const { makeVirtualSwaypageLink, makeCampaignDownloadLink } = useSwaypageLinks()
+const { makeVirtualSharepageLink, makeCampaignDownloadLink } = useSharepageLinks()
 
 const dayjs = useDayjs()
 function prettyFormatDate(date) {

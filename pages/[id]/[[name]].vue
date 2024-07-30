@@ -60,7 +60,7 @@
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0" />
                 <NuxtLink 
-                  :href="makeInternalSwaypageLink(swaypage, 'feed')"
+                  :href="makeInternalSharepageLink(swaypage, 'feed')"
                   class="sidebar-item">
                   <UIcon name="i-heroicons-signal" />
                   <div class="body">Feed</div>
@@ -85,7 +85,7 @@
                     </UDropdown>
                   </div>
                   <NuxtLink 
-                    :href="makeInternalSwaypageLink(swaypage, p.id)"
+                    :href="makeInternalSharepageLink(swaypage, p.id)"
                     class="sidebar-item">
                     <SwaypagePageTypeIcon :page-type="p.pageType" />
                     <div class="text-sm">{{ p.title }}</div>
@@ -166,7 +166,7 @@
             class="group/sidebar-item flex flex-row items-center">
             <div class="w-[1.5rem] flex-shrink-0" />
             <NuxtLink 
-              :href="makeInternalSwaypageLink(swaypage, 'feed')"
+              :href="makeInternalSharepageLink(swaypage, 'feed')"
               class="sidebar-item">
               <UIcon name="i-heroicons-signal" />
               <div class="body">Feed</div>
@@ -191,7 +191,7 @@
                 </UDropdown>
               </div>
               <NuxtLink 
-                :href="makeInternalSwaypageLink(swaypage, p.id)"
+                :href="makeInternalSharepageLink(swaypage, p.id)"
                 class="sidebar-item">
                 <SwaypagePageTypeIcon :page-type="p.pageType" />
                 <div class="text-sm">{{ p.title }}</div>
@@ -313,7 +313,7 @@ const [swaypage, pages, linksSource, isSeller, organization] = await Promise.all
   getOrganizationCached.value(),
 ])
 
-const { makeInternalSwaypageLink } = useSwaypageLinks()
+const { makeInternalSharepageLink } = useSharepageLinks()
 
 const canSellerEdit = isSeller && !swaypage.isLocked
 
@@ -434,7 +434,7 @@ async function deleteLink(link) {
 const archivedPagesMenu = computed(() => {
   return [map(archivedPages.value, (p) => ({
     label: p.title,
-    to: makeInternalSwaypageLink(swaypage, p.id),
+    to: makeInternalSharepageLink(swaypage, p.id),
   }))]
 })
 
@@ -483,7 +483,7 @@ async function createNewPage() {
     async onClose ({ threadId }) {
       modal.close()
       refreshPages()
-      await navigateTo(makeInternalSwaypageLink(swaypage, threadId))
+      await navigateTo(makeInternalSharepageLink(swaypage, threadId))
     }
   })
 }
