@@ -357,7 +357,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   thread.body = body.value
   thread.title = title.value
-  await sharepageStore.updateThread({ sharepageId, threadID, thread })
+  await sharepageStore.updateThread({ sharepageId, threadId, thread })
   isDirty.value = false
 })
 

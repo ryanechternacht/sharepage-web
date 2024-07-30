@@ -60,7 +60,7 @@ const { getCampaignByIdCached } = storeToRefs(campaignsStore)
 const { apiFetch } = useNuxtApp()
 const [campaign, { data: sharepages }] = await Promise.all([
   getCampaignByIdCached.value(campaignId),
-  await apiFetch(`/v0.1/campaign/${campaignId}/sharepages`)
+  await apiFetch(`/v0.1/campaign/${campaignId}/swaypages`)
 ])
 
 if (!campaign.isPublished) {
