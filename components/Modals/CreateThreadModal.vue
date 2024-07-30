@@ -47,7 +47,7 @@ const store = useSharepagesStore()
 
 const props = defineProps({
   thread: { type: Object, default: {} },
-  swaypageId: { type: Number, required: true },
+  sharepageId: { type: Number, required: true },
 })
 
 const emit = defineEmits(['close'])
@@ -82,7 +82,7 @@ const threadTypes = [
 
 const { submissionState, submitFn } = useSubmit(async () => {
   const threadId = await store.createThread({
-    sharepageId: props.swaypageId,
+    sharepageId: props.sharepageId,
     thread: {
       title,
       pageType: threadType,

@@ -14,7 +14,7 @@
       <div>
         <div class="flex flex-row items-center gap-4">
           <h1>Home</h1>
-          <UDropdown :items="swaypageMenu"
+          <UDropdown :items="sharepageMenu"
             :popper="{ placement: 'bottom-start' }">
             <div class="flex flex-row items-center gap-2">
               <!-- <Component :is="filterOption.icon" class="subtext" /> -->
@@ -36,7 +36,7 @@
 <script setup>
 import AddSharepageModal from '@/components/Modals/AddSharepageModal'
 
-const swaypageMenu = [
+const sharepageMenu = [
   [{
     label: 'Sharepages',
     icon: 'i-heroicons-document',
@@ -55,11 +55,11 @@ const swaypageMenu = [
 const route = useRoute()
 const selectedType = computed(() => {
   if (route.fullPath === '/sharepages') {
-    return swaypageMenu[0][0]
+    return sharepageMenu[0][0]
   } else if (route.fullPath === '/sharepages/templates') {
-    return swaypageMenu[0][1]
+    return sharepageMenu[0][1]
   } else if (route.fullPath === '/sharepages/archived') {
-    return swaypageMenu[0][2]
+    return sharepageMenu[0][2]
   }
 })
 

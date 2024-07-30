@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-4">
         <UTabs v-model="selectedTab" :items="tabs" />
 
-        <UAlert v-if="!swaypage.isPublic"
+        <UAlert v-if="!sharepage.isPublic"
           title="This Sharepage isn't publicly viewable"
           color="orange"
           variant="subtle"
@@ -25,8 +25,7 @@
               class="w-full" />
           </div>
           <CopyToClipboardButton
-            :url="personalizedLink"
-            :swaypage-id="swaypage.id" />
+            :url="personalizedLink" />
         </template>
 
         <template v-else-if="selectedTab === 1">
@@ -41,7 +40,7 @@
 import { useSharepagesStore } from '@/stores/sharepages'
 
 const props = defineProps({
-  swaypage: { type: Object, required: true }
+  sharepage: { type: Object, required: true }
 })
 
 const emit = defineEmits(['close'])
@@ -61,21 +60,21 @@ const requestUrl = useRequestURL()
 const personalizedLink = computed(() =>  
   makePersonalizedExternalSharepageLink(
     requestUrl,
-    props.swaypage.shortcode,
+    props.sharepage.shortcode,
     recipient.value
   )
 )
 
 const generalLink = makeExternalSharepageLink(
   requestUrl,
-  props.swaypage.shortcode,
-  props.swaypage.buyer
+  props.sharepage.shortcode,
+  props.sharepage.buyer
 )
 
 const store = useSharepagesStore()
 async function makePublic() {
   await store.saveSharepageSettings({
-    sharepageId: props.swaypage.id,
+    sharepageId: props.sharepage.id,
     isPublic: true,
   })
 }

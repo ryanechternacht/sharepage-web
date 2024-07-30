@@ -5,7 +5,7 @@
         icon="i-heroicons-arrow-left" 
         variant="ghost"
         color="gray"
-        :to="makeInternalSharepageLink(swaypage)" />
+        :to="makeInternalSharepageLink(sharepageId)" />
       <h1>Settings</h1>
       <div class="flex-grow" />
       <!-- <div>active</div> -->
@@ -50,7 +50,7 @@
           </USelectMenu>
         </UFormGroup>
 
-        <UFormGroup v-if="swaypage.roomType === 'deal-room'" 
+        <UFormGroup v-if="sharepage.roomType === 'deal-room'" 
           label="Context">
           <UInput v-model="subname"
             placeholder="Sales Divison, Team, etc" />
@@ -93,17 +93,17 @@ import lodash_pkg from 'lodash';
 const { concat, filter, map } = lodash_pkg;
 
 const route = useRoute()
-const swaypageId = parseInt(route.params.id)
+const sharepageId = parseInt(route.params.id)
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const { 
   getSharepageByIdCached, 
   getSharepageThreadsByIdCached, 
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 
-const [swaypage, chapters] = await Promise.all([
-  getSharepageByIdCached.value(swaypageId),
-  getSharepageThreadsByIdCached.value(swaypageId),
+const [sharepage, chapters] = await Promise.all([
+  getSharepageByIdCached.value(sharepageId),
+  getSharepageThreadsByIdCached.value(sharepageId),
 ])
 
 const { 
@@ -111,35 +111,35 @@ const {
   makeSharepageThreadSettingsLink,
 } = useSharepageLinks()
 
-const { getSharepageThreadTypeIcon } = useSwaypageIcons()
+const { getSharepageThreadTypeIcon } = useSharepageIcons()
 
 const links = computed(() => filter(
   concat(
     [{
       label: 'Sharepage',
       icon: 'i-heroicons-document',
-      to: makeInternalSharepageLink(swaypage, 'settings')
+      to: makeInternalSharepageLink(sharepage, 'settings')
     }], 
-    swaypage.roomType === 'template' ? {
+    sharepage.roomType === 'template' ? {
       label: 'Variables',
       icon: 'i-heroicons-variable',
-      to: makeInternalSharepageLink(swaypage, 'variables')
+      to: makeInternalSharepageLink(sharepage, 'variables')
     } : null,
     map(chapters, (chapter) => ({
       label: chapter.title,
       icon: getSharepageThreadTypeIcon(chapter.pageType),
-      to: makeSharepageThreadSettingsLink(swaypage, chapter.id)
+      to: makeSharepageThreadSettingsLink(sharepage, chapter.id)
     }))),
     x => x
 ))
 
 const clearbitLoading = ref(false)
-const clearbitLogo = ref({ logo: swaypage.buyerLogo })
+const clearbitLogo = ref({ logo: sharepage.buyerLogo })
 
-const buyer = ref(swaypage.buyer)
-const subname = ref(swaypage.subname)
+const buyer = ref(sharepage.buyer)
+const subname = ref(sharepage.subname)
 
-const priority = ref(swaypage.priority)
+const priority = ref(sharepage.priority)
 const priorityOptions = [
   {
     label: 'High',
@@ -153,7 +153,7 @@ const priorityOptions = [
   },
 ]
 
-const isPublic = ref(swaypage.isPublic ? 'public' : 'private')
+const isPublic = ref(sharepage.isPublic ? 'public' : 'private')
 const visibilityOptions = [
   {
     label: 'Public',
@@ -164,7 +164,7 @@ const visibilityOptions = [
   },
 ]
 
-const status = ref(swaypage.status)
+const status = ref(sharepage.status)
 const statusOptions = [
   {
     label: 'Active',
@@ -191,8 +191,8 @@ async function lookupOnClearbit (query) {
 }
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.saveSharepageSettings({
-    sharepageId: swaypage.id,
+  await sharepageStore.saveSharepageSettings({
+    sharepageId: sharepage.id,
     buyer,
     priority,
     subname,

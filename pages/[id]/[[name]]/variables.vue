@@ -77,17 +77,17 @@ import lodash_pkg from 'lodash';
 const { clone, concat, filter, map, some } = lodash_pkg;
 
 const route = useRoute()
-const swaypageId = parseInt(route.params.id)
+const sharepageId = parseInt(route.params.id)
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const { 
   getSharepageByIdCached, 
   getSharepageThreadsByIdCached, 
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 
-const [swaypage, chapters] = await Promise.all([
-  getSharepageByIdCached.value(swaypageId),
-  getSharepageThreadsByIdCached.value(swaypageId),
+const [sharepage, chapters] = await Promise.all([
+  getSharepageByIdCached.value(sharepageId),
+  getSharepageThreadsByIdCached.value(sharepageId),
 ])
 
 const { 
@@ -102,26 +102,26 @@ const links = computed(() => filter(
     [{
       label: 'Sharepage',
       icon: 'i-heroicons-document',
-      to: makeInternalSharepageLink(swaypage, 'settings')
+      to: makeInternalSharepageLink(sharepage, 'settings')
     }],
-    swaypage.roomType === 'template' ? {
+    sharepage.roomType === 'template' ? {
       label: 'Variables',
       icon: 'i-heroicons-variable',
-      to: makeInternalSharepageLink(swaypage, 'variables')
+      to: makeInternalSharepageLink(sharepage, 'variables')
     } : null,
     map(chapters, (chapter) => ({
       label: chapter.title,
       icon: getSharepageThreadTypeIcon(chapter.pageType),
-      to: makeSharepageThreadSettingsLink(swaypage, chapter.id)
+      to: makeSharepageThreadSettingsLink(sharepage, chapter.id)
     }))),
     x => x
 ))
 
-const variables = ref(clone(swaypage.templateCustomVariables))
+const variables = ref(clone(sharepage.templateCustomVariables))
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.saveSharepageSettings({
-    sharepageId: swaypage.id,
+  await sharepageStore.saveSharepageSettings({
+    sharepageId: sharepage.id,
     templateCustomVariables: variables,
   })
 })

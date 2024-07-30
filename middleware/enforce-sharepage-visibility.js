@@ -2,14 +2,14 @@ import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia' 
 
 export default defineNuxtRouteMiddleware(async (to, _) => {
-  const swaypageStore = useSharepagesStore()
-  const { getSharepageByIdCached } = storeToRefs(swaypageStore)
+  const sharepageStore = useSharepagesStore()
+  const { getSharepageByIdCached } = storeToRefs(sharepageStore)
 
-  const [swaypage] = await Promise.all([
+  const [sharepage] = await Promise.all([
     getSharepageByIdCached.value(to.params.id),
   ])
 
-  if (!swaypage) {
+  if (!sharepage) {
     return navigateTo('/login')
   }
 })

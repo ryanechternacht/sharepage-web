@@ -51,7 +51,8 @@ definePageMeta({
 });
 
 const route = useRoute()
-const swaypageId = route.query['swaypage-id']
+// TODO where is this even set?
+const sharepageId = route.query['swaypage-id']
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
@@ -68,7 +69,7 @@ const { submissionState, submitFn } = useSubmit(async () => {
       firstName: firstName.value,
       lastName: lastName.value,
       displayRole: displayRole.value,
-      swaypageId,
+      sharepageId,
     }
   })
   if (error.value) throw error.value;

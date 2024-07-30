@@ -55,24 +55,22 @@
 import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 
-const modal = useModal()
-
 definePageMeta({
   middleware: ['enforce-seller'],
 })
 
 const route = useRoute()
-const swaypageId = parseInt(route.params.id)
+const sharepageId = parseInt(route.params.id)
 
-const swaypagesStore = useSharepagesStore()
+const sharepagesStore = useSharepagesStore()
 const {
   getSharepageByIdCached, 
   getSharepageBuyerSessionsByIdCached,
-} = storeToRefs(swaypagesStore)
+} = storeToRefs(sharepagesStore)
 
-const [swaypage, buyerSessions] = await Promise.all([
-  getSharepageByIdCached.value(swaypageId),
-  getSharepageBuyerSessionsByIdCached.value(swaypageId),
+const [sharepage, buyerSessions] = await Promise.all([
+  getSharepageByIdCached.value(sharepageId),
+  getSharepageBuyerSessionsByIdCached.value(sharepageId),
 ])
 
 const dayjs = useDayjs()
@@ -84,7 +82,7 @@ const { makeInternalSharepageLink } = useSharepageLinks()
 
 const settingsMenu = [[{
   label: 'Sharepage Settings',
-  to: makeInternalSharepageLink(swaypage, 'settings'),
+  to: makeInternalSharepageLink(sharepage, 'settings'),
 }]]
 </script>
 

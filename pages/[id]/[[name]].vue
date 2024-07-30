@@ -1,10 +1,10 @@
 <template>
   <div>
-    <TopNav active-link="swaypages">
+    <TopNav active-link="sharepages">
       <template #action-button>
-        <template v-if="swaypage.roomType === 'template'">
+        <template v-if="sharepage.roomType === 'template'">
           <UButton icon="i-heroicons-document"
-            @click="openCreateSwaypageFromTemplate">
+            @click="openCreateSharepageFromTemplate">
             Create from Template
           </UButton>
         </template>
@@ -22,27 +22,27 @@
       <div class="mr-4">
         <div class="sticky top-8 mb-2 md:mb-0 md:min-h-[calc(100vh-6.5rem)] flex flex-col">
           <div class="header-grid">
-            <Logo v-if="swaypage.roomType === 'deal-room'"
-              :src="swaypage.buyerLogo"
+            <Logo v-if="sharepage.roomType === 'deal-room'"
+              :src="sharepage.buyerLogo"
               class="icon-header" />
-            <Logo v-else-if="swaypage.roomType === 'discovery-room'"
+            <Logo v-else-if="sharepage.roomType === 'discovery-room'"
               :src="organization.logo"
               class="icon-header" />
-            <Logo v-else-if="swaypage.roomType === 'template'"
+            <Logo v-else-if="sharepage.roomType === 'template'"
               :src="organization.logo"
               class="icon-header" />
-            <h2>{{ swaypage.buyer }}</h2>
+            <h2>{{ sharepage.buyer }}</h2>
             <div>
               <!-- TODO restore this icon -->
               <!-- <StarIcon class="icon-menu justify-self-center text-gray-400" /> -->
             </div>
             <template v-if="isSeller">
-              <div v-if="swaypage.roomType === 'template'" class="subtext">Template</div>
-              <div v-else class="subtext">{{ swaypage.subname }}</div>
+              <div v-if="sharepage.roomType === 'template'" class="subtext">Template</div>
+              <div v-else class="subtext">{{ sharepage.subname }}</div>
             </template>
           </div>
 
-          <div v-if="swaypage.roomType === 'template'">
+          <div v-if="sharepage.roomType === 'template'">
             <div class="mt-[2.25rem] mb-2 text-gray-500 body">Variables</div>
 
             <div class="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-baseline">
@@ -60,7 +60,7 @@
                 class="group/sidebar-item flex flex-row items-center">
                 <div class="w-[1.5rem] flex-shrink-0" />
                 <NuxtLink 
-                  :href="makeInternalSharepageLink(swaypage, 'feed')"
+                  :href="makeInternalSharepageLink(sharepage, 'feed')"
                   class="sidebar-item">
                   <UIcon name="i-heroicons-signal" />
                   <div class="body">Feed</div>
@@ -85,9 +85,9 @@
                     </UDropdown>
                   </div>
                   <NuxtLink 
-                    :href="makeInternalSharepageLink(swaypage, p.id)"
+                    :href="makeInternalSharepageLink(sharepage, p.id)"
                     class="sidebar-item">
-                    <SwaypagePageTypeIcon :page-type="p.pageType" />
+                    <SharepagePageTypeIcon :page-type="p.pageType" />
                     <div class="text-sm">{{ p.title }}</div>
                   </NuxtLink>
                 </div>
@@ -166,7 +166,7 @@
             class="group/sidebar-item flex flex-row items-center">
             <div class="w-[1.5rem] flex-shrink-0" />
             <NuxtLink 
-              :href="makeInternalSharepageLink(swaypage, 'feed')"
+              :href="makeInternalSharepageLink(sharepage, 'feed')"
               class="sidebar-item">
               <UIcon name="i-heroicons-signal" />
               <div class="body">Feed</div>
@@ -191,9 +191,9 @@
                 </UDropdown>
               </div>
               <NuxtLink 
-                :href="makeInternalSharepageLink(swaypage, p.id)"
+                :href="makeInternalSharepageLink(sharepage, p.id)"
                 class="sidebar-item">
-                <SwaypagePageTypeIcon :page-type="p.pageType" />
+                <SharepagePageTypeIcon :page-type="p.pageType" />
                 <div class="text-sm">{{ p.title }}</div>
               </NuxtLink>
             </div>
@@ -273,7 +273,7 @@ import AddEditSharepageLinkModal from '@/components/Modals/AddEditSharepageLinkM
 // fetched so it shouldn't be too tough to rerender. 
 const route = useRoute()
 definePageMeta({
-  middleware: ['enforce-swaypage-visibility'],
+  middleware: ['enforce-sharepage-visibility'],
   key: route => route.fullPath
 })
 
@@ -291,31 +291,31 @@ function makePageMenu(page) {
   ]]
 }
 
-const swaypageId = parseInt(route.params.id)
+const sharepageId = parseInt(route.params.id)
 
-const swaypageStore = useSharepagesStore()
+const sharepageStore = useSharepagesStore()
 const { 
   getSharepageByIdCached, 
   getSharepageThreadsByIdCached, 
   getSharepageLinksByIdCached,
-} = storeToRefs(swaypageStore)
+} = storeToRefs(sharepageStore)
 const usersStore = useUsersStore()
 const { isUserSeller } = storeToRefs(usersStore)
 
 const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
-const [swaypage, pages, linksSource, isSeller, organization] = await Promise.all([
-  getSharepageByIdCached.value(swaypageId),
-  getSharepageThreadsByIdCached.value(swaypageId),
-  getSharepageLinksByIdCached.value(swaypageId),
+const [sharepage, pages, linksSource, isSeller, organization] = await Promise.all([
+  getSharepageByIdCached.value(sharepageId),
+  getSharepageThreadsByIdCached.value(sharepageId),
+  getSharepageLinksByIdCached.value(sharepageId),
   isUserSeller.value(),
   getOrganizationCached.value(),
 ])
 
 const { makeInternalSharepageLink } = useSharepageLinks()
 
-const canSellerEdit = isSeller && !swaypage.isLocked
+const canSellerEdit = isSeller && !sharepage.isLocked
 
 const linkToPage = ref(useRequestURL().href)
 // get the cleaned up url, once it's cleaned up
@@ -332,7 +332,7 @@ const buyerSessionStore = useBuyerSessionStore()
 async function trackShare () {
   buyerSessionStore.capturePageEventIfAppropriate({
     eventType: "click-share",
-    swaypageId,
+    sharepageId,
     page: pageId,
    })
 }
@@ -384,7 +384,7 @@ function makeLinkMenu(link) {
 
 function createNewLink () {
   modal.open(AddEditSharepageLinkModal, {
-    sharepageId: swaypage.id,
+    sharepageId: sharepage.id,
     link: null,
     async onClose () {
       modal.close()
@@ -395,7 +395,7 @@ function createNewLink () {
 
 function editLink (link) {
   modal.open(AddEditSharepageLinkModal, {
-    sharepageId: swaypage.id,
+    sharepageId: sharepage.id,
     link,
     async onClose () {
       modal.close()
@@ -404,7 +404,7 @@ function editLink (link) {
 }
 
 async function saveLinkOrdering() {
-  await swaypageStore.reorderLinks({ sharepageId: swaypageId, links })
+  await sharepageStore.reorderLinks({ sharepageId, links })
 }
 const dbounceLinkReorder = debounce(saveLinkOrdering, 3000, { leading: false, trailing: true })
 watch(links, () => {
@@ -415,7 +415,7 @@ function trackLinkClick(linkText) {
   buyerSessionStore.capturePageEventIfAppropriate({
     eventType: "click-link",
     eventData: { linkText },
-    swaypageId,
+    swaypageId: sharepageId,
     page: pageId,
    })
 }
@@ -424,8 +424,8 @@ async function deleteLink(link) {
   const i = findIndex(links.value, l => l.id === link.id)
   links.value.splice(i, 1)
 
-  await swaypageStore.deleteLink({
-    sharepageId: swaypageId,
+  await sharepageStore.deleteLink({
+    sharepageId,
     linkId: link.id,
   })
   refreshLinks()
@@ -434,12 +434,12 @@ async function deleteLink(link) {
 const archivedPagesMenu = computed(() => {
   return [map(archivedPages.value, (p) => ({
     label: p.title,
-    to: makeInternalSharepageLink(swaypage, p.id),
+    to: makeInternalSharepageLink(sharepage, p.id),
   }))]
 })
 
 async function savePageOrdering() {
-  await swaypageStore.reorderThreads({ sharepageId: swaypageId, threads: activePages })
+  await sharepageStore.reorderThreads({ sharepageId, threads: activePages })
 }
 
 const debouncedPageReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
@@ -469,7 +469,7 @@ const templateItems = computed(() =>
   {
     name: 'Domain',
     key: 'domain',
-  }], map(swaypage.templateCustomVariables, (variable, index) => ({
+  }], map(sharepage.templateCustomVariables, (variable, index) => ({
     name: variable,
     key: `field-${index + 1}`
   }))))
@@ -478,28 +478,28 @@ const modal = useModal()
 
 async function createNewPage() {
   modal.open(CreateThreadModal, {
-    swaypageId: swaypage.id,
+    sharepageId: sharepage.id,
     thread: null,
     async onClose ({ threadId }) {
       modal.close()
       refreshPages()
-      await navigateTo(makeInternalSharepageLink(swaypage, threadId))
+      await navigateTo(makeInternalSharepageLink(sharepage, threadId))
     }
   })
 }
 
 function openShareModal () {
   modal.open(ShareLinkModal, {
-    swaypage,
+    sharepage: sharepage,
     async onClose () {
       modal.close()
     }
   })
 }
 
-function openCreateSwaypageFromTemplate () {
+function openCreateSharepageFromTemplate () {
   modal.open(CreateSharepageFromTemplateModal, {
-    templateId: swaypage.id,
+    templateId: sharepage.id,
     async onClose (props) {
       modal.close()
       if (props?.sharepageId) {
@@ -514,15 +514,15 @@ async function removePage(page, status) {
     p => p.id === page.id)
   activePages.value.splice(i, 1)
 
-  await swaypageStore.updateThread({
-    sharepageId: swaypageId,
+  await sharepageStore.updateThread({
+    sharepageId,
     threadId: page.id,
     thread: { status }
   })
 
   const currentPageId = parseInt(route.params.page)
   if (page.id === currentPageId) {
-    await navigateTo(`/${swaypageId}`)
+    await navigateTo(`/${sharepageId}`)
   }
 }
 </script>
