@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 
 const props = defineProps({
   swaypage: { type: Object, required: true }
@@ -72,7 +72,7 @@ const generalLink = makeExternalSwaypageLink(
   props.swaypage.buyer
 )
 
-const store = useSwaypagesStore()
+const store = useSharepagesStore()
 async function makePublic() {
   await store.saveSwaypageSettings({
     swaypageId: props.swaypage.id,

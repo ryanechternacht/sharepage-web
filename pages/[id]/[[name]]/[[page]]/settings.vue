@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { concat, filter, find, map } = lodash_pkg;
@@ -60,15 +60,15 @@ const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 const chapterId = parseInt(route.params.page)
 
-const swaypageStore = useSwaypagesStore()
+const swaypageStore = useSharepagesStore()
 const { 
-  getSwaypageByIdCached, 
-  getSwaypageChaptersByIdCached, 
+  getSharepageByIdCached, 
+  getSharepageThreadsByIdCached, 
 } = storeToRefs(swaypageStore)
 
 const [swaypage, chapters] = await Promise.all([
-  getSwaypageByIdCached.value(swaypageId),
-  getSwaypageChaptersByIdCached.value(swaypageId),
+  getSharepageByIdCached.value(swaypageId),
+  getSharepageThreadsByIdCached.value(swaypageId),
 ])
 
 const { 
@@ -128,10 +128,10 @@ const chapterTypes = [
 ]
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  await swaypageStore.updateChapter({
+  await swaypageStore.updateThread({
     swaypageId: swaypageId,
-    chapterId: chapter.id,
-    chapter: {
+    threadId: chapter.id,
+    thread: {
       title,
       pageType: chapterType,
       canBuyerEdit: canBuyerEdit.value === 'Yes',

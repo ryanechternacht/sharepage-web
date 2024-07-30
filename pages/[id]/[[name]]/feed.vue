@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 
 const modal = useModal()
@@ -64,15 +64,15 @@ definePageMeta({
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
-const swaypagesStore = useSwaypagesStore()
+const swaypagesStore = useSharepagesStore()
 const {
-  getSwaypageByIdCached, 
-  getSwaypageBuyerSessionsByIdCached,
+  getSharepageByIdCached, 
+  getSharepageBuyerSessionsByIdCached,
 } = storeToRefs(swaypagesStore)
 
 const [swaypage, buyerSessions] = await Promise.all([
-  getSwaypageByIdCached.value(swaypageId),
-  getSwaypageBuyerSessionsByIdCached.value(swaypageId),
+  getSharepageByIdCached.value(swaypageId),
+  getSharepageBuyerSessionsByIdCached.value(swaypageId),
 ])
 
 const dayjs = useDayjs()

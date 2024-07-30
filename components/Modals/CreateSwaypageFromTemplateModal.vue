@@ -118,7 +118,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
 const { forEach, map } = lodash_pkg;
@@ -128,11 +128,11 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
-const store = useSwaypagesStore()
+const store = useSharepagesStore()
 
-const { getSwaypageByIdCached } = storeToRefs(store)
+const { getSharepageByIdCached } = storeToRefs(store)
 
-const template = await getSwaypageByIdCached.value(props.templateId)
+const template = await getSharepageByIdCached.value(props.templateId)
 
 const clearbitLoading = ref(false)
 const clearbitLogo = ref(null)

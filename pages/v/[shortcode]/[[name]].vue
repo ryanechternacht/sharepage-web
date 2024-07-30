@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import mustache from 'mustache'
@@ -97,22 +97,22 @@ const route = useRoute()
 const shortcode = route.params.shortcode
 const name = route.params.name
 
-const swaypageStore = useSwaypagesStore()
+const swaypageStore = useSharepagesStore()
 const {
-  getVirtualSwaypageByShortcodeCached,
-  getSwaypageChaptersByIdCached,
-  getSwaypageLinksByIdCached,
+  getVirtualSharepageByShortcodeCached,
+  getSharepageThreadsByIdCached,
+  getSharepageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 
-const virtualSwaypage = await getVirtualSwaypageByShortcodeCached.value(shortcode)
+const virtualSwaypage = await getVirtualSharepageByShortcodeCached.value(shortcode)
 
 const pageData = virtualSwaypage.pageData
 const template = virtualSwaypage.template
 
 // TODO we'll need to render pageData into these first
 const [threads, links] = await Promise.all([
-  getSwaypageChaptersByIdCached.value(template.id),
-  getSwaypageLinksByIdCached.value(template.id),
+  getSharepageThreadsByIdCached.value(template.id),
+  getSharepageLinksByIdCached.value(template.id),
 ])
 
 const { makeVirtualSwaypageLink } = useSwaypageLinks()

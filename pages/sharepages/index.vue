@@ -39,13 +39,13 @@
 <script setup>
 import lodash_pkg from 'lodash';
 const { filter, orderBy } = lodash_pkg;
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 
-const swaypageStore = useSwaypagesStore()
-const { getSwaypageList } = storeToRefs(swaypageStore)
+const swaypageStore = useSharepagesStore()
+const { getSharepageList } = storeToRefs(swaypageStore)
 
-const swaypages = await getSwaypageList.value()
+const swaypages = await getSharepageList.value()
 
 const { makeInternalSwaypageLink } = useSwaypageLinks()
 

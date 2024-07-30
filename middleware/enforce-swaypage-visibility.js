@@ -1,12 +1,12 @@
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia' 
 
 export default defineNuxtRouteMiddleware(async (to, _) => {
-  const swaypageStore = useSwaypagesStore()
-  const { getSwaypageByIdCached } = storeToRefs(swaypageStore)
+  const swaypageStore = useSharepagesStore()
+  const { getSharepageByIdCached } = storeToRefs(swaypageStore)
 
   const [swaypage] = await Promise.all([
-    getSwaypageByIdCached.value(to.params.id),
+    getSharepageByIdCached.value(to.params.id),
   ])
 
   if (!swaypage) {

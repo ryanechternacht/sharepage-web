@@ -7,42 +7,42 @@ function is10MinutesOld(jsonTimestamp) {
   return dayjs.duration(dayjs().diff(jsonTimestamp)).asMinutes() >= 10
 }
 
-export const useSwaypagesStore = defineStore('swaypages', {
+export const useSharepagesStore = defineStore('sharepages', {
   state: () => ({ 
     buyerspheres: {},
-    chapters: {},
+    threads: {},
     links: {},
     buyerSessions: {},
     all: {},
-    virtualSwaypages: {},
+    virtualSharepages: {},
   }),
   getters: {
-    getSwaypageByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypage({ swaypageId })
-      return state.buyerspheres[swaypageId]?.content
+    getSharepageByIdCached: (state) => async (sharepageId) => {
+      await state.fetchSwaypage({ sharepageId })
+      return state.buyerspheres[sharepageId]?.content
     },
     // TODO can we separate active from archived here without 
     // double fetching? I think we double fetch user data in 
     // when trying to load multiple getters in parallel 
-    getSwaypageChaptersByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypagePages({ swaypageId })
-      return state.chapters[swaypageId]?.content
+    getSharepageThreadsByIdCached: (state) => async (sharepageId) => {
+      await state.fetchSwaypagePages({ sharepageId })
+      return state.threads[sharepageId]?.content
     },
-    getSwaypageLinksByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypageLinks({ swaypageId })
-      return state.links[swaypageId]?.content
+    getSharepageLinksByIdCached: (state) => async (sharepageId) => {
+      await state.fetchSwaypageLinks({ sharepageId })
+      return state.links[sharepageId]?.content
     },
-    getSwaypageBuyerSessionsByIdCached: (state) => async (swaypageId) => {
-      await state.fetchSwaypageBuyerSessions({ swaypageId })
-      return state.buyerSessions[swaypageId]?.content
+    getSharepageBuyerSessionsByIdCached: (state) => async (sharepageId) => {
+      await state.fetchSwaypageBuyerSessions({ sharepageId })
+      return state.buyerSessions[sharepageId]?.content
     },
-    getSwaypageList: (state) => async () => {
+    getSharepageList: (state) => async () => {
       await state.fetchAllSwaypages()
       return state.all.content
     },
-    getVirtualSwaypageByShortcodeCached: (state) => async (shortcode) => {
+    getVirtualSharepageByShortcodeCached: (state) => async (shortcode) => {
       await state.fetchVirtualSwaypage({ shortcode })
-      return state.virtualSwaypages[shortcode]?.content
+      return state.virtualSharepages[shortcode]?.content
     }
   },
   actions: {
@@ -200,16 +200,16 @@ export const useSwaypagesStore = defineStore('swaypages', {
         b.status = data.value.status
       }
     },
-    async fetchSwaypage({ swaypageId, forceRefresh }) {
+    async fetchSwaypage({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.buyerspheres[swaypageId]?.content
+      if (!this.buyerspheres[sharepageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.buyerspheres[swaypageId]?.generatedAt))
+          || is10MinutesOld(this.buyerspheres[sharepageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}`)
-        this.buyerspheres[swaypageId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${sharepageId}`)
+        this.buyerspheres[sharepageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
@@ -265,94 +265,94 @@ export const useSwaypagesStore = defineStore('swaypages', {
 
       this.buyerspheres[swaypageId].content.sellerTeam = data.value
     },
-    async fetchSwaypagePages({ swaypageId, forceRefresh }) {
+    async fetchSwaypagePages({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.chapters[swaypageId]?.content
+      if (!this.threads[sharepageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.chapters[swaypageId]?.generatedAt))
+          || is10MinutesOld(this.threads[sharepageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyerspheres/${swaypageId}/pages`)
+        const { data } = await apiFetch(`/v0.1/buyerspheres/${sharepageId}/pages`)
 
-        this.chapters[swaypageId] = {
+        this.threads[sharepageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
       }
     },
-    async createChapter({ swaypageId, chapter }) {
+    async createThread({ swaypageId, thread }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${swaypageId}/pages`,
-        { method: 'POST', body: chapter }
+        { method: 'POST', body: thread }
       )
-      this.chapters[swaypageId].content.push(data.value)
+      this.threads[swaypageId].content.push(data.value)
       return data.value.id
     },
-    async updateChapter({ swaypageId, chapterId, chapter }) {
+    async updateThread({ swaypageId, threadId, thread }) {
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/page/${chapterId}`,
-        { method: 'PATCH', body: chapter }
+        `/v0.1/buyerspheres/${swaypageId}/page/${threadId}`,
+        { method: 'PATCH', body: thread }
       )
       
-      const c = find(this.chapters[swaypageId].content, c => c.id === chapterId)
-      if (c) {
+      const t = find(this.threads[swaypageId].content, t => t.id === threadId)
+      if (t) {
         if (data.value.title !== undefined) {
-          c.title = data.value.title
+          t.title = data.value.title
         }
         if (data.value.body !== undefined) {
-          c.body = data.value.body
+          t.body = data.value.body
         }
         if (data.value.isPublic !== undefined) {
-          c.isPublic = data.value.isPublic
+          t.isPublic = data.value.isPublic
         }
         if (data.value.ordering !== undefined) {
-          c.ordering = data.value.ordering
+          t.ordering = data.value.ordering
         }
         if (data.value.canBuyerEdit !== undefined) {
-          c.canBuyerEdit = data.value.canBuyerEdit
+          t.canBuyerEdit = data.value.canBuyerEdit
         }
         if (data.value.status !== undefined) {
-          c.status = data.value.status
+          t.status = data.value.status
         }
         if (data.value.pageType !== undefined) {
-          c.pageType = data.value.pageType
+          t.pageType = data.value.pageType
         }
       }
     },
-    async deleteChapter({ swaypageId, chapterId }) {
+    async deleteThread({ swaypageId, threadId }) {
       const { apiFetch } = useNuxtApp()
       await apiFetch(
-        `/v0.1/buyerspheres/${swaypageId}/page/${chapterId}`,
+        `/v0.1/buyerspheres/${swaypageId}/page/${threadId}`,
         { method: 'DELETE' }
       )
 
-      remove(this.chapters[swaypageId].content, c => c.id === chapterId)
+      remove(this.threads[swaypageId].content, c => c.id === threadId)
     },
-    async reorderChapters({ swaypageId, chapters }) {
+    async reorderThreads({ swaypageId, threads }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
       const { data } = await apiFetch(
         `/v0.1/buyerspheres/${swaypageId}/pages/ordering`,
-        { method: 'PATCH', body: chapters }
+        { method: 'PATCH', body: threads }
       )
-      this.chapters[swaypageId] = {
+      this.threads[swaypageId] = {
         content: data.value,
         generatedAt: dayjs().toJSON()
       }
     },
-    async fetchSwaypageLinks({ swaypageId, forceRefresh }) {
+    async fetchSwaypageLinks({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.links[swaypageId]?.content
+      if (!this.links[sharepageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.links[swaypageId]?.generatedAt))
+          || is10MinutesOld(this.links[sharepageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/links`)
-        this.links[swaypageId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${sharepageId}/links`)
+        this.links[sharepageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
@@ -408,16 +408,16 @@ export const useSwaypagesStore = defineStore('swaypages', {
         generatedAt: dayjs().toJSON()
       }
     },
-    async fetchSwaypageBuyerSessions({ swaypageId, forceRefresh }) {
+    async fetchSwaypageBuyerSessions({ sharepageId, forceRefresh }) {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.buyerSessions[swaypageId]?.content
+      if (!this.buyerSessions[sharepageId]?.content
           || forceRefresh
-          || is10MinutesOld(this.buyerSessions[swaypageId]?.generatedAt))
+          || is10MinutesOld(this.buyerSessions[sharepageId]?.generatedAt))
       {
-        const { data } = await apiFetch(`/v0.1/buyersphere/${swaypageId}/sessions`)
-        this.buyerSessions[swaypageId] = {
+        const { data } = await apiFetch(`/v0.1/buyersphere/${sharepageId}/sessions`)
+        this.buyerSessions[sharepageId] = {
           content: data.value,
           generatedAt: dayjs().toJSON()
         }
@@ -427,9 +427,9 @@ export const useSwaypagesStore = defineStore('swaypages', {
       const dayjs = useDayjs()
       const { apiFetch } = useNuxtApp()
 
-      if (!this.virtualSwaypages[shortcode]?.content
+      if (!this.virtualSharepages[shortcode]?.content
           || forceRefresh
-          || is10MinutesOld(this.virtualSwaypages[shortcode]?.generatedAt))
+          || is10MinutesOld(this.virtualSharepages[shortcode]?.generatedAt))
       {
         const { data } = await apiFetch(`/v0.1/virtual-swaypage/${shortcode}`)
 
@@ -437,7 +437,7 @@ export const useSwaypagesStore = defineStore('swaypages', {
         const obj = data.value
         obj.pageData = convertPageData(obj.virtualSwaypage.pageData)
 
-        this.virtualSwaypages[shortcode] = {
+        this.virtualSharepages[shortcode] = {
           content: obj,
           generatedAt: dayjs().toJSON()
         }

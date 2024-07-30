@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { useBuyerSessionStore } from '@/stores/buyer-session'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
@@ -54,20 +54,20 @@ const shortcode = route.params.shortcode
 const usersStore = useUsersStore()
 const { isUserLoggedIn } = storeToRefs(usersStore)
 
-const swaypageStore = useSwaypagesStore()
+const swaypageStore = useSharepagesStore()
 const {
-  getVirtualSwaypageByShortcodeCached,
-  getSwaypageChaptersByIdCached,
+  getVirtualSharepageByShortcodeCached,
+  getSharepageThreadsByIdCached,
 } = storeToRefs(swaypageStore)
 
-const virtualSwaypage = await getVirtualSwaypageByShortcodeCached.value(shortcode)
+const virtualSwaypage = await getVirtualSharepageByShortcodeCached.value(shortcode)
 
 const pageData = virtualSwaypage.pageData
 const template = virtualSwaypage.template
 const owner = virtualSwaypage.owner
 
 const [threads, hasUser] = await Promise.all([
-  getSwaypageChaptersByIdCached.value(template.id),
+  getSharepageThreadsByIdCached.value(template.id),
   isUserLoggedIn.value(),
 ])
 

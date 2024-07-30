@@ -252,14 +252,14 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { useUsersStore } from '@/stores/users'
 import { useOrganizationStore } from '@/stores/organization'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 import ShareLinkModal from '@/components/Modals/ShareLinkModal';
-import CreateChapterModal from '@/components/Modals/CreateChapterModal'
+import CreateThreadModal from '@/components/Modals/CreateThreadModal'
 import CreateSwaypageFromTemplateModal from '@/components/Modals/CreateSwaypageFromTemplateModal'
 import lodash_pkg from 'lodash';
 const { concat, debounce, filter, findIndex, first, map, orderBy } = lodash_pkg;
@@ -293,11 +293,11 @@ function makePageMenu(page) {
 
 const swaypageId = parseInt(route.params.id)
 
-const swaypageStore = useSwaypagesStore()
+const swaypageStore = useSharepagesStore()
 const { 
-  getSwaypageByIdCached, 
-  getSwaypageChaptersByIdCached, 
-  getSwaypageLinksByIdCached,
+  getSharepageByIdCached, 
+  getSharepageThreadsByIdCached, 
+  getSharepageLinksByIdCached,
 } = storeToRefs(swaypageStore)
 const usersStore = useUsersStore()
 const { isUserSeller } = storeToRefs(usersStore)
@@ -306,9 +306,9 @@ const organizationStore = useOrganizationStore()
 const { getOrganizationCached } = storeToRefs(organizationStore)
 
 const [swaypage, pages, linksSource, isSeller, organization] = await Promise.all([
-  getSwaypageByIdCached.value(swaypageId),
-  getSwaypageChaptersByIdCached.value(swaypageId),
-  getSwaypageLinksByIdCached.value(swaypageId),
+  getSharepageByIdCached.value(swaypageId),
+  getSharepageThreadsByIdCached.value(swaypageId),
+  getSharepageLinksByIdCached.value(swaypageId),
   isUserSeller.value(),
   getOrganizationCached.value(),
 ])
@@ -439,7 +439,7 @@ const archivedPagesMenu = computed(() => {
 })
 
 async function savePageOrdering() {
-  await swaypageStore.reorderChapters({ swaypageId, chapters: activePages })
+  await swaypageStore.reorderThreads({ swaypageId, threads: activePages })
 }
 
 const debouncedPageReorder = debounce(savePageOrdering, 3000, { leading: false, trailing: true })
@@ -477,13 +477,13 @@ const templateItems = computed(() =>
 const modal = useModal()
 
 async function createNewPage() {
-  modal.open(CreateChapterModal, {
+  modal.open(CreateThreadModal, {
     swaypageId: swaypage.id,
-    chapter: null,
-    async onClose ({ chapterId }) {
+    thread: null,
+    async onClose ({ threadId }) {
       modal.close()
       refreshPages()
-      await navigateTo(makeInternalSwaypageLink(swaypage, chapterId))
+      await navigateTo(makeInternalSwaypageLink(swaypage, threadId))
     }
   })
 }
@@ -514,10 +514,10 @@ async function removePage(page, status) {
     p => p.id === page.id)
   activePages.value.splice(i, 1)
 
-  await swaypageStore.updateChapter({
+  await swaypageStore.updateThread({
     swaypageId,
-    chapterId: page.id,
-    chapter: { status }
+    threadId: page.id,
+    thread: { status }
   })
 
   const currentPageId = parseInt(route.params.page)

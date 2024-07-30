@@ -35,9 +35,9 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 
-const store = useSwaypagesStore()
+const store = useSharepagesStore()
 
 const props = defineProps({
   link: { type: Object, default: {} },

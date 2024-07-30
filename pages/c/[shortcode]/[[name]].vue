@@ -3,12 +3,12 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 
 const route = useRoute()
 const shortcode = route.params.shortcode
 
-const store = useSwaypagesStore()
+const store = useSharepagesStore()
 const swaypage = await store.getSwaypageByShortcode({ shortcode })
 
 if (swaypage) {

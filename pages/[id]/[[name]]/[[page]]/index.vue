@@ -168,7 +168,7 @@
 <script setup>
 import lodash_pkg from 'lodash';
 const { cloneDeep, debounce, filter, find, findIndex, first, map, max } = lodash_pkg;
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
@@ -179,10 +179,10 @@ useEmbedly()
 const route = useRoute()
 const swaypageId = parseInt(route.params.id)
 
-const swaypageStore = useSwaypagesStore()
+const swaypageStore = useSharepagesStore()
 const { 
-  getSwaypageByIdCached, 
-  getSwaypageChaptersByIdCached, 
+  getSharepageByIdCached, 
+  getSharepageThreadsByIdCached, 
 } = storeToRefs(swaypageStore)
 
 const usersStore = useUsersStore()
@@ -191,8 +191,8 @@ const { isUserLoggedIn, isUserSeller } = storeToRefs(usersStore)
 const buyerSessionStore = useBuyerSessionStore()
 
 const [swaypage, pages, hasUser, isSeller] = await Promise.all([
-  getSwaypageByIdCached.value(swaypageId),
-  getSwaypageChaptersByIdCached.value(swaypageId),
+  getSharepageByIdCached.value(swaypageId),
+  getSharepageThreadsByIdCached.value(swaypageId),
   isUserLoggedIn.value(),
   isUserSeller.value(),
 ])
@@ -357,7 +357,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   page.body = body.value
   page.title = title.value
-  await swaypageStore.updateChapter({ swaypageId, chapterId: pageId, chapter: page })
+  await swaypageStore.updateThread({ swaypageId, threadID: pageId, thread: page })
   isDirty.value = false
 })
 
@@ -466,10 +466,10 @@ function updateItem(index, newSection) {
 const modal = useModal()
 
 async function restorePage() {
-  await swaypageStore.updateChapter({
+  await swaypageStore.updateThread({
     swaypageId,
-    chapterId: pageId,
-    chapter: { status: 'active' }
+    threadId: pageId,
+    thread: { status: 'active' }
   })
   // Ideally we'd just reload the sidebar, but I'm not sure the best way 
   // to propogate to the parent page, and this is rare enough that a hard

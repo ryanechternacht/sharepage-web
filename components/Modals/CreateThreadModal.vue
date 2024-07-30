@@ -2,7 +2,7 @@
   <UModal>
     <UCard>
       <div class="flex flex-col gap-4">
-        <h2 class="mx-auto">New Chapter</h2>
+        <h2 class="mx-auto">New Thread</h2>
         <div>
           <div class="text-sm text-gray-500 mb-1">Thread Title *</div>
           <UInput
@@ -13,9 +13,9 @@
         <div>
           <div class="text-sm text-gray-500 mb-1">Thread Type *</div>
           <USelect
-            v-model="chapterType"
+            v-model="threadType"
             placeholder="Thread Type" 
-            :options="chapterTypes"
+            :options="threadTypes"
             class="w-full" />
         </div>
         <div>
@@ -41,12 +41,12 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 
-const store = useSwaypagesStore()
+const store = useSharepagesStore()
 
 const props = defineProps({
-  chapter: { type: Object, default: {} },
+  thread: { type: Object, default: {} },
   swaypageId: { type: Number, required: true },
 })
 
@@ -57,8 +57,8 @@ const title = ref('')
 const canBuyerEdit = ref('Yes')
 const canBuyerEditOptions = ['Yes', 'No']
 
-const chapterType = ref(null)
-const chapterTypes = [
+const threadType = ref(null)
+const threadTypes = [
   {
     label: 'General Thread',
     value: 'general',
@@ -81,17 +81,17 @@ const chapterTypes = [
 ]
 
 const { submissionState, submitFn } = useSubmit(async () => {
-  const chapterId = await store.createChapter({
+  const threadId = await store.createThread({
     swaypageId: props.swaypageId,
-    chapter: {
+    thread: {
       title,
-      pageType: chapterType,
+      pageType: threadType,
       canBuyerEdit: canBuyerEdit.value === 'Yes',
     },      
   })
-  emit('close', { chapterId })
+  emit('close', { threadId })
 })
 
 const needsMoreInput = computed(() => !title.value 
-  || !chapterType.value || !canBuyerEdit.value)
+  || !threadType.value || !canBuyerEdit.value)
 </script>

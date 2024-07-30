@@ -62,10 +62,10 @@
 </template>
 
 <script setup>
-import { useSwaypagesStore } from '@/stores/swaypages'
+import { useSharepagesStore } from '@/stores/sharepages'
 
 const emit = defineEmits(['close'])
-const store = useSwaypagesStore()
+const store = useSharepagesStore()
 
 const clearbitLoading = ref(false)
 const clearbitLogo = ref(null)

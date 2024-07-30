@@ -61,7 +61,7 @@ const { apiFetch, apiSlug } = useNuxtApp();
 
 const { submissionState, submitFn } = useSubmit(async () => {
   const { error } = await apiFetch('/v0.1/send-magic-link-login-email', { 
-    method: 'POST', 
+    method: 'POST',
     body: { user_email: email.value }
   })
   if (error.value) throw error.value;
