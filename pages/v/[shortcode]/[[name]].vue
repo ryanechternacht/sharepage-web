@@ -8,73 +8,75 @@
       </template>
     </TopNav>
 
-    <div class="mt-6 layout-grid">
-      <div class="mr-4">
-        <div class="sticky top-8 md:min-h-[calc(100vh-6.5rem)] mb-2 md:mb-0 flex flex-col">
-          <div class="header-grid">
-            <Logo :src="logo" class="icon-header" />
-            <h2>{{ pageData['account-name'] }}</h2>
-          </div>
-
-          <div class="hidden md:block">
-            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
-            <div class="flex flex-col">
-              <div v-for="t in threads"
-                class="flex flex-row items-center">
-                <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
-                  class="sidebar-item">
-                  <SharepagetThreadTypeIcon :page-type="t.pageType" />
-                  <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
-                </NuxtLink>
-              </div>
+    <div class="page-area">
+      <div class="mt-6 layout-grid">
+        <div class="mr-4">
+          <div class="sticky top-8 md:min-h-[calc(100vh-6.5rem)] mb-2 md:mb-0 flex flex-col">
+            <div class="header-grid">
+              <Logo :src="logo" class="icon-header" />
+              <h2>{{ pageData['account-name'] }}</h2>
             </div>
 
-            <div v-if="links.length">
-              <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
+            <div class="hidden md:block">
+              <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
               <div class="flex flex-col">
-                <div v-for="l in links"
+                <div v-for="t in threads"
                   class="flex flex-row items-center">
-                  <a class="sidebar-item"
-                    :href="mustache.render(l.linkUrl, pageData)"
-                    target="_blank"
-                    @click="trackLinkClick(l.title, l.linkUrl, pageData)">
-                    <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
-                    <div class="text-sm">{{ mustache.render(l.title, pageData) }}</div>
-                  </a>
+                  <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
+                    class="sidebar-item">
+                    <SharepagetThreadTypeIcon :page-type="t.pageType" />
+                    <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
+                  </NuxtLink>
+                </div>
+              </div>
+
+              <div v-if="links.length">
+                <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
+                <div class="flex flex-col">
+                  <div v-for="l in links"
+                    class="flex flex-row items-center">
+                    <a class="sidebar-item"
+                      :href="mustache.render(l.linkUrl, pageData)"
+                      target="_blank"
+                      @click="trackLinkClick(l.title, l.linkUrl, pageData)">
+                      <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                      <div class="text-sm">{{ mustache.render(l.title, pageData) }}</div>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <NuxtPage />
+        <NuxtPage />
 
-      <div class="md:hidden">
-        <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
-        <div class="flex flex-col">
-          <div v-for="t in threads"
-            class="flex flex-row items-center">
-            <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
-              class="sidebar-item">
-              <SharepageThreadTypeIcon :page-type="t.pageType" />
-              <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <div v-if="links.length">
-          <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
+        <div class="md:hidden">
+          <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
           <div class="flex flex-col">
-            <div v-for="l in links"
+            <div v-for="t in threads"
               class="flex flex-row items-center">
-              <a class="sidebar-item"
-                :href="mustache.render(l.linkUrl, pageData)"
-                target="_blank"
-                @click="trackLinkClick(l.title, l.linkUrl, pageData)">
-                <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
-                <div class="text-sm">{{ mustache.render(l.title, pageData) }}</div>
-              </a>
+              <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
+                class="sidebar-item">
+                <SharepageThreadTypeIcon :page-type="t.pageType" />
+                <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
+              </NuxtLink>
+            </div>
+          </div>
+
+          <div v-if="links.length">
+            <div class="mt-8 mb-1 body text-gray-500">Key Links</div>
+            <div class="flex flex-col">
+              <div v-for="l in links"
+                class="flex flex-row items-center">
+                <a class="sidebar-item"
+                  :href="mustache.render(l.linkUrl, pageData)"
+                  target="_blank"
+                  @click="trackLinkClick(l.title, l.linkUrl, pageData)">
+                  <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                  <div class="text-sm">{{ mustache.render(l.title, pageData) }}</div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -154,6 +156,11 @@ function trackLinkClick(linkText, linkUrl, pageData) {
 </script>
 
 <style lang="postcss" scoped>
+.page-area {
+  @apply mx-auto;
+  max-width: calc(1280px);
+}
+
 .layout-grid {
   @apply mx-8;
 }

@@ -18,231 +18,233 @@
         </template>
       </template>
     </TopNav>
-    <div class="mt-6 layout-grid">
-      <div class="mr-4">
-        <div class="sticky top-8 mb-2 md:mb-0 md:min-h-[calc(100vh-6.5rem)] flex flex-col">
-          <div class="header-grid">
-            <Logo v-if="sharepage.roomType === 'deal-room'"
-              :src="sharepage.buyerLogo"
-              class="icon-header" />
-            <Logo v-else-if="sharepage.roomType === 'discovery-room'"
-              :src="organization.logo"
-              class="icon-header" />
-            <Logo v-else-if="sharepage.roomType === 'template'"
-              :src="organization.logo"
-              class="icon-header" />
-            <h2>{{ sharepage.buyer }}</h2>
-            <div>
-              <!-- TODO restore this icon -->
-              <!-- <StarIcon class="icon-menu justify-self-center text-gray-400" /> -->
-            </div>
-            <template v-if="isSeller">
-              <div v-if="sharepage.roomType === 'template'" class="subtext">Template</div>
-              <div v-else class="subtext">{{ sharepage.subname }}</div>
-            </template>
-          </div>
-
-          <div v-if="sharepage.roomType === 'template'">
-            <div class="mt-[2.25rem] mb-2 text-gray-500 body">Variables</div>
-
-            <div class="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-baseline">
-              <template v-for="item in templateItems">
-                <span class="subtext text-[.75rem]">{{ item.key }}</span>
-                <span class="body">{{ item.name }}</span> 
+    <div class="page-area">
+      <div class="mt-6 layout-grid">
+        <div class="mr-4">
+          <div class="sticky top-8 mb-2 md:mb-0 md:min-h-[calc(100vh-6.5rem)] flex flex-col">
+            <div class="header-grid">
+              <Logo v-if="sharepage.roomType === 'deal-room'"
+                :src="sharepage.buyerLogo"
+                class="icon-header" />
+              <Logo v-else-if="sharepage.roomType === 'discovery-room'"
+                :src="organization.logo"
+                class="icon-header" />
+              <Logo v-else-if="sharepage.roomType === 'template'"
+                :src="organization.logo"
+                class="icon-header" />
+              <h2>{{ sharepage.buyer }}</h2>
+              <div>
+                <!-- TODO restore this icon -->
+                <!-- <StarIcon class="icon-menu justify-self-center text-gray-400" /> -->
+              </div>
+              <template v-if="isSeller">
+                <div v-if="sharepage.roomType === 'template'" class="subtext">Template</div>
+                <div v-else class="subtext">{{ sharepage.subname }}</div>
               </template>
             </div>
-          </div>
 
-          <div class="hidden md:block">
-            <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
-            <div class="flex flex-col -ml-6">
-              <div v-if="isSeller" 
-                class="group/sidebar-item flex flex-row items-center">
-                <div class="w-[1.5rem] flex-shrink-0" />
-                <NuxtLink 
-                  :href="makeInternalSharepageLink(sharepage, 'feed')"
-                  class="sidebar-item">
-                  <UIcon name="i-heroicons-signal" />
-                  <div class="body">Feed</div>
-                </NuxtLink>
+            <div v-if="sharepage.roomType === 'template'">
+              <div class="mt-[2.25rem] mb-2 text-gray-500 body">Variables</div>
+
+              <div class="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-baseline">
+                <template v-for="item in templateItems">
+                  <span class="subtext text-[.75rem]">{{ item.key }}</span>
+                  <span class="body">{{ item.name }}</span> 
+                </template>
               </div>
-              <VueDraggable
-                v-model="activeThreads"
-                ghost-class="ghost"
-                :animation="200"
-                :scroll="false"
-                group="pages"
-                handle=".drag-handle"
-              >
-                <div v-for="p in activeThreads"
+            </div>
+
+            <div class="hidden md:block">
+              <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
+              <div class="flex flex-col -ml-6">
+                <div v-if="isSeller" 
                   class="group/sidebar-item flex flex-row items-center">
-                  <div class="w-[1.5rem] flex-shrink-0">
-                    <UDropdown v-if="canSellerEdit"
-                      :items="makeThreadMenu(p)">
-                      <UIcon
-                        class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
-                        name="i-heroicons-ellipsis-vertical" />
-                    </UDropdown>
-                  </div>
+                  <div class="w-[1.5rem] flex-shrink-0" />
                   <NuxtLink 
-                    :href="makeInternalSharepageLink(sharepage, p.id)"
+                    :href="makeInternalSharepageLink(sharepage, 'feed')"
                     class="sidebar-item">
-                    <SharepageThreadTypeIcon :page-type="p.pageType" />
-                    <div class="text-sm">{{ p.title }}</div>
+                    <UIcon name="i-heroicons-signal" />
+                    <div class="body">Feed</div>
                   </NuxtLink>
                 </div>
-              </VueDraggable>
-              <div v-if="canSellerEdit" 
-                class="ml-6 sidebar-item"
-                @click="createNewThread">
-                <UIcon name="i-heroicons-plus" class="text-gray-500" />
-                <div class="text-gray-500 body">New Thread</div>
-              </div>
-            </div>
-
-            <div v-if="canSellerEdit || links.length" class="mt-8">
-              <div class="mb-1 text-gray-500 body">Key Links</div>
-              <VueDraggable
-                v-model="links"
-                ghost-class="ghost"
-                :animation="200"
-                :scroll="false"
-                class="flex flex-col -ml-6"
-                group="pages"
-                handle=".drag-handle"
-              >
-                <div v-for="l in links"
-                  class="group/sidebar-item flex flex-row items-center">
-                  <div class="w-[1.5rem] flex-shrink-0">
-                    <UDropdown v-if="canSellerEdit" 
-                      :items="makeLinkMenu(l)">
-                      <UIcon
-                        class="drag-handle icon-menu cursor-pointer hidden group-hover/sidebar-item:block"
-                        name="i-heroicons-ellipsis-vertical" />
-                    </UDropdown>
+                <VueDraggable
+                  v-model="activeThreads"
+                  ghost-class="ghost"
+                  :animation="200"
+                  :scroll="false"
+                  group="pages"
+                  handle=".drag-handle"
+                >
+                  <div v-for="p in activeThreads"
+                    class="group/sidebar-item flex flex-row items-center">
+                    <div class="w-[1.5rem] flex-shrink-0">
+                      <UDropdown v-if="canSellerEdit"
+                        :items="makeThreadMenu(p)">
+                        <UIcon
+                          class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
+                          name="i-heroicons-ellipsis-vertical" />
+                      </UDropdown>
+                    </div>
+                    <NuxtLink 
+                      :href="makeInternalSharepageLink(sharepage, p.id)"
+                      class="sidebar-item">
+                      <SharepageThreadTypeIcon :page-type="p.pageType" />
+                      <div class="text-sm">{{ p.title }}</div>
+                    </NuxtLink>
                   </div>
-                  <a class="sidebar-item"
-                    :href="l.linkUrl"
-                    target="_blank"
-                    @click="trackLinkClick(l.title)">
-                    <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
-                    <div class="text-sm">{{ l.title }}</div>
-                  </a>
-                </div>
-                
-                <div v-if="canSellerEdit"
+                </VueDraggable>
+                <div v-if="canSellerEdit" 
                   class="ml-6 sidebar-item"
-                  @click="createNewLink">
-                  <UIcon class="text-gray-500" name="i-heroicons-plus"/>
-                  <div class="text-gray-500 body">New Link</div>
+                  @click="createNewThread">
+                  <UIcon name="i-heroicons-plus" class="text-gray-500" />
+                  <div class="text-gray-500 body">New Thread</div>
                 </div>
-              </VueDraggable>
-            </div>
-          </div>
-
-          <div class="flex-grow" />
-
-          <div class="hidden md:block mt-16 mb-4 w-full">
-            <UDropdown v-if="isSeller" 
-              :items="archivedThreadsMenu"
-              :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
-              :popper="{ placement: 'bottom-start' }">
-              <div
-                class="cursor-pointer flex flex-row gap-4 items-center">
-                <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
-                <div class="text-gray-500">Archive</div>
               </div>
-            </UDropdown>
+
+              <div v-if="canSellerEdit || links.length" class="mt-8">
+                <div class="mb-1 text-gray-500 body">Key Links</div>
+                <VueDraggable
+                  v-model="links"
+                  ghost-class="ghost"
+                  :animation="200"
+                  :scroll="false"
+                  class="flex flex-col -ml-6"
+                  group="pages"
+                  handle=".drag-handle"
+                >
+                  <div v-for="l in links"
+                    class="group/sidebar-item flex flex-row items-center">
+                    <div class="w-[1.5rem] flex-shrink-0">
+                      <UDropdown v-if="canSellerEdit" 
+                        :items="makeLinkMenu(l)">
+                        <UIcon
+                          class="drag-handle icon-menu cursor-pointer hidden group-hover/sidebar-item:block"
+                          name="i-heroicons-ellipsis-vertical" />
+                      </UDropdown>
+                    </div>
+                    <a class="sidebar-item"
+                      :href="l.linkUrl"
+                      target="_blank"
+                      @click="trackLinkClick(l.title)">
+                      <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                      <div class="text-sm">{{ l.title }}</div>
+                    </a>
+                  </div>
+                  
+                  <div v-if="canSellerEdit"
+                    class="ml-6 sidebar-item"
+                    @click="createNewLink">
+                    <UIcon class="text-gray-500" name="i-heroicons-plus"/>
+                    <div class="text-gray-500 body">New Link</div>
+                  </div>
+                </VueDraggable>
+              </div>
+            </div>
+
+            <div class="flex-grow" />
+
+            <div class="hidden md:block mt-16 mb-4 w-full">
+              <UDropdown v-if="isSeller" 
+                :items="archivedThreadsMenu"
+                :ui="{ item: { icon: { base: 'icon-submenu flex-shrink-0' }}}"
+                :popper="{ placement: 'bottom-start' }">
+                <div
+                  class="cursor-pointer flex flex-row gap-4 items-center">
+                  <UIcon name="i-heroicons-archive-box" class="text-gray-500" />
+                  <div class="text-gray-500">Archive</div>
+                </div>
+              </UDropdown>
+            </div>
           </div>
         </div>
-      </div>
 
-      <NuxtPage />
+        <NuxtPage />
 
-      <div class="md:hidden">
-        <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
-        <div class="flex flex-col -ml-6">
-          <div v-if="isSeller" 
-            class="group/sidebar-item flex flex-row items-center">
-            <div class="w-[1.5rem] flex-shrink-0" />
-            <NuxtLink 
-              :href="makeInternalSharepageLink(sharepage, 'feed')"
-              class="sidebar-item">
-              <UIcon name="i-heroicons-signal" />
-              <div class="body">Feed</div>
-            </NuxtLink>
-          </div>
-          <VueDraggable
-            v-model="activeThreads"
-            ghost-class="ghost"
-            :animation="200"
-            :scroll="false"
-            group="pages"
-            handle=".drag-handle"
-          >
-            <div v-for="p in activeThreads"
+        <div class="md:hidden">
+          <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
+          <div class="flex flex-col -ml-6">
+            <div v-if="isSeller" 
               class="group/sidebar-item flex flex-row items-center">
-              <div class="w-[1.5rem] flex-shrink-0">
-                <UDropdown v-if="canSellerEdit"
-                  :items="makeThreadMenu(p)">
-                  <UIcon
-                    class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
-                    name="i-heroicons-ellipsis-vertical" />
-                </UDropdown>
-              </div>
+              <div class="w-[1.5rem] flex-shrink-0" />
               <NuxtLink 
-                :href="makeInternalSharepageLink(sharepage, p.id)"
+                :href="makeInternalSharepageLink(sharepage, 'feed')"
                 class="sidebar-item">
-                <SharepageThreadTypeIcon :page-type="p.pageType" />
-                <div class="text-sm">{{ p.title }}</div>
+                <UIcon name="i-heroicons-signal" />
+                <div class="body">Feed</div>
               </NuxtLink>
             </div>
-          </VueDraggable>
-          <div v-if="canSellerEdit" 
-            class="ml-6 sidebar-item"
-            @click="createNewThread">
-            <UIcon name="i-heroicons-plus" class="text-gray-500" />
-            <div class="text-gray-500 body">New Thread</div>
-          </div>
-        </div>
-
-        <div v-if="canSellerEdit || links.length" class="mt-8">
-          <div class="mb-1 text-gray-500 body">Key Links</div>
-          <VueDraggable
-            v-model="links"
-            ghost-class="ghost"
-            :animation="200"
-            :scroll="false"
-            class="flex flex-col -ml-6"
-            group="pages"
-            handle=".drag-handle"
-          >
-            <div v-for="l in links"
-              class="group/sidebar-item flex flex-row items-center">
-              <div class="w-[1.5rem] flex-shrink-0">
-                <UDropdown v-if="canSellerEdit" 
-                  :items="makeLinkMenu(l)">
-                  <UIcon
-                    class="drag-handle icon-menu cursor-pointer hidden group-hover/sidebar-item:block"
-                    name="i-heroicons-ellipsis-vertical" />
-                </UDropdown>
+            <VueDraggable
+              v-model="activeThreads"
+              ghost-class="ghost"
+              :animation="200"
+              :scroll="false"
+              group="pages"
+              handle=".drag-handle"
+            >
+              <div v-for="p in activeThreads"
+                class="group/sidebar-item flex flex-row items-center">
+                <div class="w-[1.5rem] flex-shrink-0">
+                  <UDropdown v-if="canSellerEdit"
+                    :items="makeThreadMenu(p)">
+                    <UIcon
+                      class="icon-menu drag-handle cursor-pointer hidden group-hover/sidebar-item:block" 
+                      name="i-heroicons-ellipsis-vertical" />
+                  </UDropdown>
+                </div>
+                <NuxtLink 
+                  :href="makeInternalSharepageLink(sharepage, p.id)"
+                  class="sidebar-item">
+                  <SharepageThreadTypeIcon :page-type="p.pageType" />
+                  <div class="text-sm">{{ p.title }}</div>
+                </NuxtLink>
               </div>
-              <a class="sidebar-item"
-                :href="l.linkUrl"
-                target="_blank"
-                @click="trackLinkClick(l.title)">
-                <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
-                <div class="text-sm">{{ l.title }}</div>
-              </a>
-            </div>
-            
-            <div v-if="canSellerEdit"
+            </VueDraggable>
+            <div v-if="canSellerEdit" 
               class="ml-6 sidebar-item"
-              @click="createNewLink">
-              <UIcon class="text-gray-500" name="i-heroicons-plus"/>
-              <div class="text-gray-500 body">New Link</div>
+              @click="createNewThread">
+              <UIcon name="i-heroicons-plus" class="text-gray-500" />
+              <div class="text-gray-500 body">New Thread</div>
             </div>
-          </VueDraggable>
+          </div>
+
+          <div v-if="canSellerEdit || links.length" class="mt-8">
+            <div class="mb-1 text-gray-500 body">Key Links</div>
+            <VueDraggable
+              v-model="links"
+              ghost-class="ghost"
+              :animation="200"
+              :scroll="false"
+              class="flex flex-col -ml-6"
+              group="pages"
+              handle=".drag-handle"
+            >
+              <div v-for="l in links"
+                class="group/sidebar-item flex flex-row items-center">
+                <div class="w-[1.5rem] flex-shrink-0">
+                  <UDropdown v-if="canSellerEdit" 
+                    :items="makeLinkMenu(l)">
+                    <UIcon
+                      class="drag-handle icon-menu cursor-pointer hidden group-hover/sidebar-item:block"
+                      name="i-heroicons-ellipsis-vertical" />
+                  </UDropdown>
+                </div>
+                <a class="sidebar-item"
+                  :href="l.linkUrl"
+                  target="_blank"
+                  @click="trackLinkClick(l.title)">
+                  <UIcon class="icon-menu" name="i-heroicons-arrow-top-right-on-square" />
+                  <div class="text-sm">{{ l.title }}</div>
+                </a>
+              </div>
+              
+              <div v-if="canSellerEdit"
+                class="ml-6 sidebar-item"
+                @click="createNewLink">
+                <UIcon class="text-gray-500" name="i-heroicons-plus"/>
+                <div class="text-gray-500 body">New Link</div>
+              </div>
+            </VueDraggable>
+          </div>
         </div>
       </div>
     </div>
@@ -528,6 +530,11 @@ async function removeThread(page, status) {
 </script>
 
 <style lang="postcss" scoped>
+.page-area {
+  @apply mx-auto;
+  max-width: calc(1280px);
+}
+
 .layout-grid {
   @apply mx-8;
 }
