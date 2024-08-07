@@ -20,11 +20,11 @@
             <div class="hidden md:block">
               <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
               <div class="flex flex-col">
-                <div v-for="t in threads"
+                <div v-for="t in activeThreads"
                   class="flex flex-row items-center">
                   <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
                     class="sidebar-item">
-                    <SharepagetThreadTypeIcon :page-type="t.pageType" />
+                    <SharepageThreadTypeIcon :page-type="t.pageType" />
                     <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
                   </NuxtLink>
                 </div>
@@ -93,7 +93,7 @@ import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import mustache from 'mustache'
 import lodash_pkg from 'lodash';
-const { filter, first } = lodash_pkg;
+const { filter, orderBy } = lodash_pkg;
 
 const route = useRoute()
 const shortcode = route.params.shortcode
@@ -128,9 +128,17 @@ if (process.client) {
   setTimeout(() => linkToPage.value = window.location.href, 2000)
 }
 
+const activeThreads = computed(() => 
+  activeThreads.value = orderBy(
+    filter(threads,
+      p => p.status === 'active'),
+    ['ordering'],
+    ['asc']
+  ))
+
 let threadId = route.params.thread && parseInt(route.params.thread)
 if (!threadId) {
-  threadId = first(filter(threads, t => t.status === 'active')).id
+  threadId = activeThreads.value[0].id
 }
 
 const buyerSessionStore = useBuyerSessionStore()
@@ -158,7 +166,7 @@ function trackLinkClick(linkText, linkUrl, pageData) {
 <style lang="postcss" scoped>
 .page-area {
   @apply mx-auto;
-  max-width: calc(1280px);
+  max-width: 1224px;
 }
 
 .layout-grid {
@@ -168,7 +176,7 @@ function trackLinkClick(linkText, linkUrl, pageData) {
 @screen md {
   .layout-grid {
     @apply grid;
-    grid-template-columns: minmax(150px, 250px) 1fr;
+    grid-template-columns: 350px 1fr;
   }
 }
 

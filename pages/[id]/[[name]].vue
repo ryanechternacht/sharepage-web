@@ -532,7 +532,7 @@ async function removeThread(page, status) {
 <style lang="postcss" scoped>
 .page-area {
   @apply mx-auto;
-  max-width: calc(1280px);
+  max-width: 1224px;
 }
 
 .layout-grid {
@@ -542,7 +542,7 @@ async function removeThread(page, status) {
 @screen md {
   .layout-grid {
     @apply grid;
-    grid-template-columns: minmax(20%, 370px) minmax(580px, 1fr);
+    grid-template-columns: 350px 1fr;
   }
 }
 

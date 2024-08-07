@@ -34,7 +34,28 @@
           readonly />
       </template>
 
-      <div class="h-[2rem]" /> 
+      <div class="h-[2rem]" />
+
+      <div class="w-full flex flex-row items-center justify-between px-[.75rem]">
+        <div>
+          <NuxtLink v-if="priorThread"
+            :to="makeVirtualSharepageLink(shortcode, name, priorThread.id)"
+            class="subtext flex flex-row items-center">
+            <UIcon class="mr-2" name="i-heroicons-chevron-left" />
+            {{ mustache.render(priorThread.title, pageData) }}
+          </NuxtLink>
+        </div>
+        <div>
+          <NuxtLink v-if="nextThread"
+          :to="makeVirtualSharepageLink(shortcode, name, nextThread.id)"
+          class="subtext flex flex-row items-center">
+            {{ mustache.render(nextThread.title, pageData) }}
+            <UIcon class="ml-2" name="i-heroicons-chevron-right" />
+          </NuxtLink>
+        </div>
+      </div>
+
+      <div class="h-[2rem]" />
     </div>
   </div>
 </template>
@@ -45,11 +66,12 @@ import { useBuyerSessionStore } from '@/stores/buyer-session'
 import { useUsersStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
 import lodash_pkg from 'lodash';
-const { capitalize, filter, find, first, map } = lodash_pkg;
+const { capitalize, filter, findIndex, map, orderBy } = lodash_pkg;
 import mustache from 'mustache'
 
 const route = useRoute()
 const shortcode = route.params.shortcode
+const name = route.params.name
 
 const usersStore = useUsersStore()
 const { isUserLoggedIn } = storeToRefs(usersStore)
@@ -87,16 +109,31 @@ if (!anonymousId.value && process.client) {
     : Math.floor(Math.random() * 1000000).toString()
 }
 
+const activeThreads = computed(() => 
+  activeThreads.value = orderBy(
+    filter(threads,
+      p => p.status === 'active'),
+    ['ordering'],
+    ['asc']
+  ))
+
 let threadId = parseInt(route.params.thread)
 let thread
+let threadIndex
 // when we get here from a shareable link, the thread id isn't in the url,
 // so we'll pull it from the thread we're sending them to
 if (threadId) {
-  thread = find(threads, t => t.id === threadId)
+  threadIndex = findIndex(activeThreads.value, t => t.id === threadId)
+  thread = activeThreads.value[threadIndex]
 } else {
-  thread = first(filter(threads, t => t.status === 'active'))
+  thread = activeThreads.value[0]
   threadId = thread.id
+  threadIndex = 0
 }
+const priorThread = threadIndex > 0 && activeThreads.value[threadIndex - 1]
+const nextThread = activeThreads.value[threadIndex + 1]
+
+const { makeVirtualSharepageLink } = useSharepageLinks()
 
 const sections = map(thread.body.sections, s => {
   if (s.type === 'header' || s.type === 'text') {

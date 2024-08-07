@@ -159,6 +159,28 @@
           </UDropdown>
         </div>
 
+        <div class="h-[2rem]" />
+
+        <div class="w-full flex flex-row items-center justify-between pr-[.75rem]"
+          :class="[canEdit ? 'pl-[1.75rem]' : 'pl-[.75rem]']">
+          <div>
+            <NuxtLink v-if="priorThread"
+              :to="makeInternalSharepageLink(sharepage, priorThread.id)"
+              class="subtext flex flex-row items-center">
+              <UIcon class="mr-2" name="i-heroicons-chevron-left" />
+              {{ priorThread.title }}
+            </NuxtLink>
+          </div>
+          <div>
+            <NuxtLink v-if="nextThread"
+            :to="makeInternalSharepageLink(sharepage, nextThread.id)"
+            class="subtext flex flex-row items-center">
+              {{ nextThread.title }}
+              <UIcon class="ml-2" name="i-heroicons-chevron-right" />
+            </NuxtLink>
+          </div>
+        </div>
+
         <div class="h-[2rem]" /> <!-- bottom spacer -->
       </div>
     </div>
@@ -167,7 +189,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { cloneDeep, debounce, filter, find, findIndex, first, map, max } = lodash_pkg;
+const { cloneDeep, debounce, filter, findIndex, map, max, orderBy } = lodash_pkg;
 import { useSharepagesStore } from '@/stores/sharepages'
 import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
@@ -238,16 +260,30 @@ const newBlocksMenu = [
   }]
 ]
 
+const activeThreads = computed(() => 
+  activeThreads.value = orderBy(
+    filter(threads,
+      p => p.status === 'active'),
+    ['ordering'],
+    ['asc']
+  ))
+
 let threadId = parseInt(route.params.thread)
 let thread
+let threadIndex
 // when we get here from a shareable link, the page id isn't in the url,
 // so we'll pull it from the page we're sending them to
 if (threadId) {
-  thread = find(threads, t => t.id === threadId)
+  threadIndex = findIndex(activeThreads.value, t => t.id === threadId)
+  thread = activeThreads.value[threadIndex]
 } else {
-  thread = first(filter(threads, t => t.status === 'active'))
+  thread = activeThreads.value[0]
   threadId = thread.id
+  threadIndex = 0
 }
+
+const priorThread = threadIndex > 0 && activeThreads.value[threadIndex - 1]
+const nextThread = activeThreads.value[threadIndex + 1]
 
 buyerSessionStore.captureThreadTimingIfAppropriate({ sharepageId, thread: threadId })
 
