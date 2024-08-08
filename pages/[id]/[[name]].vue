@@ -87,7 +87,9 @@
                     </div>
                     <NuxtLink 
                       :href="makeInternalSharepageLink(sharepage, p.id)"
-                      class="sidebar-item">
+                      class="sidebar-item"
+                      :class="{'router-link-active': i === 0 && highlightFirstThread}"
+                      @click="highlightFirstThread = false">
                       <SharepageThreadTypeIcon :page-type="p.pageType" />
                       <div class="text-sm">{{ p.title }}</div>
                     </NuxtLink>
@@ -325,11 +327,6 @@ if (process.client) {
   setTimeout(() => linkToPage.value = window.location.href, 2000)
 }
 
-let threadId = route.params.page && parseInt(route.params.page)
-if (!threadId) {
-  threadId = first(filter(threads, t => t.status === 'active')).id
-}
-
 const buyerSessionStore = useBuyerSessionStore()
 async function trackShare () {
   buyerSessionStore.captureThreadEventIfAppropriate({
@@ -358,6 +355,13 @@ function refreshThreads () {
   )
 }
 refreshThreads()
+
+let threadId = route.params.page && parseInt(route.params.page)
+let highlightFirstThread = false
+if (!threadId) {
+  threadId = activeThreads.value[0].id
+  highlightFirstThread = true
+}
 
 // This pattern is because VueDraggable needs its own object (links) to
 // modify as ppl drag around. changes are sent to the store and then

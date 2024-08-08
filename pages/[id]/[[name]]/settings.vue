@@ -2,10 +2,10 @@
   <div>
     <div class="h-[2.375rem] flex flex-row items-center gap-2">
       <UButton
-        icon="i-heroicons-arrow-left" 
+        icon="i-heroicons-arrow-left"
         variant="ghost"
         color="gray"
-        :to="makeInternalSharepageLink(sharepageId)" />
+        :to="makeInternalSharepageLink(sharepage)" />
       <h1>Settings</h1>
       <div class="flex-grow" />
       <!-- <div>active</div> -->
@@ -207,7 +207,7 @@ const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
 
 </script>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 .page-area {
   @apply border border-gray-200 rounded-md px-2 py-1;
   /* this is based on the current top nav height */

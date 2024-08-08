@@ -20,10 +20,12 @@
             <div class="hidden md:block">
               <div class="mt-[2.25rem] mb-1 text-gray-500 body">Threads</div>
               <div class="flex flex-col">
-                <div v-for="t in activeThreads"
+                <div v-for="(t, i) in activeThreads"
                   class="flex flex-row items-center">
                   <NuxtLink :href="makeVirtualSharepageLink(shortcode, name, t.id)"
-                    class="sidebar-item">
+                    class="sidebar-item"
+                    :class="{'router-link-active': i === 0 && highlightFirstThread}"
+                    @click="highlightFirstThread = false">
                     <SharepageThreadTypeIcon :page-type="t.pageType" />
                     <div class="text-sm">{{ mustache.render(t.title, pageData) }}</div>
                   </NuxtLink>
@@ -137,8 +139,10 @@ const activeThreads = computed(() =>
   ))
 
 let threadId = route.params.thread && parseInt(route.params.thread)
+let highlightFirstThread = false
 if (!threadId) {
   threadId = activeThreads.value[0].id
+  highlightFirstThread = true
 }
 
 const buyerSessionStore = useBuyerSessionStore()
