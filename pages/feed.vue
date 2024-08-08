@@ -58,7 +58,10 @@
               <div class="cell">
                 <SharepagePriorityTag :priority="session.buyersphere.priority" />
               </div>
-              <div class="cell">{{ session?.linkedName }}</div>
+              <div class="cell body">
+                <span v-if="session?.linkedName">{{ session.linkedName }}</span>
+                <span v-else class="text-gray-500 italic">Anonymous</span>
+              </div>
               <div class="cell">
                 <div class="timing-grid">
                   <div v-for="timing in session.timings"

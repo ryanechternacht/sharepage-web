@@ -21,7 +21,10 @@
         <h2 class="h-[3rem] flex flex-row items-center">Event Time</h2>
 
         <template v-for="session in buyerSessions">
-          <div class="cell">{{ session?.linkedName }}</div>
+          <div class="cell body">
+            <span v-if="session?.linkedName">{{ session.linkedName }}</span>
+            <span v-else class="text-gray-500 italic">Anonymous</span>
+          </div>
           <div class="cell">
             <div class="timing-grid">
               <div v-for="timing in session.timings"
@@ -44,7 +47,7 @@
               </div>
             </div>
           </div>
-          <div class="cell">{{ prettyFormatDate(session.createdAt) }}</div>
+          <div class="cell body">{{ prettyFormatDate(session.createdAt) }}</div>
         </template>
       </div>
     </div>
