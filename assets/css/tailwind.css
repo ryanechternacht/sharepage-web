@@ -37,15 +37,15 @@
   }
 
   .icon-header {
-    @apply max-w-[1.875rem] max-h-[1.875rem] w-full min-w-[1.875rem];
+    @apply max-w-[1.875rem] max-h-[1.875rem] min-w-[1.875rem] min-h-[1.875rem];
   }
 
   .icon-menu {
-    @apply max-w-5 max-h-5 w-full min-w-5;
+    @apply max-w-5 max-h-5 min-w-5 min-h-5;
   }
 
   .icon-submenu {
-    @apply max-w-[.875rem] max-h-[.875rem] w-full min-w-[.875rem];
+    @apply max-w-[.875rem] max-h-[.875rem] min-w-[.875rem] min-h-[.875rem];
   }
 
   .tag {
