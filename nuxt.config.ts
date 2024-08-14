@@ -26,12 +26,17 @@ export default defineNuxtConfig({
     'floating-vue/nuxt',
     '@nuxt/ui',
     'nuxt-viewport',
+    '@nuxt/image',
   ],
 
   build: {
     transpile: [
       "@vuepic/vue-datepicker",
     ],
+  },
+
+  image: {
+    // Options
   },
 
   dayjs: {

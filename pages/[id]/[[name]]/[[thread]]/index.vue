@@ -87,6 +87,12 @@
         </UDropdown>
       </div>
       <div class="page-area">
+        <div class="w-[calc(100%+1rem)]">
+          <NuxtImg v-if="true"
+            :src="image"
+            class="-mx-2 -mt-2 object-cover object-center h-[7.5rem] w-full" />
+        </div>
+
         <input v-if="canEdit"
           v-model="title"
           type="text"
@@ -157,8 +163,8 @@
               <div class="subtext">New</div>
             </div>
           </UDropdown>
-        </div>
-
+        </div> 
+   
         <div class="h-[2rem]" />
 
         <div class="w-full flex flex-row items-center justify-between pr-[.75rem]"
@@ -195,6 +201,8 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
+
+const image = "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixid=M3w2NDMzMDZ8MHwxfHNlYXJjaHwxfHxvZmZpY2V8ZW58MHwwfHx8MTcyMzU5NTM5Nnww&ixlib=rb-4.0.3?w=2400&crop=entropy"
 
 useEmbedly()
 
@@ -522,7 +530,7 @@ async function cloneSharepage(roomType) {
 
 <style lang="postcss" scoped>
 .page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
+  @apply border border-gray-200 rounded-md px-2 py-1 overflow-hidden;
   /* this is based on the current top nav height + header above */
   min-height: calc(100vh - 10.375rem);
 }
