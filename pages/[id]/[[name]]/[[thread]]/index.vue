@@ -93,7 +93,8 @@
 
           <!-- the manual margin left = align-content-left class but that class wasn't applying correctly as
                elements were dynamically created/removed -->
-          <div class="flex flex-row items-center justify-between w-full px-[calc(2.25rem+2px)] absolute group-hover:flex hidden top-4">
+          <div v-if="canSellerEdit"
+            class="flex flex-row items-center justify-between w-full px-[calc(2.25rem+2px)] absolute group-hover:flex hidden top-4">
             <USelectMenu v-model="headerImage" 
               class="w-full max-w-[30rem]"
               :searchable="searchUnsplash"
@@ -128,7 +129,7 @@
               @click="headerImage = null" />
           </div>
         </div>
-        <div v-else>
+        <div v-else-if="canSellerEdit">
           <!-- the manual margin left = align-content-left class but that class wasn't applying correctly as
                elements were dynamically created/removed -->
           <USelectMenu
