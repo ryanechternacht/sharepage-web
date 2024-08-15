@@ -87,12 +87,53 @@
         </UDropdown>
       </div>
       <div class="page-area">
-        <div v-show="headerImage" class="w-[calc(100%+1rem)] group relative">
-          <NuxtImg :src="headerImage.url"
+        <div v-if="headerImage" class="w-[calc(100%+1rem)] group relative">
+          <NuxtImg :src="headerImage?.url"
             class="-mx-2 -mt-2 object-cover object-center h-[7.5rem] w-full" />
 
-          <USelectMenu v-model="headerImage" 
-            class="absolute group-hover:block hidden top-4 align-content-left w-full max-w-[30rem]"
+          <!-- the manual margin left = align-content-left class but that class wasn't applying correctly as
+               elements were dynamically created/removed -->
+          <div class="flex flex-row items-center justify-between w-full px-[calc(2.25rem+2px)] absolute group-hover:flex hidden top-4">
+            <USelectMenu v-model="headerImage" 
+              class="w-full max-w-[30rem]"
+              :searchable="searchUnsplash"
+              :loading="unsplashSearchLoading"
+              :searchable-lazy="true"
+              searchable-placeholder="Search on Unsplash"
+              :uiMenu="{
+                base: 'grid grid-cols-4',
+                input: 'col-span-4',
+                option: { selected: 'pe-[inherit]',
+                          selectedIcon: { wrapper: 'hidden' },
+                          container: 'w-full' },
+              }">
+              <UButton variant="soft">Change Header</UButton>
+              <template #option="{ option: { author, url } }">
+                <div :key="url" class="overflow-hidden w-full">
+                  <PhotoWithPlaceholder :src="url" />
+                  <div class="text-[10px] text-gray-500 truncate">
+                    By
+                    <a :href="author.link" target="_blank" class="underline"
+                      @click.self.prevent="navigateTo(author.link, { target: '_blank' })">
+                      {{ author.name }}
+                    </a>
+                  </div>
+                </div>
+              </template>
+            </USelectMenu>
+
+            <UButton variant="soft"
+              color="gray"
+              icon="i-heroicons-x-mark"
+              @click="headerImage = null" />
+          </div>
+        </div>
+        <div v-else>
+          <!-- the manual margin left = align-content-left class but that class wasn't applying correctly as
+               elements were dynamically created/removed -->
+          <USelectMenu
+            v-model="headerImage" 
+            class="top-4 ml-[calc(2.25rem+2px)] w-full max-w-[30rem]"
             :searchable="searchUnsplash"
             :loading="unsplashSearchLoading"
             :searchable-lazy="true"
@@ -104,7 +145,9 @@
                         selectedIcon: { wrapper: 'hidden' },
                         container: 'w-full' },
             }">
-            <UButton variant="soft">Change Header</UButton>
+            <UButton variant="soft"
+              color="gray"
+              icon="i-heroicons-plus">Add Header</UButton>
             <template #option="{ option: { author, url } }">
               <div :key="url" class="overflow-hidden w-full">
                 <PhotoWithPlaceholder :src="url" />
@@ -407,11 +450,7 @@ function updateSection (section) {
 const unsplashSearchLoading = ref(false)
 const { apiFetch } = useNuxtApp()
 
-const hardcodedImageForTesting = {
-  url: "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixid=M3w2NDMzMDZ8MHwxfHNlYXJjaHwxfHxvZmZpY2V8ZW58MHwwfHx8MTcyMzU5NTM5Nnww&ixlib=rb-4.0.3?w=2400&crop=entropy",
-  author: {}
-}
-const headerImage = ref(thread.headerImage || hardcodedImageForTesting)
+const headerImage = ref(thread.headerImage)
 async function searchUnsplash (query) {
   unsplashSearchLoading.value = true
 
