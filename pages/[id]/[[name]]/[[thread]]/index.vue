@@ -87,16 +87,43 @@
         </UDropdown>
       </div>
       <div class="page-area">
-        <div class="w-[calc(100%+1rem)]">
-          <NuxtImg v-if="true"
-            :src="image"
+        <div v-show="unsplashModel" class="w-[calc(100%+1rem)] group relative">
+          <NuxtImg :src="unsplashModel.url"
             class="-mx-2 -mt-2 object-cover object-center h-[7.5rem] w-full" />
+
+          <USelectMenu v-model="unsplashModel" 
+            class="absolute group-hover:block hidden top-4 align-content-left w-full max-w-[30rem]"
+            :searchable="searchUnsplash"
+            :loading="unsplashLoading"
+            :searchable-lazy="true"
+            searchable-placeholder="Search on Unsplash"
+            :uiMenu="{
+              base: 'grid grid-cols-4',
+              input: 'col-span-4',
+              option: { selected: 'pe-[inherit]',
+                        selectedIcon: { wrapper: 'hidden' },
+                        container: 'w-full' },
+            }">
+            <UButton variant="soft">Change Header</UButton>
+            <template #option="{ option: { author, url } }">
+              <div :key="url" class="overflow-hidden w-full">
+                <PhotoWithPlaceholder :src="url" />
+                <div class="text-[10px] text-gray-500 truncate">
+                  By
+                  <a :href="author.link" target="_blank" class="underline"
+                    @click.self.prevent="navigateTo(author.link, { target: '_blank' })">
+                    {{ author.name }}
+                  </a>
+                </div>
+              </div>
+            </template>
+          </USelectMenu>
         </div>
 
         <input v-if="canEdit"
           v-model="title"
           type="text"
-          class="w-full p-0 pl-[calc(2.25rem+2px)] h1 mt-10 mb-6 border-0">
+          class="w-full p-0 pl-[calc(2.25rem+2px)] h1 my-6 border-0">
         <h1 v-else class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
 
         <VueDraggable
@@ -202,7 +229,24 @@ import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
 
-const image = "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixid=M3w2NDMzMDZ8MHwxfHNlYXJjaHwxfHxvZmZpY2V8ZW58MHwwfHx8MTcyMzU5NTM5Nnww&ixlib=rb-4.0.3?w=2400&crop=entropy"
+const unsplashLoading = ref(false)
+const { apiFetch } = useNuxtApp()
+const unsplashModel = ref({
+  url: "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixid=M3w2NDMzMDZ8MHwxfHNlYXJjaHwxfHxvZmZpY2V8ZW58MHwwfHx8MTcyMzU5NTM5Nnww&ixlib=rb-4.0.3?w=2400&crop=entropy",
+  author: {}
+})
+async function searchUnsplash (query) {
+  unsplashLoading.value = true
+
+  const queryWithFallback = query || "office"
+
+  const { data } = await apiFetch(`/v0.1/search-unsplash/${queryWithFallback}`)
+  unsplashLoading.value = false
+
+  console.log('data', data.value)
+
+  return data.value
+}
 
 useEmbedly()
 
