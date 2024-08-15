@@ -356,9 +356,12 @@ function refreshThreads () {
 }
 refreshThreads()
 
-let threadId = route.params.page && parseInt(route.params.page)
+let threadId = route.params.thread && parseInt(route.params.thread)
 let highlightFirstThread = false
-if (!threadId) {
+if (!threadId
+  && route.matched[1].name !== 'id-name-feed'
+  && route.matched[1].name !== 'id-name-settings'
+) {
   threadId = activeThreads.value[0].id
   highlightFirstThread = true
 }

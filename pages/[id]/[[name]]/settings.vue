@@ -209,9 +209,8 @@ const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
 
 <style lang="postcss" scoped>
 .page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
+  @apply border border-gray-200 rounded-md px-2 pt-1 pb-4;
   /* this is based on the current top nav height */
-  min-height: calc(100vh - 5rem);
   overflow: hidden;
 }
 

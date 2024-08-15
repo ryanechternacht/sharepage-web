@@ -87,14 +87,14 @@
         </UDropdown>
       </div>
       <div class="page-area">
-        <div v-show="unsplashModel" class="w-[calc(100%+1rem)] group relative">
-          <NuxtImg :src="unsplashModel.url"
+        <div v-show="headerImage" class="w-[calc(100%+1rem)] group relative">
+          <NuxtImg :src="headerImage.url"
             class="-mx-2 -mt-2 object-cover object-center h-[7.5rem] w-full" />
 
-          <USelectMenu v-model="unsplashModel" 
+          <USelectMenu v-model="headerImage" 
             class="absolute group-hover:block hidden top-4 align-content-left w-full max-w-[30rem]"
             :searchable="searchUnsplash"
-            :loading="unsplashLoading"
+            :loading="unsplashSearchLoading"
             :searchable-lazy="true"
             searchable-placeholder="Search on Unsplash"
             :uiMenu="{
@@ -228,25 +228,6 @@ import { useUsersStore } from '@/stores/users'
 import { useBuyerSessionStore } from '@/stores/buyer-session';
 import { storeToRefs } from 'pinia'
 import { VueDraggable } from 'vue-draggable-plus'
-
-const unsplashLoading = ref(false)
-const { apiFetch } = useNuxtApp()
-const unsplashModel = ref({
-  url: "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixid=M3w2NDMzMDZ8MHwxfHNlYXJjaHwxfHxvZmZpY2V8ZW58MHwwfHx8MTcyMzU5NTM5Nnww&ixlib=rb-4.0.3?w=2400&crop=entropy",
-  author: {}
-})
-async function searchUnsplash (query) {
-  unsplashLoading.value = true
-
-  const queryWithFallback = query || "office"
-
-  const { data } = await apiFetch(`/v0.1/search-unsplash/${queryWithFallback}`)
-  unsplashLoading.value = false
-
-  console.log('data', data.value)
-
-  return data.value
-}
 
 useEmbedly()
 
@@ -423,6 +404,25 @@ function updateSection (section) {
   return s
 }
 
+const unsplashSearchLoading = ref(false)
+const { apiFetch } = useNuxtApp()
+
+const hardcodedImageForTesting = {
+  url: "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixid=M3w2NDMzMDZ8MHwxfHNlYXJjaHwxfHxvZmZpY2V8ZW58MHwwfHx8MTcyMzU5NTM5Nnww&ixlib=rb-4.0.3?w=2400&crop=entropy",
+  author: {}
+}
+const headerImage = ref(thread.headerImage || hardcodedImageForTesting)
+async function searchUnsplash (query) {
+  unsplashSearchLoading.value = true
+
+  const queryWithFallback = query || "office"
+
+  const { data } = await apiFetch(`/v0.1/search-unsplash/${queryWithFallback}`)
+  unsplashSearchLoading.value = false
+
+  return data.value
+}
+
 const body = ref({ sections: map(thread?.body.sections, updateSection) })
 const title = ref(thread?.title)
 
@@ -445,6 +445,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   thread.body = body.value
   thread.title = title.value
+  thread.headerImage = headerImage.value
   await sharepageStore.updateThread({ sharepageId, threadId, thread })
   isDirty.value = false
 })
@@ -458,6 +459,12 @@ watch(body.value, () => {
 })
 
 watch(title, () => {
+  isDirty.value = true
+  debouncedSave()
+})
+
+watch(headerImage, () => {
+  console.log('header iamge change')
   isDirty.value = true
   debouncedSave()
 })
