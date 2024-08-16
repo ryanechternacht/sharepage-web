@@ -69,7 +69,8 @@ module.exports = {
         '900': '#111827',
         '950': '#030712',
       },
-      white: '#FFF'
+      white: '#FFF',
+      current: 'currentColor', // for some nuxt UI components
     },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],

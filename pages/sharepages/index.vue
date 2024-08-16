@@ -1,35 +1,41 @@
 <template>
-  <div class="sharepages">
-    <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-    <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
-    <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
-    <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
-    <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
-    <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+  <div>
+    <UTable :rows="activeSharepages" :columns>
 
-    <NuxtLink class="contents cursor-pointer group" v-for="sharepage in activeSharepages"
-      :to="makeInternalSharepageLink(sharepage)">
-      <div class="cell body">
-        <Logo :src="sharepage.buyerLogo" class="icon-menu" />
-        {{ sharepage.buyer }}
-      </div>
-      <div class="cell subtext">{{ sharepage.subname }}</div>
-      <div class="cell subtext">
-        <template v-if="sharepage.owner">
-          <UserAvatar :user="sharepage.owner" />
-          {{ sharepage.owner?.firstName }} {{ sharepage.owner?.lastName }} 
-        </template>
-      </div>
-      <div class="cell">
-        <SharepagePriorityTag :priority="sharepage.priority" />
-      </div>
-      <div class="cell">
-        <SharepageStatusTag
-          :last-activity-date="sharepage.mostRecentBuyerActivity"
-          :isOnHold="sharepage.status === 'on-hold'" />
-      </div>
-      <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
-    </NuxtLink>
+    </UTable>
+
+    <div class="sharepages">
+      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
+      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+
+      <NuxtLink class="contents cursor-pointer group" v-for="sharepage in activeSharepages"
+        :to="makeInternalSharepageLink(sharepage)">
+        <div class="cell body">
+          <Logo :src="sharepage.buyerLogo" class="icon-menu" />
+          {{ sharepage.buyer }}
+        </div>
+        <div class="cell subtext">{{ sharepage.subname }}</div>
+        <div class="cell subtext">
+          <template v-if="sharepage.owner">
+            <UserAvatar :user="sharepage.owner" />
+            {{ sharepage.owner?.firstName }} {{ sharepage.owner?.lastName }} 
+          </template>
+        </div>
+        <div class="cell">
+          <SharepagePriorityTag :priority="sharepage.priority" />
+        </div>
+        <div class="cell">
+          <SharepageStatusTag
+            :last-activity-date="sharepage.mostRecentBuyerActivity"
+            :isOnHold="sharepage.status === 'on-hold'" />
+        </div>
+        <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -59,6 +65,26 @@ const dayjs = useDayjs()
 function prettyFormatDate(date) {
   return dayjs(date).calendar()
 }
+
+const columns = [{
+  label: 'Name',
+  key: 'buyer',
+}, {
+  label: 'Context',
+  key: 'subname',
+}, {
+  label: 'Owned By',
+  key: 'owner',
+}, {
+  label: 'Priority',
+  key: 'priority',
+}, {
+  label: 'Status',
+  key: 'mostRecentBuyerActivity',
+}, {
+  label: 'Modified',
+  key: 'updatedAt',
+}]
 </script>
 
 <style lang="postcss" scoped>
