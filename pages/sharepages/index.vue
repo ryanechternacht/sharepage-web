@@ -95,6 +95,7 @@ const columns = [{
   label: 'Context',
   key: 'subname',
 }, {
+// TODO sort on this https://github.com/nuxt/ui/pull/1075
   label: 'Owned By',
   key: 'owner',
 }, {
