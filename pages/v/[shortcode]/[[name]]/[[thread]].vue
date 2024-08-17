@@ -13,7 +13,13 @@
     </div>
 
     <div class="page-area">
-      <h1 class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
+      <div v-if="thread.headerImage?.url"
+         class="w-[calc(100%+1rem)]">
+        <NuxtImg :src="thread.headerImage?.url"
+          class="-mx-2 -mt-2 object-cover object-center h-[7.5rem] w-full" />
+      </div>
+
+      <h1 class="my-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
       <template v-for="section in sections"
         :key="section.key">
         <EditorTextArea v-if="section.type === 'text'"
@@ -160,7 +166,7 @@ buyerSessionStore.captureVirtualSharepageThreadTimingIfAppropriate({ shortcode, 
 
 <style lang="postcss" scoped>
 .page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
+  @apply border border-gray-200 rounded-md px-2 py-1 overflow-hidden;
   /* this is based on the current top nav height + header above */
   min-height: calc(100vh - 10.375rem);
 }

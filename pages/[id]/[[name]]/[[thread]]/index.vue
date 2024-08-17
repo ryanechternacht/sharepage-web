@@ -87,10 +87,87 @@
         </UDropdown>
       </div>
       <div class="page-area">
+        <div v-if="headerImage" class="w-[calc(100%+1rem)] group relative">
+          <NuxtImg :src="headerImage?.url"
+            class="-mx-2 -mt-2 object-cover object-center h-[7.5rem] w-full" />
+
+          <!-- the manual margin left = align-content-left class but that class wasn't applying correctly as
+               elements were dynamically created/removed -->
+          <div v-if="canSellerEdit"
+            class="flex flex-row items-center justify-between w-full px-[calc(2.25rem+2px)] absolute group-hover:flex hidden top-4">
+            <USelectMenu v-model="headerImage" 
+              class="w-full max-w-[30rem]"
+              :searchable="searchUnsplash"
+              :loading="unsplashSearchLoading"
+              :searchable-lazy="true"
+              searchable-placeholder="Search on Unsplash"
+              :uiMenu="{
+                base: 'grid grid-cols-4',
+                input: 'col-span-4',
+                option: { selected: 'pe-[inherit]',
+                          selectedIcon: { wrapper: 'hidden' },
+                          container: 'w-full' },
+              }">
+              <UButton variant="soft">Change Header</UButton>
+              <template #option="{ option: { author, url } }">
+                <div :key="url" class="overflow-hidden w-full">
+                  <PhotoWithPlaceholder :src="url" />
+                  <div class="text-[10px] text-gray-500 truncate">
+                    By
+                    <a :href="author.link" target="_blank" class="underline"
+                      @click.self.prevent="navigateTo(author.link, { target: '_blank' })">
+                      {{ author.name }}
+                    </a>
+                  </div>
+                </div>
+              </template>
+            </USelectMenu>
+
+            <UButton variant="soft"
+              color="gray"
+              icon="i-heroicons-x-mark"
+              @click="headerImage = null" />
+          </div>
+        </div>
+        <div v-else-if="canSellerEdit">
+          <!-- the manual margin left = align-content-left class but that class wasn't applying correctly as
+               elements were dynamically created/removed -->
+          <USelectMenu
+            v-model="headerImage" 
+            class="top-4 ml-[calc(2.25rem+2px)] w-full max-w-[30rem]"
+            :searchable="searchUnsplash"
+            :loading="unsplashSearchLoading"
+            :searchable-lazy="true"
+            searchable-placeholder="Search on Unsplash"
+            :uiMenu="{
+              base: 'grid grid-cols-4',
+              input: 'col-span-4',
+              option: { selected: 'pe-[inherit]',
+                        selectedIcon: { wrapper: 'hidden' },
+                        container: 'w-full' },
+            }">
+            <UButton variant="soft"
+              color="gray"
+              icon="i-heroicons-plus">Add Header</UButton>
+            <template #option="{ option: { author, url } }">
+              <div :key="url" class="overflow-hidden w-full">
+                <PhotoWithPlaceholder :src="url" />
+                <div class="text-[10px] text-gray-500 truncate">
+                  By
+                  <a :href="author.link" target="_blank" class="underline"
+                    @click.self.prevent="navigateTo(author.link, { target: '_blank' })">
+                    {{ author.name }}
+                  </a>
+                </div>
+              </div>
+            </template>
+          </USelectMenu>
+        </div>
+
         <input v-if="canEdit"
           v-model="title"
           type="text"
-          class="w-full p-0 pl-[calc(2.25rem+2px)] h1 mt-10 mb-6 border-0">
+          class="w-full p-0 pl-[calc(2.25rem+2px)] h1 my-6 border-0">
         <h1 v-else class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
 
         <VueDraggable
@@ -157,8 +234,8 @@
               <div class="subtext">New</div>
             </div>
           </UDropdown>
-        </div>
-
+        </div> 
+   
         <div class="h-[2rem]" />
 
         <div class="w-full flex flex-row items-center justify-between pr-[.75rem]"
@@ -371,6 +448,21 @@ function updateSection (section) {
   return s
 }
 
+const unsplashSearchLoading = ref(false)
+const { apiFetch } = useNuxtApp()
+
+const headerImage = ref(thread.headerImage)
+async function searchUnsplash (query) {
+  unsplashSearchLoading.value = true
+
+  const queryWithFallback = query || "office"
+
+  const { data } = await apiFetch(`/v0.1/search-unsplash/${queryWithFallback}`)
+  unsplashSearchLoading.value = false
+
+  return data.value
+}
+
 const body = ref({ sections: map(thread?.body.sections, updateSection) })
 const title = ref(thread?.title)
 
@@ -393,6 +485,7 @@ if (process.client) {
 const { submissionState: saveSubmissionState, submitFn: saveSubmitFn } = useSubmit(async () => {
   thread.body = body.value
   thread.title = title.value
+  thread.headerImage = headerImage.value
   await sharepageStore.updateThread({ sharepageId, threadId, thread })
   isDirty.value = false
 })
@@ -406,6 +499,12 @@ watch(body.value, () => {
 })
 
 watch(title, () => {
+  isDirty.value = true
+  debouncedSave()
+})
+
+watch(headerImage, () => {
+  console.log('header iamge change')
   isDirty.value = true
   debouncedSave()
 })
@@ -522,7 +621,7 @@ async function cloneSharepage(roomType) {
 
 <style lang="postcss" scoped>
 .page-area {
-  @apply border border-gray-200 rounded-md px-2 py-1;
+  @apply border border-gray-200 rounded-md px-2 py-1 overflow-hidden;
   /* this is based on the current top nav height + header above */
   min-height: calc(100vh - 10.375rem);
 }

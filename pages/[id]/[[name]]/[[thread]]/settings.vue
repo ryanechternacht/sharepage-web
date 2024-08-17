@@ -142,3 +142,11 @@ const { submissionState, submitFn } = useSubmit(async () => {
 const needsMoreInput = computed(() => !title.value 
   || !chapterType.value || !canBuyerEdit.value)
 </script>
+
+<style lang="postcss" scoped>
+.page-area {
+  @apply border border-gray-200 rounded-md px-2 pt-1 pb-4;
+  /* this is based on the current top nav height */
+  overflow: hidden;
+}
+</style>
