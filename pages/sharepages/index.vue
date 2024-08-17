@@ -1,10 +1,31 @@
 <template>
   <div>
-    <UTable :rows="activeSharepages" :columns>
+    <UTable :rows="activeSharepages" :columns @select="goToSharepage">
+      <template #buyer-data="{ row }">
+        <div class="flex flex-row items-center gap-2">
+          <Logo :src="row.buyerLogo" class="icon-menu" />
+          {{ row.buyer }}
+        </div>
+      </template>
+      <template #owner-data="{ row }">
+        <div v-if="row.owner"
+          class="flex flex-row items-center gap-2">
+          <UserAvatar :user="row.owner" />
+          {{ row.owner?.firstName }} {{ row.owner?.lastName }} 
+        </div>
+      </template>
+      <template #mostRecentBuyerActivity-data="{ row }">
+        <SharepageStatusTag
+          :last-activity-date="row.mostRecentBuyerActivity"
+          :isOnHold="row.status === 'on-hold'" />
+      </template>
 
+      <template #updatedAt-data="{ row }">
+        {{ prettyFormatDate(row.updatedAt )}}
+      </template>
     </UTable>
 
-    <div class="sharepages">
+    <!-- <div class="sharepages">
       <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
       <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
@@ -35,7 +56,7 @@
         </div>
         <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
       </NuxtLink>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -69,22 +90,27 @@ function prettyFormatDate(date) {
 const columns = [{
   label: 'Name',
   key: 'buyer',
+  sortable: true,
 }, {
   label: 'Context',
   key: 'subname',
 }, {
   label: 'Owned By',
   key: 'owner',
-}, {
-  label: 'Priority',
-  key: 'priority',
+  sortable: true,
 }, {
   label: 'Status',
   key: 'mostRecentBuyerActivity',
 }, {
   label: 'Modified',
   key: 'updatedAt',
+  sortable: true,
+  // direction: 'desc',
 }]
+
+async function goToSharepage (e) {
+  await navigateTo(makeInternalSharepageLink(e))
+}
 </script>
 
 <style lang="postcss" scoped>
