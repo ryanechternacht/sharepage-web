@@ -1,6 +1,12 @@
 <template>
   <div>
-    <UTable :rows="activeSharepages" :columns @select="goToSharepage">
+    <div class="w-full flex flex-row justify-end gap-2">
+      <UInput v-model="searchTerm"
+        icon="i-heroicons-magnifying-glass"
+        class="my-2"
+        placeholder="Account or Owner" />
+    </div>
+    <UTable :rows :columns @select="goToSharepage">
       <template #buyer-data="{ row }">
         <div class="flex flex-row items-center gap-2">
           <Logo :src="row.buyerLogo" class="icon-menu" />
@@ -62,7 +68,7 @@
 
 <script setup>
 import lodash_pkg from 'lodash';
-const { filter, orderBy } = lodash_pkg;
+const { chain } = lodash_pkg;
 import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
 
@@ -73,13 +79,21 @@ const sharepages = await getSharepageList.value()
 
 const { makeInternalSharepageLink } = useSharepageLinks()
 
-const activeSharepages = computed(() => 
-  orderBy(
-    filter(sharepages,
-      s => s.status !== 'archived' && s.roomType === 'deal-room'),
-    ['updatedAt'],
-    ['desc']
-  )
+const searchTerm = ref('')
+
+function getNameLowerCase(owner) {
+  return (owner?.firstName + ' ' + owner?.lastName).toLowerCase()
+}
+
+const rows = computed(() => 
+  chain(sharepages)
+    .filter(s => s.status !== 'archived' && s.roomType === 'deal-room')
+    .filter(s => !searchTerm.value 
+      || s.buyer.includes(searchTerm.value)
+      || (s.owner && getNameLowerCase(s.owner).includes(searchTerm.value.toLowerCase()))
+    )
+    .orderBy(['updatedAt'], ['desc'])
+    .value()
 )
 
 const dayjs = useDayjs()
@@ -87,6 +101,8 @@ function prettyFormatDate(date) {
   return dayjs(date).calendar()
 }
 
+// TODO add in an empty state
+// TODO add in pagination?
 const columns = [{
   label: 'Name',
   key: 'buyer',
@@ -95,9 +111,19 @@ const columns = [{
   label: 'Context',
   key: 'subname',
 }, {
-// TODO sort on this https://github.com/nuxt/ui/pull/1075
   label: 'Owned By',
   key: 'owner',
+  sortable: true,
+  sort (ownerA, ownerB, direction) {
+    if (!ownerA) {
+      return 1
+    } else if (!ownerB) {
+      return -1
+    }
+
+    return getNameLowerCase(ownerA).localeCompare(getNameLowerCase(ownerB))
+      * (direction === 'asc' ? 1 : -1)
+  }
 }, {
   label: 'Status',
   key: 'mostRecentBuyerActivity',
@@ -105,7 +131,6 @@ const columns = [{
   label: 'Modified',
   key: 'updatedAt',
   sortable: true,
-  // direction: 'desc',
 }]
 
 async function goToSharepage (e) {
