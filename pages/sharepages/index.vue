@@ -97,7 +97,6 @@ const columns = [{
 }, {
   label: 'Owned By',
   key: 'owner',
-  sortable: true,
 }, {
   label: 'Status',
   key: 'mostRecentBuyerActivity',
