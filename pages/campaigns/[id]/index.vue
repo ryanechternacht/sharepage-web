@@ -20,29 +20,24 @@
       </div>
 
       <h2>Sharepages</h2>
-      <div class="mt-2 sharepage-grid">
-        <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-        <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
-        <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
-        <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
+      <UTable :rows :columns @select="goToSharepage">
+        <template #pageData.accountName-data="{ row }">
+          <div class="flex flex-row items-center gap-2">
+            <Logo :src="makeClearbitLogo(row.pageData.domain)" class="icon-menu" />
+            {{ row.pageData.accountName }}
+          </div>
+        </template>
 
-        <NuxtLink class="contents cursor-pointer group" v-for="sharepage in sharepages"
-          :to="makeVirtualSharepageLink(sharepage.shortcode, `${sharepage.pageData.firstName}-${sharepage.pageData.lastName}`)">
-          <div class="cell body">
-            <Logo :src="makeClearbitLogo(sharepage.pageData.domain)" class="icon-menu" />
-            {{ sharepage.pageData.accountName }}
-          </div>
-          <div class="cell">
-            <!-- <SharepagePriorityTag :priority="sharepage.priority" /> -->
-          </div>
-          <div class="cell">
-            <!-- <SharepageStatusTag
-              :last-activity-date="sharepage.mostRecentBuyerActivity"
-              :isOnHold="sharepage.status === 'on-hold'" /> -->
-          </div>
-          <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
-        </NuxtLink>
-      </div>
+        <template #mostRecentBuyerActivity-data="{ row }">
+          <SharepageStatusTag
+            :last-activity-date="row.mostRecentBuyerActivity"
+            :isOnHold="row.status === 'on-hold'" />
+        </template>
+
+        <template #updatedAt-data="{ row }">
+          {{ prettyFormatDate(row.updatedAt )}}
+        </template>
+      </UTable>
     </div>
   </div>
 </template>
@@ -58,7 +53,7 @@ const campaignsStore = useCampaignsStore()
 const { getCampaignByIdCached } = storeToRefs(campaignsStore)
 
 const { apiFetch } = useNuxtApp()
-const [campaign, { data: sharepages }] = await Promise.all([
+const [campaign, { data: rows }] = await Promise.all([
   getCampaignByIdCached.value(campaignId),
   await apiFetch(`/v0.1/campaign/${campaignId}/swaypages`)
 ])
@@ -80,6 +75,23 @@ const downloadListUrl = computed(() => {
 })
 
 const { makeClearbitLogo } = useLogo();
+
+async function goToSharepage (sp) {
+  await navigateTo(makeVirtualSharepageLink(sp.shortcode, `${sp.pageData.firstName}-${sp.pageData.lastName}`))
+}
+
+const columns = [{
+  label: 'Name',
+  key: 'pageData.accountName',
+  sortable: true,
+}, {
+  label: 'Status',
+  key: 'mostRecentBuyerActivity',
+}, {
+  label: 'Modified',
+  key: 'updatedAt',
+  sortable: true,
+}]
 </script>
 
 <style lang="postcss" scoped>
