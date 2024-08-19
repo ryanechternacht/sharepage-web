@@ -31,7 +31,8 @@
     <template #empty-state>
       <div class="flex flex-col items-center justify-center py-6 gap-3">
         <span class="italic subtext">No sharepages yet!</span>
-        <UButton label="Create a Sharepage" 
+        <UButton label="Create a Sharepage"
+          icon="i-heroicons-document"
           @click="openModal" />
       </div>
     </template>

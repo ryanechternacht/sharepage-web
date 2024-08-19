@@ -27,6 +27,7 @@
       <div class="flex flex-col items-center justify-center py-6 gap-3">
         <span class="italic subtext">No templates yet!</span>
         <UButton label="Create a Template" 
+          icon="i-heroicons-document"
           @click="openModal" />
       </div>
     </template>

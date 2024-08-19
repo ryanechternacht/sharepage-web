@@ -95,19 +95,4 @@ const columns = [{
 </script>
 
 <style lang="postcss" scoped>
-.sharepage-grid {
-  @apply grid px-8 gap-x-8 border border-gray-200 rounded-md overflow-hidden;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.cell {
-  @apply py-2 relative flex flex-row items-center gap-2;
-
-  &::after {
-    @apply absolute bg-gray-200 h-[1px] w-screen;
-    content: '';
-    inset-inline-start: -5rem;
-    inset-block-start: 0;
-  }
-}
 </style>

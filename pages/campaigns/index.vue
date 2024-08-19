@@ -12,31 +12,47 @@
 
     <div class="px-10 py-5">
       <h1>Campaigns</h1>
-      <div class="mt-2 campaign-grid">
-        <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-        <h2 class="h-[3rem] flex flex-row items-center">Leads</h2>
-        <h2 class="h-[3rem] flex flex-row items-center">Is Published</h2>
+      <UTable :rows :columns @select="goToCampaign">
+        <template #isPublished-data="{ row }">
+          {{ row.isPublished ? "Published" : "Pending Publication" }}
+        </template>
 
-        <NuxtLink class="contents cursor-pointer group" v-for="campaign in campaigns"
-          :to="`/campaigns/${campaign.uuid}`">
-          <div class="cell body">
-            {{ campaign.title }}
+        <template #empty-state>
+          <div class="flex flex-col items-center justify-center py-6 gap-3">
+            <span class="italic subtext">No campaigns yet!</span>
+            <UButton label="Create a Campaign" 
+              icon="i-heroicons-paper-airplane"
+              to="/campaigns/new" />
           </div>
-          <div class="cell body">
-            {{ campaign.leadCount }}
-          </div>
-          <div class="cell body">
-            {{ campaign.isPublished ? "Published" : "Pending Publication" }}
-          </div>
-        </NuxtLink>
-      </div>
+        </template>
+      </UTable>
     </div>
   </div>
 </template>
 
 <script setup>
 const { apiFetch } = useNuxtApp()
-const { data: campaigns } = await apiFetch('/v0.1/campaigns')
+const { data: d } = await apiFetch('/v0.1/campaigns')
+
+const rows = ref([])
+
+const columns = [{
+  label: 'Title',
+  key: 'title',
+  sortable: true,
+}, {
+  label: 'Leads',
+  key: 'leadCount',
+  sortable: true,
+}, {
+  label: 'Is Published',
+  key: 'isPublished',
+  sortable: true,
+}]
+
+async function goToCampaign(c) {
+  await navigateTo(`/campaigns/${c.uuid}`)
+}
 </script>
 
 <style lang="postcss" scoped>
