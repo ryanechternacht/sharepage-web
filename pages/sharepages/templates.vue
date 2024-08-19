@@ -22,6 +22,14 @@
     <template #updatedAt-data="{ row }">
       {{ prettyFormatDate(row.updatedAt )}}
     </template>
+
+    <template #empty-state>
+      <div class="flex flex-col items-center justify-center py-6 gap-3">
+        <span class="italic subtext">No templates yet!</span>
+        <UButton label="Create a Template" 
+          @click="openModal" />
+      </div>
+    </template>
   </UTable>
 </template>
 
@@ -30,6 +38,7 @@ import lodash_pkg from 'lodash';
 const { chain } = lodash_pkg;
 import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
+import AddSharepageModal from '@/components/Modals/AddSharepageModal'
 
 const sharepageStore = useSharepagesStore()
 const { getSharepageList } = storeToRefs(sharepageStore)
@@ -89,6 +98,19 @@ const columns = [{
   key: 'updatedAt',
   sortable: true,
 }]
+
+const modal = useModal()
+function openModal () {
+  modal.open(AddSharepageModal, {
+    startOnTemplates: true,
+    async onClose (props) {
+      modal.close()
+      if (props?.sharepageId) {
+        await navigateTo(`/${props.sharepageId}`)
+      }
+    }
+  })
+}
 </script>
 
 <style lang="postcss" scoped>

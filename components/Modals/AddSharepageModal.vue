@@ -64,6 +64,8 @@
 <script setup>
 import { useSharepagesStore } from '@/stores/sharepages'
 
+const props = defineProps({ startOnTemplates: { type: Boolean, default: false }})
+
 const emit = defineEmits(['close'])
 const store = useSharepagesStore()
 
@@ -75,6 +77,10 @@ const buyer = ref('')
 
 const tabs = [{ label: 'Sharepage' }, { label: 'Template' }]
 const selectedTab = ref(0)
+
+if (props.startOnTemplates) {
+  selectedTab.value = 1
+}
 
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true

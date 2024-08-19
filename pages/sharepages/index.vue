@@ -27,6 +27,14 @@
     <template #updatedAt-data="{ row }">
       {{ prettyFormatDate(row.updatedAt )}}
     </template>
+
+    <template #empty-state>
+      <div class="flex flex-col items-center justify-center py-6 gap-3">
+        <span class="italic subtext">No sharepages yet!</span>
+        <UButton label="Create a Sharepage" 
+          @click="openModal" />
+      </div>
+    </template>
   </UTable>
 </template>
 
@@ -35,6 +43,7 @@ import lodash_pkg from 'lodash';
 const { chain } = lodash_pkg;
 import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
+import AddSharepageModal from '@/components/Modals/AddSharepageModal'
 
 const sharepageStore = useSharepagesStore()
 const { getSharepageList } = storeToRefs(sharepageStore)
@@ -69,7 +78,6 @@ async function goToSharepage (e) {
   await navigateTo(makeInternalSharepageLink(e))
 }
 
-// TODO add in an empty state
 // TODO add in pagination?
 const columns = [{
   label: 'Name',
@@ -100,6 +108,18 @@ const columns = [{
   key: 'updatedAt',
   sortable: true,
 }]
+
+const modal = useModal()
+function openModal () {
+  modal.open(AddSharepageModal, {
+    async onClose (props) {
+      modal.close()
+      if (props?.sharepageId) {
+        await navigateTo(`/${props.sharepageId}`)
+      }
+    }
+  })
+}
 </script>
 
 <style lang="postcss" scoped>

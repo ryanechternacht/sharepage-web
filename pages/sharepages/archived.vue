@@ -25,6 +25,12 @@
     <template #updatedAt-data="{ row }">
       {{ prettyFormatDate(row.updatedAt )}}
     </template>
+
+    <template #empty-state>
+      <div class="flex flex-col items-center justify-center py-6 gap-3">
+        <span class="italic subtext">No sharepages have been archived</span>
+      </div>
+    </template>
   </UTable>
 </template>
 
