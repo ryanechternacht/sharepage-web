@@ -1,69 +1,33 @@
 <template>
-  <div>
-    <div class="w-full flex flex-row justify-end gap-2">
-      <UInput v-model="searchTerm"
-        icon="i-heroicons-magnifying-glass"
-        class="my-2"
-        placeholder="Account or Owner" />
-    </div>
-    <UTable :rows :columns @select="goToSharepage">
-      <template #buyer-data="{ row }">
-        <div class="flex flex-row items-center gap-2">
-          <Logo :src="row.buyerLogo" class="icon-menu" />
-          {{ row.buyer }}
-        </div>
-      </template>
-      <template #owner-data="{ row }">
-        <div v-if="row.owner"
-          class="flex flex-row items-center gap-2">
-          <UserAvatar :user="row.owner" />
-          {{ row.owner?.firstName }} {{ row.owner?.lastName }} 
-        </div>
-      </template>
-      <template #mostRecentBuyerActivity-data="{ row }">
-        <SharepageStatusTag
-          :last-activity-date="row.mostRecentBuyerActivity"
-          :isOnHold="row.status === 'on-hold'" />
-      </template>
-
-      <template #updatedAt-data="{ row }">
-        {{ prettyFormatDate(row.updatedAt )}}
-      </template>
-    </UTable>
-
-    <!-- <div class="sharepages">
-      <h2 class="h-[3rem] flex flex-row items-center">Name</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Context</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Owned By</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Priority</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Status</h2>
-      <h2 class="h-[3rem] flex flex-row items-center">Modified</h2>
-
-      <NuxtLink class="contents cursor-pointer group" v-for="sharepage in activeSharepages"
-        :to="makeInternalSharepageLink(sharepage)">
-        <div class="cell body">
-          <Logo :src="sharepage.buyerLogo" class="icon-menu" />
-          {{ sharepage.buyer }}
-        </div>
-        <div class="cell subtext">{{ sharepage.subname }}</div>
-        <div class="cell subtext">
-          <template v-if="sharepage.owner">
-            <UserAvatar :user="sharepage.owner" />
-            {{ sharepage.owner?.firstName }} {{ sharepage.owner?.lastName }} 
-          </template>
-        </div>
-        <div class="cell">
-          <SharepagePriorityTag :priority="sharepage.priority" />
-        </div>
-        <div class="cell">
-          <SharepageStatusTag
-            :last-activity-date="sharepage.mostRecentBuyerActivity"
-            :isOnHold="sharepage.status === 'on-hold'" />
-        </div>
-        <div class="cell subtext">{{ prettyFormatDate(sharepage.updatedAt )}}</div>
-      </NuxtLink>
-    </div> -->
+  <div class="w-full flex flex-row justify-end gap-2">
+    <UInput v-model="searchTerm"
+      icon="i-heroicons-magnifying-glass"
+      class="my-2"
+      placeholder="Account or Owner" />
   </div>
+  <UTable :rows :columns @select="goToSharepage">
+    <template #buyer-data="{ row }">
+      <div class="flex flex-row items-center gap-2">
+        <Logo :src="row.buyerLogo" class="icon-menu" />
+        {{ row.buyer }}
+      </div>
+    </template>
+    <template #owner-data="{ row }">
+      <div v-if="row.owner"
+        class="flex flex-row items-center gap-2">
+        <UserAvatar :user="row.owner" />
+        {{ row.owner?.firstName }} {{ row.owner?.lastName }} 
+      </div>
+    </template>
+    <template #mostRecentBuyerActivity-data="{ row }">
+      <SharepageStatusTag
+        :last-activity-date="row.mostRecentBuyerActivity"
+        :isOnHold="row.status === 'on-hold'" />
+    </template>
+    <template #updatedAt-data="{ row }">
+      {{ prettyFormatDate(row.updatedAt )}}
+    </template>
+  </UTable>
 </template>
 
 <script setup>
@@ -89,7 +53,7 @@ const rows = computed(() =>
   chain(sharepages)
     .filter(s => s.status !== 'archived' && s.roomType === 'deal-room')
     .filter(s => !searchTerm.value 
-      || s.buyer.includes(searchTerm.value)
+      || s.buyer.toLowerCase().includes(searchTerm.value.toLowerCase())
       || (s.owner && getNameLowerCase(s.owner).includes(searchTerm.value.toLowerCase()))
     )
     .orderBy(['updatedAt'], ['desc'])
@@ -99,6 +63,10 @@ const rows = computed(() =>
 const dayjs = useDayjs()
 function prettyFormatDate(date) {
   return dayjs(date).calendar()
+}
+
+async function goToSharepage (e) {
+  await navigateTo(makeInternalSharepageLink(e))
 }
 
 // TODO add in an empty state
@@ -132,40 +100,7 @@ const columns = [{
   key: 'updatedAt',
   sortable: true,
 }]
-
-async function goToSharepage (e) {
-  await navigateTo(makeInternalSharepageLink(e))
-}
 </script>
 
 <style lang="postcss" scoped>
-.sharepages {
-  @apply grid px-8 gap-x-8 border border-gray-200 rounded-md overflow-hidden;
-  grid-template-columns: repeat(6, 1fr);
-}
-
-.cell {
-  @apply py-2 relative flex flex-row items-center gap-2;
-
-  &::after {
-    @apply absolute bg-gray-200 h-[1px] w-screen;
-    content: '';
-    inset-inline-start: -5rem;
-    inset-block-start: 0;
-  }
-}
-
-.group:hover {
-  .cell {
-    @apply bg-gray-100 -mx-4 px-4
-  }
-
-  .cell:first-child {
-    @apply -ml-8 pl-8
-  }
-
-  .cell:last-child {
-    @apply -mr-8 pr-8
-  }
-}
 </style>
