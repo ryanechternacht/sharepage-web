@@ -20,7 +20,14 @@
       </div>
 
       <h2>Sharepages</h2>
-      <UTable :rows :columns @select="goToSharepage">
+      <div class="w-full flex flex-row justify-end gap-2">
+        <UInput v-model="searchTerm"
+          icon="i-heroicons-magnifying-glass"
+          class="my-2"
+          placeholder="Account" />
+      </div>
+      <UTable :rows :columns @select="goToSharepage"
+        :empty-state="{ icon: null, label: 'No sharepages match the search.' }">
         <template #pageData.accountName-data="{ row }">
           <div class="flex flex-row items-center gap-2">
             <Logo :src="makeClearbitLogo(row.pageData.domain)" class="icon-menu" />
@@ -45,6 +52,8 @@
 <script setup>
 import { useCampaignsStore } from '@/stores/campaigns'
 import { storeToRefs } from 'pinia';
+import lodash_pkg from 'lodash';
+const { filter } = lodash_pkg;
 
 const route = useRoute()
 const campaignId = route.params.id
@@ -53,10 +62,16 @@ const campaignsStore = useCampaignsStore()
 const { getCampaignByIdCached } = storeToRefs(campaignsStore)
 
 const { apiFetch } = useNuxtApp()
-const [campaign, { data: rows }] = await Promise.all([
+const [campaign, { data: sharepages }] = await Promise.all([
   getCampaignByIdCached.value(campaignId),
   await apiFetch(`/v0.1/campaign/${campaignId}/swaypages`)
 ])
+
+const searchTerm = ref('')
+
+const rows = computed(() => 
+  filter(sharepages.value, c => c.pageData.accountName.toLowerCase().includes(searchTerm.value.toLowerCase())))
+
 
 if (!campaign.isPublished) {
   await navigateTo(`/campaigns/${campaign.uuid}/setup`, { replace: true })
@@ -81,7 +96,7 @@ async function goToSharepage (sp) {
 }
 
 const columns = [{
-  label: 'Name',
+  label: 'Account',
   key: 'pageData.accountName',
   sortable: true,
 }, {

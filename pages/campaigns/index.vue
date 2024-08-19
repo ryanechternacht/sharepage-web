@@ -12,6 +12,12 @@
 
     <div class="px-10 py-5">
       <h1>Campaigns</h1>
+      <div class="w-full flex flex-row justify-end gap-2">
+        <UInput v-model="searchTerm"
+          icon="i-heroicons-magnifying-glass"
+          class="my-2"
+          placeholder="Title" />
+      </div>
       <UTable :rows :columns @select="goToCampaign">
         <template #isPublished-data="{ row }">
           {{ row.isPublished ? "Published" : "Pending Publication" }}
@@ -19,7 +25,8 @@
 
         <template #empty-state>
           <div class="flex flex-col items-center justify-center py-6 gap-3">
-            <span class="italic subtext">No campaigns yet!</span>
+            <span v-if="searchTerm" class="italic subtext">No campaigns match the filter</span>
+            <span v-else class="italic subtext">No campaigns, yet!</span>
             <UButton label="Create a Campaign" 
               icon="i-heroicons-paper-airplane"
               to="/campaigns/new" />
@@ -31,10 +38,16 @@
 </template>
 
 <script setup>
-const { apiFetch } = useNuxtApp()
-const { data: d } = await apiFetch('/v0.1/campaigns')
+import lodash_pkg from 'lodash';
+const { filter } = lodash_pkg;
 
-const rows = ref([])
+const { apiFetch } = useNuxtApp()
+const { data: campaigns } = await apiFetch('/v0.1/campaigns')
+
+const searchTerm = ref('')
+
+const rows = computed(() => 
+  filter(campaigns.value, c => c.title.toLowerCase().includes(searchTerm.value.toLowerCase())))
 
 const columns = [{
   label: 'Title',

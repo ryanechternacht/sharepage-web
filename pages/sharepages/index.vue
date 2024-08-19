@@ -30,7 +30,8 @@
 
     <template #empty-state>
       <div class="flex flex-col items-center justify-center py-6 gap-3">
-        <span class="italic subtext">No sharepages yet!</span>
+        <span v-if="searchTerm" class="italic subtext">No sharepages match the filter</span>
+        <span v-else class="italic subtext">No sharepages, yet!</span>
         <UButton label="Create a Sharepage"
           icon="i-heroicons-document"
           @click="openModal" />
