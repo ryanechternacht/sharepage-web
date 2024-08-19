@@ -112,6 +112,24 @@ export const useSharepagesStore = defineStore('sharepages', {
       )
       return data.value.id
     },
+    async createSharepageFromGlobalTemplate({ 
+      buyer, subname, buyerLogo, templateData
+    }) {
+      const { apiFetch } = useNuxtApp()
+      const { data } =  await apiFetch(
+        `/v0.1/sharepages/global-template`,
+        {
+          method: 'POST', 
+          body: { 
+            buyer,
+            subname,
+            buyerLogo,
+            templateData
+          } 
+        }
+      )
+      return data.value.id
+    },
     async saveSharepageSettings({
       sharepageId, buyer, subname, buyerLogo, dealAmount, 
       crmOpportunityId, currentStage, showPricing, qualificationDate, 

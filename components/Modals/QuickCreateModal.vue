@@ -44,63 +44,16 @@
 
         <h3>Template Data</h3>
         
-        <UFormGroup label="Account Name">
-          <UInput v-model="accountName"
-            placeholder="Account Name" />
+        <UFormGroup label="Buyer First Name">
+          <UInput v-model="buyerFirstName"
+            placeholder="Buyer First Name" />
+        </UFormGroup>
+
+        <UFormGroup label="Buyer Interest">
+          <UInput v-model="buyerInterest"
+            placeholder="Buyer Interest" />
         </UFormGroup>
         
-        <UFormGroup label="First Name">
-          <UInput v-model="firstName"
-            placeholder="First Name" />
-        </UFormGroup>
-
-        <UFormGroup label="Last Name">
-          <UInput v-model="lastName"
-            placeholder="Last Name" />
-        </UFormGroup>
-
-        <UFormGroup label="Email">
-          <UInput v-model="email"
-            placeholder="Email" />
-        </UFormGroup>
-
-        <UFormGroup label="Domain">
-          <UInput v-model="domain"
-            placeholder="Domain" />
-        </UFormGroup>
-
-        <UFormGroup v-for="(variable, index) in variables"
-          :label="template.templateCustomVariables[index]">
-          <UInput :model-value="variable"
-            :placeholder="template.templateCustomVariables[index]"
-            @update:model-value="v => variables[index] = v" />
-        </UFormGroup>
-
-          <!-- <div class="text-sm text-gray-500 mb-1">Field 1</div>
-          <UInput
-            v-model="field1"
-            placeholder="Field 1" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Field 2</div>
-          <UInput
-            v-model="field2"
-            placeholder="Field 2" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Field 3</div>
-          <UInput
-            v-model="field3"
-            placeholder="Field 3" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Field 4</div>
-          <UInput
-            v-model="field4"
-            placeholder="Field 4" 
-            class="mb-2" />
-          <div class="text-sm text-gray-500 mb-1">Field 5</div>
-          <UInput
-            v-model="field5"
-            placeholder="Field 5" 
-            class="mb-2" /> -->
         <SubmitButton 
           icon="i-heroicons-plus"
           block
@@ -138,13 +91,8 @@ const clearbitLogo = ref(null)
 
 const buyer = ref('')
 const subname = ref('')
-const accountName = ref('')
-const firstName = ref('')
-const lastName = ref('')
-const email = ref('')
-const domain = ref('')
-
-const variables = ref(map(template.templateCustomVariables, v => ''))
+const buyerFirstName = ref('')
+const buyerInterest = ref('')
 
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true
@@ -162,16 +110,12 @@ async function lookupOnClearbit (query) {
 }
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  const templateData = { accountName, firstName, lastName, email, domain }
-  forEach(variables.value, (v, i) => {
-    templateData[`field${i+1}`] = v
-  })
+  const templateData = { buyerFirstName, buyerInterest }
 
-  const sharepageId = await store.createSharepageFromTemplate({
+  const sharepageId = await store.createSharepageFromGlobalTemplate({
     buyer,
     subname,
     buyerLogo: clearbitLogo.value.logo,
-    templateId: props.templateId,
     templateData,
   })
   await store.invalidateAllSharepageCache()
@@ -180,3 +124,6 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
 
 const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
 </script>
+
+<style lang="postcss" scoped>
+</style>

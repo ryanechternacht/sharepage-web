@@ -7,6 +7,10 @@
           @click="openModal">
           New
         </UButton>
+
+        <UButton @click="openQuickCreateModal">
+          🪄 Quick Create
+        </UButton>
       </template>
     </TopNav>
 
@@ -35,6 +39,7 @@
 
 <script setup>
 import AddSharepageModal from '@/components/Modals/AddSharepageModal'
+import QuickCreateModal from '@/components/Modals/QuickCreateModal'
 
 const sharepageMenu = [
   [{
@@ -66,6 +71,17 @@ const selectedType = computed(() => {
 const modal = useModal()
 function openModal () {
   modal.open(AddSharepageModal, {
+    async onClose (props) {
+      modal.close()
+      if (props?.sharepageId) {
+        await navigateTo(`/${props.sharepageId}`)
+      }
+    }
+  })
+}
+
+function openQuickCreateModal () {
+  modal.open(QuickCreateModal, {
     async onClose (props) {
       modal.close()
       if (props?.sharepageId) {
