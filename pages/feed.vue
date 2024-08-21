@@ -48,16 +48,16 @@
 
         <div class="page-area">
           <div class="feed-grid">
-            <div><!-- intentionally blank --></div>
+            <!-- <div>intentionally blank</div> -->
             <h2 class="h-[3rem] flex flex-row items-center">Lead</h2>
             <h2 class="h-[3rem] flex flex-row items-center">Event</h2>
             <h2 class="h-[3rem] flex flex-row items-center">Sharepage</h2>
             <h2 class="h-[3rem] flex flex-row items-center">Event Time</h2>
 
             <template v-for="session in buyerSessions">
-              <div class="cell">
+              <!-- <div class="cell">
                 <SharepagePriorityTag :priority="session.buyersphere.priority" />
-              </div>
+              </div> -->
               <div class="cell body">
                 <span v-if="session?.linkedName">{{ session.linkedName }}</span>
                 <span v-else class="text-gray-500 italic">Anonymous</span>
@@ -119,7 +119,7 @@ function prettyFormatDate(date) {
 
 .feed-grid {
   @apply grid px-8 gap-x-8;
-  grid-template-columns: auto auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto;
 
   .cell {
     @apply py-2 relative flex flex-row items-center;

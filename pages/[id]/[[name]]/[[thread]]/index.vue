@@ -54,10 +54,10 @@
         </div>
         <div class="flex-grow" />
         <!-- <div>active</div> -->
-        <SharepagePriorityTag v-if="isSeller"
+        <!-- <SharepagePriorityTag v-if="isSeller"
           class="hidden sm:flex"
-          :priority="sharepage.priority" />
-        <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
+          :priority="sharepage.priority" /> -->
+        <!-- <div v-if="canEdit" class="flex flex-row items-center gap-2 shrink-0">
           <template v-if="sharepage.isPublic">
             <UIcon class="icon-menu text-green-300" name="i-heroicons-eye" />
             <div class="subtext">Public</div>
@@ -66,7 +66,7 @@
             <UIcon class="icon-menu text-orange-300" name="i-heroicons-eye-slash" />
             <div class="subtext">Private</div>
           </template>
-        </div>
+        </div> -->
         <div v-if="canEdit" class="hidden sm:flex flex-row items-center gap-2">
           <!-- Putting the :class directly on the icon prevented it from updating dynamically -->
           <UIcon name="i-heroicons-document"

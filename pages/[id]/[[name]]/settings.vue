@@ -56,20 +56,20 @@
             placeholder="Sales Divison, Team, etc" />
         </UFormGroup>
 
-        <UFormGroup label="Priority">
+        <!-- <UFormGroup label="Priority">
           <USelect v-model.number="priority"
             :options="priorityOptions" />
-        </UFormGroup>
+        </UFormGroup> -->
 
         <UFormGroup label="Status">
           <USelect v-model="status"
             :options="statusOptions" />
         </UFormGroup>
 
-        <UFormGroup label="Visibility">
+        <!-- <UFormGroup label="Visibility">
           <USelect v-model="isPublic"
             :options="visibilityOptions" />
-        </UFormGroup>
+        </UFormGroup> -->
       </div>
 
       <SubmitButton
@@ -139,30 +139,30 @@ const clearbitLogo = ref({ logo: sharepage.buyerLogo })
 const buyer = ref(sharepage.buyer)
 const subname = ref(sharepage.subname)
 
-const priority = ref(sharepage.priority)
-const priorityOptions = [
-  {
-    label: 'High',
-    value: 1,
-  }, {
-    label: 'Normal',
-    value: 2,
-  }, {
-    label: 'Low',
-    value: 3,
-  },
-]
+// const priority = ref(sharepage.priority)
+// const priorityOptions = [
+//   {
+//     label: 'High',
+//     value: 1,
+//   }, {
+//     label: 'Normal',
+//     value: 2,
+//   }, {
+//     label: 'Low',
+//     value: 3,
+//   },
+// ]
 
-const isPublic = ref(sharepage.isPublic ? 'public' : 'private')
-const visibilityOptions = [
-  {
-    label: 'Public',
-    value: 'public',
-  }, {
-    label: 'Private',
-    value: 'private',
-  },
-]
+// const isPublic = ref(sharepage.isPublic ? 'public' : 'private')
+// const visibilityOptions = [
+//   {
+//     label: 'Public',
+//     value: 'public',
+//   }, {
+//     label: 'Private',
+//     value: 'private',
+//   },
+// ]
 
 const status = ref(sharepage.status)
 const statusOptions = [
@@ -194,10 +194,10 @@ const { submissionState, submitFn } = useSubmit(async () => {
   await sharepageStore.saveSharepageSettings({
     sharepageId: sharepage.id,
     buyer,
-    priority,
+    // priority,
     subname,
     buyerLogo: clearbitLogo.value.logo,
-    isPublic: isPublic.value === 'public',
+    // isPublic: isPublic.value === 'public',
     pageTitle: 'New Thread',
     status,
   })

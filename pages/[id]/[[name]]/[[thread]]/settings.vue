@@ -30,10 +30,10 @@
             :options="chapterTypes" />
         </UFormGroup>
 
-        <UFormGroup label="Can Buyer Edit" required>
+        <!-- <UFormGroup label="Can Buyer Edit" required>
           <USelect v-model="canBuyerEdit"
             :options="canBuyerEditOptions" />
-        </UFormGroup>
+        </UFormGroup> -->
       </div>
 
       <SubmitButton
@@ -101,8 +101,8 @@ const links = computed(() => filter(
 const chapter = find(chapters, c => c.id === chapterId)
 
 const title = ref(chapter.title)
-const canBuyerEdit = ref(chapter.canBuyerEdit ? 'Yes' : 'No')
-const canBuyerEditOptions = ['Yes', 'No']
+// const canBuyerEdit = ref(chapter.canBuyerEdit ? 'Yes' : 'No')
+// const canBuyerEditOptions = ['Yes', 'No']
 
 const chapterType = ref(chapter.pageType)
 const chapterTypes = [
@@ -134,13 +134,13 @@ const { submissionState, submitFn } = useSubmit(async () => {
     thread: {
       title,
       pageType: chapterType,
-      canBuyerEdit: canBuyerEdit.value === 'Yes',
+      // canBuyerEdit: canBuyerEdit.value === 'Yes',
     },
   })
 })
 
-const needsMoreInput = computed(() => !title.value 
-  || !chapterType.value || !canBuyerEdit.value)
+const needsMoreInput = computed(() => !title.value || !chapterType.value)
+// || !canBuyerEdit.value)
 </script>
 
 <style lang="postcss" scoped>

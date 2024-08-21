@@ -18,13 +18,13 @@
             :options="threadTypes"
             class="w-full" />
         </div>
-        <div>
+        <!-- <div>
           <div class="text-sm text-gray-500 mb-1">Can Buyer Edit *</div>
           <USelect
             v-model="canBuyerEdit"
             :options="canBuyerEditOptions"
             class="w-full" />
-        </div>
+        </div> -->
         <SubmitButton
           icon="i-heroicons-pencil-square"
           block
@@ -54,8 +54,8 @@ const emit = defineEmits(['close'])
 
 const title = ref('')
 
-const canBuyerEdit = ref('Yes')
-const canBuyerEditOptions = ['Yes', 'No']
+// const canBuyerEdit = ref('Yes')
+// const canBuyerEditOptions = ['Yes', 'No']
 
 const threadType = ref(null)
 const threadTypes = [
@@ -86,12 +86,12 @@ const { submissionState, submitFn } = useSubmit(async () => {
     thread: {
       title,
       pageType: threadType,
-      canBuyerEdit: canBuyerEdit.value === 'Yes',
+      // canBuyerEdit: canBuyerEdit.value === 'Yes',
     },      
   })
   emit('close', { threadId })
 })
 
-const needsMoreInput = computed(() => !title.value 
-  || !threadType.value || !canBuyerEdit.value)
+const needsMoreInput = computed(() => !title.value || !threadType.value) 
+  //|| !canBuyerEdit.value)
 </script>

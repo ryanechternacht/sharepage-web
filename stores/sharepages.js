@@ -153,9 +153,9 @@ export const useSharepagesStore = defineStore('sharepages', {
             evaluationDate,
             decisionDate,
             status,
-            isPublic,
+            // isPublic,
             roomType,
-            priority,
+            // priority,
             templateCustomVariables,
           } 
         }
@@ -173,8 +173,8 @@ export const useSharepagesStore = defineStore('sharepages', {
       s.dealAmount = data.value.dealAmount
       s.crmOpportunityId = data.value.crmOpportunityId
       s.status = data.value.status
-      s.isPublic = data.value.isPublic
-      s.priority = data.value.priority
+      // s.isPublic = data.value.isPublic
+      // s.priority = data.value.priority
       s.templateCustomVariables = data.value.templateCustomVariables
     },
     async fetchSharepage({ sharepageId, forceRefresh }) {
@@ -282,15 +282,15 @@ export const useSharepagesStore = defineStore('sharepages', {
         if (data.value.body !== undefined) {
           t.body = data.value.body
         }
-        if (data.value.isPublic !== undefined) {
-          t.isPublic = data.value.isPublic
-        }
+        // if (data.value.isPublic !== undefined) {
+        //   t.isPublic = data.value.isPublic
+        // }
         if (data.value.ordering !== undefined) {
           t.ordering = data.value.ordering
         }
-        if (data.value.canBuyerEdit !== undefined) {
-          t.canBuyerEdit = data.value.canBuyerEdit
-        }
+        // if (data.value.canBuyerEdit !== undefined) {
+        //   t.canBuyerEdit = data.value.canBuyerEdit
+        // }
         if (data.value.status !== undefined) {
           t.status = data.value.status
         }
