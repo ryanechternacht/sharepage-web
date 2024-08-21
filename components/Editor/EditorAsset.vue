@@ -39,6 +39,11 @@
                      'h-[360px] w-[480px]': section.size === 'medium',
                      'h-[480px] w-[640px]': section.size === 'large',}"
             allow="autoplay" />
+          <img v-else-if="isGiphy(link)"
+            :src="link"
+            :class="{'h-[240px] w-[320px]': section.size === 'small',
+                     'h-[360px] w-[480px]': section.size === 'medium',
+                     'h-[480px] w-[640px]': section.size === 'large',}">
           <!-- TODO the click handlers below don't work since
                embedly sticks a new element in that we can't easily
                access to attach the handler -->
@@ -126,6 +131,10 @@ function rewriteLinkForGoogleDrivePreview (link) {
   // google docs require special steps by the user to preview. for now
   // we will just replace with a static placeholder
   return link.replace(/\/view/, '/preview')
+}
+
+function isGiphy (link) {
+  return link.includes('https://media.giphy.com/media/')
 }
 
 const loaded = ref(false)
