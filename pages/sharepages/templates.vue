@@ -3,7 +3,7 @@
     <UInput v-model="searchTerm"
       icon="i-heroicons-magnifying-glass"
       class="my-2"
-      placeholder="Account or Owner" />
+      placeholder="Search Templates" />
   </div>
   <UTable :rows :columns @select="goToSharepage">
     <template #buyer-data="{ row }">

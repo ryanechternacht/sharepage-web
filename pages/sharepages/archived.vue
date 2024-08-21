@@ -3,7 +3,7 @@
     <UInput v-model="searchTerm"
       icon="i-heroicons-magnifying-glass"
       class="my-2"
-      placeholder="Account or Owner" />
+      placeholder="Search Sharepages" />
   </div>
   <UTable :rows :columns @select="goToSharepage">
     <template #buyer-data="{ row }">
@@ -63,6 +63,7 @@ const rows = computed(() =>
     .filter(s => s.status === 'archived')
     .filter(s => !searchTerm.value 
       || s.buyer.toLowerCase().includes(searchTerm.value.toLowerCase())
+      || s.subname?.toLowerCase().includes(searchTerm.value.toLowerCase())
       || (s.owner && getNameLowerCase(s.owner).includes(searchTerm.value.toLowerCase()))
     )
     .orderBy(['updatedAt'], ['desc'])

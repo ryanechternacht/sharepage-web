@@ -16,7 +16,7 @@
         <UInput v-model="searchTerm"
           icon="i-heroicons-magnifying-glass"
           class="my-2"
-          placeholder="Title" />
+          placeholder="Search Campaigns" />
       </div>
       <UTable :rows :columns @select="goToCampaign">
         <template #isPublished-data="{ row }">
