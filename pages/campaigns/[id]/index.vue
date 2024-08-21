@@ -24,7 +24,7 @@
         <UInput v-model="searchTerm"
           icon="i-heroicons-magnifying-glass"
           class="my-2"
-          placeholder="Account" />
+          placeholder="Search Sharepages" />
       </div>
       <UTable :rows :columns @select="goToSharepage"
         :empty-state="{ icon: null, label: 'No sharepages match the search.' }">
