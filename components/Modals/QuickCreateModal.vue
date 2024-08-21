@@ -44,16 +44,51 @@
 
         <h3>Template Data</h3>
         
-        <UFormGroup label="Buyer First Name">
-          <UInput v-model="buyerFirstName"
-            placeholder="Buyer First Name" />
+        <UFormGroup label="Buyer Name">
+          <UInput v-model="buyerName"
+            placeholder="Buyer Name" />
         </UFormGroup>
 
-        <UFormGroup label="Buyer Interest">
-          <UInput v-model="buyerInterest"
-            placeholder="Buyer Interest" />
+        <UFormGroup label="Buyer Job Title">
+          <UInput v-model="buyerJobTitle"
+            placeholder="Buyer Job Title" />
         </UFormGroup>
-        
+
+        <UFormGroup label="Buyer Account">
+          <UInput v-model="buyerAccount"
+            placeholder="Buyer Account" />
+        </UFormGroup>
+
+        <UFormGroup label="Buyer Location">
+          <UInput v-model="buyerLocation"
+            placeholder="Buyer Location" />
+        </UFormGroup>
+
+        <UFormGroup label="Buyer Website">
+          <UInput v-model="buyerWebsite"
+            placeholder="Buyer Website" />
+        </UFormGroup>
+
+        <UFormGroup label="Seller Name">
+          <UInput v-model="sellerName"
+            placeholder="Seller Name" />
+        </UFormGroup>
+
+        <UFormGroup label="Seller Job Title">
+          <UInput v-model="sellerJobTitle"
+            placeholder="Seller Job Title" />
+        </UFormGroup>
+
+        <UFormGroup label="Seller Company">
+          <UInput v-model="sellerCompany"
+            placeholder="Seller Company" />
+        </UFormGroup>
+
+        <UFormGroup label="Seller Website">
+          <UInput v-model="sellerWebsite"
+            placeholder="Seller Website" />
+        </UFormGroup>
+
         <SubmitButton 
           icon="i-heroicons-plus"
           block
@@ -64,6 +99,7 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
+          {{ error }}
       </div>
     </UCard>
   </UModal>
@@ -89,10 +125,17 @@ const template = await getSharepageByIdCached.value(props.templateId)
 const clearbitLoading = ref(false)
 const clearbitLogo = ref(null)
 
-const buyer = ref('')
+const buyer = ref('Zello')
 const subname = ref('')
-const buyerFirstName = ref('')
-const buyerInterest = ref('')
+const buyerName = ref('Chad Spain')
+const buyerJobTitle = ref('Account Executive')
+const buyerAccount = ref('Zello')
+const buyerLocation = ref('Austin, Texas')
+const buyerWebsite = ref('https://zello.com')
+const sellerName = ref('Archer')
+const sellerJobTitle = ref('Account Executive')
+const sellerCompany = ref('Scratchpad')
+const sellerWebsite = ref('https://www.scratchpad.com')
 
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true
@@ -110,7 +153,10 @@ async function lookupOnClearbit (query) {
 }
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
-  const templateData = { buyerFirstName, buyerInterest }
+  const templateData = { 
+    buyerName, buyerJobTitle, buyerAccount, buyerLocation, buyerWebsite,
+    sellerName, sellerJobTitle, sellerCompany, sellerWebsite,
+  }
 
   const sharepageId = await store.createSharepageFromGlobalTemplate({
     buyer,

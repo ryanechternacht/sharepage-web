@@ -102,7 +102,7 @@
               :searchable-lazy="true"
               searchable-placeholder="Search on Unsplash"
               :uiMenu="{
-                base: 'grid grid-cols-4',
+                base: 'grid grid-cols-4 max-h-none',
                 input: 'col-span-4',
                 option: { selected: 'pe-[inherit]',
                           selectedIcon: { wrapper: 'hidden' },

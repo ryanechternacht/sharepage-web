@@ -5,7 +5,11 @@
     class="mb-2"
     @delete:item="emit('delete:item')">
     <template #content>
-      <input v-model="value"
+      <div v-if="readonly"
+        class="text-lg font-bold text-black w-full"
+        v-html="value" />
+      <input v-else 
+        v-model="value"
         class="p-0 border-0 rounded-none text-lg font-bold text-black w-full"
         :class="{ 'hide-placeholder': readonly }"
         placeholder="Header"
