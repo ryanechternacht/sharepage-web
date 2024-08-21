@@ -65,7 +65,7 @@ const rows = computed(() =>
     .filter(s => s.status !== 'archived' && s.roomType === 'deal-room')
     .filter(s => !searchTerm.value 
       || s.buyer.toLowerCase().includes(searchTerm.value.toLowerCase())
-      || s.subname.toLowerCase().includes(searchTerm.vaule.toLowerCase())
+      || s.subname?.toLowerCase().includes(searchTerm.value.toLowerCase())
       || (s.owner && getNameLowerCase(s.owner).includes(searchTerm.value.toLowerCase()))
     )
     .orderBy(['updatedAt'], ['desc'])
