@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <div class="h-[2.375rem] flex flex-row items-center gap-6">
       <h1>Settings</h1>
       <div class="flex-grow" />
@@ -133,5 +133,11 @@ const needsMoreInput = computed(() => some(variables.value, v => !v))
 .variable-grid {
   @apply grid max-w-[600px] gap-4 items-center px-[10px];
   grid-template-columns: auto 1fr auto;
+}
+
+.page-area {
+  @apply border border-gray-200 rounded-md px-2 pt-1 pb-4;
+  /* this is based on the current top nav height */
+  overflow: hidden;
 }
 </style>
