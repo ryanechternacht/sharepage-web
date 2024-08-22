@@ -60,24 +60,24 @@
         <UAccordion :items="accordionItems" variant="soft">
           <template #your-details>
             <div class="flex flex-col gap-4">
-              <UFormGroup label="Seller Name" required>
+              <UFormGroup label="Your Name" required>
                 <UInput v-model="sellerName"
-                  placeholder="Seller Name" />
+                  placeholder="Your Name" />
               </UFormGroup>
 
-              <UFormGroup label="Seller Job Title" required>
+              <UFormGroup label="Your Job Title" required>
                 <UInput v-model="sellerJobTitle"
-                  placeholder="Seller Job Title" />
+                  placeholder="Your Job Title" />
               </UFormGroup>
 
-              <UFormGroup label="Seller Company" required>
+              <UFormGroup label="Your Company" required>
                 <UInput v-model="sellerCompany"
-                  placeholder="Seller Company" />
+                  placeholder="Your Company" />
               </UFormGroup>
 
-              <UFormGroup label="Seller Website" required>
+              <UFormGroup label="Your Website" required>
                 <UInput v-model="sellerWebsite"
-                  placeholder="Seller Website" />
+                  placeholder="Your Website" />
               </UFormGroup>
             </div>
           </template>
@@ -172,7 +172,7 @@ async function lookupOnClearbit (query) {
   }
 }
 
-const { submissionState, submitFn, error } = useSubmit(async () => {
+const { submissionState, submitFn } = useSubmit(async () => {
   const templateData = { 
     accountName, 
     accountWebsite,
