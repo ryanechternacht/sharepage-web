@@ -3,11 +3,17 @@
     <UCard>
       <div class="flex flex-col gap-4">
         <h2 class="mx-auto">
-          Create Sharepage from this Template
+          Quick Create a Sharepage
         </h2>
-        <UFormGroup label="Name" required>
-          <UInput v-model="buyer"
+        <UFormGroup label="Account Name" required>
+          <UInput v-model="accountName"
             placeholder="Account Name" />
+        </UFormGroup>
+
+        <UFormGroup label="Account Website" required>
+          <UInput v-model="accountWebsite"
+            placeholder="Account Website"
+            @blur="setClearbitLogoFromDomain" />
         </UFormGroup>
 
         <UFormGroup label="Logo"
@@ -36,58 +42,46 @@
           </USelectMenu>
         </UFormGroup>
 
-        <UFormGroup label="Context">
-          <UInput v-model="subname"
-            placeholder="Sales Divison, Team, etc" 
-            class="w-full" />
+        <UFormGroup label="Lead Name" required>
+          <UInput v-model="leadName"
+            placeholder="Lead Name" />
         </UFormGroup>
 
-        <h3>Template Data</h3>
-        
-        <UFormGroup label="Buyer Name">
-          <UInput v-model="buyerName"
-            placeholder="Buyer Name" />
+        <UFormGroup label="Lead Job Title" required>
+          <UInput v-model="leadJobTitle"
+            placeholder="Lead Job Title" />
         </UFormGroup>
 
-        <UFormGroup label="Buyer Job Title">
-          <UInput v-model="buyerJobTitle"
-            placeholder="Buyer Job Title" />
+        <UFormGroup label="Lead Location">
+          <UInput v-model="leadLocation"
+            placeholder="Lead Location" />
         </UFormGroup>
 
-        <UFormGroup label="Buyer Account">
-          <UInput v-model="buyerAccount"
-            placeholder="Buyer Account" />
-        </UFormGroup>
+        <UAccordion :items="accordionItems" variant="soft">
+          <template #your-details>
+            <div class="flex flex-col gap-4">
+              <UFormGroup label="Seller Name">
+                <UInput v-model="sellerName"
+                  placeholder="Seller Name" />
+              </UFormGroup>
 
-        <UFormGroup label="Buyer Location">
-          <UInput v-model="buyerLocation"
-            placeholder="Buyer Location" />
-        </UFormGroup>
+              <UFormGroup label="Seller Job Title">
+                <UInput v-model="sellerJobTitle"
+                  placeholder="Seller Job Title" />
+              </UFormGroup>
 
-        <UFormGroup label="Buyer Website">
-          <UInput v-model="buyerWebsite"
-            placeholder="Buyer Website" />
-        </UFormGroup>
+              <UFormGroup label="Seller Company">
+                <UInput v-model="sellerCompany"
+                  placeholder="Seller Company" />
+              </UFormGroup>
 
-        <UFormGroup label="Seller Name">
-          <UInput v-model="sellerName"
-            placeholder="Seller Name" />
-        </UFormGroup>
-
-        <UFormGroup label="Seller Job Title">
-          <UInput v-model="sellerJobTitle"
-            placeholder="Seller Job Title" />
-        </UFormGroup>
-
-        <UFormGroup label="Seller Company">
-          <UInput v-model="sellerCompany"
-            placeholder="Seller Company" />
-        </UFormGroup>
-
-        <UFormGroup label="Seller Website">
-          <UInput v-model="sellerWebsite"
-            placeholder="Seller Website" />
-        </UFormGroup>
+              <UFormGroup label="Seller Website">
+                <UInput v-model="sellerWebsite"
+                  placeholder="Seller Website" />
+              </UFormGroup>
+            </div>
+          </template>
+        </UAccordion>
 
         <SubmitButton 
           icon="i-heroicons-plus"
@@ -106,10 +100,10 @@
 </template>
 
 <script setup>
+import { useOrganizationStore } from '@/stores/organization'
+import { useUsersStore } from '@/stores/users'
 import { useSharepagesStore } from '@/stores/sharepages'
 import { storeToRefs } from 'pinia'
-import lodash_pkg from 'lodash';
-const { forEach, map } = lodash_pkg;
 
 const props = defineProps({
   templateId: { type: Number, required: true },
@@ -118,24 +112,51 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 const store = useSharepagesStore()
 
+const organizationStore = useOrganizationStore()
+const { getOrganizationCached } = storeToRefs(organizationStore)
+
+const usersStore = useUsersStore()
+const { getMeCached } = storeToRefs(usersStore)
+
 const { getSharepageByIdCached } = storeToRefs(store)
 
-const template = await getSharepageByIdCached.value(props.templateId)
+const [organization, user, template] = await Promise.all([
+  getOrganizationCached.value(),
+  getMeCached.value(),
+  getSharepageByIdCached.value(props.templateId),
+])
 
 const clearbitLoading = ref(false)
 const clearbitLogo = ref(null)
 
-const buyer = ref('Zello')
-const subname = ref('')
-const buyerName = ref('Chad Spain')
-const buyerJobTitle = ref('Account Executive')
-const buyerAccount = ref('Zello')
-const buyerLocation = ref('Austin, Texas')
-const buyerWebsite = ref('https://zello.com')
-const sellerName = ref('Archer')
-const sellerJobTitle = ref('Account Executive')
-const sellerCompany = ref('Scratchpad')
-const sellerWebsite = ref('https://www.scratchpad.com')
+const accountName = ref('Zello')
+const accountWebsite = ref('https://zello.com')
+const leadName = ref('Chad Spain')
+const leadJobTitle = ref('Account Executive')
+const leadLocation = ref('Austin, Texas')
+
+const accordionItems = [{
+  label: 'Your Details',
+  icon: 'i-heroicons-user',
+  defaultOpen: false,
+  slot: 'your-details'
+}]
+
+const sellerName = ref(user.firstName)
+const sellerJobTitle = ref(user.displayRole)
+const sellerCompany = ref(organization.name)
+const sellerWebsite = ref(organization.domain)
+
+function setClearbitLogoFromDomain() {
+  if (!clearbitLogo.value && URL.canParse(accountWebsite.value)) {
+    const url = URL.parse(accountWebsite.value)
+
+    const parts = url.hostname.split('.')
+    const domain = parts.slice(-2).join('.')
+
+    clearbitLogo.value = `https://logo.clearbit.com/${domain}`
+  }
+}
 
 async function lookupOnClearbit (query) {
   clearbitLoading.value = true
@@ -154,13 +175,20 @@ async function lookupOnClearbit (query) {
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   const templateData = { 
-    buyerName, buyerJobTitle, buyerAccount, buyerLocation, buyerWebsite,
-    sellerName, sellerJobTitle, sellerCompany, sellerWebsite,
+    buyerName: leadName, 
+    buyerJobTitle: leadJobTitle, 
+    buyerAccount: accountName, 
+    buyerLocation: leadLocation, 
+    buyerWebsite: accountWebsite,
+    sellerName, 
+    sellerJobTitle, 
+    sellerCompany, 
+    sellerWebsite,
   }
 
   const sharepageId = await store.createSharepageFromGlobalTemplate({
-    buyer,
-    subname,
+    buyer: accountName,
+    subname: `For ${leadName.value}`,
     buyerLogo: clearbitLogo.value.logo,
     templateData,
   })
@@ -168,7 +196,8 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   emit('close', { sharepageId })
 })
 
-const needsMoreInput = computed(() => !buyer.value || !clearbitLogo.value)
+// TODO
+const needsMoreInput = computed(() => !accountName.value || !clearbitLogo.value)
 </script>
 
 <style lang="postcss" scoped>
