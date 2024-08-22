@@ -60,22 +60,22 @@
         <UAccordion :items="accordionItems" variant="soft">
           <template #your-details>
             <div class="flex flex-col gap-4">
-              <UFormGroup label="Seller Name">
+              <UFormGroup label="Seller Name" required>
                 <UInput v-model="sellerName"
                   placeholder="Seller Name" />
               </UFormGroup>
 
-              <UFormGroup label="Seller Job Title">
+              <UFormGroup label="Seller Job Title" required>
                 <UInput v-model="sellerJobTitle"
                   placeholder="Seller Job Title" />
               </UFormGroup>
 
-              <UFormGroup label="Seller Company">
+              <UFormGroup label="Seller Company" required>
                 <UInput v-model="sellerCompany"
                   placeholder="Seller Company" />
               </UFormGroup>
 
-              <UFormGroup label="Seller Website">
+              <UFormGroup label="Seller Website" required>
                 <UInput v-model="sellerWebsite"
                   placeholder="Seller Website" />
               </UFormGroup>
@@ -93,7 +93,6 @@
           :disabled="needsMoreInput"
           :submissionState="submissionState"
           @click="submitFn" />
-          {{ error }}
       </div>
     </UCard>
   </UModal>
@@ -175,13 +174,13 @@ async function lookupOnClearbit (query) {
 
 const { submissionState, submitFn, error } = useSubmit(async () => {
   const templateData = { 
-    buyerName: leadName, 
-    buyerJobTitle: leadJobTitle, 
-    buyerAccount: accountName, 
-    buyerLocation: leadLocation, 
-    buyerWebsite: accountWebsite,
+    accountName, 
+    accountWebsite,
+    leadName, 
+    leadJobTitle, 
+    leadLocation, 
     sellerName, 
-    sellerJobTitle, 
+    sellerJobTitle,
     sellerCompany, 
     sellerWebsite,
   }
@@ -196,8 +195,10 @@ const { submissionState, submitFn, error } = useSubmit(async () => {
   emit('close', { sharepageId })
 })
 
-// TODO
-const needsMoreInput = computed(() => !accountName.value || !clearbitLogo.value)
+const needsMoreInput = computed(() => 
+  !accountName.value || !accountWebsite.value || !clearbitLogo.value
+  || !leadName.value || !leadJobTitle.value || !sellerName.value
+  || !sellerJobTitle.value || !sellerCompany.value || !sellerWebsite.value)
 </script>
 
 <style lang="postcss" scoped>

@@ -36,13 +36,24 @@
 
       <div class="h-[2.375rem] flex flex-row items-center gap-6">
         <div class="flex flex-row items-center">
-          <UserAvatar
-            class="-mr-.5 shrink-0"
-            size="small"
-            :user="sharepage.owner" />
-          <div v-if="sharepage.owner" class="ml-4 shrink-0 text-sm">
-            Made by {{ sharepage.owner?.firstName }}
-          </div>
+          <template v-if="sharepage.quickCreateMadeBy">
+            <UserAvatar
+              class="-mr-.5 shrink-0"
+              size="small"
+              :user="{ firstName: sharepage.quickCreateMadeBy }" />
+            <div v-if="sharepage.owner" class="ml-4 shrink-0 text-sm">
+              Made by {{ sharepage.quickCreateMadeBy }}
+            </div>
+          </template>
+          <template v-else-if="sharepage.owner">
+            <UserAvatar
+              class="-mr-.5 shrink-0"
+              size="small"
+              :user="sharepage.owner" />
+            <div class="ml-4 shrink-0 text-sm">
+              Made by {{ sharepage.owner.firstName }}
+            </div>
+          </template>
           <!-- TODO this text should be better -->
           <!-- <UserAvatar v-for="s in sharepage.sellerTeam" 
             class="-mr-.5 shrink-0"
