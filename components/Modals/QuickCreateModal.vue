@@ -153,7 +153,7 @@ function setClearbitLogoFromDomain() {
     const parts = url.hostname.split('.')
     const domain = parts.slice(-2).join('.')
 
-    clearbitLogo.value = `https://logo.clearbit.com/${domain}`
+    clearbitLogo.value = { logo: `https://logo.clearbit.com/${domain}` }
   }
 }
 
