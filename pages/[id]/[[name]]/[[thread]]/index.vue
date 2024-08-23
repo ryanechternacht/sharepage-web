@@ -411,7 +411,7 @@ if (process.client) {
 
 const settingsMenu = [[{
   label: 'Settings',
-  to: makeSharepageThreadSettingsLink(sharepage, threadId),
+  to: makeInternalSharepageLink(sharepage, 'settings'),
 }], [{
   label: 'Clone as Sharepage',
   click: () => cloneSharepage('deal-room')
