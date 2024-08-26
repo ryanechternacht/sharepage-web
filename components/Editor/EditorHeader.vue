@@ -8,7 +8,8 @@
       <div v-if="readonly"
         class="text-lg font-bold text-black w-full"
         v-html="value" />
-      <textarea v-model="value"
+      <textarea v-else 
+        v-model="value"
         rows="1"
         ref="textarea"
         class="p-0 border-0 rounded-none text-lg font-bold text-black w-full resize-none"
