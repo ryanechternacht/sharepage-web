@@ -511,10 +511,13 @@ watch(title, () => {
   debouncedSave()
 })
 
-watch(headerImage, () => {
-  console.log('header iamge change')
+watch(headerImage, async (newValue) => {
   isDirty.value = true
   debouncedSave()
+
+  apiFetch('/v0.1/download-unsplash', { 
+    method: 'POST',
+    body: { link: newValue.downloadLocation }})
 })
 
 function assetClick(link) {
