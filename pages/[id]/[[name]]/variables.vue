@@ -11,6 +11,7 @@
     </div>
     <div class="page-area">
       <UHorizontalNavigation :links="links"
+        :ui="{ base: 'max-w-[10rem]' }"
         class="mb-4" />
 
       <h2 class="mb-2 px-[10px]">Variable Labels</h2>

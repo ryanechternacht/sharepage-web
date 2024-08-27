@@ -16,6 +16,7 @@
     </div>
     <div class="page-area">
       <UHorizontalNavigation :links="links"
+        :ui="{ base: 'max-w-[10rem]' }"
         class="mb-4" />
       
       <div class="flex flex-col gap-4 max-w-[600px] px-[10px]">
