@@ -640,4 +640,8 @@ async function cloneSharepage(roomType) {
 .align-content-left {
   margin-left: calc(2.25rem + 2px);
 }
+
+.group-hover\:flex:has(> div[data-headlessui-state="open"]) {
+  @apply flex;
+}
 </style>

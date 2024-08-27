@@ -70,6 +70,10 @@ const menu = [
   &:has(+ .content:focus-within) :deep() > * {
     @apply block;
   }
+
+  div[data-headlessui-state="open"] {
+    @apply block;
+  }
 }
 
 .component:hover .drag-handle :deep() > * {
