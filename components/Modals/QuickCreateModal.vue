@@ -128,11 +128,11 @@ const [organization, user, template] = await Promise.all([
 const clearbitLoading = ref(false)
 const clearbitLogo = ref(null)
 
-const accountName = ref('Zello')
-const accountWebsite = ref('https://zello.com')
-const leadName = ref('Chad Spain')
-const leadJobTitle = ref('Account Executive')
-const leadLocation = ref('Austin, Texas')
+const accountName = ref('')
+const accountWebsite = ref('')
+const leadName = ref('')
+const leadJobTitle = ref('')
+const leadLocation = ref('')
 
 const accordionItems = [{
   label: 'Your Details',
