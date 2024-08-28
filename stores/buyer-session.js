@@ -53,7 +53,7 @@ export const useBuyerSessionStore = defineStore('buyer-session', {
 
         timeMe.initialize({
           currentThreadName: thread,
-          idleTimeoutInSeconds: 15,
+          idleTimeoutInSeconds: 2,
         })
         this.currentThread = thread
       
