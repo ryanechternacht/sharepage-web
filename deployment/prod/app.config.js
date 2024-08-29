@@ -11,6 +11,9 @@ export default defineAppConfig({
   heap: {
     id: 3969496045,
   },
+  hotjar: {
+    id: 5113773,
+  },
   featureFlags: {
     salesforce: false,
   },

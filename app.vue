@@ -18,6 +18,7 @@ const { getMeCached } = storeToRefs(usersStore)
 const user = await getMeCached.value()
 
 const { identify } = useHeap()
+const hotjar = useHotjar()
 
 if (process.client && user) {
   identify(user.id, {
