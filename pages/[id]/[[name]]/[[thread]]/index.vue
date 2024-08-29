@@ -175,10 +175,9 @@
           </USelectMenu>
         </div>
 
-        <input v-if="canEdit"
+        <MultilineInput v-if="canEdit"
           v-model="title"
-          type="text"
-          class="w-full p-0 pl-[calc(2.25rem+2px)] h1 my-6 border-0">
+          class="w-full pl-[calc(2.25rem+2px)] h1 my-6 border-0 pr-4" />
         <h1 v-else class="mt-10 mb-6 ml-[calc(.75rem+2px)]">{{ title }}</h1>
 
         <VueDraggable
