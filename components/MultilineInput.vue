@@ -16,6 +16,7 @@ const { clone } = lodash_pkg;
 
 const props = defineProps({
   modelValue: { type: String },
+  readonly: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['update:modelValue'])
